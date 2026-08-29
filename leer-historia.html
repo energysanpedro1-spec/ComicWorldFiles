@@ -1151,11 +1151,65 @@ function mostrarHistoria(data) {
 
 /* ==========================================
    REGISTRAR VISITA
+   1 VISITA CADA 24 HORAS POR NAVEGADOR
 ========================================== */
 
 async function registrarVisita() {
 
     if (!storyId) {
+
+        return;
+
+    }
+
+
+    /*
+     * Creamos una clave diferente
+     * para cada historia.
+     */
+
+    const clave =
+        "comicworldfiles_view_" +
+        storyId;
+
+
+    const ahora =
+        Date.now();
+
+
+    const ultimaVisita =
+        localStorage.getItem(
+            clave
+        );
+
+
+    /*
+     * 24 horas expresadas
+     * en milisegundos.
+     */
+
+    const periodo =
+        24 *
+        60 *
+        60 *
+        1000;
+
+
+    /*
+     * Si ya hubo una visita durante
+     * las últimas 24 horas,
+     * no enviamos otra al servidor.
+     */
+
+    if (
+        ultimaVisita &&
+        (ahora - Number(ultimaVisita)) <
+        periodo
+    ) {
+
+        console.log(
+            "Visita ya registrada durante las últimas 24 horas."
+        );
 
         return;
 
@@ -1212,11 +1266,23 @@ async function registrarVisita() {
         }
 
 
+        /*
+         * Solamente guardamos la visita
+         * en localStorage si el servidor
+         * confirmó correctamente.
+         */
+
         if (
             response.ok &&
             data.success &&
             data.views !== undefined
         ) {
+
+            localStorage.setItem(
+                clave,
+                String(ahora)
+            );
+
 
             actualizarVisitas(
                 data.views
