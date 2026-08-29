@@ -159,6 +159,53 @@ header {
 }
 
 /* ==============================
+   EDITAR INFORMACIÓN
+============================== */
+
+.story-edit {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.story-edit h3 {
+    margin-top: 0;
+}
+
+.story-edit label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 7px;
+}
+
+.story-edit input,
+.story-edit select {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+}
+
+.story-edit input:focus,
+.story-edit select:focus {
+    outline: none;
+    border-color: #ff6b35;
+}
+
+.info-save-button {
+    background: #ff6b35;
+    color: white;
+    margin-top: 18px;
+}
+
+.info-save-button:hover {
+    background: #e85a2a;
+}
+
+/* ==============================
    CAPÍTULOS
 ============================== */
 
@@ -383,6 +430,36 @@ id="story-genre">
 </span>
 
 <!-- ==============================
+     EDITAR INFORMACIÓN
+============================== --><div class="story-edit"><h3>
+Editar información
+</h3><label for="story-title-input">
+Título
+</label><input
+type="text"
+id="story-title-input"
+placeholder="Título de la historia"
+maxlength="150"
+
+«»
+
+<label for="story-genre-input">
+Género
+</label><input
+type="text"
+id="story-genre-input"
+placeholder="Ejemplo: Fantasía, Acción, Romance"
+maxlength="100"
+
+«»
+
+<button
+class="info-save-button"
+onclick="saveStoryInfo()">
+
+Guardar información
+
+</button></div><!-- ==============================
      PORTADA
 ============================== --><div class="cover-section"><h3>
 Portada
@@ -465,16 +542,11 @@ const params =
         window.location.search
     );
 
-
 const storyId =
     params.get("id");
 
-
 let editingChapterId =
     null;
-
-
-/* NUEVO */
 
 let isAuthor =
     false;
@@ -512,18 +584,15 @@ document.getElementById(
         const file =
             event.target.files[0];
 
-
         if (!file) {
             return;
         }
-
 
         const allowedTypes = [
             "image/jpeg",
             "image/png",
             "image/webp"
         ];
-
 
         if (
             !allowedTypes.includes(
@@ -542,7 +611,6 @@ document.getElementById(
 
         }
 
-
         if (
             file.size >
             5 * 1024 * 1024
@@ -559,12 +627,10 @@ document.getElementById(
 
         }
 
-
         const previewUrl =
             URL.createObjectURL(
                 file
             );
-
 
         showCover(
             previewUrl
@@ -592,10 +658,8 @@ async function loadStory() {
                 }
             );
 
-
         const data =
             await response.json();
-
 
         if (
             !response.ok ||
@@ -610,7 +674,6 @@ async function loadStory() {
             return;
 
         }
-
 
         const story =
             data.story;
@@ -637,6 +700,22 @@ async function loadStory() {
         document.getElementById(
             "story-genre"
         ).textContent =
+            story.genre || "";
+
+
+        /* ==============================
+           CAMPOS EDITABLES
+        ============================== */
+
+        document.getElementById(
+            "story-title-input"
+        ).value =
+            story.title || "";
+
+
+        document.getElementById(
+            "story-genre-input"
+        ).value =
             story.genre || "";
 
 
@@ -672,6 +751,144 @@ async function loadStory() {
 
 
 /* ==========================================
+   GUARDAR INFORMACIÓN DE HISTORIA
+========================================== */
+
+async function saveStoryInfo() {
+
+    if (!isAuthor) {
+
+        showError(
+            "No tienes permiso para modificar esta historia."
+        );
+
+        return;
+
+    }
+
+
+    const title =
+        document.getElementById(
+            "story-title-input"
+        ).value.trim();
+
+
+    const genre =
+        document.getElementById(
+            "story-genre-input"
+        ).value.trim();
+
+
+    if (!title) {
+
+        showError(
+            "El título es obligatorio."
+        );
+
+        return;
+
+    }
+
+
+    if (title.length < 2) {
+
+        showError(
+            "El título debe tener al menos 2 caracteres."
+        );
+
+        return;
+
+    }
+
+
+    if (!genre) {
+
+        showError(
+            "El género es obligatorio."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId,
+                {
+                    method: "PUT",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+                            title:
+                                title,
+
+                            genre:
+                                genre
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            showError(
+                data.error ||
+                "No se pudo actualizar la historia."
+            );
+
+            return;
+
+        }
+
+
+        /* Actualizar lo mostrado */
+
+        document.getElementById(
+            "story-title"
+        ).textContent =
+            title;
+
+
+        document.getElementById(
+            "story-genre"
+        ).textContent =
+            genre;
+
+
+        showSuccess(
+            "Información de la historia actualizada correctamente."
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "No se pudo conectar con el servidor."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
    MOSTRAR PORTADA
 ========================================== */
 
@@ -682,20 +899,16 @@ function showCover(url) {
             "cover-image"
         );
 
-
     const placeholder =
         document.getElementById(
             "cover-placeholder"
         );
 
-
     image.src =
         url;
 
-
     image.style.display =
         "block";
-
 
     placeholder.style.display =
         "none";
@@ -725,7 +938,6 @@ async function uploadCover() {
             "cover-file"
         );
 
-
     const file =
         fileInput.files[0];
 
@@ -740,10 +952,6 @@ async function uploadCover() {
 
     }
 
-
-    /* ==============================
-       VALIDAR TIPO
-    ============================== */
 
     const allowedTypes = [
         "image/jpeg",
@@ -767,10 +975,6 @@ async function uploadCover() {
     }
 
 
-    /* ==============================
-       VALIDAR TAMAÑO
-    ============================== */
-
     if (
         file.size >
         5 * 1024 * 1024
@@ -789,7 +993,6 @@ async function uploadCover() {
         document.getElementById(
             "cover-status"
         );
-
 
     status.textContent =
         "Subiendo portada...";
@@ -834,7 +1037,6 @@ async function uploadCover() {
                 "No se pudo subir la portada."
             );
 
-
             status.textContent =
                 "";
 
@@ -869,10 +1071,8 @@ async function uploadCover() {
 
         console.error(error);
 
-
         status.textContent =
             "";
-
 
         showError(
             "No se pudo conectar con el servidor."
@@ -945,6 +1145,12 @@ async function checkAuthor(
 
         document.querySelector(
             ".editor"
+        ).style.display =
+            "none";
+
+
+        document.querySelector(
+            ".story-edit"
         ).style.display =
             "none";
 
@@ -1103,7 +1309,6 @@ async function loadChapters() {
 
         console.error(error);
 
-
         container.innerHTML =
             "<p>Error cargando capítulos.</p>";
 
@@ -1175,6 +1380,7 @@ async function saveChapter() {
                             JSON.stringify({
                                 title:
                                     title,
+
                                 content:
                                     content
                             })
@@ -1198,6 +1404,7 @@ async function saveChapter() {
                             JSON.stringify({
                                 title:
                                     title,
+
                                 content:
                                     content
                             })
