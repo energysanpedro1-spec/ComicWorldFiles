@@ -501,6 +501,9 @@ export default {
                     }, 500);
                 }
 
+                const storyId =
+                    result.meta.last_row_id;
+
                 return json({
                     success: true,
                     message:
@@ -508,7 +511,7 @@ export default {
 
                     story: {
                         id:
-                            result.meta.last_row_id,
+                            storyId,
 
                         title:
                             title,
@@ -518,6 +521,9 @@ export default {
 
                         genre:
                             genre,
+
+                        cover_url:
+                            null,
 
                         author:
                             session.username,
@@ -563,6 +569,7 @@ export default {
                                 stories.title,
                                 stories.description,
                                 stories.genre,
+                                stories.cover_url,
                                 stories.created_at,
                                 users.username AS author
                              FROM stories
@@ -625,6 +632,7 @@ export default {
                                 stories.title,
                                 stories.description,
                                 stories.genre,
+                                stories.cover_url,
                                 stories.created_at,
                                 users.username AS author
                              FROM stories
@@ -662,6 +670,334 @@ export default {
                     success: false,
                     error: error.message
                 }, 500);
+            }
+        }
+
+
+        // =========================================================
+        // API: SUBIR / REEMPLAZAR PORTADA
+        //
+        // POST /api/stories/5/cover
+        //
+        // FormData:
+        // cover = archivo de imagen
+        // =========================================================
+
+        const coverUploadMatch =
+            url.pathname.match(
+                /^\/api\/stories\/(\d+)\/cover$/
+            );
+
+        if (
+            coverUploadMatch &&
+            request.method === "POST"
+        ) {
+
+            try {
+
+                const storyId =
+                    Number(
+                        coverUploadMatch[1]
+                    );
+
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+                }
+
+                // ---------------------------------------------
+                // Comprobar historia y propietario
+                // ---------------------------------------------
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                user_id,
+                                cover_url
+                             FROM stories
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(storyId)
+                        .first();
+
+                if (!story) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La historia no existe."
+                    }, 404);
+                }
+
+                if (
+                    Number(story.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para modificar esta historia."
+                    }, 403);
+                }
+
+                // ---------------------------------------------
+                // Obtener archivo
+                // ---------------------------------------------
+
+                const formData =
+                    await request.formData();
+
+                const file =
+                    formData.get("cover");
+
+                if (!file) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se recibió ninguna imagen."
+                    }, 400);
+                }
+
+                if (
+                    typeof file === "string" ||
+                    typeof file.arrayBuffer !== "function"
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El archivo enviado no es válido."
+                    }, 400);
+                }
+
+                // ---------------------------------------------
+                // Tamaño máximo: 5 MB
+                // ---------------------------------------------
+
+                const MAX_SIZE =
+                    5 * 1024 * 1024;
+
+                if (file.size > MAX_SIZE) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La imagen no puede superar los 5 MB."
+                    }, 400);
+                }
+
+                // ---------------------------------------------
+                // Tipos permitidos
+                // ---------------------------------------------
+
+                const allowedTypes = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp",
+                    "image/gif"
+                ];
+
+                if (
+                    !allowedTypes.includes(
+                        file.type
+                    )
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Formato no permitido. Usa JPG, PNG, WEBP o GIF."
+                    }, 400);
+                }
+
+                // ---------------------------------------------
+                // Clave fija para la portada
+                //
+                // Al reemplazarla, R2 sobrescribe el archivo.
+                // ---------------------------------------------
+
+                const objectKey =
+                    `covers/${session.id}/${storyId}`;
+
+                // ---------------------------------------------
+                // Guardar en R2
+                // ---------------------------------------------
+
+                await env.Cover.put(
+                    objectKey,
+                    file.stream(),
+                    {
+                        httpMetadata: {
+                            contentType:
+                                file.type,
+
+                            cacheControl:
+                                "public, max-age=86400"
+                        }
+                    }
+                );
+
+                // ---------------------------------------------
+                // URL pública mediante el Worker
+                // ---------------------------------------------
+
+                const coverUrl =
+                    `/api/stories/${storyId}/cover`;
+
+                // ---------------------------------------------
+                // Guardar URL en D1
+                // ---------------------------------------------
+
+                await env.DB
+                    .prepare(
+                        `UPDATE stories
+                         SET cover_url = ?
+                         WHERE id = ?`
+                    )
+                    .bind(
+                        coverUrl,
+                        storyId
+                    )
+                    .run();
+
+                return json({
+                    success: true,
+                    message:
+                        "Portada subida correctamente.",
+                    cover_url:
+                        coverUrl
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Error subiendo portada:",
+                    error
+                );
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+            }
+        }
+
+
+        // =========================================================
+        // API: MOSTRAR PORTADA
+        //
+        // GET /api/stories/5/cover
+        //
+        // No requiere iniciar sesión.
+        // =========================================================
+
+        if (
+            coverUploadMatch &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const storyId =
+                    Number(
+                        coverUploadMatch[1]
+                    );
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                user_id,
+                                cover_url
+                             FROM stories
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(storyId)
+                        .first();
+
+                if (!story) {
+
+                    return new Response(
+                        "Historia no encontrada.",
+                        {
+                            status: 404
+                        }
+                    );
+                }
+
+                const objectKey =
+                    `covers/${story.user_id}/${storyId}`;
+
+                const object =
+                    await env.Cover.get(
+                        objectKey
+                    );
+
+                if (!object) {
+
+                    return new Response(
+                        "Portada no encontrada.",
+                        {
+                            status: 404
+                        }
+                    );
+                }
+
+                const headers =
+                    new Headers();
+
+                object.writeHttpMetadata(
+                    headers
+                );
+
+                headers.set(
+                    "Cache-Control",
+                    "public, max-age=86400"
+                );
+
+                headers.set(
+                    "ETag",
+                    object.httpEtag
+                );
+
+                return new Response(
+                    object.body,
+                    {
+                        status: 200,
+                        headers: headers
+                    }
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Error obteniendo portada:",
+                    error
+                );
+
+                return new Response(
+                    "Error obteniendo portada.",
+                    {
+                        status: 500
+                    }
+                );
             }
         }
 
@@ -946,7 +1282,6 @@ export default {
 
         // =========================================================
         // API: OBTENER CAPÍTULO
-        // GET /api/chapters/10
         // =========================================================
 
         if (
