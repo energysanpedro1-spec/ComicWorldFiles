@@ -973,14 +973,16 @@ async function loadRecentStories() {
                 '</div>' +
 
                 '<p class="description">' +
-                escapeHtml(
-                    story.description || ""
-                ) +
-                '</p>' +
+escapeHtml(
+    story.description || ""
+) +
+'</p>' +
 
-                '<a class="card-button" href="#">' +
-                'Leer' +
-                '</a>' +
+'<a class="card-button" href="leer-historia.html?id=' +
+story.id +
+'">' +
+'Leer' +
+'</a>' +
 
                 '</div>';
 
