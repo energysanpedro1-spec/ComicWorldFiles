@@ -1,7 +1,20 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="es">
 
-<title>Editar historia - ComicWorldFiles</title><style>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Editar historia - ComicWorldFiles</title>
+
+<style>
+
+/* ==============================
+   GENERAL
+============================== */
 
 * {
     box-sizing: border-box;
@@ -13,6 +26,7 @@ body {
     background: #f4f4f4;
     color: #222;
 }
+
 
 /* ==============================
    CABECERA
@@ -27,9 +41,11 @@ header {
 .header-content {
     max-width: 1000px;
     margin: auto;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     gap: 20px;
 }
 
@@ -48,6 +64,7 @@ header {
     text-decoration: underline;
 }
 
+
 /* ==============================
    CONTENEDOR
 ============================== */
@@ -58,6 +75,7 @@ header {
     padding: 25px 15px;
 }
 
+
 /* ==============================
    INFORMACIÓN HISTORIA
 ============================== */
@@ -65,20 +83,27 @@ header {
 .story-info {
     background: white;
     padding: 25px;
+
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
     margin-bottom: 25px;
 }
 
 .story-info h1 {
     margin-top: 0;
     margin-bottom: 10px;
+
     font-size: 30px;
 }
 
 .detail {
     color: #666;
+
     line-height: 1.6;
+
     margin: 10px 0;
 }
 
@@ -89,82 +114,29 @@ header {
 
 .genre {
     display: inline-block;
+
     background: #eee;
+
     padding: 6px 12px;
+
     border-radius: 20px;
+
     font-size: 12px;
+
     margin-top: 10px;
 }
 
-/* ==============================
-   PORTADA
-============================== */
-
-.cover-section {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
-
-.cover-section h3 {
-    margin: 0 0 12px;
-}
-
-.cover-preview {
-    width: 220px;
-    max-width: 100%;
-    aspect-ratio: 2 / 3;
-    background: #eee;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #777;
-    text-align: center;
-}
-
-.cover-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-}
-
-.cover-placeholder {
-    padding: 20px;
-}
-
-.cover-input {
-    margin-top: 5px;
-    padding: 0;
-    border: none;
-}
-
-.cover-button {
-    background: #20242b;
-    color: white;
-    margin-top: 10px;
-}
-
-.cover-button:hover {
-    background: #11151a;
-}
-
-.cover-status {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #666;
-}
 
 /* ==============================
    EDITAR INFORMACIÓN
 ============================== */
 
 .story-edit {
+
     margin-top: 25px;
+
     padding-top: 20px;
+
     border-top: 1px solid #eee;
 }
 
@@ -173,200 +145,393 @@ header {
 }
 
 .story-edit label {
+
     display: block;
+
     font-weight: bold;
+
     margin-top: 15px;
+
     margin-bottom: 7px;
 }
 
 .story-edit input,
+.story-edit textarea,
 .story-edit select {
+
     width: 100%;
+
     border: 1px solid #ccc;
+
     border-radius: 7px;
+
     padding: 12px;
+
     font-family: Arial, sans-serif;
+
     font-size: 15px;
 }
 
 .story-edit input:focus,
+.story-edit textarea:focus,
 .story-edit select:focus {
+
     outline: none;
+
     border-color: #ff6b35;
 }
 
+.story-edit textarea {
+
+    min-height: 140px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
 .info-save-button {
+
     background: #ff6b35;
+
     color: white;
+
     margin-top: 18px;
 }
 
 .info-save-button:hover {
+
     background: #e85a2a;
 }
 
-/* ==============================
-   CAPÍTULOS
-============================== */
-
-.section-title {
-    margin: 30px 0 15px;
-}
-
-.section-title h2 {
-    margin: 0;
-}
 
 /* ==============================
-   FORMULARIO
+   PORTADA
 ============================== */
 
-.editor {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    margin-bottom: 30px;
+.cover-section {
+
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eee;
 }
 
-.editor h2 {
-    margin-top: 0;
+.cover-section h3 {
+
+    margin: 0 0 12px;
 }
 
-label {
-    display: block;
-    font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 7px;
-}
+.cover-preview {
 
-input,
-textarea {
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    padding: 12px;
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-}
+    width: 220px;
 
-input:focus,
-textarea:focus {
-    outline: none;
-    border-color: #ff6b35;
-}
+    max-width: 100%;
 
-textarea {
-    min-height: 300px;
-    resize: vertical;
-    line-height: 1.6;
-}
+    aspect-ratio: 2 / 3;
 
-/* ==============================
-   BOTONES
-============================== */
+    background: #eee;
 
-.buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
-
-button {
-    border: none;
-    border-radius: 7px;
-    padding: 11px 18px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.save-button {
-    background: #ff6b35;
-    color: white;
-}
-
-.save-button:hover {
-    background: #e85a2a;
-}
-
-.cancel-button {
-    background: #ddd;
-    color: #222;
-}
-
-.delete-button {
-    background: #20242b;
-    color: white;
-}
-
-/* ==============================
-   LISTA DE CAPÍTULOS
-============================== */
-
-.chapter-card {
-    background: white;
     border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
 
-.chapter-card h3 {
-    margin: 0 0 8px;
-}
-
-.chapter-number {
-    color: #ff6b35;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.chapter-preview {
-    color: #666;
-    line-height: 1.5;
-    white-space: pre-wrap;
-    max-height: 100px;
     overflow: hidden;
-}
 
-.chapter-actions {
+    margin-bottom: 15px;
+
     display: flex;
-    gap: 8px;
-    margin-top: 15px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #777;
+
+    text-align: center;
 }
 
-.edit-button {
+.cover-preview img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: none;
+}
+
+.cover-placeholder {
+
+    padding: 20px;
+}
+
+.cover-input {
+
+    margin-top: 5px;
+
+    padding: 0;
+
+    border: none;
+}
+
+.cover-button {
+
     background: #20242b;
+
     color: white;
+
+    margin-top: 10px;
 }
 
-.remove-button {
-    background: #ddd;
-    color: #222;
+.cover-button:hover {
+
+    background: #11151a;
 }
+
+.cover-status {
+
+    margin-top: 10px;
+
+    font-size: 14px;
+
+    color: #666;
+}
+
 
 /* ==============================
    MENSAJES
 ============================== */
 
 .message {
+
     padding: 12px;
+
     border-radius: 7px;
+
     margin-bottom: 15px;
+
     display: none;
 }
 
 .error {
+
     background: #ffe0e0;
+
     color: #a00000;
 }
 
 .success {
+
     background: #e0f5e5;
+
     color: #176b2c;
 }
+
+
+/* ==============================
+   EDITOR
+============================== */
+
+.editor {
+
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
+    margin-bottom: 30px;
+}
+
+.editor h2 {
+
+    margin-top: 0;
+}
+
+.editor label {
+
+    display: block;
+
+    font-weight: bold;
+
+    margin-top: 15px;
+
+    margin-bottom: 7px;
+}
+
+.editor input,
+.editor textarea {
+
+    width: 100%;
+
+    border: 1px solid #ccc;
+
+    border-radius: 7px;
+
+    padding: 12px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 15px;
+}
+
+.editor input:focus,
+.editor textarea:focus {
+
+    outline: none;
+
+    border-color: #ff6b35;
+}
+
+.editor textarea {
+
+    min-height: 300px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+/* ==============================
+   BOTONES
+============================== */
+
+.buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 15px;
+
+    flex-wrap: wrap;
+}
+
+button {
+
+    border: none;
+
+    border-radius: 7px;
+
+    padding: 11px 18px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.save-button {
+
+    background: #ff6b35;
+
+    color: white;
+}
+
+.save-button:hover {
+
+    background: #e85a2a;
+}
+
+.cancel-button {
+
+    background: #ddd;
+
+    color: #222;
+}
+
+.delete-button {
+
+    background: #20242b;
+
+    color: white;
+}
+
+
+/* ==============================
+   CAPÍTULOS
+============================== */
+
+.section-title {
+
+    margin: 30px 0 15px;
+}
+
+.section-title h2 {
+
+    margin: 0;
+}
+
+.chapter-card {
+
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.08);
+}
+
+.chapter-card h3 {
+
+    margin: 0 0 8px;
+}
+
+.chapter-number {
+
+    color: #ff6b35;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.chapter-preview {
+
+    color: #666;
+
+    line-height: 1.5;
+
+    white-space: pre-wrap;
+
+    max-height: 100px;
+
+    overflow: hidden;
+}
+
+.chapter-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.edit-button {
+
+    background: #20242b;
+
+    color: white;
+}
+
+.remove-button {
+
+    background: #ddd;
+
+    color: #222;
+}
+
 
 /* ==============================
    CELULAR
@@ -375,166 +540,355 @@ button {
 @media (max-width: 600px) {
 
     .container {
+
         padding: 18px 12px;
     }
 
     .story-info,
     .editor {
+
         padding: 18px;
     }
 
     .story-info h1 {
+
         font-size: 24px;
     }
 
     textarea {
+
         min-height: 250px;
     }
 
     .buttons,
     .chapter-actions {
+
         flex-direction: column;
     }
 
     button {
+
         width: 100%;
     }
 
     .cover-preview {
+
         width: 180px;
     }
 
 }
 
-</style></head><body><header><div class="header-content"><div class="logo">
-ComicWorldFiles
-</div><a class="back"
-href="index.html">
-← Volver
-</a>
+</style>
 
-</div></header><main class="container"><!-- ==============================
-     INFORMACIÓN DE LA HISTORIA
-============================== --><section class="story-info"><h1 id="story-title">
-Cargando...
-</h1><div class="author">
-Autor:
-<strong id="story-author">
--
-</strong>
-</div><p class="detail"
-id="story-description">
-Cargando descripción...
-</p><span class="genre"
-id="story-genre">
-</span>
+</head>
+
+<body>
+
+
+<header>
+
+    <div class="header-content">
+
+        <div class="logo">
+            ComicWorldFiles
+        </div>
+
+        <a
+            class="back"
+            href="index.html">
+
+            ← Volver
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
 
 <!-- ==============================
-     EDITAR INFORMACIÓN
-============================== --><div class="story-edit"><h3>
-Editar información
-</h3><label for="story-title-input">
-Título
-</label>
+     INFORMACIÓN DE LA HISTORIA
+============================== -->
 
-<input
-    type="text"
-    id="story-title-input"
-    placeholder="Título de la historia"
-    maxlength="150"
->
+<section class="story-info">
 
-<label for="story-genre-input">
-Género
-</label>
 
-<input
-    type="text"
-    id="story-genre-input"
-    placeholder="Ejemplo: Fantasía, Acción, Romance"
-    maxlength="100"
->
+    <h1 id="story-title">
+        Cargando...
+    </h1>
 
-<button
-    type="button"
-    class="info-save-button"
-    onclick="saveStoryInfo()">
-    Guardar información
-</button>
 
-</div><!-- ==============================
-     PORTADA
-============================== --><div class="cover-section"><h3>
-Portada
-</h3><div class="cover-preview"><img
-id="cover-image"
-src=""
-alt="Portada de la historia">
+    <div class="author">
+
+        Autor:
+
+        <strong id="story-author">
+            -
+        </strong>
+
+    </div>
+
+
+    <p
+        class="detail"
+        id="story-description">
+
+        Cargando descripción...
+
+    </p>
+
+
+    <span
+        class="genre"
+        id="story-genre">
+
+    </span>
+
+
+    <!-- ==============================
+         EDITAR INFORMACIÓN
+    ============================== -->
+
+    <div class="story-edit">
+
+
+        <h3>
+            Editar información
+        </h3>
+
+
+        <label for="story-title-input">
+            Título
+        </label>
+
+
+        <input
+            type="text"
+            id="story-title-input"
+            placeholder="Título de la historia"
+            maxlength="150"
+        >
+
+
+        <label for="story-description-input">
+            Descripción
+        </label>
+
+
+        <textarea
+            id="story-description-input"
+            placeholder="Describe tu historia..."
+            maxlength="1000"
+        ></textarea>
+
+
+        <label for="story-genre-input">
+            Género
+        </label>
+
+
+        <input
+            type="text"
+            id="story-genre-input"
+            placeholder="Ejemplo: Fantasía, Acción, Romance"
+            maxlength="100"
+        >
+
+
+        <button
+            type="button"
+            class="info-save-button"
+            onclick="saveStoryInfo()">
+
+            Guardar información
+
+        </button>
+
+
+    </div>
+
+
+    <!-- ==============================
+         PORTADA
+    ============================== -->
+
+    <div class="cover-section">
+
+
+        <h3>
+            Portada
+        </h3>
+
+
+        <div class="cover-preview">
+
+
+            <img
+                id="cover-image"
+                src=""
+                alt="Portada de la historia"
+            >
+
+
+            <div
+                id="cover-placeholder"
+                class="cover-placeholder">
+
+                Esta historia todavía no tiene portada.
+
+            </div>
+
+
+        </div>
+
+
+        <div id="cover-controls">
+
+
+            <input
+                type="file"
+                id="cover-file"
+                class="cover-input"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+
+            <button
+                class="cover-button"
+                onclick="uploadCover()">
+
+                Subir portada
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="cover-status"
+            class="cover-status">
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- ==============================
+     MENSAJES
+============================== -->
 
 <div
-id="cover-placeholder"
-class="cover-placeholder">Esta historia todavía no tiene portada.
+    id="error-message"
+    class="message error">
 
-</div></div><div id="cover-controls"><input
-type="file"
-id="cover-file"
-class="cover-input"
-accept="image/jpeg,image/png,image/webp">
+</div>
 
-<button
-class="cover-button"
-onclick="uploadCover()">
 
-Subir portada
+<div
+    id="success-message"
+    class="message success">
 
-</button></div><div
-id="cover-status"
-class="cover-status">
-</div></div></section><!-- ==============================
-     MENSAJES
-============================== --><div
-id="error-message"
-class="message error">
-</div><div
-id="success-message"
-class="message success">
-</div><!-- ==============================
-     EDITOR
-============================== --><section class="editor"><h2 id="editor-title">
-Agregar capítulo
-</h2><label for="chapter-title">
-Título del capítulo
-</label><input
-type="text"
-id="chapter-title"
-placeholder="Ejemplo: El despertar">
+</div>
 
-<label for="chapter-content">
-Contenido
-</label><textarea
-id="chapter-content"
-placeholder="Escribe aquí el contenido de tu capítulo..."
-></textarea><div class="buttons"><button
-class="save-button"
-onclick="saveChapter()">
 
-Guardar capítulo
+<!-- ==============================
+     EDITOR DE CAPÍTULOS
+============================== -->
 
-</button><button
-class="cancel-button"
-id="cancel-button"
-onclick="cancelEdit()"
-style="display:none;">
+<section class="editor">
 
-Cancelar edición
 
-</button></div></section><!-- ==============================
+    <h2 id="editor-title">
+        Agregar capítulo
+    </h2>
+
+
+    <label for="chapter-title">
+        Título del capítulo
+    </label>
+
+
+    <input
+        type="text"
+        id="chapter-title"
+        placeholder="Ejemplo: El despertar"
+    >
+
+
+    <label for="chapter-content">
+        Contenido
+    </label>
+
+
+    <textarea
+        id="chapter-content"
+        placeholder="Escribe aquí el contenido de tu capítulo..."
+    ></textarea>
+
+
+    <div class="buttons">
+
+
+        <button
+            class="save-button"
+            onclick="saveChapter()">
+
+            Guardar capítulo
+
+        </button>
+
+
+        <button
+            class="cancel-button"
+            id="cancel-button"
+            onclick="cancelEdit()"
+            style="display:none;">
+
+            Cancelar edición
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- ==============================
      CAPÍTULOS
-============================== --><div class="section-title"><h2>
-Capítulos
-</h2></div><section id="chapters-container"><p>
-Cargando capítulos...
-</p></section></main><script>
+============================== -->
+
+<div class="section-title">
+
+    <h2>
+        Capítulos
+    </h2>
+
+</div>
+
+
+<section id="chapters-container">
+
+    <p>
+        Cargando capítulos...
+    </p>
+
+</section>
+
+
+</main>
+
+
+<script>
 
 /* ==========================================
    VARIABLES
@@ -545,11 +899,14 @@ const params =
         window.location.search
     );
 
+
 const storyId =
     params.get("id");
 
+
 let editingChapterId =
     null;
+
 
 let isAuthor =
     false;
@@ -584,18 +941,28 @@ document.getElementById(
     "change",
     function(event) {
 
+
         const file =
             event.target.files[0];
 
+
         if (!file) {
+
             return;
+
         }
 
+
         const allowedTypes = [
+
             "image/jpeg",
+
             "image/png",
+
             "image/webp"
+
         ];
+
 
         if (
             !allowedTypes.includes(
@@ -607,12 +974,15 @@ document.getElementById(
                 "La portada debe ser JPG, PNG o WEBP."
             );
 
+
             event.target.value =
                 "";
+
 
             return;
 
         }
+
 
         if (
             file.size >
@@ -623,17 +993,21 @@ document.getElementById(
                 "La imagen no puede superar los 5 MB."
             );
 
+
             event.target.value =
                 "";
+
 
             return;
 
         }
 
+
         const previewUrl =
             URL.createObjectURL(
                 file
             );
+
 
         showCover(
             previewUrl
@@ -651,18 +1025,23 @@ async function loadStory() {
 
     try {
 
+
         const response =
             await fetch(
                 "/api/stories/" +
                 storyId,
                 {
                     method: "GET",
-                    credentials: "include"
+
+                    credentials:
+                        "include"
                 }
             );
 
+
         const data =
             await response.json();
+
 
         if (
             !response.ok ||
@@ -674,36 +1053,45 @@ async function loadStory() {
                 "No se pudo cargar la historia."
             );
 
+
             return;
 
         }
+
 
         const story =
             data.story;
 
 
+        /* ==============================
+           INFORMACIÓN VISIBLE
+        ============================== */
+
         document.getElementById(
             "story-title"
         ).textContent =
-            story.title;
+            story.title || "";
 
 
         document.getElementById(
             "story-author"
         ).textContent =
-            story.author || "Autor";
+            story.author ||
+            "Autor";
 
 
         document.getElementById(
             "story-description"
         ).textContent =
-            story.description || "";
+            story.description ||
+            "";
 
 
         document.getElementById(
             "story-genre"
         ).textContent =
-            story.genre || "";
+            story.genre ||
+            "";
 
 
         /* ==============================
@@ -713,17 +1101,26 @@ async function loadStory() {
         document.getElementById(
             "story-title-input"
         ).value =
-            story.title || "";
+            story.title ||
+            "";
+
+
+        document.getElementById(
+            "story-description-input"
+        ).value =
+            story.description ||
+            "";
 
 
         document.getElementById(
             "story-genre-input"
         ).value =
-            story.genre || "";
+            story.genre ||
+            "";
 
 
         /* ==============================
-           PORTADA ACTUAL
+           PORTADA
         ============================== */
 
         if (story.cover_url) {
@@ -735,6 +1132,10 @@ async function loadStory() {
         }
 
 
+        /* ==============================
+           COMPROBAR AUTOR
+        ============================== */
+
         await checkAuthor(
             story.user_id
         );
@@ -743,6 +1144,7 @@ async function loadStory() {
     } catch (error) {
 
         console.error(error);
+
 
         showError(
             "No se pudo conectar con el servidor."
@@ -759,11 +1161,13 @@ async function loadStory() {
 
 async function saveStoryInfo() {
 
+
     if (!isAuthor) {
 
         showError(
             "No tienes permiso para modificar esta historia."
         );
+
 
         return;
 
@@ -773,6 +1177,12 @@ async function saveStoryInfo() {
     const title =
         document.getElementById(
             "story-title-input"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "story-description-input"
         ).value.trim();
 
 
@@ -788,6 +1198,7 @@ async function saveStoryInfo() {
             "El título es obligatorio."
         );
 
+
         return;
 
     }
@@ -798,6 +1209,19 @@ async function saveStoryInfo() {
         showError(
             "El título debe tener al menos 2 caracteres."
         );
+
+
+        return;
+
+    }
+
+
+    if (!description) {
+
+        showError(
+            "La descripción es obligatoria."
+        );
+
 
         return;
 
@@ -810,6 +1234,7 @@ async function saveStoryInfo() {
             "El género es obligatorio."
         );
 
+
         return;
 
     }
@@ -817,25 +1242,39 @@ async function saveStoryInfo() {
 
     try {
 
+
         const response =
             await fetch(
                 "/api/stories/" +
                 storyId,
                 {
+
                     method: "PUT",
-                    credentials: "include",
+
+                    credentials:
+                        "include",
+
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
+
                     body:
                         JSON.stringify({
+
                             title:
                                 title,
 
+                            description:
+                                description,
+
                             genre:
                                 genre
+
                         })
+
                 }
             );
 
@@ -854,17 +1293,26 @@ async function saveStoryInfo() {
                 "No se pudo actualizar la historia."
             );
 
+
             return;
 
         }
 
 
-        /* Actualizar lo mostrado */
+        /* ==============================
+           ACTUALIZAR INFORMACIÓN VISIBLE
+        ============================== */
 
         document.getElementById(
             "story-title"
         ).textContent =
             title;
+
+
+        document.getElementById(
+            "story-description"
+        ).textContent =
+            description;
 
 
         document.getElementById(
@@ -882,6 +1330,7 @@ async function saveStoryInfo() {
 
         console.error(error);
 
+
         showError(
             "No se pudo conectar con el servidor."
         );
@@ -897,21 +1346,26 @@ async function saveStoryInfo() {
 
 function showCover(url) {
 
+
     const image =
         document.getElementById(
             "cover-image"
         );
+
 
     const placeholder =
         document.getElementById(
             "cover-placeholder"
         );
 
+
     image.src =
         url;
 
+
     image.style.display =
         "block";
+
 
     placeholder.style.display =
         "none";
@@ -925,11 +1379,13 @@ function showCover(url) {
 
 async function uploadCover() {
 
+
     if (!isAuthor) {
 
         showError(
             "No tienes permiso para modificar esta historia."
         );
+
 
         return;
 
@@ -941,6 +1397,7 @@ async function uploadCover() {
             "cover-file"
         );
 
+
     const file =
         fileInput.files[0];
 
@@ -951,15 +1408,20 @@ async function uploadCover() {
             "Selecciona una imagen para la portada."
         );
 
+
         return;
 
     }
 
 
     const allowedTypes = [
+
         "image/jpeg",
+
         "image/png",
+
         "image/webp"
+
     ];
 
 
@@ -972,6 +1434,7 @@ async function uploadCover() {
         showError(
             "La portada debe ser JPG, PNG o WEBP."
         );
+
 
         return;
 
@@ -987,6 +1450,7 @@ async function uploadCover() {
             "La imagen no puede superar los 5 MB."
         );
 
+
         return;
 
     }
@@ -997,11 +1461,13 @@ async function uploadCover() {
             "cover-status"
         );
 
+
     status.textContent =
         "Subiendo portada...";
 
 
     try {
+
 
         const formData =
             new FormData();
@@ -1019,9 +1485,15 @@ async function uploadCover() {
                 storyId +
                 "/cover",
                 {
+
                     method: "POST",
-                    credentials: "include",
-                    body: formData
+
+                    credentials:
+                        "include",
+
+                    body:
+                        formData
+
                 }
             );
 
@@ -1040,8 +1512,10 @@ async function uploadCover() {
                 "No se pudo subir la portada."
             );
 
+
             status.textContent =
                 "";
+
 
             return;
 
@@ -1050,8 +1524,17 @@ async function uploadCover() {
 
         if (data.cover_url) {
 
+            /*
+             * Agregamos un parámetro
+             * para evitar que el navegador
+             * muestre la portada anterior
+             * desde caché.
+             */
+
             showCover(
-                data.cover_url
+                data.cover_url +
+                "?v=" +
+                Date.now()
             );
 
         }
@@ -1074,8 +1557,10 @@ async function uploadCover() {
 
         console.error(error);
 
+
         status.textContent =
             "";
+
 
         showError(
             "No se pudo conectar con el servidor."
@@ -1096,12 +1581,17 @@ async function checkAuthor(
 
     try {
 
+
         const response =
             await fetch(
                 "/api/me",
                 {
+
                     method: "GET",
-                    credentials: "include"
+
+                    credentials:
+                        "include"
+
                 }
             );
 
@@ -1119,6 +1609,7 @@ async function checkAuthor(
             window.location.href =
                 "login.html";
 
+
             return;
 
         }
@@ -1131,6 +1622,7 @@ async function checkAuthor(
 
             isAuthor =
                 true;
+
 
             return;
 
@@ -1168,6 +1660,7 @@ async function checkAuthor(
 
         console.error(error);
 
+
         showError(
             "No se pudo comprobar el usuario."
         );
@@ -1183,6 +1676,7 @@ async function checkAuthor(
 
 async function loadChapters() {
 
+
     const container =
         document.getElementById(
             "chapters-container"
@@ -1191,14 +1685,19 @@ async function loadChapters() {
 
     try {
 
+
         const response =
             await fetch(
                 "/api/stories/" +
                 storyId +
                 "/chapters",
                 {
+
                     method: "GET",
-                    credentials: "include"
+
+                    credentials:
+                        "include"
+
                 }
             );
 
@@ -1215,19 +1714,22 @@ async function loadChapters() {
             container.innerHTML =
                 "<p>No se pudieron cargar los capítulos.</p>";
 
+
             return;
 
         }
 
 
         const chapters =
-            data.chapters || [];
+            data.chapters ||
+            [];
 
 
         if (chapters.length === 0) {
 
             container.innerHTML =
                 "<p>Aún no hay capítulos.</p>";
+
 
             return;
 
@@ -1241,6 +1743,7 @@ async function loadChapters() {
         chapters.forEach(
             function(chapter) {
 
+
                 const card =
                     document.createElement(
                         "div"
@@ -1251,51 +1754,161 @@ async function loadChapters() {
                     "chapter-card";
 
 
-                const preview =
-                    chapter.content.length > 300
-                        ? chapter.content.substring(
+                let preview =
+                    chapter.content ||
+                    "";
+
+
+                /*
+                 * Los capítulos antiguos pueden
+                 * tener texto normal.
+                 *
+                 * Las historietas nuevas pueden
+                 * tener JSON con bloques.
+                 */
+
+                try {
+
+                    const parsed =
+                        JSON.parse(
+                            preview
+                        );
+
+
+                    if (
+                        Array.isArray(
+                            parsed
+                        )
+                    ) {
+
+                        preview =
+                            parsed
+                                .map(
+                                    function(block) {
+
+                                        if (
+                                            block &&
+                                            block.type ===
+                                                "text"
+                                        ) {
+
+                                            return String(
+                                                block.content ||
+                                                ""
+                                            );
+
+                                        }
+
+                                        if (
+                                            block &&
+                                            block.type ===
+                                                "image"
+                                        ) {
+
+                                            return "[Imagen]";
+
+                                        }
+
+                                        return "";
+
+                                    }
+                                )
+                                .join(
+                                    " "
+                                );
+
+                    }
+
+                } catch (error) {
+
+                    /*
+                     * No es JSON.
+                     * Se mantiene como texto normal.
+                     */
+
+                }
+
+
+                if (
+                    preview.length >
+                    300
+                ) {
+
+                    preview =
+                        preview.substring(
                             0,
                             300
-                        ) + "..."
-                        : chapter.content;
+                        ) +
+                        "...";
+
+                }
 
 
                 card.innerHTML =
 
                     '<div class="chapter-number">' +
+
                     'CAPÍTULO ' +
-                    chapter.chapter_number +
+
+                    escapeHtml(
+                        String(
+                            chapter.chapter_number
+                        )
+                    ) +
+
                     '</div>' +
 
+
                     '<h3>' +
+
                     escapeHtml(
                         chapter.title
                     ) +
+
                     '</h3>' +
 
+
                     '<div class="chapter-preview">' +
+
                     escapeHtml(
                         preview
                     ) +
+
                     '</div>' +
+
 
                     '<div class="chapter-actions">' +
 
-                    '<button ' +
-                    'class="edit-button" ' +
-                    'onclick="editChapter(' +
-                    chapter.id +
-                    ')">' +
-                    'Editar' +
-                    '</button>' +
 
                     '<button ' +
-                    'class="remove-button" ' +
-                    'onclick="deleteChapter(' +
+
+                    'class="edit-button" ' +
+
+                    'onclick="editChapter(' +
+
                     chapter.id +
+
                     ')">' +
-                    'Eliminar' +
+
+                    'Editar' +
+
                     '</button>' +
+
+
+                    '<button ' +
+
+                    'class="remove-button" ' +
+
+                    'onclick="deleteChapter(' +
+
+                    chapter.id +
+
+                    ')">' +
+
+                    'Eliminar' +
+
+                    '</button>' +
+
 
                     '</div>';
 
@@ -1312,6 +1925,7 @@ async function loadChapters() {
 
         console.error(error);
 
+
         container.innerHTML =
             "<p>Error cargando capítulos.</p>";
 
@@ -1325,6 +1939,7 @@ async function loadChapters() {
 ========================================== */
 
 async function saveChapter() {
+
 
     const title =
         document.getElementById(
@@ -1344,6 +1959,7 @@ async function saveChapter() {
             "Escribe un título para el capítulo."
         );
 
+
         return;
 
     }
@@ -1355,6 +1971,7 @@ async function saveChapter() {
             "Escribe el contenido del capítulo."
         );
 
+
         return;
 
     }
@@ -1362,10 +1979,12 @@ async function saveChapter() {
 
     try {
 
+
         let response;
 
 
         if (!editingChapterId) {
+
 
             response =
                 await fetch(
@@ -1373,44 +1992,66 @@ async function saveChapter() {
                     storyId +
                     "/chapters",
                     {
+
                         method: "POST",
-                        credentials: "include",
+
+                        credentials:
+                            "include",
+
                         headers: {
+
                             "Content-Type":
                                 "application/json"
+
                         },
+
                         body:
                             JSON.stringify({
+
                                 title:
                                     title,
 
                                 content:
                                     content
+
                             })
+
                     }
                 );
 
+
         } else {
+
 
             response =
                 await fetch(
                     "/api/chapters/" +
                     editingChapterId,
                     {
+
                         method: "PUT",
-                        credentials: "include",
+
+                        credentials:
+                            "include",
+
                         headers: {
+
                             "Content-Type":
                                 "application/json"
+
                         },
+
                         body:
                             JSON.stringify({
+
                                 title:
                                     title,
 
                                 content:
                                     content
+
                             })
+
                     }
                 );
 
@@ -1431,19 +2072,25 @@ async function saveChapter() {
                 "No se pudo guardar el capítulo."
             );
 
+
             return;
 
         }
 
 
         showSuccess(
+
             editingChapterId
+
                 ? "Capítulo actualizado correctamente."
+
                 : "Capítulo creado correctamente."
+
         );
 
 
         clearEditor();
+
 
         loadChapters();
 
@@ -1451,6 +2098,7 @@ async function saveChapter() {
     } catch (error) {
 
         console.error(error);
+
 
         showError(
             "No se pudo conectar con el servidor."
@@ -1471,14 +2119,19 @@ async function editChapter(
 
     try {
 
+
         const response =
             await fetch(
                 "/api/stories/" +
                 storyId +
                 "/chapters",
                 {
+
                     method: "GET",
-                    credentials: "include"
+
+                    credentials:
+                        "include"
+
                 }
             );
 
@@ -1495,6 +2148,7 @@ async function editChapter(
             showError(
                 "No se pudo cargar el capítulo."
             );
+
 
             return;
 
@@ -1517,6 +2171,7 @@ async function editChapter(
             showError(
                 "El capítulo no existe."
             );
+
 
             return;
 
@@ -1553,14 +2208,18 @@ async function editChapter(
 
 
         window.scrollTo({
+
             top: 0,
+
             behavior: "smooth"
+
         });
 
 
     } catch (error) {
 
         console.error(error);
+
 
         showError(
             "No se pudo cargar el capítulo."
@@ -1579,6 +2238,7 @@ async function deleteChapter(
     chapterId
 ) {
 
+
     const confirmed =
         confirm(
             "¿Seguro que quieres eliminar este capítulo?"
@@ -1586,19 +2246,26 @@ async function deleteChapter(
 
 
     if (!confirmed) {
+
         return;
+
     }
 
 
     try {
+
 
         const response =
             await fetch(
                 "/api/chapters/" +
                 chapterId,
                 {
+
                     method: "DELETE",
-                    credentials: "include"
+
+                    credentials:
+                        "include"
+
                 }
             );
 
@@ -1616,6 +2283,7 @@ async function deleteChapter(
                 data.error ||
                 "No se pudo eliminar el capítulo."
             );
+
 
             return;
 
@@ -1644,6 +2312,7 @@ async function deleteChapter(
 
         console.error(error);
 
+
         showError(
             "No se pudo conectar con el servidor."
         );
@@ -1669,6 +2338,7 @@ function cancelEdit() {
 ========================================== */
 
 function clearEditor() {
+
 
     editingChapterId =
         null;
@@ -1706,6 +2376,7 @@ function clearEditor() {
 
 function showError(message) {
 
+
     const element =
         document.getElementById(
             "error-message"
@@ -1729,6 +2400,7 @@ function showError(message) {
 
 
 function showSuccess(message) {
+
 
     const element =
         document.getElementById(
@@ -1769,6 +2441,7 @@ function showSuccess(message) {
 
 function escapeHtml(text) {
 
+
     const div =
         document.createElement(
             "div"
@@ -1783,4 +2456,8 @@ function escapeHtml(text) {
 
 }
 
-</script></body></html>
+</script>
+
+</body>
+
+</html>
