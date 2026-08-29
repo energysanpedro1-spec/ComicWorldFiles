@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Editar historia - ComicWorldFiles</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+/* ==============================
+   CABECERA
+============================== */
+
+header {
+    background: #20242b;
+    color: white;
+    padding: 15px 20px;
+}
+
+.header-content {
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.back {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back:hover {
+    text-decoration: underline;
+}
+
+/* ==============================
+   CONTENEDOR
+============================== */
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 25px 15px;
+}
+
+/* ==============================
+   INFORMACIÓN HISTORIA
+============================== */
+
+.story-info {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.story-info h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.detail {
+    color: #666;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.author {
+    color: #777;
+    font-size: 14px;
+}
+
+.genre {
+    display: inline-block;
+    background: #eee;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* ==============================
+   CAPÍTULOS
+============================== */
+
+.section-title {
+    margin: 30px 0 15px;
+}
+
+.section-title h2 {
+    margin: 0;
+}
+
+/* ==============================
+   FORMULARIO
+============================== */
+
+.editor {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+.editor h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 7px;
+}
+
+input,
+textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ff6b35;
+}
+
+textarea {
+    min-height: 300px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* ==============================
+   BOTONES
+============================== */
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+    border-radius: 7px;
+    padding: 11px 18px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.save-button {
+    background: #ff6b35;
+    color: white;
+}
+
+.save-button:hover {
+    background: #e85a2a;
+}
+
+.cancel-button {
+    background: #ddd;
+    color: #222;
+}
+
+.delete-button {
+    background: #20242b;
+    color: white;
+}
+
+/* ==============================
+   LISTA DE CAPÍTULOS
+============================== */
+
+.chapter-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.chapter-card h3 {
+    margin: 0 0 8px;
+}
+
+.chapter-number {
+    color: #ff6b35;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.chapter-preview {
+    color: #666;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.chapter-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.edit-button {
+    background: #20242b;
+    color: white;
+}
+
+.remove-button {
+    background: #ddd;
+    color: #222;
+}
+
+/* ==============================
+   MENSAJES
+============================== */
+
+.message {
+    padding: 12px;
+    border-radius: 7px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.error {
+    background: #ffe0e0;
+    color: #a00000;
+}
+
+.success {
+    background: #e0f5e5;
+    color: #176b2c;
+}
+
+/* ==============================
+   CELULAR
+============================== */
+
+@media (max-width: 600px) {
+
+    .container {
+        padding: 18px 12px;
+    }
+
+    .story-info,
+    .editor {
+        padding: 18px;
+    }
+
+    .story-info h1 {
+        font-size: 24px;
+    }
+
+    textarea {
+        min-height: 250px;
+    }
+
+    .buttons,
+    .chapter-actions {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-content">
+
+<div class="logo">
+ComicWorldFiles
+</div>
+
+<a class="back"
+href="index.html">
+← Volver
+</a>
+
+</div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- ==============================
+     INFORMACIÓN DE LA HISTORIA
+============================== -->
+
+<section class="story-info">
+
+<h1 id="story-title">
+Cargando...
+</h1>
+
+<div class="author">
+Autor:
+<strong id="story-author">
+-
+</strong>
+</div>
+
+<p class="detail"
+id="story-description">
+Cargando descripción...
+</p>
+
+<span class="genre"
+id="story-genre">
+-
+</span>
+
+</section>
+
+
+<!-- MENSAJES -->
+
+<div
+id="error-message"
+class="message error">
+</div>
+
+<div
+id="success-message"
+class="message success">
+</div>
+
+
+<!-- ==============================
+     EDITOR
+============================== -->
+
+<section class="editor">
+
+<h2 id="editor-title">
+Agregar capítulo
+</h2>
+
+
+<label for="chapter-title">
+Título del capítulo
+</label>
+
+<input
+type="text"
+id="chapter-title"
+placeholder="Ejemplo: El despertar"
+>
+
+
+<label for="chapter-content">
+Contenido
+</label>
+
+<textarea
+id="chapter-content"
+placeholder="Escribe aquí el contenido de tu capítulo..."
+></textarea>
+
+
+<div class="buttons">
+
+<button
+class="save-button"
+onclick="saveChapter()">
+Guardar capítulo
+</button>
+
+<button
+class="cancel-button"
+id="cancel-button"
+onclick="cancelEdit()"
+style="display:none;">
+Cancelar edición
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ==============================
+     CAPÍTULOS
+============================== -->
+
+<div class="section-title">
+
+<h2>
+Capítulos
+</h2>
+
+</div>
+
+
+<section id="chapters-container">
+
+<p>
+Cargando capítulos...
+</p>
+
+</section>
+
+
+</main>
+
+
+<script>
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const storyId =
+    params.get("id");
+
+let editingChapterId = null;
+
+
+/* ==========================================
+   COMPROBAR ID
+========================================== */
+
+if (!storyId) {
+
+    showError(
+        "No se indicó ninguna historia."
+    );
+
+} else {
+
+    loadStory();
+
+    loadChapters();
+
+}
+
+
+/* ==========================================
+   CARGAR HISTORIA
+========================================== */
+
+async function loadStory() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId,
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            showError(
+                data.error ||
+                "No se pudo cargar la historia."
+            );
+
+            return;
+
+        }
+
+
+        const story =
+            data.story;
+
+
+        document.getElementById(
+            "story-title"
+        ).textContent =
+            story.title;
+
+
+        document.getElementById(
+            "story-author"
+        ).textContent =
+            story.author || "Autor";
+
+
+        document.getElementById(
+            "story-description"
+        ).textContent =
+            story.description || "";
+
+
+        document.getElementById(
+            "story-genre"
+        ).textContent =
+            story.genre || "";
+
+
+        /*
+
+        Comprobamos que el usuario
+        sea el propietario.
+
+        */
+
+        await checkAuthor(
+            story.user_id
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "No se pudo conectar con el servidor."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   COMPROBAR AUTOR
+========================================== */
+
+async function checkAuthor(
+    storyUserId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.loggedIn
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        if (
+            Number(data.user.id) !==
+            Number(storyUserId)
+        ) {
+
+            showError(
+                "No tienes permiso para editar esta historia."
+            );
+
+
+            document.querySelector(
+                ".editor"
+            ).style.display =
+                "none";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "No se pudo comprobar el usuario."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   CARGAR CAPÍTULOS
+========================================== */
+
+async function loadChapters() {
+
+    const container =
+        document.getElementById(
+            "chapters-container"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/chapters",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            container.innerHTML =
+                "<p>No se pudieron cargar los capítulos.</p>";
+
+            return;
+
+        }
+
+
+        const chapters =
+            data.chapters || [];
+
+
+        if (chapters.length === 0) {
+
+            container.innerHTML =
+                "<p>Aún no hay capítulos.</p>";
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        chapters.forEach(
+            function(chapter) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "chapter-card";
+
+
+                const preview =
+                    chapter.content.length > 300
+                        ? chapter.content.substring(
+                            0,
+                            300
+                        ) + "..."
+                        : chapter.content;
+
+
+                card.innerHTML =
+
+                    '<div class="chapter-number">' +
+                    'CAPÍTULO ' +
+                    chapter.chapter_number +
+                    '</div>' +
+
+                    '<h3>' +
+                    escapeHtml(
+                        chapter.title
+                    ) +
+                    '</h3>' +
+
+                    '<div class="chapter-preview">' +
+                    escapeHtml(
+                        preview
+                    ) +
+                    '</div>' +
+
+                    '<div class="chapter-actions">' +
+
+                    '<button ' +
+                    'class="edit-button" ' +
+                    'onclick="editChapter(' +
+                    chapter.id +
+                    ')">' +
+                    'Editar' +
+                    '</button>' +
+
+                    '<button ' +
+                    'class="remove-button" ' +
+                    'onclick="deleteChapter(' +
+                    chapter.id +
+                    ')">' +
+                    'Eliminar' +
+                    '</button>' +
+
+                    '</div>';
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML =
+            "<p>Error cargando capítulos.</p>";
+
+    }
+
+}
+
+
+/* ==========================================
+   GUARDAR CAPÍTULO
+========================================== */
+
+async function saveChapter() {
+
+    const title =
+        document.getElementById(
+            "chapter-title"
+        ).value.trim();
+
+
+    const content =
+        document.getElementById(
+            "chapter-content"
+        ).value;
+
+
+    if (!title) {
+
+        showError(
+            "Escribe un título para el capítulo."
+        );
+
+        return;
+
+    }
+
+
+    if (!content.trim()) {
+
+        showError(
+            "Escribe el contenido del capítulo."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        let response;
+
+
+        /* ==============================
+           CREAR
+        ============================== */
+
+        if (!editingChapterId) {
+
+            response =
+                await fetch(
+                    "/api/stories/" +
+                    storyId +
+                    "/chapters",
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body:
+                            JSON.stringify({
+                                title:
+                                    title,
+                                content:
+                                    content
+                            })
+                    }
+                );
+
+        }
+
+        /* ==============================
+           EDITAR
+        ============================== */
+
+        else {
+
+            response =
+                await fetch(
+                    "/api/chapters/" +
+                    editingChapterId,
+                    {
+                        method: "PUT",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body:
+                            JSON.stringify({
+                                title:
+                                    title,
+                                content:
+                                    content
+                            })
+                    }
+                );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            showError(
+                data.error ||
+                "No se pudo guardar el capítulo."
+            );
+
+            return;
+
+        }
+
+
+        showSuccess(
+            editingChapterId
+                ? "Capítulo actualizado correctamente."
+                : "Capítulo creado correctamente."
+        );
+
+
+        clearEditor();
+
+        loadChapters();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "No se pudo conectar con el servidor."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   EDITAR CAPÍTULO
+========================================== */
+
+async function editChapter(
+    chapterId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/chapters",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            showError(
+                "No se pudo cargar el capítulo."
+            );
+
+            return;
+
+        }
+
+
+        const chapter =
+            data.chapters.find(
+                function(item) {
+                    return Number(item.id) ===
+                        Number(chapterId);
+                }
+            );
+
+
+        if (!chapter) {
+
+            showError(
+                "El capítulo no existe."
+            );
+
+            return;
+
+        }
+
+
+        editingChapterId =
+            chapter.id;
+
+
+        document.getElementById(
+            "editor-title"
+        ).textContent =
+            "Editar capítulo " +
+            chapter.chapter_number;
+
+
+        document.getElementById(
+            "chapter-title"
+        ).value =
+            chapter.title;
+
+
+        document.getElementById(
+            "chapter-content"
+        ).value =
+            chapter.content;
+
+
+        document.getElementById(
+            "cancel-button"
+        ).style.display =
+            "inline-block";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "No se pudo cargar el capítulo."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   ELIMINAR CAPÍTULO
+========================================== */
+
+async function deleteChapter(
+    chapterId
+) {
+
+    const confirmed =
+        confirm(
+            "¿Seguro que quieres eliminar este capítulo?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                chapterId,
+                {
+                    method: "DELETE",
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            showError(
+                data.error ||
+                "No se pudo eliminar el capítulo."
+            );
+
+            return;
+
+        }
+
+
+        showSuccess(
+            "Capítulo eliminado correctamente."
+        );
+
+
+        if (
+            editingChapterId ===
+            chapterId
+        ) {
+
+            clearEditor();
+
+        }
+
+
+        loadChapters();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "No se pudo conectar con el servidor."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   CANCELAR EDICIÓN
+========================================== */
+
+function cancelEdit() {
+
+    clearEditor();
+
+}
+
+
+/* ==========================================
+   LIMPIAR EDITOR
+========================================== */
+
+function clearEditor() {
+
+    editingChapterId =
+        null;
+
+
+    document.getElementById(
+        "editor-title"
+    ).textContent =
+        "Agregar capítulo";
+
+
+    document.getElementById(
+        "chapter-title"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "chapter-content"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "cancel-button"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+function showError(message) {
+
+    const element =
+        document.getElementById(
+            "error-message"
+        );
+
+
+    element.textContent =
+        message;
+
+
+    element.style.display =
+        "block";
+
+
+    document.getElementById(
+        "success-message"
+    ).style.display =
+        "none";
+
+}
+
+
+function showSuccess(message) {
+
+    const element =
+        document.getElementById(
+            "success-message"
+        );
+
+
+    element.textContent =
+        message;
+
+
+    element.style.display =
+        "block";
+
+
+    document.getElementById(
+        "error-message"
+    ).style.display =
+        "none";
+
+
+    setTimeout(
+        function() {
+
+            element.style.display =
+                "none";
+
+        },
+        3000
+    );
+
+}
+
+
+/* ==========================================
+   SEGURIDAD HTML
+========================================== */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+
+</html>
