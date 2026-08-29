@@ -1,6 +1,10 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ComicWorldFiles</title><style>
 
+/* ==============================
+   GENERAL
+============================== */
+
 * {
     box-sizing: border-box;
 }
@@ -43,10 +47,10 @@ nav {
     display: flex;
     gap: 15px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
-nav a,
-nav button {
+nav a {
     color: white;
     text-decoration: none;
     font-size: 14px;
@@ -96,15 +100,12 @@ nav a:hover {
 
 .search input {
     flex: 1;
+    min-width: 0;
     padding: 14px;
     border: 1px solid #ccc;
     border-radius: 8px 0 0 8px;
     font-size: 15px;
     outline: none;
-}
-
-.search input:focus {
-    border-color: #ff6b35;
 }
 
 .search button {
@@ -141,11 +142,14 @@ nav a:hover {
     height: 280px;
     background: linear-gradient(135deg, #343a40, #ff6b35);
     border-radius: 10px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     color: white;
     font-size: 55px;
+
     flex-shrink: 0;
 }
 
@@ -181,7 +185,6 @@ nav a:hover {
     color: white;
     text-decoration: none;
     border-radius: 7px;
-    cursor: pointer;
 }
 
 .read-button:hover {
@@ -215,7 +218,7 @@ nav a:hover {
 
 .stories {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
 }
 
@@ -224,14 +227,17 @@ nav a:hover {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    min-width: 0;
 }
 
 .cover {
     height: 230px;
     background: linear-gradient(135deg, #5c677d, #222831);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     color: white;
     font-size: 40px;
 }
@@ -258,13 +264,19 @@ nav a:hover {
 
 .card-button {
     display: block;
+    width: 100%;
     text-align: center;
+
     background: #20242b;
     color: white;
+
     text-decoration: none;
+
     padding: 9px;
     border-radius: 6px;
+
     margin-top: 12px;
+
     font-size: 13px;
 }
 
@@ -277,58 +289,115 @@ nav a:hover {
 ============================== */
 
 .types {
+
+    /*
+       SIEMPRE DOS COLUMNAS
+       TAMBIÉN EN CELULAR
+    */
+
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
     gap: 20px;
+
     margin: 35px 0;
+
     width: 100%;
 }
 
 .type-box {
+
     background: white;
+
     padding: 25px;
+
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.07);
+
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
-    min-height: 230px;
 }
 
 .type-box h3 {
+
     margin-top: 0;
     margin-bottom: 10px;
-    font-size: 21px;
+
+    font-size: 20px;
+
 }
 
 .type-box p {
+
     color: #666;
+
     line-height: 1.5;
+
     margin-top: 0;
+
     flex: 1;
+
 }
 
-/*
-   BOTÓN DE PUBLICACIÓN
-*/
+/* ==============================
+   BOTONES CREAR
+============================== */
 
 .create-button {
+
+    /*
+       USAMOS BUTTON EN LUGAR DE A
+       PARA EVITAR PROBLEMAS CON
+       EL TEXTO DEL ENLACE
+    */
+
     display: block;
+
     width: 100%;
-    text-align: center;
+
+    border: none;
+
     background: #ff6b35;
-    color: white;
-    text-decoration: none;
-    padding: 13px 15px;
+
+    color: #ffffff;
+
+    padding: 13px 10px;
+
     border-radius: 7px;
-    font-size: 15px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+
     font-weight: bold;
+
+    text-align: center;
+
     cursor: pointer;
+
     margin-top: 15px;
+
+    line-height: 20px;
+
+    min-height: 46px;
+
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .create-button:hover {
     background: #e85b2c;
+}
+
+.create-button:active {
+    background: #d94f24;
 }
 
 /* ==============================
@@ -337,15 +406,20 @@ nav a:hover {
 
 footer {
     background: #20242b;
+
     color: #aaa;
+
     text-align: center;
+
     padding: 30px;
+
     margin-top: 40px;
+
     font-size: 13px;
 }
 
 /* ==============================
-   CELULAR
+   TABLET / CELULAR
 ============================== */
 
 @media (max-width: 800px) {
@@ -358,7 +432,6 @@ footer {
     nav {
         width: 100%;
         justify-content: space-between;
-        flex-wrap: wrap;
     }
 
     .hero {
@@ -372,11 +445,24 @@ footer {
     }
 
     .stories {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    /*
+       LAS DOS COLUMNAS SE MANTIENEN
+       PARA HISTORIAS E HISTORIETAS
+    */
+
     .types {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
+        gap: 12px;
+    }
+
+    .type-box {
+        padding: 18px 14px;
     }
 
 }
@@ -388,16 +474,24 @@ footer {
 @media (max-width: 500px) {
 
     .container {
-        padding: 20px 12px;
+        padding: 20px 10px;
     }
 
+    /*
+       HISTORIAS RECIENTES:
+       DOS COLUMNAS
+    */
+
     .stories {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
+        gap: 10px;
     }
 
     .cover {
-        height: 190px;
+        height: 170px;
     }
 
     .card-content {
@@ -405,7 +499,7 @@ footer {
     }
 
     .card h3 {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .description {
@@ -420,17 +514,85 @@ footer {
         font-size: 24px;
     }
 
+    /*
+       PUBLICACIÓN:
+       DOS COLUMNAS EN CELULAR
+    */
+
     .types {
-        grid-template-columns: 1fr;
-        gap: 15px;
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
+        gap: 10px;
+
+        margin-top: 25px;
     }
 
     .type-box {
-        min-height: 0;
+        padding: 15px 10px;
+    }
+
+    .type-box h3 {
+        font-size: 16px;
+    }
+
+    .type-box p {
+        font-size: 12px;
+        line-height: 1.4;
     }
 
     .create-button {
-        padding: 14px;
+
+        display: block;
+
+        width: 100%;
+
+        min-height: 44px;
+
+        padding: 11px 5px;
+
+        font-size: 12px;
+
+        line-height: 20px;
+
+    }
+
+    /*
+       BOTÓN BUSCAR
+    */
+
+    .search button {
+        padding: 0 14px;
+    }
+
+}
+
+/* ==============================
+   CELULARES MUY PEQUEÑOS
+============================== */
+
+@media (max-width: 360px) {
+
+    .types {
+        gap: 8px;
+    }
+
+    .type-box {
+        padding: 12px 8px;
+    }
+
+    .type-box h3 {
+        font-size: 14px;
+    }
+
+    .type-box p {
+        font-size: 11px;
+    }
+
+    .create-button {
+        font-size: 11px;
+        padding: 10px 3px;
     }
 
 }
@@ -439,25 +601,25 @@ footer {
      CABECERA
 ============================== --><header><div class="header-content"><div class="logo">
 ComicWorldFiles
-</div><nav id="navigation"><a href="#">Inicio</a>
-
-<a href="#">Historias</a>
-
-<a href="#">Autores</a>
-
-<span id="auth-area"><a href="login.html">Iniciar sesión</a>
-
-<a href="registro.html">Registrarse</a>
-
-</span></nav></div></header><main class="container"><!-- ==============================
-     BUSCADOR
-============================== --><div class="search"><input
+</div><nav id="navigation"><a href="#">
+Inicio
+</a><a href="#">
+Historias
+</a><a href="#">
+Autores
+</a><span id="auth-area"><a href="login.html">
+Iniciar sesión
+</a><a href="registro.html">
+Registrarse
+</a></span></nav></div></header><!-- ==============================
+     CONTENIDO
+============================== --><main class="container"><!-- BUSCADOR --><div class="search"><input
 type="text"
 placeholder="Buscar historias, historietas o autores..."
 
 «»
 
-<button>
+<button type="button">
 Buscar
 </button></div><!-- ==============================
      DESTACADA
@@ -477,9 +639,16 @@ Fantasía
 Aventura
 </span><span class="tag">
 Acción
-</span><br><a class="read-button" href="#">
+</span><br><a
+class="read-button"
+href="#"
+
+«»
+
 Leer historia
-</a></div></section><!-- ==============================
+</a>
+
+</div></section><!-- ==============================
      HISTORIAS RECIENTES
 ============================== --><div class="section-title"><h2>
 Historias recientes
@@ -536,35 +705,39 @@ Leer
     style="margin-top:40px;"
 ><h2>
 ¿Qué quieres publicar?
-</h2></div><section class="types"><!-- HISTORIA --><div class="type-box"><h3>
+</h2></div><section class="types"><!-- ==============================
+     HISTORIA
+============================== --><div class="type-box"><h3>
 📖 Historias
 </h3><p>
 Publica novelas, cuentos, relatos y cualquier
 historia escrita por capítulos.
-</p><a
+</p><button
+type="button"
 class="create-button"
-href="#"
-onclick="createContent('historia'); return false;"
+onclick="createContent('historia')"
 
 «»
 
 Crear historia
-</a>
+</button>
 
-</div><!-- HISTORIETA --><div class="type-box"><h3>
+</div><!-- ==============================
+     HISTORIETA
+============================== --><div class="type-box"><h3>
 🖼️ Historietas
 </h3><p>
 Publica tus cómics página por página y permite
 que otros usuarios los lean desde el celular.
-</p><a
+</p><button
+type="button"
 class="create-button"
-href="#"
-onclick="createContent('historieta'); return false;"
+onclick="createContent('historieta')"
 
 «»
 
 Crear historieta
-</a>
+</button>
 
 </div></section><!-- ==============================
      MÁS POPULARES
@@ -634,7 +807,8 @@ async function checkSession() {
             }
         );
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
         if (
             data.success &&
@@ -652,6 +826,7 @@ async function checkSession() {
                 </span>
 
                 <button
+                    type="button"
                     class="logout-button"
                     onclick="logout()"
                 >
@@ -682,7 +857,7 @@ async function checkSession() {
 
 /*
 ==================================================
-MOSTRAR USUARIO NO LOGUEADO
+USUARIO NO LOGUEADO
 ==================================================
 */
 
@@ -812,7 +987,9 @@ async function createContent(type) {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         alert(
             "No se pudo comprobar tu sesión."
