@@ -1,18 +1,18 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "comicworldfiles",
   "main": "worker/index.js",
   "compatibility_date": "2026-08-28",
+
+  "assets": {
+    "directory": "."
+  },
 
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "comicworldfiles-db",
-      "database_id": "00000008-00000000-000050d6-b9c560da8a2add55eacb7416b045e9cd"
+      "database_id": "12a5bae7-e69f-4e87-a4fd-4d507c6d05ad"
     }
-  ],
-
-  "assets": {
-    "directory": "."
-  }
+  ]
 }
