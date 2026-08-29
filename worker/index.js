@@ -726,7 +726,6 @@ export default {
 
         // =========================================================
         // API: REGISTRAR VISITA
-        //
         // POST /api/stories/5/view
         // =========================================================
 
@@ -1572,7 +1571,8 @@ export default {
 
         // =========================================================
         // API: CAPÍTULOS DE UNA PUBLICACIÓN
-        // GET /api/stories/5/chapters
+        //
+        // GET  /api/stories/5/chapters
         // POST /api/stories/5/chapters
         // =========================================================
 
@@ -1923,8 +1923,9 @@ export default {
 
         // =========================================================
         // API: CAPÍTULO INDIVIDUAL
-        // GET /api/chapters/10
-        // PUT /api/chapters/10
+        //
+        // GET    /api/chapters/10
+        // PUT    /api/chapters/10
         // DELETE /api/chapters/10
         // =========================================================
 
@@ -2386,6 +2387,7 @@ export default {
 
         // =========================================================
         // API: GUARDAR CONTENIDO ORDENADO DEL CAPÍTULO
+        //
         // PUT /api/chapters/10/content
         // =========================================================
 
@@ -3478,13 +3480,17 @@ export default {
         // SITEMAP.XML DINÁMICO
         //
         // GET /sitemap.xml
+        // GET /sitemap.xml/
         //
-        // Genera automáticamente el sitemap utilizando
-        // las publicaciones existentes en la base de datos.
+        // Se aceptan ambas variantes para evitar problemas
+        // con Google Search Console.
         // =========================================================
 
         if (
-            url.pathname === "/sitemap.xml" &&
+            (
+                url.pathname === "/sitemap.xml" ||
+                url.pathname === "/sitemap.xml/"
+            ) &&
             request.method === "GET"
         ) {
 
@@ -3652,8 +3658,6 @@ export default {
         // ROBOTS.TXT
         //
         // GET /robots.txt
-        //
-        // Apunta automáticamente al sitemap del dominio actual.
         // =========================================================
 
         if (
