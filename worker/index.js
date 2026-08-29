@@ -441,38 +441,49 @@ if (url.pathname === "/api/stories" && request.method === "POST") {
                 genre
             )
             .run();
+// ==============================
+// API: LISTAR HISTORIAS
+// ==============================
+if (url.pathname === "/api/stories" && request.method === "GET") {
 
+    try {
 
-        if (!result.success) {
-
-            return json({
-                success: false,
-                error: "No se pudo guardar la historia."
-            }, 500);
-
-        }
+        const result = await env.DB
+            .prepare(
+                `SELECT
+                    stories.id,
+                    stories.user_id,
+                    stories.title,
+                    stories.description,
+                    stories.genre,
+                    stories.created_at,
+                    users.username AS author
+                 FROM stories
+                 INNER JOIN users
+                 ON users.id = stories.user_id
+                 ORDER BY stories.id DESC
+                 LIMIT 20`
+            )
+            .all();
 
 
         return json({
             success: true,
-            message: "Historia creada correctamente.",
-            story: {
-                id: result.meta.last_row_id,
-                title: title,
-                description: description,
-                genre: genre,
-                author: session.username
-            }
+            stories: result.results
         });
 
 
     } catch (error) {
 
+        console.error(
+            "Error listando historias:",
+            error
+        );
+
         return json({
             success: false,
             error: error.message
         }, 500);
-
     }
 }
 // ==============================
