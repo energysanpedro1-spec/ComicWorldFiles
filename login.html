@@ -373,15 +373,38 @@ form.addEventListener("submit", async function(event) {
 
         if (!data.success) {
 
-            message.textContent =
-                data.error ||
-                "Usuario o contraseña incorrectos.";
+    message.textContent =
+        data.error ||
+        "Usuario o contraseña incorrectos.";
 
-            message.className =
-                "message error";
+    message.className =
+        "message error";
 
-            return;
-        }
+    return;
+}
+
+
+/* GUARDAR USUARIO EN EL NAVEGADOR */
+
+localStorage.setItem(
+    "comicworld_user",
+    data.username || login
+);
+
+
+message.textContent =
+    "Inicio de sesión correcto. Redirigiendo...";
+
+message.className =
+    "message success";
+
+
+setTimeout(function() {
+
+    window.location.href =
+        "index.html";
+
+}, 800);
 
 
         message.textContent =
