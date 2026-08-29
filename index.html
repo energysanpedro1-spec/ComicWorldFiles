@@ -12,8 +12,9 @@
      GOOGLE SEARCH CONSOLE
 ================================================== -->
 
-<meta name="google-site-verification" content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI" />
-      
+<meta name="google-site-verification"
+      content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
+
 <title>ComicWorldFiles</title>
 
 <style>
@@ -62,10 +63,35 @@ header {
     gap: 20px;
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
+
+/* ==================================================
+   LOGO + ESLOGAN
+================================================== */
+
+.logo-area {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.subtitle {
+    color: #ff9a75;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+}
+
+
+/* ==================================================
+   NAVEGACIÓN
+================================================== */
 
 nav {
     display: flex;
@@ -606,7 +632,11 @@ footer {
     }
 
     .logo {
-        font-size: 21px;
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 12px;
     }
 
     nav {
@@ -701,8 +731,17 @@ footer {
 
 <div class="header-content">
 
-<div class="logo">
-ComicWorldFiles
+
+<div class="logo-area">
+
+    <div class="logo">
+        ComicWorldFiles
+    </div>
+
+    <div class="subtitle">
+        Crea tus historias o cómics y sube tus archivos
+    </div>
+
 </div>
 
 
