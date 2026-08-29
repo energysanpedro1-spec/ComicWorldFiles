@@ -753,17 +753,51 @@ async function comprobarSesion() {
 
 
 // ========================================================
-// REGISTRAR VISITA
+// REGISTRAR VISITA - 1 VISITA CADA 24 HORAS POR NAVEGADOR
 // ========================================================
 
 async function registrarVisita() {
 
     if (!storyId) {
-
         return;
-
     }
 
+    const clave =
+        "comicworldfiles_view_" +
+        storyId;
+
+    const ahora =
+        Date.now();
+
+    const ultimaVisita =
+        localStorage.getItem(
+            clave
+        );
+
+    const periodo =
+        24 *
+        60 *
+        60 *
+        1000;
+
+    /*
+     * Si ya se registró una visita
+     * durante las últimas 24 horas,
+     * no enviamos otra al servidor.
+     */
+
+    if (
+        ultimaVisita &&
+        (ahora - Number(ultimaVisita)) <
+        periodo
+    ) {
+
+        console.log(
+            "Visita ya registrada durante las últimas 24 horas."
+        );
+
+        return;
+    }
 
     try {
 
@@ -773,31 +807,35 @@ async function registrarVisita() {
                 storyId +
                 "/view",
                 {
-                    method: "POST"
+                    method: "POST",
+                    credentials: "include"
                 }
             );
 
-
         const data =
             await response.json();
-
 
         if (
             response.ok &&
             data.success
         ) {
 
+            /*
+             * Guardamos la fecha solamente
+             * cuando el servidor confirmó
+             * correctamente la visita.
+             */
+
+            localStorage.setItem(
+                clave,
+                String(ahora)
+            );
+
             actualizarContador(
                 data.views
             );
 
         } else {
-
-            /*
-             * Si el backend todavía no tiene
-             * el contador configurado, no
-             * mostramos un error al lector.
-             */
 
             if (
                 storyData &&
@@ -819,12 +857,6 @@ async function registrarVisita() {
             error
         );
 
-
-        /*
-         * El contador no debe impedir
-         * que se lea la historieta.
-         */
-
         if (
             storyData &&
             storyData.views !== undefined
@@ -839,7 +871,6 @@ async function registrarVisita() {
     }
 
 }
-
 
 // ========================================================
 // ACTUALIZAR CONTADOR
