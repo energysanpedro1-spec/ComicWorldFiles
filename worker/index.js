@@ -1922,8 +1922,8 @@ export default {
 
         // =========================================================
         // API: CAPÍTULO INDIVIDUAL
-        // GET /api/chapters/10
-        // PUT /api/chapters/10
+        // GET    /api/chapters/10
+        // PUT    /api/chapters/10
         // DELETE /api/chapters/10
         // =========================================================
 
@@ -2508,13 +2508,19 @@ export default {
                     }
 
 
+                    // -------------------------------------------------
+                    // TEXTO
+                    // -------------------------------------------------
+
                     if (
                         item.type === "text"
                     ) {
 
                         const text =
                             String(
-                                item.content || ""
+                                item.content ||
+                                item.text ||
+                                ""
                             ).trim();
 
 
@@ -2526,6 +2532,9 @@ export default {
                                     "text",
 
                                 content:
+                                    text,
+
+                                text:
                                     text
 
                             });
@@ -2534,6 +2543,10 @@ export default {
 
                     }
 
+
+                    // -------------------------------------------------
+                    // IMAGEN
+                    // -------------------------------------------------
 
                     else if (
                         item.type === "image"
@@ -2558,7 +2571,9 @@ export default {
                             await env.DB
                                 .prepare(
                                     `SELECT
-                                        id
+                                        id,
+                                        image_url,
+                                        filename
                                      FROM chapter_images
                                      WHERE id = ?
                                        AND chapter_id = ?
@@ -2579,7 +2594,13 @@ export default {
                                     "image",
 
                                 image_id:
-                                    imageId
+                                    imageId,
+
+                                image_url:
+                                    image.image_url,
+
+                                filename:
+                                    image.filename
 
                             });
 
@@ -2997,8 +3018,11 @@ export default {
                         )
                         .bind(
                             chapterId,
+
                             "",
+
                             objectKey,
+
                             file.name ||
                                 "imagen"
                         )
@@ -3329,6 +3353,11 @@ export default {
                 }
 
 
+                /*
+                 * También eliminamos la imagen
+                 * del contenido del capítulo.
+                 */
+
                 try {
 
                     const currentChapter =
@@ -3454,15 +3483,11 @@ export default {
 
 
         // =========================================================
-        // SITEMAP.XML DINÁMICO
+        // SITEMAP.XML
         //
         // GET /sitemap.xml
         //
-        // Incluye:
-        // - Página principal
-        // - Historias
-        // - Historietas
-        // - Cada capítulo individual
+        // Contiene la página principal y todas las publicaciones.
         // =========================================================
 
         if (
@@ -3472,11 +3497,7 @@ export default {
 
             try {
 
-                // -------------------------------------------------
-                // OBTENER PUBLICACIONES
-                // -------------------------------------------------
-
-                const storiesResult =
+                const result =
                     await env.DB
                         .prepare(
                             `SELECT
@@ -3485,33 +3506,6 @@ export default {
                                 created_at
                              FROM stories
                              ORDER BY id DESC`
-                        )
-                        .all();
-
-
-                // -------------------------------------------------
-                // OBTENER CAPÍTULOS
-                //
-                // Se relacionan con stories para saber si son
-                // historias o historietas.
-                // -------------------------------------------------
-
-                const chaptersResult =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                chapters.id,
-                                chapters.story_id,
-                                chapters.chapter_number,
-                                chapters.created_at,
-                                stories.type
-                             FROM chapters
-                             INNER JOIN stories
-                             ON stories.id =
-                                chapters.story_id
-                             ORDER BY
-                                chapters.story_id ASC,
-                                chapters.chapter_number ASC`
                         )
                         .all();
 
@@ -3542,17 +3536,18 @@ export default {
                 // -------------------------------------------------
 
                 for (
-                    const story of storiesResult.results
+                    const story of result.results
                 ) {
 
-                    let storyPath;
+                    let storyUrl;
 
 
                     if (
                         story.type === "historieta"
                     ) {
 
-                        storyPath =
+                        storyUrl =
+                            baseUrl +
                             "/leer-historieta.html?id=" +
                             encodeURIComponent(
                                 story.id
@@ -3560,18 +3555,14 @@ export default {
 
                     } else {
 
-                        storyPath =
+                        storyUrl =
+                            baseUrl +
                             "/leer-historia.html?id=" +
                             encodeURIComponent(
                                 story.id
                             );
 
                     }
-
-
-                    const storyUrl =
-                        baseUrl +
-                        storyPath;
 
 
                     xml +=
@@ -3601,7 +3592,7 @@ export default {
                         ) {
 
                             console.error(
-                                "Error procesando fecha de historia:",
+                                "Error procesando fecha del sitemap:",
                                 dateError
                             );
 
@@ -3617,100 +3608,6 @@ export default {
 
                 }
 
-
-
-                // -------------------------------------------------
-                // CAPÍTULOS INDIVIDUALES
-                // -------------------------------------------------
-
-                for (
-                    const chapter of chaptersResult.results
-                ) {
-
-                    let chapterPath;
-
-
-                    if (
-                        chapter.type === "historieta"
-                    ) {
-
-                        chapterPath =
-                            "/leer-historieta.html?id=" +
-                            encodeURIComponent(
-                                chapter.story_id
-                            ) +
-                            "&capitulo=" +
-                            encodeURIComponent(
-                                chapter.chapter_number
-                            );
-
-                    } else {
-
-                        chapterPath =
-                            "/leer-historia.html?id=" +
-                            encodeURIComponent(
-                                chapter.story_id
-                            ) +
-                            "&capitulo=" +
-                            encodeURIComponent(
-                                chapter.chapter_number
-                            );
-
-                    }
-
-
-                    const chapterUrl =
-                        baseUrl +
-                        chapterPath;
-
-
-                    xml +=
-                        `  <url>\n` +
-                        `    <loc>${escapeXml(chapterUrl)}</loc>\n`;
-
-
-                    if (
-                        chapter.created_at
-                    ) {
-
-                        try {
-
-                            const lastmod =
-                                new Date(
-                                    chapter.created_at
-                                )
-                                .toISOString()
-                                .split("T")[0];
-
-
-                            xml +=
-                                `    <lastmod>${lastmod}</lastmod>\n`;
-
-                        } catch (
-                            dateError
-                        ) {
-
-                            console.error(
-                                "Error procesando fecha de capítulo:",
-                                dateError
-                            );
-
-                        }
-
-                    }
-
-
-                    xml +=
-                        `    <changefreq>weekly</changefreq>\n` +
-                        `    <priority>0.7</priority>\n` +
-                        `  </url>\n`;
-
-                }
-
-
-                // -------------------------------------------------
-                // CERRAR XML
-                // -------------------------------------------------
 
                 xml +=
                     `</urlset>`;
@@ -3759,9 +3656,194 @@ export default {
 
 
         // =========================================================
+        // SITEMAP-CAPITULOS.XML
+        //
+        // GET /sitemap-capitulos.xml
+        //
+        // Genera una URL individual para cada capítulo.
+        // =========================================================
+
+        if (
+            url.pathname === "/sitemap-capitulos.xml" &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                chapters.id,
+                                chapters.story_id,
+                                chapters.chapter_number,
+                                chapters.created_at,
+                                stories.type
+                             FROM chapters
+                             INNER JOIN stories
+                             ON stories.id =
+                                chapters.story_id
+                             ORDER BY
+                                chapters.story_id DESC,
+                                chapters.chapter_number ASC`
+                        )
+                        .all();
+
+
+                const baseUrl =
+                    url.origin;
+
+
+                let xml =
+                    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+                    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+
+                for (
+                    const chapter of result.results
+                ) {
+
+                    let chapterUrl;
+
+
+                    // -------------------------------------------------
+                    // HISTORIETA
+                    // -------------------------------------------------
+
+                    if (
+                        chapter.type === "historieta"
+                    ) {
+
+                        chapterUrl =
+                            baseUrl +
+                            "/leer-historieta.html?id=" +
+                            encodeURIComponent(
+                                chapter.story_id
+                            ) +
+                            "&chapter=" +
+                            encodeURIComponent(
+                                chapter.id
+                            );
+
+                    }
+
+
+                    // -------------------------------------------------
+                    // HISTORIA
+                    // -------------------------------------------------
+
+                    else {
+
+                        chapterUrl =
+                            baseUrl +
+                            "/leer-historia.html?id=" +
+                            encodeURIComponent(
+                                chapter.story_id
+                            ) +
+                            "&chapter=" +
+                            encodeURIComponent(
+                                chapter.id
+                            );
+
+                    }
+
+
+                    xml +=
+                        `  <url>\n` +
+                        `    <loc>${escapeXml(chapterUrl)}</loc>\n`;
+
+
+                    if (
+                        chapter.created_at
+                    ) {
+
+                        try {
+
+                            const lastmod =
+                                new Date(
+                                    chapter.created_at
+                                )
+                                .toISOString()
+                                .split("T")[0];
+
+
+                            xml +=
+                                `    <lastmod>${lastmod}</lastmod>\n`;
+
+                        } catch (
+                            dateError
+                        ) {
+
+                            console.error(
+                                "Error procesando fecha del capítulo:",
+                                dateError
+                            );
+
+                        }
+
+                    }
+
+
+                    xml +=
+                        `    <changefreq>weekly</changefreq>\n` +
+                        `    <priority>0.7</priority>\n` +
+                        `  </url>\n`;
+
+                }
+
+
+                xml +=
+                    `</urlset>`;
+
+
+                return new Response(
+                    xml,
+                    {
+                        status: 200,
+
+                        headers: {
+                            "Content-Type":
+                                "application/xml; charset=utf-8",
+
+                            "Cache-Control":
+                                "public, max-age=3600"
+                        }
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error generando sitemap de capítulos:",
+                    error
+                );
+
+
+                return new Response(
+                    "Error generando sitemap de capítulos.",
+                    {
+                        status: 500,
+
+                        headers: {
+                            "Content-Type":
+                                "text/plain; charset=utf-8"
+                        }
+                    }
+                );
+
+            }
+
+        }
+
+
+
+        // =========================================================
         // ROBOTS.TXT
         //
         // GET /robots.txt
+        //
+        // Declara los dos sitemaps.
         // =========================================================
 
         if (
@@ -3776,7 +3858,10 @@ export default {
                     "",
                     "Sitemap: " +
                     url.origin +
-                    "/sitemap.xml"
+                    "/sitemap.xml",
+                    "Sitemap: " +
+                    url.origin +
+                    "/sitemap-capitulos.xml"
                 ]
                 .join("\n");
 
