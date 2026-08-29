@@ -208,6 +208,15 @@ nav a:hover {
     font-size: 40px;
 }
 
+/* NUEVO: IMAGEN DE PORTADA */
+
+.cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .card-content {
     padding: 15px;
 }
@@ -953,11 +962,43 @@ async function loadRecentStories() {
                 "card";
 
 
+            /* ==================================
+               PORTADA
+            ================================== */
+
+            let coverHTML;
+
+
+            if (story.cover_url) {
+
+                coverHTML =
+                    '<div class="cover">' +
+
+                    '<img src="' +
+                    escapeHtml(story.cover_url) +
+                    '" alt="Portada de ' +
+                    escapeHtml(story.title) +
+                    '">' +
+
+                    '</div>';
+
+            } else {
+
+                coverHTML =
+                    '<div class="cover">' +
+                    '📖' +
+                    '</div>';
+
+            }
+
+
+            /* ==================================
+               TARJETA
+            ================================== */
+
             card.innerHTML =
 
-                '<div class="cover">' +
-                '📖' +
-                '</div>' +
+                coverHTML +
 
                 '<div class="card-content">' +
 
@@ -973,16 +1014,16 @@ async function loadRecentStories() {
                 '</div>' +
 
                 '<p class="description">' +
-escapeHtml(
-    story.description || ""
-) +
-'</p>' +
+                escapeHtml(
+                    story.description || ""
+                ) +
+                '</p>' +
 
-'<a class="card-button" href="leer-historia.html?id=' +
-story.id +
-'">' +
-'Leer' +
-'</a>' +
+                '<a class="card-button" href="leer-historia.html?id=' +
+                story.id +
+                '">' +
+                'Leer' +
+                '</a>' +
 
                 '</div>';
 
