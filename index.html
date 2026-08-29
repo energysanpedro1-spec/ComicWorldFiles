@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ComicWorldFiles</title>
-
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ComicWorldFiles</title><style>
 
 * {
     box-sizing: border-box;
@@ -85,10 +80,11 @@ nav a:hover {
 .search button {
     border: none;
     background: #ff6b35;
-    color: white;
+    color: #fff;
     padding: 0 20px;
     border-radius: 0 8px 8px 0;
     cursor: pointer;
+    font-size: 14px;
 }
 
 /* HERO */
@@ -136,14 +132,27 @@ nav a:hover {
     margin-right: 5px;
 }
 
+/* BOTONES */
+
 .read-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 15px;
     padding: 12px 20px;
     background: #ff6b35;
-    color: white;
-    text-decoration: none;
+    color: #ffffff !important;
+    text-decoration: none !important;
     border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.2;
+    min-height: 42px;
+}
+
+.read-button:hover {
+    background: #e85a2a;
+    color: #ffffff !important;
 }
 
 /* SECCIONES */
@@ -214,7 +223,7 @@ nav a:hover {
     display: block;
     text-align: center;
     background: #20242b;
-    color: white;
+    color: white !important;
     text-decoration: none;
     padding: 9px;
     border-radius: 6px;
@@ -222,7 +231,7 @@ nav a:hover {
     font-size: 13px;
 }
 
-/* TIPOS */
+/* TIPOS DE PUBLICACIÓN */
 
 .types {
     display: grid;
@@ -236,14 +245,27 @@ nav a:hover {
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+
+    /* Hace que ambas columnas tengan la misma estructura */
+    display: flex;
+    flex-direction: column;
 }
 
 .type-box h3 {
     margin-top: 0;
+    margin-bottom: 10px;
 }
 
 .type-box p {
     color: #666;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* El botón queda al final de ambas tarjetas */
+.type-box .read-button {
+    align-self: flex-start;
+    margin-top: auto;
 }
 
 /* FOOTER */
@@ -257,7 +279,7 @@ footer {
     font-size: 13px;
 }
 
-/* CELULAR */
+/* TABLET / CELULAR */
 
 @media (max-width: 800px) {
 
@@ -285,7 +307,20 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    /* IMPORTANTE:
+       Historias y Historietas siguen en 2 columnas */
+    .types {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .type-box {
+        padding: 18px;
+    }
+
 }
+
+/* CELULAR */
 
 @media (max-width: 500px) {
 
@@ -294,6 +329,12 @@ footer {
     }
 
     .stories {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    /* Se mantienen las dos columnas */
+    .types {
         grid-template-columns: 1fr 1fr;
         gap: 12px;
     }
@@ -322,377 +363,126 @@ footer {
         font-size: 24px;
     }
 
+    /* Botones de publicación adaptados al ancho */
+    .type-box .read-button {
+        width: 100%;
+        padding: 10px 5px;
+        font-size: 12px;
+        text-align: center;
+    }
+
 }
 
-</style>
-</head>
-
-<body>
-
-<header>
-
-<div class="header-content">
-
-<div class="logo">
+</style></head><body><header><div class="header-content"><div class="logo">
 ComicWorldFiles
-</div>
-
-<nav>
+</div><nav>
 <a href="#">Inicio</a>
 <a href="#">Historias</a>
 <a href="#">Autores</a>
 <a href="login.html">Iniciar sesión</a>
-</nav>
-
-</div>
-
-</header>
-
-
-<main class="container">
-
-<!-- BUSCADOR -->
-
-<div class="search">
-
-<input
+<a href="registro.html">Registrarse</a>
+</nav></div></header><main class="container"><!-- BUSCADOR --><div class="search"><input
 type="text"
 placeholder="Buscar historias, historietas o autores..."
->
+id="search-input"
+
+«»
 
 <button>
 Buscar
-</button>
-
-</div>
-
-
-<!-- DESTACADA -->
-
-<section class="hero">
-
-<div class="hero-image">
+</button></div><!-- DESTACADA --><section class="hero"><div class="hero-image">
 📖
-</div>
-
-<div class="hero-info">
-
-<h1>El último viajero</h1>
-
-<p class="author">
+</div><div class="hero-info"><h1>El último viajero</h1><p class="author">
 Por <strong>AutorDemo</strong>
-</p>
-
-<p>
+</p><p>
 Un joven descubre que puede viajar entre mundos
 y deberá descubrir por qué alguien está intentando
 destruir las fronteras entre ellos.
-</p>
-
-<span class="tag">Fantasía</span>
+</p><span class="tag">Fantasía</span>
 <span class="tag">Aventura</span>
 <span class="tag">Acción</span>
 
-<br>
-
-<a class="read-button" href="#">
+<br><a class="read-button" href="#">
 Leer historia
-</a>
+</a></div></section><!-- HISTORIAS RECIENTES --><div class="section-title"><h2>Historias recientes</h2><a href="#">Ver todas →</a>
 
-</div>
-
-</section>
-
-
-<!-- HISTORIAS RECIENTES -->
-
-<div class="section-title">
-
-<h2>Historias recientes</h2>
-
-<a href="#">Ver todas →</a>
-
-</div>
-
-
-<section class="stories">
-
-<div class="card">
-
-<div class="cover">
+</div><section class="stories"><div class="card"><div class="cover">
 🌌
-</div>
-
-<div class="card-content">
-
-<h3>Almas del Cosmos</h3>
-
-<div class="author">
+</div><div class="card-content"><h3>Almas del Cosmos</h3><div class="author">
 Por Freeman
-</div>
-
-<p class="description">
+</div><p class="description">
 Una historia de aventuras entre mundos
 y misteriosas almas.
-</p>
-
-<a class="card-button" href="#">
+</p><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
+</a></div></div><div class="card"><div class="cover">
 ⚔️
-</div>
-
-<div class="card-content">
-
-<h3>El Guerrero</h3>
-
-<div class="author">
-Por Juan</div>
-
-<p class="description">
+</div><div class="card-content"><h3>El Guerrero</h3><div class="author">
+Por Juan
+</div><p class="description">
 Un joven deberá enfrentarse a un enemigo
 que parecía imposible de derrotar.
-</p>
-
-<a class="card-button" href="#">
+</p><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
+</a></div></div><div class="card"><div class="cover">
 🚀
-</div>
-
-<div class="card-content">
-
-<h3>Más allá de Marte</h3>
-
-<div class="author">
+</div><div class="card-content"><h3>Más allá de Marte</h3><div class="author">
 Por Ana
-</div>
-
-<p class="description">
+</div><p class="description">
 La humanidad encuentra algo inesperado
 en las profundidades del espacio.
-</p>
-
-<a class="card-button" href="#">
+</p><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
+</a></div></div><div class="card"><div class="cover">
 🧙
-</div>
-
-<div class="card-content">
-
-<h3>El reino perdido</h3>
-
-<div class="author">
+</div><div class="card-content"><h3>El reino perdido</h3><div class="author">
 Por Martín
-</div>
-
-<p class="description">
+</div><p class="description">
 Un reino desaparecido durante siglos
 vuelve a aparecer.
-</p>
-
-<a class="card-button" href="#">
+</p><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- TIPOS DE PUBLICACIÓN -->
-
-<div class="section-title" style="margin-top:40px;">
-
-<h2>¿Qué quieres publicar?</h2>
-
-</div>
-
-
-<section class="types">
-
-<div class="type-box">
-
-<h3>📖 Historias</h3>
-
-<p>
+</a></div></div></section><!-- TIPOS DE PUBLICACIÓN --><div class="section-title" style="margin-top:40px;"><h2>¿Qué quieres publicar?</h2></div><section class="types"><div class="type-box"><h3>📖 Historias</h3><p>
 Publica novelas, cuentos, relatos y cualquier
 historia escrita por capítulos.
-</p>
-
-<a class="read-button" href="#">
+</p><a class="read-button" href="crear-historia.html">
 Crear historia
-</a>
-
-</div>
-
-
-<div class="type-box">
-
-<h3>🖼️ Historietas</h3>
-
-<p>
+</a></div><div class="type-box"><h3>🖼️ Historietas</h3><p>
 Publica tus cómics página por página y permite
 que otros usuarios los lean desde el celular.
-</p>
-
-<a class="read-button" href="#">
+</p><a class="read-button" href="crear-historieta.html">
 Crear historieta
-</a>
+</a></div></section><!-- MÁS HISTORIAS --><div class="section-title"><h2>Más populares</h2><a href="#">Ver todas →</a>
 
-</div>
-
-</section>
-
-
-<!-- MÁS HISTORIAS -->
-
-<div class="section-title">
-
-<h2>Más populares</h2>
-
-<a href="#">Ver todas →</a>
-
-</div>
-
-
-<section class="stories">
-
-<div class="card">
-
-<div class="cover">
+</div><section class="stories"><div class="card"><div class="cover">
 🐉
-</div>
-
-<div class="card-content">
-
-<h3>El despertar del dragón</h3>
-
-<div class="author">
+</div><div class="card-content"><h3>El despertar del dragón</h3><div class="author">
 Por Alex
-</div>
-
-<a class="card-button" href="#">
+</div><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
+</a></div></div><div class="card"><div class="cover">
 🕵️
-</div>
-
-<div class="card-content">
-
-<h3>El misterio</h3>
-
-<div class="author">
+</div><div class="card-content"><h3>El misterio</h3><div class="author">
 Por Laura
-</div>
-
-<a class="card-button" href="#">
+</div><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
+</a></div></div><div class="card"><div class="cover">
 👽
-</div>
-
-<div class="card-content">
-
-<h3>Señal desconocida</h3>
-
-<div class="author">
+</div><div class="card-content"><h3>Señal desconocida</h3><div class="author">
 Por Diego
-</div>
-
-<a class="card-button" href="#">
+</div><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
+</a></div></div><div class="card"><div class="cover">
 🏰
-</div>
-
-<div class="card-content">
-
-<h3>Las tierras de Eldor</h3>
-
-<div class="author">
+</div><div class="card-content"><h3>Las tierras de Eldor</h3><div class="author">
 Por Sofía
-</div>
-
-<a class="card-button" href="#">
+</div><a class="card-button" href="#">
 Leer
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-
-<footer>
-
-ComicWorldFiles © 2026
+</a></div></div></section></main><footer>ComicWorldFiles © 2026
 
 <br><br>
 
 Una plataforma para publicar y descubrir historias independientes.
 
-</footer>
-
-</body>
+</footer></body>
 </html>
