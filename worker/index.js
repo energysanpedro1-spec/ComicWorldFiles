@@ -27,7 +27,6 @@ export default {
                 const password =
                     String(data.password || "");
 
-
                 if (!username || !email || !password) {
 
                     return json({
@@ -36,7 +35,6 @@ export default {
                     }, 400);
 
                 }
-
 
                 if (username.length < 3) {
 
@@ -48,7 +46,6 @@ export default {
 
                 }
 
-
                 if (password.length < 6) {
 
                     return json({
@@ -59,19 +56,17 @@ export default {
 
                 }
 
-
                 const existing =
                     await env.DB
                         .prepare(
                             `SELECT id
                              FROM users
                              WHERE username = ?
-                             OR email = ?
+                                OR email = ?
                              LIMIT 1`
                         )
                         .bind(username, email)
                         .first();
-
 
                 if (existing) {
 
@@ -83,17 +78,15 @@ export default {
 
                 }
 
-
                 const passwordHash =
                     await hashPassword(password);
-
 
                 const result =
                     await env.DB
                         .prepare(
                             `INSERT INTO users
-                            (username, email, password_hash)
-                            VALUES (?, ?, ?)`
+                             (username, email, password_hash)
+                             VALUES (?, ?, ?)`
                         )
                         .bind(
                             username,
@@ -101,7 +94,6 @@ export default {
                             passwordHash
                         )
                         .run();
-
 
                 if (!result.success) {
 
@@ -113,20 +105,13 @@ export default {
 
                 }
 
-
                 return json({
                     success: true,
                     message:
                         "Cuenta creada correctamente."
                 });
 
-
             } catch (error) {
-
-                console.error(
-                    "Error en registro:",
-                    error
-                );
 
                 return json({
                     success: false,
@@ -148,19 +133,15 @@ export default {
 
             try {
 
-                const data =
-                    await request.json();
-
+                const data = await request.json();
 
                 const login =
                     String(data.login || "")
                         .trim()
                         .toLowerCase();
 
-
                 const password =
                     String(data.password || "");
-
 
                 if (!login || !password) {
 
@@ -172,7 +153,6 @@ export default {
 
                 }
 
-
                 const user =
                     await env.DB
                         .prepare(
@@ -183,12 +163,11 @@ export default {
                                 password_hash
                              FROM users
                              WHERE LOWER(username) = ?
-                             OR LOWER(email) = ?
+                                OR LOWER(email) = ?
                              LIMIT 1`
                         )
                         .bind(login, login)
                         .first();
-
 
                 if (!user) {
 
@@ -200,13 +179,11 @@ export default {
 
                 }
 
-
                 const validPassword =
                     await verifyPassword(
                         password,
                         user.password_hash
                     );
-
 
                 if (!validPassword) {
 
@@ -218,23 +195,24 @@ export default {
 
                 }
 
-
                 const token =
                     generateToken();
-
 
                 const expiresAt =
                     new Date(
                         Date.now() +
-                        30 * 24 * 60 * 60 * 1000
+                        30 *
+                        24 *
+                        60 *
+                        60 *
+                        1000
                     ).toISOString();
-
 
                 await env.DB
                     .prepare(
                         `INSERT INTO sessions
-                        (user_id, token, expires_at)
-                        VALUES (?, ?, ?)`
+                         (user_id, token, expires_at)
+                         VALUES (?, ?, ?)`
                     )
                     .bind(
                         user.id,
@@ -242,7 +220,6 @@ export default {
                         expiresAt
                     )
                     .run();
-
 
                 return new Response(
                     JSON.stringify({
@@ -266,13 +243,7 @@ export default {
                     }
                 );
 
-
             } catch (error) {
-
-                console.error(
-                    "Error en login:",
-                    error
-                );
 
                 return json({
                     success: false,
@@ -300,7 +271,6 @@ export default {
                         "session"
                     );
 
-
                 if (!token) {
 
                     return json({
@@ -309,7 +279,6 @@ export default {
                     }, 401);
 
                 }
-
 
                 const session =
                     await env.DB
@@ -328,7 +297,6 @@ export default {
                         .bind(token)
                         .first();
 
-
                 if (!session) {
 
                     return json({
@@ -337,7 +305,6 @@ export default {
                     }, 401);
 
                 }
-
 
                 if (
                     new Date(session.expires_at)
@@ -352,14 +319,12 @@ export default {
                         .bind(token)
                         .run();
 
-
                     return json({
                         success: false,
                         loggedIn: false
                     }, 401);
 
                 }
-
 
                 return json({
                     success: true,
@@ -371,13 +336,7 @@ export default {
                     }
                 });
 
-
             } catch (error) {
-
-                console.error(
-                    "Error comprobando sesión:",
-                    error
-                );
 
                 return json({
                     success: false,
@@ -405,7 +364,6 @@ export default {
                         "session"
                     );
 
-
                 if (token) {
 
                     await env.DB
@@ -417,7 +375,6 @@ export default {
                         .run();
 
                 }
-
 
                 return new Response(
                     JSON.stringify({
@@ -436,13 +393,7 @@ export default {
                     }
                 );
 
-
             } catch (error) {
-
-                console.error(
-                    "Error cerrando sesión:",
-                    error
-                );
 
                 return json({
                     success: false,
@@ -470,14 +421,12 @@ export default {
                         )
                         .first();
 
-
                 return json({
                     success: true,
                     message:
                         "ComicWorldFiles API funcionando.",
                     database: result
                 });
-
 
             } catch (error) {
 
@@ -492,7 +441,6 @@ export default {
 
         // =========================================================
         // API: CREAR HISTORIA
-        // POST /api/stories
         // =========================================================
 
         if (
@@ -503,11 +451,10 @@ export default {
             try {
 
                 const session =
-                    await getAuthenticatedUser(
+                    await getSession(
                         request,
                         env
                     );
-
 
                 if (!session) {
 
@@ -519,28 +466,23 @@ export default {
 
                 }
 
-
                 const data =
                     await request.json();
-
 
                 const title =
                     String(
                         data.title || ""
                     ).trim();
 
-
                 const description =
                     String(
                         data.description || ""
                     ).trim();
 
-
                 const genre =
                     String(
                         data.genre || ""
                     ).trim();
-
 
                 if (
                     !title ||
@@ -556,7 +498,6 @@ export default {
 
                 }
 
-
                 if (title.length < 2) {
 
                     return json({
@@ -567,18 +508,12 @@ export default {
 
                 }
 
-
                 const result =
                     await env.DB
                         .prepare(
                             `INSERT INTO stories
-                            (
-                                user_id,
-                                title,
-                                description,
-                                genre
-                            )
-                            VALUES (?, ?, ?, ?)`
+                             (user_id, title, description, genre)
+                             VALUES (?, ?, ?, ?)`
                         )
                         .bind(
                             session.id,
@@ -587,7 +522,6 @@ export default {
                             genre
                         )
                         .run();
-
 
                 if (!result.success) {
 
@@ -599,7 +533,6 @@ export default {
 
                 }
 
-
                 return json({
                     success: true,
                     message:
@@ -608,13 +541,15 @@ export default {
                         id:
                             result.meta.last_row_id,
                         title: title,
-                        description: description,
+                        description:
+                            description,
                         genre: genre,
                         author:
-                            session.username
+                            session.username,
+                        user_id:
+                            session.id
                     }
                 });
-
 
             } catch (error) {
 
@@ -634,7 +569,6 @@ export default {
 
         // =========================================================
         // API: LISTAR HISTORIAS
-        // GET /api/stories
         // =========================================================
 
         if (
@@ -663,13 +597,11 @@ export default {
                         )
                         .all();
 
-
                 return json({
                     success: true,
                     stories:
                         result.results
                 });
-
 
             } catch (error) {
 
@@ -689,14 +621,13 @@ export default {
 
         // =========================================================
         // API: OBTENER UNA HISTORIA
-        // GET /api/stories/:id
+        // GET /api/stories/5
         // =========================================================
 
         const storyMatch =
             url.pathname.match(
                 /^\/api\/stories\/(\d+)$/
             );
-
 
         if (
             storyMatch &&
@@ -709,7 +640,6 @@ export default {
                     Number(
                         storyMatch[1]
                     );
-
 
                 const story =
                     await env.DB
@@ -731,23 +661,20 @@ export default {
                         .bind(storyId)
                         .first();
 
-
                 if (!story) {
 
                     return json({
                         success: false,
                         error:
-                            "Historia no encontrada."
+                            "La historia no existe."
                     }, 404);
 
                 }
-
 
                 return json({
                     success: true,
                     story: story
                 });
-
 
             } catch (error) {
 
@@ -766,199 +693,14 @@ export default {
 
 
         // =========================================================
-        // API: EDITAR HISTORIA
-        // PUT /api/stories/:id
-        // =========================================================
-
-        if (
-            storyMatch &&
-            request.method === "PUT"
-        ) {
-
-            try {
-
-                const storyId =
-                    Number(
-                        storyMatch[1]
-                    );
-
-
-                const session =
-                    await getAuthenticatedUser(
-                        request,
-                        env
-                    );
-
-
-                if (!session) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "Debes iniciar sesión."
-                    }, 401);
-
-                }
-
-
-                const story =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                id,
-                                user_id
-                             FROM stories
-                             WHERE id = ?
-                             LIMIT 1`
-                        )
-                        .bind(storyId)
-                        .first();
-
-
-                if (!story) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "Historia no encontrada."
-                    }, 404);
-
-                }
-
-
-                if (
-                    Number(story.user_id) !==
-                    Number(session.id)
-                ) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "No tienes permiso para editar esta historia."
-                    }, 403);
-
-                }
-
-
-                const data =
-                    await request.json();
-
-
-                const title =
-                    String(
-                        data.title || ""
-                    ).trim();
-
-
-                const description =
-                    String(
-                        data.description || ""
-                    ).trim();
-
-
-                const genre =
-                    String(
-                        data.genre || ""
-                    ).trim();
-
-
-                if (
-                    !title ||
-                    !description ||
-                    !genre
-                ) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "Todos los campos son obligatorios."
-                    }, 400);
-
-                }
-
-
-                if (title.length < 2) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "El título es demasiado corto."
-                    }, 400);
-
-                }
-
-
-                const result =
-                    await env.DB
-                        .prepare(
-                            `UPDATE stories
-                             SET
-                                title = ?,
-                                description = ?,
-                                genre = ?
-                             WHERE id = ?`
-                        )
-                        .bind(
-                            title,
-                            description,
-                            genre,
-                            storyId
-                        )
-                        .run();
-
-
-                if (!result.success) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "No se pudo actualizar la historia."
-                    }, 500);
-
-                }
-
-
-                return json({
-                    success: true,
-                    message:
-                        "Historia actualizada correctamente.",
-                    story: {
-                        id: storyId,
-                        title: title,
-                        description: description,
-                        genre: genre,
-                        author:
-                            session.username
-                    }
-                });
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error editando historia:",
-                    error
-                );
-
-                return json({
-                    success: false,
-                    error: error.message
-                }, 500);
-
-            }
-        }
-
-
-        // =========================================================
         // API: LISTAR CAPÍTULOS
-        // GET /api/stories/:id/chapters
+        // GET /api/stories/5/chapters
         // =========================================================
 
         const chaptersMatch =
             url.pathname.match(
                 /^\/api\/stories\/(\d+)\/chapters$/
             );
-
 
         if (
             chaptersMatch &&
@@ -972,7 +714,6 @@ export default {
                         chaptersMatch[1]
                     );
 
-
                 const story =
                     await env.DB
                         .prepare(
@@ -984,17 +725,15 @@ export default {
                         .bind(storyId)
                         .first();
 
-
                 if (!story) {
 
                     return json({
                         success: false,
                         error:
-                            "Historia no encontrada."
+                            "La historia no existe."
                     }, 404);
 
                 }
-
 
                 const result =
                     await env.DB
@@ -1008,19 +747,16 @@ export default {
                                 created_at
                              FROM chapters
                              WHERE story_id = ?
-                             ORDER BY chapter_number ASC,
-                                      id ASC`
+                             ORDER BY chapter_number ASC`
                         )
                         .bind(storyId)
                         .all();
-
 
                 return json({
                     success: true,
                     chapters:
                         result.results
                 });
-
 
             } catch (error) {
 
@@ -1040,7 +776,7 @@ export default {
 
         // =========================================================
         // API: CREAR CAPÍTULO
-        // POST /api/stories/:id/chapters
+        // POST /api/stories/5/chapters
         // =========================================================
 
         if (
@@ -1055,13 +791,11 @@ export default {
                         chaptersMatch[1]
                     );
 
-
                 const session =
-                    await getAuthenticatedUser(
+                    await getSession(
                         request,
                         env
                     );
-
 
                 if (!session) {
 
@@ -1072,7 +806,6 @@ export default {
                     }, 401);
 
                 }
-
 
                 const story =
                     await env.DB
@@ -1087,17 +820,15 @@ export default {
                         .bind(storyId)
                         .first();
 
-
                 if (!story) {
 
                     return json({
                         success: false,
                         error:
-                            "Historia no encontrada."
+                            "La historia no existe."
                     }, 404);
 
                 }
-
 
                 if (
                     Number(story.user_id) !==
@@ -1107,38 +838,43 @@ export default {
                     return json({
                         success: false,
                         error:
-                            "No tienes permiso para agregar capítulos."
+                            "No tienes permiso para modificar esta historia."
                     }, 403);
 
                 }
 
-
                 const data =
                     await request.json();
-
 
                 const title =
                     String(
                         data.title || ""
                     ).trim();
 
-
                 const content =
                     String(
                         data.content || ""
-                    ).trim();
+                    );
 
-
-                if (!title || !content) {
+                if (!title) {
 
                     return json({
                         success: false,
                         error:
-                            "El título y el contenido son obligatorios."
+                            "El título del capítulo es obligatorio."
                     }, 400);
 
                 }
 
+                if (!content.trim()) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El contenido del capítulo es obligatorio."
+                    }, 400);
+
+                }
 
                 const lastChapter =
                     await env.DB
@@ -1153,31 +889,24 @@ export default {
                         .bind(storyId)
                         .first();
 
-
-                let chapterNumber = 1;
-
-
-                if (lastChapter) {
-
-                    chapterNumber =
-                        Number(
+                const chapterNumber =
+                    lastChapter
+                        ? Number(
                             lastChapter.chapter_number
-                        ) + 1;
-
-                }
-
+                        ) + 1
+                        : 1;
 
                 const result =
                     await env.DB
                         .prepare(
                             `INSERT INTO chapters
-                            (
+                             (
                                 story_id,
                                 chapter_number,
                                 title,
                                 content
-                            )
-                            VALUES (?, ?, ?, ?)`
+                             )
+                             VALUES (?, ?, ?, ?)`
                         )
                         .bind(
                             storyId,
@@ -1186,7 +915,6 @@ export default {
                             content
                         )
                         .run();
-
 
                 if (!result.success) {
 
@@ -1197,7 +925,6 @@ export default {
                     }, 500);
 
                 }
-
 
                 return json({
                     success: true,
@@ -1217,7 +944,6 @@ export default {
                     }
                 });
 
-
             } catch (error) {
 
                 console.error(
@@ -1236,14 +962,13 @@ export default {
 
         // =========================================================
         // API: EDITAR CAPÍTULO
-        // PUT /api/chapters/:id
+        // PUT /api/chapters/10
         // =========================================================
 
         const chapterMatch =
             url.pathname.match(
                 /^\/api\/chapters\/(\d+)$/
             );
-
 
         if (
             chapterMatch &&
@@ -1257,13 +982,11 @@ export default {
                         chapterMatch[1]
                     );
 
-
                 const session =
-                    await getAuthenticatedUser(
+                    await getSession(
                         request,
                         env
                     );
-
 
                 if (!session) {
 
@@ -1274,7 +997,6 @@ export default {
                     }, 401);
 
                 }
-
 
                 const chapter =
                     await env.DB
@@ -1293,17 +1015,15 @@ export default {
                         .bind(chapterId)
                         .first();
 
-
                 if (!chapter) {
 
                     return json({
                         success: false,
                         error:
-                            "Capítulo no encontrado."
+                            "El capítulo no existe."
                     }, 404);
 
                 }
-
 
                 if (
                     Number(chapter.user_id) !==
@@ -1318,41 +1038,45 @@ export default {
 
                 }
 
-
                 const data =
                     await request.json();
-
 
                 const title =
                     String(
                         data.title || ""
                     ).trim();
 
-
                 const content =
                     String(
                         data.content || ""
-                    ).trim();
+                    );
 
-
-                if (!title || !content) {
+                if (!title) {
 
                     return json({
                         success: false,
                         error:
-                            "El título y el contenido son obligatorios."
+                            "El título del capítulo es obligatorio."
                     }, 400);
 
                 }
 
+                if (!content.trim()) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El contenido del capítulo es obligatorio."
+                    }, 400);
+
+                }
 
                 const result =
                     await env.DB
                         .prepare(
                             `UPDATE chapters
-                             SET
-                                title = ?,
-                                content = ?
+                             SET title = ?,
+                                 content = ?
                              WHERE id = ?`
                         )
                         .bind(
@@ -1361,7 +1085,6 @@ export default {
                             chapterId
                         )
                         .run();
-
 
                 if (!result.success) {
 
@@ -1373,13 +1096,11 @@ export default {
 
                 }
 
-
                 return json({
                     success: true,
                     message:
                         "Capítulo actualizado correctamente."
                 });
-
 
             } catch (error) {
 
@@ -1399,7 +1120,7 @@ export default {
 
         // =========================================================
         // API: ELIMINAR CAPÍTULO
-        // DELETE /api/chapters/:id
+        // DELETE /api/chapters/10
         // =========================================================
 
         if (
@@ -1414,13 +1135,11 @@ export default {
                         chapterMatch[1]
                     );
 
-
                 const session =
-                    await getAuthenticatedUser(
+                    await getSession(
                         request,
                         env
                     );
-
 
                 if (!session) {
 
@@ -1432,14 +1151,12 @@ export default {
 
                 }
 
-
                 const chapter =
                     await env.DB
                         .prepare(
                             `SELECT
                                 chapters.id,
                                 chapters.story_id,
-                                chapters.chapter_number,
                                 stories.user_id
                              FROM chapters
                              INNER JOIN stories
@@ -1451,17 +1168,15 @@ export default {
                         .bind(chapterId)
                         .first();
 
-
                 if (!chapter) {
 
                     return json({
                         success: false,
                         error:
-                            "Capítulo no encontrado."
+                            "El capítulo no existe."
                     }, 404);
 
                 }
-
 
                 if (
                     Number(chapter.user_id) !==
@@ -1476,7 +1191,6 @@ export default {
 
                 }
 
-
                 const result =
                     await env.DB
                         .prepare(
@@ -1485,7 +1199,6 @@ export default {
                         )
                         .bind(chapterId)
                         .run();
-
 
                 if (!result.success) {
 
@@ -1497,13 +1210,11 @@ export default {
 
                 }
 
-
                 return json({
                     success: true,
                     message:
                         "Capítulo eliminado correctamente."
                 });
-
 
             } catch (error) {
 
@@ -1530,35 +1241,11 @@ export default {
 };
 
 
-// =============================================================
-// FUNCIONES
-// =============================================================
+// =========================================================
+// OBTENER SESIÓN
+// =========================================================
 
-
-// =============================================================
-// JSON
-// =============================================================
-
-function json(data, status = 200) {
-
-    return new Response(
-        JSON.stringify(data),
-        {
-            status: status,
-            headers: {
-                "Content-Type":
-                    "application/json"
-            }
-        }
-    );
-}
-
-
-// =============================================================
-// AUTENTICAR USUARIO
-// =============================================================
-
-async function getAuthenticatedUser(
+async function getSession(
     request,
     env
 ) {
@@ -1569,11 +1256,9 @@ async function getAuthenticatedUser(
             "session"
         );
 
-
     if (!token) {
         return null;
     }
-
 
     const session =
         await env.DB
@@ -1585,18 +1270,17 @@ async function getAuthenticatedUser(
                     sessions.expires_at
                  FROM sessions
                  INNER JOIN users
-                 ON users.id = sessions.user_id
+                 ON users.id =
+                    sessions.user_id
                  WHERE sessions.token = ?
                  LIMIT 1`
             )
             .bind(token)
             .first();
 
-
     if (!session) {
         return null;
     }
-
 
     if (
         new Date(session.expires_at)
@@ -1611,28 +1295,48 @@ async function getAuthenticatedUser(
             .bind(token)
             .run();
 
-
         return null;
     }
-
 
     return session;
 }
 
 
-// =============================================================
-// HASH DE CONTRASEÑA
-// =============================================================
+// =========================================================
+// RESPUESTA JSON
+// =========================================================
 
-async function hashPassword(password) {
+function json(
+    data,
+    status = 200
+) {
+
+    return new Response(
+        JSON.stringify(data),
+        {
+            status: status,
+            headers: {
+                "Content-Type":
+                    "application/json"
+            }
+        }
+    );
+}
+
+
+// =========================================================
+// HASH DE CONTRASEÑA
+// =========================================================
+
+async function hashPassword(
+    password
+) {
 
     const encoder =
         new TextEncoder();
 
-
     const data =
         encoder.encode(password);
-
 
     const hash =
         await crypto.subtle.digest(
@@ -1640,8 +1344,9 @@ async function hashPassword(password) {
             data
         );
 
-
-    return arrayBufferToHex(hash);
+    return arrayBufferToHex(
+        hash
+    );
 }
 
 
@@ -1655,12 +1360,13 @@ async function verifyPassword(
             password
         );
 
-
     return hash === storedHash;
 }
 
 
-function arrayBufferToHex(buffer) {
+function arrayBufferToHex(
+    buffer
+) {
 
     return Array
         .from(
@@ -1676,20 +1382,18 @@ function arrayBufferToHex(buffer) {
 }
 
 
-// =============================================================
+// =========================================================
 // TOKEN DE SESIÓN
-// =============================================================
+// =========================================================
 
 function generateToken() {
 
     const bytes =
         new Uint8Array(32);
 
-
     crypto.getRandomValues(
         bytes
     );
-
 
     return Array
         .from(bytes)
@@ -1703,9 +1407,9 @@ function generateToken() {
 }
 
 
-// =============================================================
+// =========================================================
 // COOKIES
-// =============================================================
+// =========================================================
 
 function getCookie(
     request,
@@ -1717,15 +1421,12 @@ function getCookie(
             "Cookie"
         );
 
-
     if (!cookieHeader) {
         return null;
     }
 
-
     const cookies =
         cookieHeader.split(";");
-
 
     for (
         const cookie of cookies
@@ -1735,7 +1436,6 @@ function getCookie(
             cookie
                 .trim()
                 .split("=");
-
 
         if (
             parts[0] === name
@@ -1747,7 +1447,6 @@ function getCookie(
 
         }
     }
-
 
     return null;
 }
