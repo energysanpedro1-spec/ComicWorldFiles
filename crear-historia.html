@@ -970,6 +970,222 @@ document
             /* Error */
 
             if (!data.success) {
+<script>
+
+/* ==========================================
+   COMPROBAR SESIÓN
+========================================== */
+
+async function checkSession() {
+
+    const userArea =
+        document.getElementById("user-area");
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        console.log(
+            "Respuesta /api/me:",
+            data
+        );
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.loggedIn ||
+            !data.user
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+        const username =
+            data.user.username;
+
+        userArea.innerHTML =
+            '<span style="color:white; font-size:14px;">' +
+            'Hola ' +
+            username +
+            '</span> ' +
+            '<a href="#" onclick="logout(); return false;" ' +
+            'style="color:white; margin-left:10px;">' +
+            'Cerrar sesión' +
+            '</a>';
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error comprobando sesión:",
+            error
+        );
+
+        window.location.href =
+            "login.html";
+    }
+}
+
+
+/* ==========================================
+   CERRAR SESIÓN
+========================================== */
+
+async function logout() {
+
+    try {
+
+        await fetch(
+            "/api/logout",
+            {
+                method: "POST",
+                credentials: "include"
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+    }
+
+    localStorage.removeItem(
+        "comicworld_user"
+    );
+
+    window.location.href =
+        "login.html";
+}
+
+
+/* ==========================================
+   FORMULARIO
+========================================== */
+
+document
+.getElementById("storyForm")
+.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+        const button =
+            document.querySelector(
+                ".create-button"
+            );
+
+        const title =
+            document.getElementById(
+                "title"
+            ).value.trim();
+
+        const description =
+            document.getElementById(
+                "description"
+            ).value.trim();
+
+        const genre =
+            document.getElementById(
+                "genre"
+            ).value;
+
+
+        /* VALIDACIÓN */
+
+        if (
+            !title ||
+            !description ||
+            !genre
+        ) {
+
+            message.className =
+                "error";
+
+            message.textContent =
+                "Completa todos los campos obligatorios.";
+
+            message.style.display =
+                "block";
+
+            return;
+        }
+
+
+        /* DESACTIVAR BOTÓN */
+
+        button.disabled = true;
+
+        button.textContent =
+            "Creando historia...";
+
+
+        message.className = "";
+
+        message.textContent = "";
+
+        message.style.display =
+            "none";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/stories",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        credentials: "include",
+
+                        body: JSON.stringify({
+
+                            title:
+                                title,
+
+                            description:
+                                description,
+
+                            genre:
+                                genre
+
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            /* ERROR */
+
+            if (!data.success) {
 
                 message.className =
                     "error";
@@ -991,7 +1207,7 @@ document
             }
 
 
-            /* Historia creada */
+            /* HISTORIA CREADA */
 
             message.className =
                 "success";
@@ -1013,8 +1229,9 @@ document
                 1200
             );
 
+        }
 
-        } catch (error) {
+        catch (error) {
 
             console.error(error);
 
@@ -1035,7 +1252,6 @@ document
         }
 
     }
- }
 );
 
 
@@ -1044,6 +1260,7 @@ document
 ========================================== */
 
 checkSession();
+
 
 </script>
 
