@@ -3,6 +3,7 @@ export default {
 
         const url = new URL(request.url);
 
+
         // =========================================================
         // API: REGISTRO
         // =========================================================
@@ -27,6 +28,7 @@ export default {
                 const password =
                     String(data.password || "");
 
+
                 if (!username || !email || !password) {
 
                     return json({
@@ -35,6 +37,7 @@ export default {
                             "Todos los campos son obligatorios."
                     }, 400);
                 }
+
 
                 if (username.length < 3) {
 
@@ -45,6 +48,7 @@ export default {
                     }, 400);
                 }
 
+
                 if (password.length < 6) {
 
                     return json({
@@ -53,6 +57,7 @@ export default {
                             "La contraseña debe tener al menos 6 caracteres."
                     }, 400);
                 }
+
 
                 const existing =
                     await env.DB
@@ -63,8 +68,12 @@ export default {
                                 OR email = ?
                              LIMIT 1`
                         )
-                        .bind(username, email)
+                        .bind(
+                            username,
+                            email
+                        )
                         .first();
+
 
                 if (existing) {
 
@@ -75,14 +84,20 @@ export default {
                     }, 409);
                 }
 
+
                 const passwordHash =
                     await hashPassword(password);
+
 
                 const result =
                     await env.DB
                         .prepare(
                             `INSERT INTO users
-                             (username, email, password_hash)
+                             (
+                                username,
+                                email,
+                                password_hash
+                             )
                              VALUES (?, ?, ?)`
                         )
                         .bind(
@@ -91,6 +106,7 @@ export default {
                             passwordHash
                         )
                         .run();
+
 
                 if (!result.success) {
 
@@ -101,11 +117,13 @@ export default {
                     }, 500);
                 }
 
+
                 return json({
                     success: true,
                     message:
                         "Cuenta creada correctamente."
                 });
+
 
             } catch (error) {
 
@@ -114,12 +132,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -133,15 +154,19 @@ export default {
 
             try {
 
-                const data = await request.json();
+                const data =
+                    await request.json();
+
 
                 const login =
                     String(data.login || "")
                         .trim()
                         .toLowerCase();
 
+
                 const password =
                     String(data.password || "");
+
 
                 if (!login || !password) {
 
@@ -151,6 +176,7 @@ export default {
                             "Completa todos los campos."
                     }, 400);
                 }
+
 
                 const user =
                     await env.DB
@@ -165,8 +191,12 @@ export default {
                                 OR LOWER(email) = ?
                              LIMIT 1`
                         )
-                        .bind(login, login)
+                        .bind(
+                            login,
+                            login
+                        )
                         .first();
+
 
                 if (!user) {
 
@@ -177,11 +207,13 @@ export default {
                     }, 401);
                 }
 
+
                 const validPassword =
                     await verifyPassword(
                         password,
                         user.password_hash
                     );
+
 
                 if (!validPassword) {
 
@@ -192,8 +224,10 @@ export default {
                     }, 401);
                 }
 
+
                 const token =
                     generateToken();
+
 
                 const expiresAt =
                     new Date(
@@ -205,10 +239,15 @@ export default {
                         1000
                     ).toISOString();
 
+
                 await env.DB
                     .prepare(
                         `INSERT INTO sessions
-                         (user_id, token, expires_at)
+                         (
+                            user_id,
+                            token,
+                            expires_at
+                         )
                          VALUES (?, ?, ?)`
                     )
                     .bind(
@@ -218,19 +257,28 @@ export default {
                     )
                     .run();
 
+
                 return new Response(
                     JSON.stringify({
                         success: true,
+
                         message:
                             "Inicio de sesión correcto.",
+
                         user: {
-                            id: user.id,
-                            username: user.username,
-                            email: user.email
+                            id:
+                                user.id,
+
+                            username:
+                                user.username,
+
+                            email:
+                                user.email
                         }
                     }),
                     {
                         status: 200,
+
                         headers: {
                             "Content-Type":
                                 "application/json",
@@ -241,6 +289,7 @@ export default {
                     }
                 );
 
+
             } catch (error) {
 
                 console.error(
@@ -248,12 +297,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -274,6 +326,7 @@ export default {
                         env
                     );
 
+
                 if (!session) {
 
                     return json({
@@ -282,15 +335,24 @@ export default {
                     }, 401);
                 }
 
+
                 return json({
                     success: true,
+
                     loggedIn: true,
+
                     user: {
-                        id: session.id,
-                        username: session.username,
-                        email: session.email
+                        id:
+                            session.id,
+
+                        username:
+                            session.username,
+
+                        email:
+                            session.email
                     }
                 });
+
 
             } catch (error) {
 
@@ -299,12 +361,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -325,6 +390,7 @@ export default {
                         "session"
                     );
 
+
                 if (token) {
 
                     await env.DB
@@ -336,6 +402,7 @@ export default {
                         .run();
                 }
 
+
                 return new Response(
                     JSON.stringify({
                         success: true,
@@ -344,6 +411,7 @@ export default {
                     }),
                     {
                         status: 200,
+
                         headers: {
                             "Content-Type":
                                 "application/json",
@@ -354,6 +422,7 @@ export default {
                     }
                 );
 
+
             } catch (error) {
 
                 console.error(
@@ -361,12 +430,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -387,22 +459,28 @@ export default {
                         )
                         .first();
 
+
                 return json({
                     success: true,
+
                     message:
                         "ComicWorldFiles API funcionando.",
+
                     database:
                         result
                 });
+
 
             } catch (error) {
 
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -423,6 +501,7 @@ export default {
                         env
                     );
 
+
                 if (!session) {
 
                     return json({
@@ -432,23 +511,28 @@ export default {
                     }, 401);
                 }
 
+
                 const data =
                     await request.json();
+
 
                 const title =
                     String(
                         data.title || ""
                     ).trim();
 
+
                 const description =
                     String(
                         data.description || ""
                     ).trim();
 
+
                 const genre =
                     String(
                         data.genre || ""
                     ).trim();
+
 
                 if (
                     !title ||
@@ -463,6 +547,7 @@ export default {
                     }, 400);
                 }
 
+
                 if (title.length < 2) {
 
                     return json({
@@ -471,6 +556,7 @@ export default {
                             "El título es demasiado corto."
                     }, 400);
                 }
+
 
                 const result =
                     await env.DB
@@ -492,6 +578,7 @@ export default {
                         )
                         .run();
 
+
                 if (!result.success) {
 
                     return json({
@@ -501,11 +588,14 @@ export default {
                     }, 500);
                 }
 
+
                 const storyId =
                     result.meta.last_row_id;
 
+
                 return json({
                     success: true,
+
                     message:
                         "Historia creada correctamente.",
 
@@ -533,6 +623,7 @@ export default {
                     }
                 });
 
+
             } catch (error) {
 
                 console.error(
@@ -540,12 +631,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -580,11 +674,14 @@ export default {
                         )
                         .all();
 
+
                 return json({
                     success: true,
+
                     stories:
                         result.results
                 });
+
 
             } catch (error) {
 
@@ -593,12 +690,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -611,6 +711,7 @@ export default {
                 /^\/api\/stories\/(\d+)$/
             );
 
+
         if (
             storyMatch &&
             request.method === "GET"
@@ -622,6 +723,7 @@ export default {
                     Number(
                         storyMatch[1]
                     );
+
 
                 const story =
                     await env.DB
@@ -641,8 +743,11 @@ export default {
                              WHERE stories.id = ?
                              LIMIT 1`
                         )
-                        .bind(storyId)
+                        .bind(
+                            storyId
+                        )
                         .first();
+
 
                 if (!story) {
 
@@ -653,11 +758,14 @@ export default {
                     }, 404);
                 }
 
+
                 return json({
                     success: true,
+
                     story:
                         story
                 });
+
 
             } catch (error) {
 
@@ -666,12 +774,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -680,16 +791,17 @@ export default {
         // POST /api/stories/5/cover
         //
         // FormData:
-        // cover = archivo de imagen
+        // cover = archivo
         // =========================================================
 
-        const coverUploadMatch =
+        const coverMatch =
             url.pathname.match(
                 /^\/api\/stories\/(\d+)\/cover$/
             );
 
+
         if (
-            coverUploadMatch &&
+            coverMatch &&
             request.method === "POST"
         ) {
 
@@ -697,14 +809,20 @@ export default {
 
                 const storyId =
                     Number(
-                        coverUploadMatch[1]
+                        coverMatch[1]
                     );
+
+
+                // -------------------------------------------------
+                // COMPROBAR SESIÓN
+                // -------------------------------------------------
 
                 const session =
                     await getSession(
                         request,
                         env
                     );
+
 
                 if (!session) {
 
@@ -715,9 +833,10 @@ export default {
                     }, 401);
                 }
 
-                // ---------------------------------------------
-                // Comprobar historia y propietario
-                // ---------------------------------------------
+
+                // -------------------------------------------------
+                // COMPROBAR HISTORIA
+                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -730,8 +849,11 @@ export default {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(storyId)
+                        .bind(
+                            storyId
+                        )
                         .first();
+
 
                 if (!story) {
 
@@ -741,6 +863,11 @@ export default {
                             "La historia no existe."
                     }, 404);
                 }
+
+
+                // -------------------------------------------------
+                // COMPROBAR PROPIETARIO
+                // -------------------------------------------------
 
                 if (
                     Number(story.user_id) !==
@@ -754,17 +881,23 @@ export default {
                     }, 403);
                 }
 
-                // ---------------------------------------------
-                // Obtener archivo
-                // ---------------------------------------------
+
+                // -------------------------------------------------
+                // OBTENER FORM DATA
+                // -------------------------------------------------
 
                 const formData =
                     await request.formData();
 
+
                 const file =
                     formData.get("cover");
 
-                if (!file) {
+
+                if (
+                    !file ||
+                    typeof file === "string"
+                ) {
 
                     return json({
                         success: false,
@@ -773,26 +906,19 @@ export default {
                     }, 400);
                 }
 
-                if (
-                    typeof file === "string" ||
-                    typeof file.arrayBuffer !== "function"
-                ) {
 
-                    return json({
-                        success: false,
-                        error:
-                            "El archivo enviado no es válido."
-                    }, 400);
-                }
+                // -------------------------------------------------
+                // COMPROBAR TAMAÑO
+                // Máximo: 5 MB
+                // -------------------------------------------------
 
-                // ---------------------------------------------
-                // Tamaño máximo: 5 MB
-                // ---------------------------------------------
-
-                const MAX_SIZE =
+                const maxSize =
                     5 * 1024 * 1024;
 
-                if (file.size > MAX_SIZE) {
+
+                if (
+                    file.size > maxSize
+                ) {
 
                     return json({
                         success: false,
@@ -801,9 +927,10 @@ export default {
                     }, 400);
                 }
 
-                // ---------------------------------------------
-                // Tipos permitidos
-                // ---------------------------------------------
+
+                // -------------------------------------------------
+                // COMPROBAR TIPO
+                // -------------------------------------------------
 
                 const allowedTypes = [
                     "image/jpeg",
@@ -811,6 +938,7 @@ export default {
                     "image/webp",
                     "image/gif"
                 ];
+
 
                 if (
                     !allowedTypes.includes(
@@ -825,18 +953,27 @@ export default {
                     }, 400);
                 }
 
-                // ---------------------------------------------
-                // Clave fija para la portada
+
+                // -------------------------------------------------
+                // CLAVE R2
                 //
-                // Al reemplazarla, R2 sobrescribe el archivo.
-                // ---------------------------------------------
+                // La misma clave se utiliza siempre.
+                //
+                // Por eso una nueva portada
+                // reemplaza automáticamente
+                // la anterior.
+                // -------------------------------------------------
 
                 const objectKey =
-                    `covers/${session.id}/${storyId}`;
+                    "covers/" +
+                    session.id +
+                    "/" +
+                    storyId;
 
-                // ---------------------------------------------
-                // Guardar en R2
-                // ---------------------------------------------
+
+                // -------------------------------------------------
+                // GUARDAR EN R2
+                // -------------------------------------------------
 
                 await env.Cover.put(
                     objectKey,
@@ -847,21 +984,33 @@ export default {
                                 file.type,
 
                             cacheControl:
-                                "public, max-age=86400"
+                                "public, max-age=3600"
+                        },
+
+                        customMetadata: {
+                            storyId:
+                                String(storyId),
+
+                            userId:
+                                String(session.id)
                         }
                     }
                 );
 
-                // ---------------------------------------------
-                // URL pública mediante el Worker
-                // ---------------------------------------------
+
+                // -------------------------------------------------
+                // URL PÚBLICA DE SERVICIO
+                // -------------------------------------------------
 
                 const coverUrl =
-                    `/api/stories/${storyId}/cover`;
+                    "/api/stories/" +
+                    storyId +
+                    "/cover";
 
-                // ---------------------------------------------
-                // Guardar URL en D1
-                // ---------------------------------------------
+
+                // -------------------------------------------------
+                // GUARDAR URL EN D1
+                // -------------------------------------------------
 
                 await env.DB
                     .prepare(
@@ -875,13 +1024,21 @@ export default {
                     )
                     .run();
 
+
+                // -------------------------------------------------
+                // RESPUESTA
+                // -------------------------------------------------
+
                 return json({
                     success: true,
+
                     message:
                         "Portada subida correctamente.",
+
                     cover_url:
                         coverUrl
                 });
+
 
             } catch (error) {
 
@@ -890,24 +1047,25 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
 
 
+
         // =========================================================
-        // API: MOSTRAR PORTADA
+        // API: SERVIR PORTADA DESDE R2
         //
         // GET /api/stories/5/cover
-        //
-        // No requiere iniciar sesión.
         // =========================================================
 
         if (
-            coverUploadMatch &&
+            coverMatch &&
             request.method === "GET"
         ) {
 
@@ -915,22 +1073,29 @@ export default {
 
                 const storyId =
                     Number(
-                        coverUploadMatch[1]
+                        coverMatch[1]
                     );
+
+
+                // -------------------------------------------------
+                // COMPROBAR QUE LA HISTORIA EXISTE
+                // -------------------------------------------------
 
                 const story =
                     await env.DB
                         .prepare(
                             `SELECT
                                 id,
-                                user_id,
-                                cover_url
+                                user_id
                              FROM stories
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(storyId)
+                        .bind(
+                            storyId
+                        )
                         .first();
+
 
                 if (!story) {
 
@@ -942,13 +1107,27 @@ export default {
                     );
                 }
 
+
+                // -------------------------------------------------
+                // CLAVE R2
+                // -------------------------------------------------
+
                 const objectKey =
-                    `covers/${story.user_id}/${storyId}`;
+                    "covers/" +
+                    story.user_id +
+                    "/" +
+                    storyId;
+
+
+                // -------------------------------------------------
+                // OBTENER IMAGEN
+                // -------------------------------------------------
 
                 const object =
                     await env.Cover.get(
                         objectKey
                     );
+
 
                 if (!object) {
 
@@ -960,22 +1139,35 @@ export default {
                     );
                 }
 
+
+                // -------------------------------------------------
+                // CABECERAS
+                // -------------------------------------------------
+
                 const headers =
                     new Headers();
+
 
                 object.writeHttpMetadata(
                     headers
                 );
 
-                headers.set(
-                    "Cache-Control",
-                    "public, max-age=86400"
-                );
 
                 headers.set(
-                    "ETag",
+                    "etag",
                     object.httpEtag
                 );
+
+
+                headers.set(
+                    "Cache-Control",
+                    "public, max-age=3600"
+                );
+
+
+                // -------------------------------------------------
+                // RESPUESTA
+                // -------------------------------------------------
 
                 return new Response(
                     object.body,
@@ -985,12 +1177,14 @@ export default {
                     }
                 );
 
+
             } catch (error) {
 
                 console.error(
-                    "Error obteniendo portada:",
+                    "Error sirviendo portada:",
                     error
                 );
+
 
                 return new Response(
                     "Error obteniendo portada.",
@@ -1002,6 +1196,7 @@ export default {
         }
 
 
+
         // =========================================================
         // API: CAPÍTULOS DE UNA HISTORIA
         // GET /api/stories/5/chapters
@@ -1011,6 +1206,7 @@ export default {
             url.pathname.match(
                 /^\/api\/stories\/(\d+)\/chapters$/
             );
+
 
         if (
             chaptersMatch &&
@@ -1024,6 +1220,7 @@ export default {
                         chaptersMatch[1]
                     );
 
+
                 const story =
                     await env.DB
                         .prepare(
@@ -1032,8 +1229,11 @@ export default {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(storyId)
+                        .bind(
+                            storyId
+                        )
                         .first();
+
 
                 if (!story) {
 
@@ -1043,6 +1243,7 @@ export default {
                             "La historia no existe."
                     }, 404);
                 }
+
 
                 const result =
                     await env.DB
@@ -1058,14 +1259,19 @@ export default {
                              WHERE story_id = ?
                              ORDER BY chapter_number ASC`
                         )
-                        .bind(storyId)
+                        .bind(
+                            storyId
+                        )
                         .all();
+
 
                 return json({
                     success: true,
+
                     chapters:
                         result.results
                 });
+
 
             } catch (error) {
 
@@ -1074,12 +1280,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -1099,11 +1308,13 @@ export default {
                         chaptersMatch[1]
                     );
 
+
                 const session =
                     await getSession(
                         request,
                         env
                     );
+
 
                 if (!session) {
 
@@ -1113,6 +1324,7 @@ export default {
                             "Debes iniciar sesión."
                     }, 401);
                 }
+
 
                 const story =
                     await env.DB
@@ -1124,8 +1336,11 @@ export default {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(storyId)
+                        .bind(
+                            storyId
+                        )
                         .first();
+
 
                 if (!story) {
 
@@ -1135,6 +1350,7 @@ export default {
                             "La historia no existe."
                     }, 404);
                 }
+
 
                 if (
                     Number(story.user_id) !==
@@ -1148,18 +1364,22 @@ export default {
                     }, 403);
                 }
 
+
                 const data =
                     await request.json();
+
 
                 const title =
                     String(
                         data.title || ""
                     ).trim();
 
+
                 const content =
                     String(
                         data.content || ""
                     );
+
 
                 if (!title) {
 
@@ -1170,6 +1390,7 @@ export default {
                     }, 400);
                 }
 
+
                 if (!content.trim()) {
 
                     return json({
@@ -1178,6 +1399,7 @@ export default {
                             "El contenido del capítulo es obligatorio."
                     }, 400);
                 }
+
 
                 const lastChapter =
                     await env.DB
@@ -1189,8 +1411,11 @@ export default {
                              ORDER BY chapter_number DESC
                              LIMIT 1`
                         )
-                        .bind(storyId)
+                        .bind(
+                            storyId
+                        )
                         .first();
+
 
                 const chapterNumber =
                     lastChapter
@@ -1198,6 +1423,7 @@ export default {
                             lastChapter.chapter_number
                         ) + 1
                         : 1;
+
 
                 const result =
                     await env.DB
@@ -1219,6 +1445,7 @@ export default {
                         )
                         .run();
 
+
                 if (!result.success) {
 
                     return json({
@@ -1228,8 +1455,10 @@ export default {
                     }, 500);
                 }
 
+
                 return json({
                     success: true,
+
                     message:
                         "Capítulo creado correctamente.",
 
@@ -1251,6 +1480,7 @@ export default {
                     }
                 });
 
+
             } catch (error) {
 
                 console.error(
@@ -1258,12 +1488,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -1280,8 +1513,9 @@ export default {
             );
 
 
+
         // =========================================================
-        // API: OBTENER CAPÍTULO
+        // OBTENER CAPÍTULO
         // =========================================================
 
         if (
@@ -1295,6 +1529,7 @@ export default {
                     Number(
                         chapterMatch[1]
                     );
+
 
                 const chapter =
                     await env.DB
@@ -1310,8 +1545,11 @@ export default {
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
-                        .bind(chapterId)
+                        .bind(
+                            chapterId
+                        )
                         .first();
+
 
                 if (!chapter) {
 
@@ -1322,11 +1560,14 @@ export default {
                     }, 404);
                 }
 
+
                 return json({
                     success: true,
+
                     chapter:
                         chapter
                 });
+
 
             } catch (error) {
 
@@ -1335,16 +1576,19 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
 
 
+
         // =========================================================
-        // API: EDITAR CAPÍTULO
+        // EDITAR CAPÍTULO
         // PUT /api/chapters/10
         // =========================================================
 
@@ -1360,11 +1604,13 @@ export default {
                         chapterMatch[1]
                     );
 
+
                 const session =
                     await getSession(
                         request,
                         env
                     );
+
 
                 if (!session) {
 
@@ -1374,6 +1620,7 @@ export default {
                             "Debes iniciar sesión."
                     }, 401);
                 }
+
 
                 const chapter =
                     await env.DB
@@ -1389,8 +1636,11 @@ export default {
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
-                        .bind(chapterId)
+                        .bind(
+                            chapterId
+                        )
                         .first();
+
 
                 if (!chapter) {
 
@@ -1400,6 +1650,7 @@ export default {
                             "El capítulo no existe."
                     }, 404);
                 }
+
 
                 if (
                     Number(chapter.user_id) !==
@@ -1413,18 +1664,22 @@ export default {
                     }, 403);
                 }
 
+
                 const data =
                     await request.json();
+
 
                 const title =
                     String(
                         data.title || ""
                     ).trim();
 
+
                 const content =
                     String(
                         data.content || ""
                     );
+
 
                 if (!title) {
 
@@ -1435,6 +1690,7 @@ export default {
                     }, 400);
                 }
 
+
                 if (!content.trim()) {
 
                     return json({
@@ -1443,6 +1699,7 @@ export default {
                             "El contenido del capítulo es obligatorio."
                     }, 400);
                 }
+
 
                 const result =
                     await env.DB
@@ -1459,6 +1716,7 @@ export default {
                         )
                         .run();
 
+
                 if (!result.success) {
 
                     return json({
@@ -1468,11 +1726,14 @@ export default {
                     }, 500);
                 }
 
+
                 return json({
                     success: true,
+
                     message:
                         "Capítulo actualizado correctamente."
                 });
+
 
             } catch (error) {
 
@@ -1481,16 +1742,19 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
 
 
+
         // =========================================================
-        // API: ELIMINAR CAPÍTULO
+        // ELIMINAR CAPÍTULO
         // DELETE /api/chapters/10
         // =========================================================
 
@@ -1506,11 +1770,13 @@ export default {
                         chapterMatch[1]
                     );
 
+
                 const session =
                     await getSession(
                         request,
                         env
                     );
+
 
                 if (!session) {
 
@@ -1520,6 +1786,7 @@ export default {
                             "Debes iniciar sesión."
                     }, 401);
                 }
+
 
                 const chapter =
                     await env.DB
@@ -1535,8 +1802,11 @@ export default {
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
-                        .bind(chapterId)
+                        .bind(
+                            chapterId
+                        )
                         .first();
+
 
                 if (!chapter) {
 
@@ -1546,6 +1816,7 @@ export default {
                             "El capítulo no existe."
                     }, 404);
                 }
+
 
                 if (
                     Number(chapter.user_id) !==
@@ -1559,14 +1830,18 @@ export default {
                     }, 403);
                 }
 
+
                 const result =
                     await env.DB
                         .prepare(
                             `DELETE FROM chapters
                              WHERE id = ?`
                         )
-                        .bind(chapterId)
+                        .bind(
+                            chapterId
+                        )
                         .run();
+
 
                 if (!result.success) {
 
@@ -1577,11 +1852,14 @@ export default {
                     }, 500);
                 }
 
+
                 return json({
                     success: true,
+
                     message:
                         "Capítulo eliminado correctamente."
                 });
+
 
             } catch (error) {
 
@@ -1590,12 +1868,15 @@ export default {
                     error
                 );
 
+
                 return json({
                     success: false,
-                    error: error.message
+                    error:
+                        error.message
                 }, 500);
             }
         }
+
 
 
         // =========================================================
@@ -1605,6 +1886,7 @@ export default {
         return env.ASSETS.fetch(request);
     }
 };
+
 
 
 // =========================================================
@@ -1622,9 +1904,11 @@ async function getSession(
             "session"
         );
 
+
     if (!token) {
         return null;
     }
+
 
     const session =
         await env.DB
@@ -1641,12 +1925,16 @@ async function getSession(
                  WHERE sessions.token = ?
                  LIMIT 1`
             )
-            .bind(token)
+            .bind(
+                token
+            )
             .first();
+
 
     if (!session) {
         return null;
     }
+
 
     if (
         new Date(session.expires_at)
@@ -1658,14 +1946,19 @@ async function getSession(
                 `DELETE FROM sessions
                  WHERE token = ?`
             )
-            .bind(token)
+            .bind(
+                token
+            )
             .run();
+
 
         return null;
     }
 
+
     return session;
 }
+
 
 
 // =========================================================
@@ -1680,7 +1973,9 @@ function json(
     return new Response(
         JSON.stringify(data),
         {
-            status: status,
+            status:
+                status,
+
             headers: {
                 "Content-Type":
                     "application/json"
@@ -1688,6 +1983,7 @@ function json(
         }
     );
 }
+
 
 
 // =========================================================
@@ -1701,8 +1997,12 @@ async function hashPassword(
     const encoder =
         new TextEncoder();
 
+
     const data =
-        encoder.encode(password);
+        encoder.encode(
+            password
+        );
+
 
     const hash =
         await crypto.subtle.digest(
@@ -1710,11 +2010,17 @@ async function hashPassword(
             data
         );
 
+
     return arrayBufferToHex(
         hash
     );
 }
 
+
+
+// =========================================================
+// VERIFICAR CONTRASEÑA
+// =========================================================
 
 async function verifyPassword(
     password,
@@ -1726,9 +2032,15 @@ async function verifyPassword(
             password
         );
 
+
     return hash === storedHash;
 }
 
+
+
+// =========================================================
+// ARRAY BUFFER → HEX
+// =========================================================
 
 function arrayBufferToHex(
     buffer
@@ -1736,16 +2048,22 @@ function arrayBufferToHex(
 
     return Array
         .from(
-            new Uint8Array(buffer)
+            new Uint8Array(
+                buffer
+            )
         )
         .map(
             byte =>
                 byte
                     .toString(16)
-                    .padStart(2, "0")
+                    .padStart(
+                        2,
+                        "0"
+                    )
         )
         .join("");
 }
+
 
 
 // =========================================================
@@ -1757,9 +2075,11 @@ function generateToken() {
     const bytes =
         new Uint8Array(32);
 
+
     crypto.getRandomValues(
         bytes
     );
+
 
     return Array
         .from(bytes)
@@ -1767,10 +2087,14 @@ function generateToken() {
             byte =>
                 byte
                     .toString(16)
-                    .padStart(2, "0")
+                    .padStart(
+                        2,
+                        "0"
+                    )
         )
         .join("");
 }
+
 
 
 // =========================================================
@@ -1787,12 +2111,15 @@ function getCookie(
             "Cookie"
         );
 
+
     if (!cookieHeader) {
         return null;
     }
 
+
     const cookies =
         cookieHeader.split(";");
+
 
     for (
         const cookie of cookies
@@ -1803,6 +2130,7 @@ function getCookie(
                 .trim()
                 .split("=");
 
+
         if (
             parts[0] === name
         ) {
@@ -1810,9 +2138,9 @@ function getCookie(
             return parts
                 .slice(1)
                 .join("=");
-
         }
     }
+
 
     return null;
 }
