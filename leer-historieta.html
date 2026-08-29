@@ -1,0 +1,1960 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Leer historieta - ComicWorldFiles</title><style>
+
+/* ==========================================
+   GENERAL
+========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #111318;
+
+    color: #222;
+}
+
+
+/* ==========================================
+   CABECERA
+========================================== */
+
+header {
+
+    background: #20242b;
+
+    color: white;
+
+    padding: 15px 20px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 20;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.3);
+}
+
+.header-content {
+
+    max-width: 1000px;
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.logo {
+
+    font-size: 24px;
+
+    font-weight: bold;
+}
+
+nav {
+
+    display: flex;
+
+    gap: 15px;
+}
+
+nav a {
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+}
+
+nav a:hover {
+
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   CONTENEDOR
+========================================== */
+
+.container {
+
+    width: 100%;
+
+    max-width: 1000px;
+
+    margin: auto;
+
+    padding: 30px 20px;
+}
+
+
+/* ==========================================
+   INFORMACIÓN DE LA HISTORIETA
+========================================== */
+
+.story {
+
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,0.2);
+}
+
+.story h1 {
+
+    margin-top: 0;
+
+    margin-bottom: 10px;
+
+    font-size: 34px;
+}
+
+.author {
+
+    color: #777;
+
+    font-size: 14px;
+
+    margin-bottom: 20px;
+}
+
+.tag {
+
+    display: inline-block;
+
+    background: #eee;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    margin-bottom: 25px;
+}
+
+.description {
+
+    color: #555;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    white-space: pre-line;
+}
+
+
+/* ==========================================
+   PORTADA
+========================================== */
+
+.story-cover {
+
+    width: 280px;
+
+    max-width: 100%;
+
+    aspect-ratio: 2 / 3;
+
+    margin: 0 auto 30px auto;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    background: #eee;
+
+    display: none;
+}
+
+.story-cover img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* ==========================================
+   SEPARADOR
+========================================== */
+
+.separator {
+
+    height: 1px;
+
+    background: #ddd;
+
+    margin: 30px 0;
+}
+
+
+/* ==========================================
+   BOTÓN EDITAR
+========================================== */
+
+.edit-button {
+
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 11px 18px;
+
+    background: #ff6b35;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.edit-button:hover {
+
+    background: #e85a2a;
+}
+
+
+/* ==========================================
+   CAPÍTULOS
+========================================== */
+
+.chapters-title {
+
+    margin-top: 30px;
+
+    margin-bottom: 15px;
+}
+
+.chapter {
+
+    background: #f8f8f8;
+
+    border-radius: 10px;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+
+    border: 1px solid #e5e5e5;
+}
+
+.chapter-number {
+
+    color: #ff6b35;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+.chapter-title {
+
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.chapter-button {
+
+    display: inline-block;
+
+    margin-top: 12px;
+
+    padding: 9px 15px;
+
+    background: #20242b;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.chapter-button:hover {
+
+    background: #343a40;
+}
+
+
+/* ==========================================
+   LECTOR DE HISTORIETA
+========================================== */
+
+.reader {
+
+    display: none;
+
+    width: 100%;
+
+    background: #0d0f13;
+
+    color: white;
+
+    border-radius: 12px;
+
+    padding: 25px 15px;
+
+    margin-top: 0;
+
+    box-shadow:
+        0 2px 12px rgba(0,0,0,0.4);
+}
+
+.reader-header {
+
+    max-width: 900px;
+
+    margin: 0 auto 25px auto;
+
+    text-align: center;
+}
+
+.reader h2 {
+
+    margin: 0;
+
+    color: white;
+
+    font-size: 28px;
+}
+
+.reader-chapter-number {
+
+    color: #ff6b35;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+
+/* ==========================================
+   TEXTO DEL CAPÍTULO
+========================================== */
+
+.reader-content {
+
+    max-width: 900px;
+
+    margin: 0 auto 25px auto;
+
+    color: #f1f1f1;
+
+    font-size: 18px;
+
+    line-height: 1.8;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   PÁGINAS DE LA HISTORIETA
+========================================== */
+
+.comic-pages {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.comic-page {
+
+    display: block;
+
+    width: auto;
+
+    max-width: 100%;
+
+    height: auto;
+
+    margin: 0 auto;
+
+    background: #fff;
+
+    box-shadow:
+        0 2px 12px rgba(0,0,0,0.35);
+}
+
+
+/* ==========================================
+   CARGANDO IMÁGENES
+========================================== */
+
+.images-loading {
+
+    text-align: center;
+
+    color: #aaa;
+
+    padding: 30px 10px;
+
+    font-size: 14px;
+}
+
+.no-images {
+
+    text-align: center;
+
+    color: #aaa;
+
+    padding: 30px 10px;
+
+    font-size: 15px;
+}
+
+
+/* ==========================================
+   CONTROLES DEL LECTOR
+========================================== */
+
+.reader-controls {
+
+    max-width: 900px;
+
+    margin: 30px auto 0 auto;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.reader-button {
+
+    padding: 10px 16px;
+
+    background: #333842;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+.reader-button:hover {
+
+    background: #454b57;
+}
+
+.reader-button.primary {
+
+    background: #ff6b35;
+}
+
+.reader-button.primary:hover {
+
+    background: #e85a2a;
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.loading {
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: #aaa;
+}
+
+.error {
+
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #c0392b;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+
+/* ==========================================
+   BOTÓN VOLVER
+========================================== */
+
+.back-button {
+
+    display: inline-block;
+
+    margin-top: 30px;
+
+    padding: 11px 18px;
+
+    background: #20242b;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+}
+
+.back-button:hover {
+
+    background: #343a40;
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+footer {
+
+    background: #20242b;
+
+    color: #aaa;
+
+    text-align: center;
+
+    padding: 30px;
+
+    margin-top: 40px;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   CELULAR
+========================================== */
+
+@media (max-width: 600px) {
+
+    .header-content {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    nav {
+
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+    .container {
+
+        padding: 20px 0;
+    }
+
+    .story {
+
+        border-radius: 0;
+
+        padding: 22px 16px;
+    }
+
+    .story h1 {
+
+        font-size: 27px;
+    }
+
+    .description {
+
+        font-size: 16px;
+    }
+
+    .story-cover {
+
+        width: 210px;
+    }
+
+    .reader {
+
+        border-radius: 0;
+
+        padding: 20px 0;
+    }
+
+    .reader-header {
+
+        padding: 0 15px;
+    }
+
+    .reader h2 {
+
+        font-size: 23px;
+    }
+
+    .reader-content {
+
+        padding: 0 15px;
+
+        font-size: 17px;
+
+        line-height: 1.8;
+    }
+
+    .comic-pages {
+
+        width: 100%;
+
+        gap: 8px;
+    }
+
+    .comic-page {
+
+        width: 100%;
+
+        max-width: 100%;
+
+        box-shadow: none;
+    }
+
+    .reader-controls {
+
+        padding: 0 15px;
+    }
+
+}
+
+
+/* ==========================================
+   MODO PANTALLA COMPLETA DE IMAGEN
+========================================== */
+
+.image-modal {
+
+    display: none;
+
+    position: fixed;
+
+    z-index: 100;
+
+    left: 0;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: rgba(0,0,0,0.95);
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+}
+
+.image-modal img {
+
+    max-width: 100%;
+
+    max-height: 100%;
+
+    object-fit: contain;
+}
+
+.close-modal {
+
+    position: fixed;
+
+    top: 15px;
+
+    right: 20px;
+
+    color: white;
+
+    font-size: 32px;
+
+    cursor: pointer;
+
+    z-index: 101;
+}
+
+</style></head><body><!-- ==========================================
+     CABECERA
+========================================== --><header><div class="header-content"><div class="logo">
+ComicWorldFiles
+</div><nav><a href="index.html">
+Inicio
+</a><a href="index.html">
+Historias
+</a></nav></div></header><!-- ==========================================
+     CONTENIDO
+========================================== --><main class="container"><!-- ==========================================
+     CARGANDO
+========================================== --><div id="loading"
+     class="loading">Cargando historieta...
+
+</div><!-- ==========================================
+     ERROR
+========================================== --><div id="error"
+     class="error"
+     style="display:none;"><h2>
+No se pudo cargar la historieta
+</h2><p id="error-message">
+Ha ocurrido un error.
+</p><a class="back-button"
+href="index.html">
+
+Volver al inicio
+
+</a></div><!-- ==========================================
+     INFORMACIÓN DE LA HISTORIETA
+========================================== --><article id="story"
+         class="story"
+         style="display:none;"><!-- PORTADA --><div class="story-cover"
+     id="story-cover"><img id="story-cover-image"
+src=""
+alt="Portada de la historieta">
+
+</div><!-- INFORMACIÓN --><h1 id="story-title">
+</h1><div class="author">Por
+
+<strong id="story-author">
+</strong></div><span id="story-genre"
+class="tag">
+</span>
+
+<div class="separator">
+</div><div id="story-description"
+     class="description">
+</div><!-- EDITAR --><a id="edit-button"
+class="edit-button">
+
+Editar historia
+
+</a><div class="separator">
+</div><!-- CAPÍTULOS --><h2 class="chapters-title">Capítulos
+
+</h2><section id="chapters-container"><div class="loading">Cargando capítulos...
+
+</div></section><a class="back-button"
+href="index.html">
+
+← Volver
+
+</a></article><!-- ==========================================
+     LECTOR
+========================================== --><section id="reader"
+         class="reader"><div class="reader-header"><div id="reader-chapter-number"
+     class="reader-chapter-number">
+</div><h2 id="reader-title">
+</h2></div><!-- TEXTO --><div id="reader-content"
+     class="reader-content">
+</div><!-- PÁGINAS --><div id="comic-pages"
+     class="comic-pages"></div><!-- CONTROLES --><div class="reader-controls"><button class="reader-button"
+onclick="closeReader()">
+
+← Volver a capítulos
+
+</button><button id="previous-button"
+class="reader-button"
+onclick="previousChapter()">
+
+← Capítulo anterior
+
+</button><button id="next-button"
+class="reader-button primary"
+onclick="nextChapter()">
+
+Capítulo siguiente →
+
+</button></div></section></main><!-- ==========================================
+     MODAL DE IMAGEN
+========================================== --><div id="image-modal"
+     class="image-modal"
+     onclick="closeImageModal()"><span class="close-modal">
+×
+</span><img id="modal-image"
+src=""
+alt="Página">
+
+</div><!-- ==========================================
+     FOOTER
+========================================== --><footer>ComicWorldFiles © 2026
+
+<br>
+<br>Una plataforma para publicar y descubrir
+historias independientes.
+
+</footer><script>
+
+/* ==========================================
+   OBTENER ID DE HISTORIA
+========================================== */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const storyId =
+    params.get("id");
+
+
+/* ==========================================
+   ELEMENTOS
+========================================== */
+
+const loading =
+    document.getElementById(
+        "loading"
+    );
+
+const story =
+    document.getElementById(
+        "story"
+    );
+
+const error =
+    document.getElementById(
+        "error"
+    );
+
+const errorMessage =
+    document.getElementById(
+        "error-message"
+    );
+
+const chaptersContainer =
+    document.getElementById(
+        "chapters-container"
+    );
+
+const editButton =
+    document.getElementById(
+        "edit-button"
+    );
+
+const reader =
+    document.getElementById(
+        "reader"
+    );
+
+const readerTitle =
+    document.getElementById(
+        "reader-title"
+    );
+
+const readerChapterNumber =
+    document.getElementById(
+        "reader-chapter-number"
+    );
+
+const readerContent =
+    document.getElementById(
+        "reader-content"
+    );
+
+const comicPages =
+    document.getElementById(
+        "comic-pages"
+    );
+
+const previousButton =
+    document.getElementById(
+        "previous-button"
+    );
+
+const nextButton =
+    document.getElementById(
+        "next-button"
+    );
+
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+let chapters = [];
+
+let currentChapterIndex = -1;
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+if (!storyId) {
+
+    mostrarError(
+        "No se indicó qué historieta quieres leer."
+    );
+
+} else {
+
+    iniciarPagina(
+        storyId
+    );
+
+}
+
+
+/* ==========================================
+   INICIAR PÁGINA
+========================================== */
+
+async function iniciarPagina(id) {
+
+    const historiaCorrecta =
+        await cargarHistoria(
+            id
+        );
+
+
+    if (!historiaCorrecta) {
+
+        return;
+
+    }
+
+
+    await cargarCapitulos(
+        id
+    );
+
+}
+
+
+/* ==========================================
+   CARGAR HISTORIA
+========================================== */
+
+async function cargarHistoria(id) {
+
+    try {
+
+        console.log(
+            "Cargando historieta:",
+            id
+        );
+
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    id
+                ),
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió JSON. Código HTTP: " +
+                response.status
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.story
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo cargar la historieta."
+            );
+
+        }
+
+
+        mostrarHistoria(
+            data.story
+        );
+
+
+        await comprobarAutor(
+            data.story.user_id
+        );
+
+
+        return true;
+
+
+    } catch (err) {
+
+        console.error(
+            "Error cargando historieta:",
+            err
+        );
+
+
+        mostrarError(
+            err.message ||
+            "No se pudo cargar la historieta."
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* ==========================================
+   MOSTRAR HISTORIA
+========================================== */
+
+function mostrarHistoria(data) {
+
+    document.getElementById(
+        "story-title"
+    ).textContent =
+        data.title || "";
+
+
+    document.getElementById(
+        "story-author"
+    ).textContent =
+        data.author || "Autor";
+
+
+    document.getElementById(
+        "story-genre"
+    ).textContent =
+        data.genre || "";
+
+
+    document.getElementById(
+        "story-description"
+    ).textContent =
+        data.description || "";
+
+
+    const coverContainer =
+        document.getElementById(
+            "story-cover"
+        );
+
+
+    const coverImage =
+        document.getElementById(
+            "story-cover-image"
+        );
+
+
+    if (
+        data.cover_url
+    ) {
+
+        coverImage.src =
+            data.cover_url;
+
+
+        coverImage.onerror =
+            function() {
+
+                coverContainer.style.display =
+                    "none";
+
+            };
+
+
+        coverContainer.style.display =
+            "block";
+
+    } else {
+
+        coverContainer.style.display =
+            "none";
+
+    }
+
+
+    loading.style.display =
+        "none";
+
+
+    story.style.display =
+        "block";
+
+}
+
+
+/* ==========================================
+   COMPROBAR AUTOR
+========================================== */
+
+async function comprobarAutor(
+    storyUserId
+) {
+
+    editButton.style.display =
+        "none";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data.success ||
+            !data.loggedIn ||
+            !data.user
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            Number(data.user.id) ===
+            Number(storyUserId)
+        ) {
+
+            editButton.href =
+                "editar-historia.html?id=" +
+                encodeURIComponent(
+                    storyId
+                );
+
+
+            editButton.style.display =
+                "inline-block";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando autor:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   CARGAR CAPÍTULOS
+========================================== */
+
+async function cargarCapitulos(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    id
+                ) +
+                "/chapters",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar los capítulos."
+            );
+
+        }
+
+
+        chapters =
+            Array.isArray(
+                data.chapters
+            )
+                ? data.chapters
+                : [];
+
+
+        if (
+            chapters.length === 0
+        ) {
+
+            chaptersContainer.innerHTML =
+                "<p>Aún no hay capítulos publicados.</p>";
+
+            return;
+
+        }
+
+
+        chaptersContainer.innerHTML =
+            "";
+
+
+        chapters.forEach(
+            function(chapter, index) {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.className =
+                    "chapter";
+
+
+                const number =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                number.className =
+                    "chapter-number";
+
+
+                number.textContent =
+                    "CAPÍTULO " +
+                    chapter.chapter_number;
+
+
+                const title =
+                    document.createElement(
+                        "h3"
+                    );
+
+
+                title.className =
+                    "chapter-title";
+
+
+                title.textContent =
+                    chapter.title || "";
+
+
+                const button =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                button.className =
+                    "chapter-button";
+
+
+                button.href =
+                    "#";
+
+
+                button.textContent =
+                    "Leer capítulo";
+
+
+                button.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.preventDefault();
+
+
+                        openChapter(
+                            chapter.id,
+                            index
+                        );
+
+                    }
+                );
+
+
+                element.appendChild(
+                    number
+                );
+
+                element.appendChild(
+                    title
+                );
+
+                element.appendChild(
+                    button
+                );
+
+
+                chaptersContainer.appendChild(
+                    element
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando capítulos:",
+            error
+        );
+
+
+        chaptersContainer.innerHTML =
+            "<p>Error cargando capítulos.</p>";
+
+    }
+
+}
+
+
+/* ==========================================
+   ABRIR CAPÍTULO
+========================================== */
+
+async function openChapter(
+    chapterId,
+    chapterIndex
+) {
+
+    try {
+
+        currentChapterIndex =
+            chapterIndex;
+
+
+        readerTitle.textContent =
+            "Cargando...";
+
+
+        readerChapterNumber.textContent =
+            "";
+
+
+        readerContent.textContent =
+            "";
+
+
+        comicPages.innerHTML =
+            '<div class="images-loading">Cargando páginas...</div>';
+
+
+        story.style.display =
+            "none";
+
+
+        reader.style.display =
+            "block";
+
+
+        window.scrollTo(
+            {
+                top: 0,
+                behavior: "smooth"
+            }
+        );
+
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                encodeURIComponent(
+                    chapterId
+                ),
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.chapter
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo abrir el capítulo."
+            );
+
+        }
+
+
+        const chapter =
+            data.chapter;
+
+
+        readerTitle.textContent =
+            chapter.title || "";
+
+
+        readerChapterNumber.textContent =
+            "CAPÍTULO " +
+            chapter.chapter_number;
+
+
+        /*
+         * Si el capítulo tiene texto,
+         * también lo mostramos.
+         */
+
+        readerContent.textContent =
+            chapter.content || "";
+
+
+        await cargarImagenesCapitulo(
+            chapter.id
+        );
+
+
+        actualizarBotones();
+
+
+        window.scrollTo(
+            {
+                top: 0,
+                behavior: "smooth"
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error abriendo capítulo:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "No se pudo abrir el capítulo."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   CARGAR IMÁGENES DEL CAPÍTULO
+========================================== */
+
+async function cargarImagenesCapitulo(
+    chapterId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                encodeURIComponent(
+                    chapterId
+                ) +
+                "/images",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar las páginas."
+            );
+
+        }
+
+
+        const images =
+            Array.isArray(
+                data.images
+            )
+                ? data.images
+                : [];
+
+
+        comicPages.innerHTML =
+            "";
+
+
+        if (
+            images.length === 0
+        ) {
+
+            comicPages.innerHTML =
+                '<div class="no-images">Este capítulo no contiene páginas de historieta.</div>';
+
+            return;
+
+        }
+
+
+        images.forEach(
+            function(image) {
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.className =
+                    "comic-page";
+
+
+                img.src =
+                    image.image_url;
+
+
+                img.alt =
+                    image.filename ||
+                    "Página de historieta";
+
+
+                img.loading =
+                    "lazy";
+
+
+                img.addEventListener(
+                    "click",
+                    function() {
+
+                        openImageModal(
+                            image.image_url
+                        );
+
+                    }
+                );
+
+
+                img.style.cursor =
+                    "zoom-in";
+
+
+                img.onerror =
+                    function() {
+
+                        console.error(
+                            "No se pudo cargar:",
+                            image.image_url
+                        );
+
+                        img.remove();
+
+                    };
+
+
+                comicPages.appendChild(
+                    img
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando imágenes:",
+            error
+        );
+
+
+        comicPages.innerHTML =
+            '<div class="no-images">No se pudieron cargar las páginas de este capítulo.</div>';
+
+    }
+
+}
+
+
+/* ==========================================
+   BOTONES DE NAVEGACIÓN
+========================================== */
+
+function actualizarBotones() {
+
+    if (
+        currentChapterIndex <= 0
+    ) {
+
+        previousButton.style.display =
+            "none";
+
+    } else {
+
+        previousButton.style.display =
+            "inline-block";
+
+    }
+
+
+    if (
+        currentChapterIndex >=
+        chapters.length - 1
+    ) {
+
+        nextButton.style.display =
+            "none";
+
+    } else {
+
+        nextButton.style.display =
+            "inline-block";
+
+    }
+
+}
+
+
+/* ==========================================
+   CAPÍTULO ANTERIOR
+========================================== */
+
+function previousChapter() {
+
+    if (
+        currentChapterIndex <= 0
+    ) {
+
+        return;
+
+    }
+
+
+    const previousIndex =
+        currentChapterIndex - 1;
+
+
+    const chapter =
+        chapters[
+            previousIndex
+        ];
+
+
+    if (!chapter) {
+
+        return;
+
+    }
+
+
+    openChapter(
+        chapter.id,
+        previousIndex
+    );
+
+}
+
+
+/* ==========================================
+   CAPÍTULO SIGUIENTE
+========================================== */
+
+function nextChapter() {
+
+    if (
+        currentChapterIndex >=
+        chapters.length - 1
+    ) {
+
+        return;
+
+    }
+
+
+    const nextIndex =
+        currentChapterIndex + 1;
+
+
+    const chapter =
+        chapters[
+            nextIndex
+        ];
+
+
+    if (!chapter) {
+
+        return;
+
+    }
+
+
+    openChapter(
+        chapter.id,
+        nextIndex
+    );
+
+}
+
+
+/* ==========================================
+   CERRAR LECTOR
+========================================== */
+
+function closeReader() {
+
+    reader.style.display =
+        "none";
+
+
+    story.style.display =
+        "block";
+
+
+    window.scrollTo(
+        {
+            top: 0,
+            behavior: "smooth"
+        }
+    );
+
+}
+
+
+/* ==========================================
+   MODAL DE IMAGEN
+========================================== */
+
+function openImageModal(
+    imageUrl
+) {
+
+    const modal =
+        document.getElementById(
+            "image-modal"
+        );
+
+    const image =
+        document.getElementById(
+            "modal-image"
+        );
+
+
+    image.src =
+        imageUrl;
+
+
+    modal.style.display =
+        "flex";
+
+}
+
+
+function closeImageModal() {
+
+    const modal =
+        document.getElementById(
+            "image-modal"
+        );
+
+
+    modal.style.display =
+        "none";
+
+}
+
+
+/* ==========================================
+   ESC PARA CERRAR IMAGEN
+========================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeImageModal();
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   MOSTRAR ERROR
+========================================== */
+
+function mostrarError(
+    message
+) {
+
+    loading.style.display =
+        "none";
+
+
+    story.style.display =
+        "none";
+
+
+    reader.style.display =
+        "none";
+
+
+    errorMessage.textContent =
+        message;
+
+
+    error.style.display =
+        "block";
+
+}
+
+</script></body></html>
