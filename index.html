@@ -46,14 +46,13 @@ nav {
 }
 
 nav a,
-.logout-button {
+nav button {
     color: white;
     text-decoration: none;
     font-size: 14px;
 }
 
-nav a:hover,
-.logout-button:hover {
+nav a:hover {
     text-decoration: underline;
 }
 
@@ -62,11 +61,10 @@ nav a:hover,
     border: none;
     padding: 0;
     cursor: pointer;
-    font-family: Arial, sans-serif;
 }
 
-.user-name {
-    color: #ff6b35;
+.user-greeting {
+    color: #ffb08d;
     font-size: 14px;
     font-weight: bold;
 }
@@ -339,25 +337,13 @@ footer {
 
 </style></head><body><header><div class="header-content"><div class="logo">
 ComicWorldFiles
-</div><nav><a href="index.html">Inicio</a>
-
+</div><nav id="navigation"><a href="#">Inicio</a>
 <a href="#">Historias</a>
-
 <a href="#">Autores</a>
 
-<!-- Usuario no logueado --><span id="login-link">
+<span id="auth-area">
 <a href="login.html">Iniciar sesión</a>
-</span><!-- Usuario logueado --><span id="user-menu" style="display:none;"><span class="user-name" id="username-display"></span>
-
-<button
-class="logout-button"
-id="logout-button"
-
-«»
-
-Cerrar sesión
-</button>
-
+<a href="registro.html">Registrarse</a>
 </span></nav></div></header><main class="container"><!-- BUSCADOR --><div class="search"><input
 type="text"
 placeholder="Buscar historias, historietas o autores..."
@@ -421,14 +407,30 @@ Leer
 </a></div></div></section><!-- TIPOS DE PUBLICACIÓN --><div class="section-title" style="margin-top:40px;"><h2>¿Qué quieres publicar?</h2></div><section class="types"><div class="type-box"><h3>📖 Historias</h3><p>
 Publica novelas, cuentos, relatos y cualquier
 historia escrita por capítulos.
-</p><a class="read-button" href="#">
+</p><a
+class="read-button"
+href="#"
+onclick="createContent('historia'); return false;"
+
+«»
+
 Crear historia
-</a></div><div class="type-box"><h3>🖼️ Historietas</h3><p>
+</a>
+
+</div><div class="type-box"><h3>🖼️ Historietas</h3><p>
 Publica tus cómics página por página y permite
 que otros usuarios los lean desde el celular.
-</p><a class="read-button" href="#">
+</p><a
+class="read-button"
+href="#"
+onclick="createContent('historieta'); return false;"
+
+«»
+
 Crear historieta
-</a></div></section><!-- MÁS HISTORIAS --><div class="section-title"><h2>Más populares</h2><a href="#">Ver todas →</a>
+</a>
+
+</div></section><!-- MÁS HISTORIAS --><div class="section-title"><h2>Más populares</h2><a href="#">Ver todas →</a>
 
 </div><section class="stories"><div class="card"><div class="cover">
 🐉
@@ -462,11 +464,15 @@ Una plataforma para publicar y descubrir historias independientes.
 
 </footer><script>
 
-/* ==========================================
-   COMPROBAR SESIÓN
-   ========================================== */
+/*
+==================================================
+COMPROBAR SESIÓN
+==================================================
+*/
 
 async function checkSession() {
+
+    const authArea = document.getElementById("auth-area");
 
     try {
 
@@ -477,99 +483,165 @@ async function checkSession() {
 
         const data = await response.json();
 
-        const loginLink =
-            document.getElementById("login-link");
+        if (data.success && data.loggedIn && data.user) {
 
-        const userMenu =
-            document.getElementById("user-menu");
+            const username = escapeHtml(data.user.username);
 
-        const usernameDisplay =
-            document.getElementById("username-display");
+            authArea.innerHTML = `
+                <span class="user-greeting">
+                    Hola, ${username}
+                </span>
 
-
-        if (data.success && data.loggedIn) {
-
-            loginLink.style.display = "none";
-
-            userMenu.style.display = "inline-flex";
-
-            userMenu.style.alignItems = "center";
-
-            userMenu.style.gap = "12px";
-
-            usernameDisplay.textContent =
-                "Hola, " + data.user.username;
+                <button
+                    class="logout-button"
+                    onclick="logout()"
+                >
+                    Cerrar sesión
+                </button>
+            `;
 
         } else {
 
-            loginLink.style.display = "inline";
+            showLoggedOut();
 
-            userMenu.style.display = "none";
         }
 
     } catch (error) {
 
-        console.error(
-            "Error comprobando sesión:",
-            error
-        );
+        console.error("Error comprobando sesión:", error);
+
+        showLoggedOut();
 
     }
-
 }
 
 
-/* ==========================================
-   CERRAR SESIÓN
-   ========================================== */
+/*
+==================================================
+MOSTRAR USUARIO NO LOGUEADO
+==================================================
+*/
+
+function showLoggedOut() {
+
+    const authArea = document.getElementById("auth-area");
+
+    authArea.innerHTML = `
+        <a href="login.html">
+            Iniciar sesión
+        </a>
+
+        <a href="registro.html">
+            Registrarse
+        </a>
+    `;
+}
+
+
+/*
+==================================================
+CERRAR SESIÓN
+==================================================
+*/
 
 async function logout() {
 
     try {
 
-        const response = await fetch(
-            "/api/logout",
-            {
-                method: "POST",
-                credentials: "include"
-            }
-        );
+        const response = await fetch("/api/logout", {
+            method: "POST",
+            credentials: "include"
+        });
 
         const data = await response.json();
 
         if (data.success) {
 
-            window.location.href = "index.html";
+            showLoggedOut();
 
         } else {
 
-            alert(
-                data.error ||
-                "No se pudo cerrar la sesión."
-            );
+            alert("No se pudo cerrar la sesión.");
 
         }
 
     } catch (error) {
 
-        alert(
-            "Error de conexión con el servidor."
-        );
+        console.error("Error cerrando sesión:", error);
+
+        alert("No se pudo conectar con el servidor.");
 
     }
-
 }
 
 
-document
-    .getElementById("logout-button")
-    .addEventListener(
-        "click",
-        logout
-    );
+/*
+==================================================
+CREAR HISTORIA / HISTORIETA
+==================================================
+*/
+
+async function createContent(type) {
+
+    try {
+
+        const response = await fetch("/api/me", {
+            method: "GET",
+            credentials: "include"
+        });
+
+        const data = await response.json();
+
+        if (!data.success || !data.loggedIn) {
+
+            alert("Debes iniciar sesión para publicar.");
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+        if (type === "historia") {
+
+            alert("Aquí estará próximamente el editor de historias.");
+
+        } else if (type === "historieta") {
+
+            alert("Aquí estará próximamente el editor de historietas.");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("No se pudo comprobar tu sesión.");
+
+    }
+}
 
 
-/* Ejecutar al cargar */
+/*
+==================================================
+PROTECCIÓN CONTRA HTML
+==================================================
+*/
+
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+
+/*
+==================================================
+INICIAR
+==================================================
+*/
 
 checkSession();
 
