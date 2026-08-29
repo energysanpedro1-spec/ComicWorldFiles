@@ -444,13 +444,13 @@ Leer
 </a></div></div></section><!-- TIPOS DE PUBLICACIÓN --><div class="section-title" style="margin-top:40px;"><h2>¿Qué quieres publicar?</h2></div><section class="types"><div class="type-box"><h3>📖 Historias</h3><p>  
 Publica novelas, cuentos, relatos y cualquier  
 historia escrita por capítulos.  
-</p><a class="read-button" href="crear-historia.html">  
-Crear historia  
+</p><a class="read-button" href="crear-historia.html" onclick="requiereLogin(event, 'crear-historia.html')">
+Crear historia
 </a></div><div class="type-box"><h3>🖼️ Historietas</h3><p>  
 Publica tus cómics página por página y permite  
 que otros usuarios los lean desde el celular.  
-</p><a class="read-button" href="crear-historieta.html">  
-Crear historieta  
+<a class="read-button" href="crear-historieta.html" onclick="requiereLogin(event, 'crear-historieta.html')">
+Crear historieta
 </a></div></section><!-- MÁS HISTORIAS --><div class="section-title"><h2>Más populares</h2><a href="#">Ver todas →</a>  </div><section class="stories"><div class="card"><div class="cover">  
 🐉  
 </div><div class="card-content"><h3>El despertar del dragón</h3><div class="author">  
@@ -506,6 +506,29 @@ localStorage.removeItem("comicworld_user");
 window.location.reload();
 
 }
+
+function requiereLogin(event, pagina) {
+
+    const user =
+        localStorage.getItem("comicworld_user");
+
+    if (!user) {
+
+        event.preventDefault();
+
+        alert(
+            "Debes iniciar sesión para publicar."
+        );
+
+        window.location.href =
+            "login.html";
+
+        return false;
+    }
+
+    return true;
+}
+     
 
 </script>  </footer></body>  
 </html>  
