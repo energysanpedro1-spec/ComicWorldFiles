@@ -1,7 +1,16 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Crear historia - ComicWorldFiles</title><style>
+<title>Crear historia - ComicWorldFiles</title>
+
+<style>
 
 * {
     box-sizing: border-box;
@@ -176,13 +185,6 @@ nav a:hover {
     background: #e85a28;
 }
 
-.create-button:disabled {
-
-    opacity: 0.6;
-
-    cursor: not-allowed;
-}
-
 
 /* CANCELAR */
 
@@ -302,99 +304,464 @@ footer {
 
 }
 
-</style></head><body><header><div class="header-content"><a href="index.html" class="logo">
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="header-content">
+
+<a href="index.html" class="logo">
 ComicWorldFiles
-</a><nav><a href="index.html">
+</a>
+
+
+<nav>
+
+<a href="index.html">
 Inicio
-</a><a href="#">
+</a>
+
+<a href="#">
 Historias
-</a><a href="#">
+</a>
+
+<a href="#">
 Autores
-</a><span id="user-area">
+</a>
+
+<span id="user-area">
+
 Cargando...
-</span></nav></div></header><main class="container"><div class="create-box"><h1>
+
+</span>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<main class="container">
+
+
+<div class="create-box">
+
+
+<h1>
 Crear historia
-</h1><p class="subtitle">
+</h1>
+
+
+<p class="subtitle">
 Crea una nueva historia para publicar en ComicWorldFiles.
-</p><div id="message"></div><form id="storyForm"><div class="form-group"><label for="title">
+</p>
+
+
+<div id="message"></div>
+
+
+<form id="storyForm">
+
+
+<div class="form-group">
+
+<label for="title">
 Título de la historia
-</label><input
+</label>
+
+<input
 type="text"
 id="title"
 name="title"
 placeholder="Ej: Almas del Cosmos"
 required
+>
 
-«»
+</div>
 
-</div><div class="form-group"><label for="description">
+
+<div class="form-group">
+
+<label for="description">
 Descripción
-</label><textarea
+</label>
+
+<textarea
 id="description"
 name="description"
 placeholder="Escribe una breve descripción de tu historia..."
 required
-></textarea></div><div class="form-group"><label for="genre">
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="genre">
 Género principal
-</label><select
+</label>
+
+<select
 id="genre"
 name="genre"
 required
-
-«»
+>
 
 <option value="">
 Selecciona un género
-</option><option value="Fantasía">
+</option>
+
+<option value="Fantasía">
 Fantasía
-</option><option value="Aventura">
+</option>
+
+<option value="Aventura">
 Aventura
-</option><option value="Acción">
+</option>
+
+<option value="Acción">
 Acción
-</option><option value="Ciencia ficción">
+</option>
+
+<option value="Ciencia ficción">
 Ciencia ficción
-</option><option value="Romance">
+</option>
+
+<option value="Romance">
 Romance
-</option><option value="Misterio">
+</option>
+
+<option value="Misterio">
 Misterio
-</option><option value="Terror">
+</option>
+
+<option value="Terror">
 Terror
-</option><option value="Drama">
+</option>
+
+<option value="Drama">
 Drama
-</option></select></div><div class="form-group"><label for="cover">
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="cover">
 Imagen de portada
-</label><input
+</label>
+
+<input
 type="file"
 id="cover"
 name="cover"
 accept="image/*"
+>
 
-«»
+</div>
 
-</div><button
+
+<button
 type="submit"
 class="create-button"
-
-«»
+>
 
 Crear historia
 
-</button><a
+</button>
+
+
+<a
 href="index.html"
 class="cancel-button"
-
-«»
+>
 
 Cancelar
 
-</a></form></div></main><footer>ComicWorldFiles © 2026
+</a>
+
+
+</form>
+
+
+</div>
+
+</main>
+
+
+<footer>
+
+ComicWorldFiles © 2026
 
 <br><br>
 
 Una plataforma para publicar y descubrir
 historias independientes.
 
-</footer><script>
+</footer>
+
+
+<script>
+
+
+/* ==========================================
+COMPROBAR SESIÓN
+========================================== */
+
+async function checkSession() {
+
+const userArea =
+    document.getElementById("user-area");
+
+try {
+
+    const response =
+        await fetch(
+            "/api/me",
+            {
+                method: "GET",
+                credentials: "include"
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    console.log("Respuesta /api/me:", data);
+
+
+    if (
+        !response.ok ||
+        !data.success ||
+        !data.loggedIn ||
+        !data.user
+    ) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    /*
+     * El Worker devuelve:
+     *
+     * data.user.username
+     *
+     * Por ejemplo:
+     *
+     * Freeman
+     */
+
+    const username =
+        data.user.username;
+
+
+    userArea.innerHTML =
+        '<span style="color:white; font-size:14px;">' +
+        'Hola ' +
+        username +
+        '</span> ' +
+        '<a href="#" onclick="logout(); return false;" ' +
+        'style="color:white; margin-left:10px;">' +
+        'Cerrar sesión' +
+        '</a>';
+
+
+} catch (error) {
+
+    console.error(
+        "Error comprobando sesión:",
+        error
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+}
+
+
+/* ==========================================
+   CERRAR SESIÓN
+========================================== */
+
+async function logout() {
+
+    try {
+
+        await fetch(
+            "/api/logout",
+            {
+                method: "POST",
+
+                credentials: "include"
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+
+    localStorage.removeItem(
+        "comicworld_user"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* ==========================================
+FORMULARIO
+========================================== */
+
+document
+.getElementById("storyForm")
+.addEventListener(
+"submit",
+async function(event) {
+
+    event.preventDefault();
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    const button =
+        document.querySelector(
+            ".create-button"
+        );
+
+
+    const title =
+        document.getElementById(
+            "title"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "description"
+        ).value.trim();
+
+
+    const genre =
+        document.getElementById(
+            "genre"
+        ).value;
+
+
+    /* Validación básica */
+
+    if (!title || !description || !genre) {
+
+        message.className =
+            "error";
+
+        message.textContent =
+            "Completa todos los campos obligatorios.";
+
+        message.style.display =
+            "block";
+
+        return;
+    }
+
+
+    /* Desactivar botón */
+
+    button.disabled = true;
+
+    button.textContent =
+        "Creando historia...";
+
+
+    message.className = "";
+
+    message.textContent = "";
+
+    message.style.display =
+        "none";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    credentials: "include",
+
+                    body: JSON.stringify({
+
+                        title:
+                            title,
+
+                        description:
+                            description,
+
+                        genre:
+                            genre
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        /* Error */
+
+        if (!data.success) {
+
+            message.className =
+                "error";
+
+            message.textContent =
+                data.error ||
+                "No se pudo crear la historia.";
+
+            message.style.display =
+                "block";
+
+<script>
 
 /* ==========================================
    COMPROBAR SESIÓN
@@ -416,16 +783,10 @@ async function checkSession() {
                 }
             );
 
-
         const data =
             await response.json();
 
-
-        console.log(
-            "Respuesta /api/me:",
-            data
-        );
-
+        console.log("Respuesta /api/me:", data);
 
         if (
             !response.ok ||
@@ -440,45 +801,29 @@ async function checkSession() {
             return;
         }
 
-
         const username =
             data.user.username;
 
-
         userArea.innerHTML =
-
             '<span style="color:white; font-size:14px;">' +
-
             'Hola ' +
-
             username +
-
             '</span> ' +
-
-            '<a href="#" ' +
-
-            'onclick="logout(); return false;" ' +
-
+            '<a href="#" onclick="logout(); return false;" ' +
             'style="color:white; margin-left:10px;">' +
-
             'Cerrar sesión' +
-
             '</a>';
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Error comprobando sesión:",
             error
         );
 
-
         window.location.href =
             "login.html";
     }
-
 }
 
 
@@ -498,31 +843,22 @@ async function logout() {
             }
         );
 
+    } catch (error) {
+
+        console.error(error);
     }
-
-    catch (error) {
-
-        console.error(
-            "Error cerrando sesión:",
-            error
-        );
-
-    }
-
 
     localStorage.removeItem(
         "comicworld_user"
     );
 
-
     window.location.href =
         "login.html";
-
 }
 
 
 /* ==========================================
-   CREAR HISTORIA
+   FORMULARIO
 ========================================== */
 
 document
@@ -533,30 +869,25 @@ document
 
         event.preventDefault();
 
-
         const message =
             document.getElementById(
                 "message"
             );
-
 
         const button =
             document.querySelector(
                 ".create-button"
             );
 
-
         const title =
             document.getElementById(
                 "title"
             ).value.trim();
 
-
         const description =
             document.getElementById(
                 "description"
             ).value.trim();
-
 
         const genre =
             document.getElementById(
@@ -564,7 +895,7 @@ document
             ).value;
 
 
-        /* VALIDACIÓN */
+        /* Validación */
 
         if (
             !title ||
@@ -585,10 +916,9 @@ document
         }
 
 
-        /* DESACTIVAR BOTÓN */
+        /* Desactivar botón */
 
-        button.disabled =
-            true;
+        button.disabled = true;
 
         button.textContent =
             "Creando historia...";
@@ -637,92 +967,398 @@ document
                 await response.json();
 
 
-            console.log(
-                "Respuesta /api/stories:",
-                data
+            /* Error */
+
+            if (!data.success) {
+<script>
+
+/* ==========================================
+   COMPROBAR SESIÓN
+========================================== */
+
+async function checkSession() {
+
+    const userArea =
+        document.getElementById("user-area");
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
             );
 
+        const data =
+            await response.json();
 
-            /* ERROR */
+        console.log(
+            "Respuesta /api/me:",
+            data
+        );
 
-            if (
-                !response.ok ||
-                !data.success
-            ) {
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.loggedIn ||
+            !data.user
+        ) {
 
-                message.className =
-                    "error";
+            window.location.href =
+                "login.html";
 
-                message.textContent =
-                    data.error ||
-                    "No se pudo crear la historia.";
-
-                message.style.display =
-                    "block";
-
-
-                button.disabled =
-                    false;
-
-                button.textContent =
-                    "Crear historia";
-
-                return;
-            }
-
-
-            /* ÉXITO */
-
-            message.className =
-                "success";
-
-            message.textContent =
-                "Historia creada correctamente.";
-
-            message.style.display =
-                "block";
-
-
-            setTimeout(
-                function() {
-
-                    window.location.href =
-                        "index.html";
-
-                },
-                1200
-            );
-
+            return;
         }
 
-        catch (error) {
+        const username =
+            data.user.username;
 
-            console.error(
-                "Error creando historia:",
-                error
+        userArea.innerHTML =
+            '<span style="color:white; font-size:14px;">' +
+            'Hola ' +
+            username +
+            '</span> ' +
+            '<a href="#" onclick="logout(); return false;" ' +
+            'style="color:white; margin-left:10px;">' +
+            'Cerrar sesión' +
+            '</a>';
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error comprobando sesión:",
+            error
+        );
+
+        window.location.href =
+            "login.html";
+    }
+}
+
+
+/* ==========================================
+   CERRAR SESIÓN
+========================================== */
+
+async function logout() {
+
+    try {
+
+        await fetch(
+            "/api/logout",
+            {
+                method: "POST",
+                credentials: "include"
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+    }
+
+    localStorage.removeItem(
+        "comicworld_user"
+    );
+
+    window.location.href =
+        "login.html";
+}
+
+
+/* ==========================================
+   FORMULARIO
+========================================== */
+
+document
+.getElementById("storyForm")
+.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const message =
+            document.getElementById(
+                "message"
             );
 
+        const button =
+            document.querySelector(
+                ".create-button"
+            );
+
+        const title =
+            document.getElementById(
+                "title"
+            ).value.trim();
+
+        const description =
+            document.getElementById(
+                "description"
+            ).value.trim();
+
+        const genre =
+            document.getElementById(
+                "genre"
+            ).value;
+
+
+        /* VALIDACIÓN */
+
+        if (
+            !title ||
+            !description ||
+            !genre
+        ) {
 
             message.className =
                 "error";
 
             message.textContent =
-                "Error de conexión con el servidor.";
+                "Completa todos los campos obligatorios.";
 
             message.style.display =
                 "block";
+<script>
+
+/* ==========================================
+   COMPROBAR SESIÓN
+========================================== */
+
+async function checkSession() {
+
+    const userArea =
+        document.getElementById("user-area");
+
+    try {
+
+        const response =
+            await fetch("/api/me", {
+                method: "GET",
+                credentials: "include"
+            });
+
+        const data =
+            await response.json();
+
+        console.log("Respuesta /api/me:", data);
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.loggedIn ||
+            !data.user
+        ) {
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+        const username =
+            data.user.username;
+
+        userArea.innerHTML =
+            '<span style="color:white; font-size:14px;">' +
+            'Hola ' +
+            username +
+            '</span> ' +
+            '<a href="#" onclick="logout(); return false;" ' +
+            'style="color:white; margin-left:10px;">' +
+            'Cerrar sesión' +
+            '</a>';
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando sesión:",
+            error
+        );
+
+        window.location.href = "login.html";
+    }
+}
 
 
-            button.disabled =
-                false;
+/* ==========================================
+   CERRAR SESIÓN
+========================================== */
+
+async function logout() {
+
+    try {
+
+        await fetch("/api/logout", {
+            method: "POST",
+            credentials: "include"
+        });
+
+    } catch (error) {
+
+        console.error(error);
+    }
+
+    localStorage.removeItem("comicworld_user");
+
+    window.location.href = "login.html";
+}
+
+
+/* ==========================================
+   CREAR HISTORIA
+========================================== */
+
+document
+.getElementById("storyForm")
+.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const message =
+        document.getElementById("message");
+
+    const button =
+        document.querySelector(".create-button");
+
+    const title =
+        document.getElementById("title")
+        .value
+        .trim();
+
+    const description =
+        document.getElementById("description")
+        .value
+        .trim();
+
+    const genre =
+        document.getElementById("genre")
+        .value;
+
+
+    /* VALIDACIÓN */
+
+    if (!title || !description || !genre) {
+
+        message.className = "error";
+
+        message.textContent =
+            "Completa todos los campos obligatorios.";
+
+        message.style.display = "block";
+
+        return;
+    }
+
+
+    /* DESACTIVAR BOTÓN */
+
+    button.disabled = true;
+
+    button.textContent =
+        "Creando historia...";
+
+    message.className = "";
+
+    message.textContent = "";
+
+    message.style.display = "none";
+
+
+    try {
+
+        const response =
+            await fetch("/api/stories", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                credentials: "include",
+
+                body: JSON.stringify({
+
+                    title: title,
+
+                    description: description,
+
+                    genre: genre
+
+                })
+            });
+
+
+        const data =
+            await response.json();
+
+
+        /* ERROR */
+
+        if (!data.success) {
+
+            message.className = "error";
+
+            message.textContent =
+                data.error ||
+                "No se pudo crear la historia.";
+
+            message.style.display = "block";
+
+            button.disabled = false;
 
             button.textContent =
                 "Crear historia";
 
+            return;
         }
 
+
+        /* ÉXITO */
+
+        message.className = "success";
+
+        message.textContent =
+            "Historia creada correctamente.";
+
+        message.style.display = "block";
+
+
+        setTimeout(function() {
+
+            window.location.href =
+                "index.html";
+
+        }, 1200);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        message.className = "error";
+
+        message.textContent =
+            "Error de conexión con el servidor.";
+
+        message.style.display = "block";
+
+        button.disabled = false;
+
+        button.textContent =
+            "Crear historia";
     }
-);
+
+});
 
 
 /* ==========================================
@@ -731,4 +1367,9 @@ document
 
 checkSession();
 
-</script></body></html>
+</script>
+
+
+</body>
+
+</html>
