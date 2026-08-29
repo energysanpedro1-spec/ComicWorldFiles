@@ -3,11 +3,13 @@ export default {
 
         const url = new URL(request.url);
 
-
         // ==============================
         // API: REGISTRO
         // ==============================
-        if (url.pathname === "/api/register" && request.method === "POST") {
+        if (
+            url.pathname === "/api/register" &&
+            request.method === "POST"
+        ) {
 
             try {
 
@@ -17,7 +19,9 @@ export default {
                     String(data.username || "").trim();
 
                 const email =
-                    String(data.email || "").trim().toLowerCase();
+                    String(data.email || "")
+                        .trim()
+                        .toLowerCase();
 
                 const password =
                     String(data.password || "");
@@ -29,6 +33,7 @@ export default {
                         success: false,
                         error: "Todos los campos son obligatorios."
                     }, 400);
+
                 }
 
 
@@ -39,6 +44,7 @@ export default {
                         error:
                             "El nombre de usuario debe tener al menos 3 caracteres."
                     }, 400);
+
                 }
 
 
@@ -49,19 +55,21 @@ export default {
                         error:
                             "La contraseña debe tener al menos 6 caracteres."
                     }, 400);
+
                 }
 
 
-                // Comprobar usuario o email existente
-                const existing = await env.DB
-                    .prepare(
-                        `SELECT id
-                         FROM users
-                         WHERE username = ? OR email = ?
-                         LIMIT 1`
-                    )
-                    .bind(username, email)
-                    .first();
+                const existing =
+                    await env.DB
+                        .prepare(
+                            `SELECT id
+                             FROM users
+                             WHERE username = ?
+                             OR email = ?
+                             LIMIT 1`
+                        )
+                        .bind(username, email)
+                        .first();
 
 
                 if (existing) {
@@ -71,26 +79,27 @@ export default {
                         error:
                             "El usuario o correo electrónico ya está registrado."
                     }, 409);
+
                 }
 
 
-                // Crear hash
                 const passwordHash =
                     await hashPassword(password);
 
 
-                const result = await env.DB
-                    .prepare(
-                        `INSERT INTO users
-                        (username, email, password_hash)
-                        VALUES (?, ?, ?)`
-                    )
-                    .bind(
-                        username,
-                        email,
-                        passwordHash
-                    )
-                    .run();
+                const result =
+                    await env.DB
+                        .prepare(
+                            `INSERT INTO users
+                            (username, email, password_hash)
+                            VALUES (?, ?, ?)`
+                        )
+                        .bind(
+                            username,
+                            email,
+                            passwordHash
+                        )
+                        .run();
 
 
                 if (!result.success) {
@@ -99,6 +108,7 @@ export default {
                         success: false,
                         error: "No se pudo crear la cuenta."
                     }, 500);
+
                 }
 
 
@@ -114,20 +124,23 @@ export default {
                     success: false,
                     error: error.message
                 }, 500);
+
             }
         }
-
 
 
         // ==============================
         // API: LOGIN
         // ==============================
-        if (url.pathname === "/api/login" &&
-            request.method === "POST") {
+        if (
+            url.pathname === "/api/login" &&
+            request.method === "POST"
+        ) {
 
             try {
 
-                const data = await request.json();
+                const data =
+                    await request.json();
 
                 const login =
                     String(data.login || "")
@@ -144,23 +157,25 @@ export default {
                         success: false,
                         error: "Completa todos los campos."
                     }, 400);
+
                 }
 
 
-                const user = await env.DB
-                    .prepare(
-                        `SELECT
-                            id,
-                            username,
-                            email,
-                            password_hash
-                         FROM users
-                         WHERE LOWER(username) = ?
-                            OR LOWER(email) = ?
-                         LIMIT 1`
-                    )
-                    .bind(login, login)
-                    .first();
+                const user =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                username,
+                                email,
+                                password_hash
+                             FROM users
+                             WHERE LOWER(username) = ?
+                             OR LOWER(email) = ?
+                             LIMIT 1`
+                        )
+                        .bind(login, login)
+                        .first();
 
 
                 if (!user) {
@@ -170,6 +185,7 @@ export default {
                         error:
                             "Usuario o contraseña incorrectos."
                     }, 401);
+
                 }
 
 
@@ -187,15 +203,14 @@ export default {
                         error:
                             "Usuario o contraseña incorrectos."
                     }, 401);
+
                 }
 
 
-                // Generar token
                 const token =
                     generateToken();
 
 
-                // Sesión durante 30 días
                 const expiresAt =
                     new Date(
                         Date.now() +
@@ -217,40 +232,25 @@ export default {
                     .run();
 
 
-                const headers = {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "Set-Cookie":
-                        `session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`
-                };
-
-
                 return new Response(
-
                     JSON.stringify({
-
                         success: true,
-
                         message:
                             "Inicio de sesión correcto.",
-
                         user: {
-
                             id: user.id,
-
-                            username:
-                                user.username,
-
-                            email:
-                                user.email
+                            username: user.username,
+                            email: user.email
                         }
                     }),
-
                     {
                         status: 200,
-                        headers: headers
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+                            "Set-Cookie":
+                                `session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`
+                        }
                     }
                 );
 
@@ -261,24 +261,23 @@ export default {
                     success: false,
                     error: error.message
                 }, 500);
+
             }
         }
-
 
 
         // ==============================
         // API: USUARIO ACTUAL
         // ==============================
-        if (url.pathname === "/api/me" &&
-            request.method === "GET") {
+        if (
+            url.pathname === "/api/me" &&
+            request.method === "GET"
+        ) {
 
             try {
 
                 const token =
-                    getCookie(
-                        request,
-                        "session"
-                    );
+                    getCookie(request, "session");
 
 
                 if (!token) {
@@ -287,6 +286,7 @@ export default {
                         success: false,
                         loggedIn: false
                     }, 401);
+
                 }
 
 
@@ -314,6 +314,7 @@ export default {
                         success: false,
                         loggedIn: false
                     }, 401);
+
                 }
 
 
@@ -334,24 +335,17 @@ export default {
                         success: false,
                         loggedIn: false
                     }, 401);
+
                 }
 
 
                 return json({
-
                     success: true,
-
                     loggedIn: true,
-
                     user: {
-
                         id: session.id,
-
-                        username:
-                            session.username,
-
-                        email:
-                            session.email
+                        username: session.username,
+                        email: session.email
                     }
                 });
 
@@ -362,24 +356,23 @@ export default {
                     success: false,
                     error: error.message
                 }, 500);
+
             }
         }
-
 
 
         // ==============================
         // API: LOGOUT
         // ==============================
-        if (url.pathname === "/api/logout" &&
-            request.method === "POST") {
+        if (
+            url.pathname === "/api/logout" &&
+            request.method === "POST"
+        ) {
 
             try {
 
                 const token =
-                    getCookie(
-                        request,
-                        "session"
-                    );
+                    getCookie(request, "session");
 
 
                 if (token) {
@@ -390,27 +383,20 @@ export default {
                         )
                         .bind(token)
                         .run();
+
                 }
 
 
                 return new Response(
-
                     JSON.stringify({
-
                         success: true,
-
-                        message:
-                            "Sesión cerrada."
+                        message: "Sesión cerrada."
                     }),
-
                     {
                         status: 200,
-
                         headers: {
-
                             "Content-Type":
                                 "application/json",
-
                             "Set-Cookie":
                                 "session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
                         }
@@ -424,9 +410,9 @@ export default {
                     success: false,
                     error: error.message
                 }, 500);
+
             }
         }
-
 
 
         // ==============================
@@ -445,30 +431,22 @@ export default {
 
 
                 return json({
-
                     success: true,
-
                     message:
                         "ComicWorldFiles API funcionando.",
-
-                    database:
-                        result
+                    database: result
                 });
 
 
             } catch (error) {
 
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
+
             }
         }
-
 
 
         // ==============================
@@ -481,121 +459,37 @@ export default {
 
             try {
 
-                // ==============================
-                // OBTENER SESIÓN
-                // ==============================
-
-                const token =
-                    getCookie(
-                        request,
-                        "session"
-                    );
-
-
-                if (!token) {
-
-                    return json({
-
-                        success: false,
-
-                        error:
-                            "Debes iniciar sesión para crear una historia."
-
-                    }, 401);
-                }
-
-
-                // ==============================
-                // BUSCAR USUARIO
-                // ==============================
-
                 const session =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                users.id,
-                                users.username,
-                                sessions.expires_at
-                             FROM sessions
-                             INNER JOIN users
-                             ON users.id = sessions.user_id
-                             WHERE sessions.token = ?
-                             LIMIT 1`
-                        )
-                        .bind(token)
-                        .first();
+                    await getValidSession(
+                        request,
+                        env
+                    );
 
 
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
-                            "La sesión no es válida."
-
+                            "Debes iniciar sesión para crear una historia."
                     }, 401);
+
                 }
 
-
-                // ==============================
-                // COMPROBAR EXPIRACIÓN
-                // ==============================
-
-                if (
-                    new Date(session.expires_at)
-                    <= new Date()
-                ) {
-
-                    await env.DB
-                        .prepare(
-                            "DELETE FROM sessions WHERE token = ?"
-                        )
-                        .bind(token)
-                        .run();
-
-
-                    return json({
-
-                        success: false,
-
-                        error:
-                            "La sesión ha expirado."
-
-                    }, 401);
-                }
-
-
-                // ==============================
-                // DATOS DE LA HISTORIA
-                // ==============================
 
                 const data =
                     await request.json();
 
 
                 const title =
-                    String(
-                        data.title || ""
-                    ).trim();
-
+                    String(data.title || "").trim();
 
                 const description =
-                    String(
-                        data.description || ""
-                    ).trim();
-
+                    String(data.description || "").trim();
 
                 const genre =
-                    String(
-                        data.genre || ""
-                    ).trim();
+                    String(data.genre || "").trim();
 
-
-                // ==============================
-                // VALIDACIONES
-                // ==============================
 
                 if (
                     !title ||
@@ -604,43 +498,30 @@ export default {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Todos los campos son obligatorios."
-
                     }, 400);
+
                 }
 
 
                 if (title.length < 2) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El título es demasiado corto."
-
                     }, 400);
+
                 }
 
-
-                // ==============================
-                // GUARDAR HISTORIA
-                // ==============================
 
                 const result =
                     await env.DB
                         .prepare(
                             `INSERT INTO stories
-                            (
-                                user_id,
-                                title,
-                                description,
-                                genre
-                            )
+                            (user_id, title, description, genre)
                             VALUES (?, ?, ?, ?)`
                         )
                         .bind(
@@ -655,41 +536,24 @@ export default {
                 if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo guardar la historia."
-
                     }, 500);
+
                 }
 
 
-                // ==============================
-                // RESPUESTA
-                // ==============================
-
                 return json({
-
                     success: true,
-
                     message:
                         "Historia creada correctamente.",
-
                     story: {
-
                         id:
                             result.meta.last_row_id,
-
-                        title:
-                            title,
-
-                        description:
-                            description,
-
-                        genre:
-                            genre,
-
+                        title: title,
+                        description: description,
+                        genre: genre,
                         author:
                             session.username
                     }
@@ -698,23 +562,13 @@ export default {
 
             } catch (error) {
 
-                console.error(
-                    "Error creando historia:",
-                    error
-                );
-
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
+
             }
         }
-
 
 
         // ==============================
@@ -748,11 +602,8 @@ export default {
 
 
                 return json({
-
                     success: true,
-
-                    stories:
-                        result.results
+                    stories: result.results
                 });
 
 
@@ -765,53 +616,46 @@ export default {
 
 
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
+
             }
         }
 
 
-
         // ==============================
-        // API: OBTENER HISTORIA POR ID
+        // API:
+        // OBTENER UNA HISTORIA
         // ==============================
         if (
-            url.pathname.startsWith("/api/stories/") &&
+            url.pathname === "/api/stories/" &&
+            request.method === "GET"
+        ) {
+
+            return json({
+                success: false,
+                error: "Debes indicar el ID de la historia."
+            }, 400);
+
+        }
+
+
+        const storyMatch =
+            url.pathname.match(
+                /^\/api\/stories\/([0-9]+)$/
+            );
+
+
+        if (
+            storyMatch &&
             request.method === "GET"
         ) {
 
             try {
 
-                const idText =
-                    url.pathname
-                        .substring(
-                            "/api/stories/".length
-                        );
-
-
                 const storyId =
-                    Number(idText);
-
-
-                if (
-                    !Number.isInteger(storyId) ||
-                    storyId <= 0
-                ) {
-
-                    return json({
-
-                        success: false,
-
-                        error:
-                            "ID de historia no válido."
-
-                    }, 400);
-                }
+                    Number(storyMatch[1]);
 
 
                 const story =
@@ -838,43 +682,552 @@ export default {
                 if (!story) {
 
                     return json({
-
                         success: false,
-
                         error:
-                            "Historia no encontrada."
-
+                            "La historia no existe."
                     }, 404);
+
                 }
 
 
                 return json({
-
                     success: true,
-
                     story: story
                 });
 
 
             } catch (error) {
 
-                console.error(
-                    "Error obteniendo historia:",
-                    error
-                );
-
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
+
             }
         }
 
+
+        // ==============================
+        // API:
+        // LISTAR CAPÍTULOS
+        // ==============================
+        const chaptersMatch =
+            url.pathname.match(
+                /^\/api\/stories\/([0-9]+)\/chapters$/
+            );
+
+
+        if (
+            chaptersMatch &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const storyId =
+                    Number(chaptersMatch[1]);
+
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT id
+                             FROM stories
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(storyId)
+                        .first();
+
+
+                if (!story) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La historia no existe."
+                    }, 404);
+
+                }
+
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                story_id,
+                                chapter_number,
+                                title,
+                                content,
+                                created_at
+                             FROM chapters
+                             WHERE story_id = ?
+                             ORDER BY chapter_number ASC`
+                        )
+                        .bind(storyId)
+                        .all();
+
+
+                return json({
+                    success: true,
+                    chapters: result.results
+                });
+
+
+            } catch (error) {
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+
+            }
+        }
+
+
+        // ==============================
+        // API:
+        // CREAR CAPÍTULO
+        // ==============================
+        if (
+            chaptersMatch &&
+            request.method === "POST"
+        ) {
+
+            try {
+
+                const storyId =
+                    Number(chaptersMatch[1]);
+
+
+                const session =
+                    await getValidSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+
+                }
+
+
+                // Comprobar que la historia
+                // pertenece al usuario
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                user_id
+                             FROM stories
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(storyId)
+                        .first();
+
+
+                if (!story) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La historia no existe."
+                    }, 404);
+
+                }
+
+
+                if (
+                    Number(story.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para modificar esta historia."
+                    }, 403);
+
+                }
+
+
+                const data =
+                    await request.json();
+
+
+                const title =
+                    String(data.title || "").trim();
+
+                const content =
+                    String(data.content || "");
+
+
+                if (!title || !content.trim()) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El título y el contenido son obligatorios."
+                    }, 400);
+
+                }
+
+
+                // Buscar el siguiente número
+                const lastChapter =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                MAX(chapter_number) AS last_number
+                             FROM chapters
+                             WHERE story_id = ?`
+                        )
+                        .bind(storyId)
+                        .first();
+
+
+                const nextNumber =
+                    (lastChapter &&
+                     lastChapter.last_number)
+                        ? Number(
+                            lastChapter.last_number
+                        ) + 1
+                        : 1;
+
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `INSERT INTO chapters
+                            (
+                                story_id,
+                                chapter_number,
+                                title,
+                                content
+                            )
+                            VALUES (?, ?, ?, ?)`
+                        )
+                        .bind(
+                            storyId,
+                            nextNumber,
+                            title,
+                            content
+                        )
+                        .run();
+
+
+                if (!result.success) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se pudo crear el capítulo."
+                    }, 500);
+
+                }
+
+
+                return json({
+                    success: true,
+                    message:
+                        "Capítulo creado correctamente.",
+                    chapter: {
+                        id:
+                            result.meta.last_row_id,
+                        story_id:
+                            storyId,
+                        chapter_number:
+                            nextNumber,
+                        title:
+                            title,
+                        content:
+                            content
+                    }
+                });
+
+
+            } catch (error) {
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+
+            }
+        }
+
+
+        // ==============================
+        // API:
+        // EDITAR CAPÍTULO
+        // ==============================
+        const chapterMatch =
+            url.pathname.match(
+                /^\/api\/chapters\/([0-9]+)$/
+            );
+
+
+        if (
+            chapterMatch &&
+            request.method === "PUT"
+        ) {
+
+            try {
+
+                const chapterId =
+                    Number(chapterMatch[1]);
+
+
+                const session =
+                    await getValidSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+
+                }
+
+
+                const chapter =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                chapters.id,
+                                chapters.story_id,
+                                stories.user_id
+                             FROM chapters
+                             INNER JOIN stories
+                             ON stories.id =
+                                chapters.story_id
+                             WHERE chapters.id = ?
+                             LIMIT 1`
+                        )
+                        .bind(chapterId)
+                        .first();
+
+
+                if (!chapter) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El capítulo no existe."
+                    }, 404);
+
+                }
+
+
+                if (
+                    Number(chapter.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para editar este capítulo."
+                    }, 403);
+
+                }
+
+
+                const data =
+                    await request.json();
+
+
+                const title =
+                    String(data.title || "").trim();
+
+                const content =
+                    String(data.content || "");
+
+
+                if (!title || !content.trim()) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El título y el contenido son obligatorios."
+                    }, 400);
+
+                }
+
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `UPDATE chapters
+                             SET title = ?,
+                                 content = ?
+                             WHERE id = ?`
+                        )
+                        .bind(
+                            title,
+                            content,
+                            chapterId
+                        )
+                        .run();
+
+
+                if (!result.success) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se pudo actualizar el capítulo."
+                    }, 500);
+
+                }
+
+
+                return json({
+                    success: true,
+                    message:
+                        "Capítulo actualizado correctamente."
+                });
+
+
+            } catch (error) {
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+
+            }
+        }
+
+
+        // ==============================
+        // API:
+        // ELIMINAR CAPÍTULO
+        // ==============================
+        if (
+            chapterMatch &&
+            request.method === "DELETE"
+        ) {
+
+            try {
+
+                const chapterId =
+                    Number(chapterMatch[1]);
+
+
+                const session =
+                    await getValidSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+
+                }
+
+
+                const chapter =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                chapters.id,
+                                chapters.story_id,
+                                stories.user_id
+                             FROM chapters
+                             INNER JOIN stories
+                             ON stories.id =
+                                chapters.story_id
+                             WHERE chapters.id = ?
+                             LIMIT 1`
+                        )
+                        .bind(chapterId)
+                        .first();
+
+
+                if (!chapter) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El capítulo no existe."
+                    }, 404);
+
+                }
+
+
+                if (
+                    Number(chapter.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para eliminar este capítulo."
+                    }, 403);
+
+                }
+
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `DELETE FROM chapters
+                             WHERE id = ?`
+                        )
+                        .bind(chapterId)
+                        .run();
+
+
+                if (!result.success) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se pudo eliminar el capítulo."
+                    }, 500);
+
+                }
+
+
+                return json({
+                    success: true,
+                    message:
+                        "Capítulo eliminado correctamente."
+                });
+
+
+            } catch (error) {
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+
+            }
+        }
 
 
         // ==============================
@@ -886,23 +1239,74 @@ export default {
 };
 
 
+// ==========================================
+// SESIÓN VÁLIDA
+// ==========================================
+
+async function getValidSession(request, env) {
+
+    const token =
+        getCookie(request, "session");
+
+
+    if (!token) {
+        return null;
+    }
+
+
+    const session =
+        await env.DB
+            .prepare(
+                `SELECT
+                    users.id,
+                    users.username,
+                    users.email,
+                    sessions.expires_at
+                 FROM sessions
+                 INNER JOIN users
+                 ON users.id = sessions.user_id
+                 WHERE sessions.token = ?
+                 LIMIT 1`
+            )
+            .bind(token)
+            .first();
+
+
+    if (!session) {
+        return null;
+    }
+
+
+    if (
+        new Date(session.expires_at)
+        <= new Date()
+    ) {
+
+        await env.DB
+            .prepare(
+                "DELETE FROM sessions WHERE token = ?"
+            )
+            .bind(token)
+            .run();
+
+        return null;
+    }
+
+
+    return session;
+}
+
 
 // ==========================================
-// FUNCIÓN JSON
+// JSON
 // ==========================================
 
-function json(
-    data,
-    status = 200
-) {
+function json(data, status = 200) {
 
     return new Response(
-
         JSON.stringify(data),
-
         {
             status: status,
-
             headers: {
                 "Content-Type":
                     "application/json"
@@ -910,7 +1314,6 @@ function json(
         }
     );
 }
-
 
 
 // ==========================================
@@ -934,16 +1337,9 @@ async function hashPassword(password) {
         );
 
 
-    return arrayBufferToHex(
-        hash
-    );
+    return arrayBufferToHex(hash);
 }
 
-
-
-// ==========================================
-// VERIFICAR CONTRASEÑA
-// ==========================================
 
 async function verifyPassword(
     password,
@@ -951,19 +1347,12 @@ async function verifyPassword(
 ) {
 
     const hash =
-        await hashPassword(
-            password
-        );
+        await hashPassword(password);
 
 
     return hash === storedHash;
 }
 
-
-
-// ==========================================
-// ARRAY BUFFER → HEX
-// ==========================================
 
 function arrayBufferToHex(buffer) {
 
@@ -981,9 +1370,8 @@ function arrayBufferToHex(buffer) {
 }
 
 
-
 // ==========================================
-// GENERAR TOKEN
+// TOKEN DE SESIÓN
 // ==========================================
 
 function generateToken() {
@@ -992,9 +1380,7 @@ function generateToken() {
         new Uint8Array(32);
 
 
-    crypto.getRandomValues(
-        bytes
-    );
+    crypto.getRandomValues(bytes);
 
 
     return Array
@@ -1009,9 +1395,8 @@ function generateToken() {
 }
 
 
-
 // ==========================================
-// OBTENER COOKIE
+// COOKIES
 // ==========================================
 
 function getCookie(
@@ -1024,7 +1409,6 @@ function getCookie(
 
 
     if (!cookieHeader) {
-
         return null;
     }
 
@@ -1043,13 +1427,12 @@ function getCookie(
                 .split("=");
 
 
-        if (
-            parts[0] === name
-        ) {
+        if (parts[0] === name) {
 
             return parts
                 .slice(1)
                 .join("=");
+
         }
     }
 
