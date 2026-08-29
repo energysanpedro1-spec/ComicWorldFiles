@@ -14,5 +14,16 @@
       "database_name": "comicworldfiles-db",
       "database_id": "12a5bae7-e69f-4e87-a4fd-4d507c6d05ad"
     }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "Cover",
+      "bucket_name": "comicworldfiles-covers"
+    },
+    {
+      "binding": "Images",
+      "bucket_name": "comicworldfiles-covers"
+    }
   ]
 }
