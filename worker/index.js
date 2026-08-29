@@ -18,17 +18,14 @@ export default {
                 const data =
                     await request.json();
 
-
                 const username =
                     String(data.username || "")
                         .trim();
-
 
                 const email =
                     String(data.email || "")
                         .trim()
                         .toLowerCase();
-
 
                 const password =
                     String(data.password || "");
@@ -162,6 +159,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -334,6 +332,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -400,6 +399,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -473,6 +473,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -516,12 +517,13 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
         // =========================================================
-        // API: CREAR HISTORIA
+        // API: CREAR HISTORIA / HISTORIETA
         // POST /api/stories
         // =========================================================
 
@@ -544,7 +546,7 @@ export default {
                     return json({
                         success: false,
                         error:
-                            "Debes iniciar sesión para crear una historia."
+                            "Debes iniciar sesión para crear una publicación."
                     }, 401);
 
                 }
@@ -570,6 +572,32 @@ export default {
                     String(
                         data.genre || ""
                     ).trim();
+
+
+                // -------------------------------------------------
+                // TIPO DE PUBLICACIÓN
+                // -------------------------------------------------
+
+                let type =
+                    String(
+                        data.type || "historia"
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                if (
+                    type !== "historia" &&
+                    type !== "historieta"
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El tipo de publicación no es válido."
+                    }, 400);
+
+                }
 
 
                 if (
@@ -608,15 +636,17 @@ export default {
                                 user_id,
                                 title,
                                 description,
-                                genre
+                                genre,
+                                type
                              )
-                             VALUES (?, ?, ?, ?)`
+                             VALUES (?, ?, ?, ?, ?)`
                         )
                         .bind(
                             session.id,
                             title,
                             description,
-                            genre
+                            genre,
+                            type
                         )
                         .run();
 
@@ -628,7 +658,7 @@ export default {
                     return json({
                         success: false,
                         error:
-                            "No se pudo guardar la historia."
+                            "No se pudo guardar la publicación."
                     }, 500);
 
                 }
@@ -642,7 +672,9 @@ export default {
                     success: true,
 
                     message:
-                        "Historia creada correctamente.",
+                        type === "historieta"
+                            ? "Historieta creada correctamente."
+                            : "Historia creada correctamente.",
 
                     story: {
                         id:
@@ -656,6 +688,9 @@ export default {
 
                         genre:
                             genre,
+
+                        type:
+                            type,
 
                         cover_url:
                             null,
@@ -672,7 +707,7 @@ export default {
             } catch (error) {
 
                 console.error(
-                    "Error creando historia:",
+                    "Error creando publicación:",
                     error
                 );
 
@@ -684,12 +719,13 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
         // =========================================================
-        // API: EDITAR INFORMACIÓN DE HISTORIA
+        // API: EDITAR INFORMACIÓN DE HISTORIA / HISTORIETA
         // PUT /api/stories/5
         // =========================================================
 
@@ -735,7 +771,8 @@ export default {
                         .prepare(
                             `SELECT
                                 id,
-                                user_id
+                                user_id,
+                                type
                              FROM stories
                              WHERE id = ?
                              LIMIT 1`
@@ -751,7 +788,7 @@ export default {
                     return json({
                         success: false,
                         error:
-                            "La historia no existe."
+                            "La publicación no existe."
                     }, 404);
 
                 }
@@ -765,7 +802,7 @@ export default {
                     return json({
                         success: false,
                         error:
-                            "No tienes permiso para modificar esta historia."
+                            "No tienes permiso para modificar esta publicación."
                     }, 403);
 
                 }
@@ -791,6 +828,30 @@ export default {
                     String(
                         data.genre || ""
                     ).trim();
+
+
+                let type =
+                    String(
+                        data.type ||
+                        story.type ||
+                        "historia"
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                if (
+                    type !== "historia" &&
+                    type !== "historieta"
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El tipo de publicación no es válido."
+                    }, 400);
+
+                }
 
 
                 if (
@@ -827,13 +888,15 @@ export default {
                             `UPDATE stories
                              SET title = ?,
                                  description = ?,
-                                 genre = ?
+                                 genre = ?,
+                                 type = ?
                              WHERE id = ?`
                         )
                         .bind(
                             title,
                             description,
                             genre,
+                            type,
                             storyId
                         )
                         .run();
@@ -846,7 +909,7 @@ export default {
                     return json({
                         success: false,
                         error:
-                            "No se pudo actualizar la historia."
+                            "No se pudo actualizar la publicación."
                     }, 500);
 
                 }
@@ -856,14 +919,14 @@ export default {
                     success: true,
 
                     message:
-                        "Información de la historia actualizada correctamente."
+                        "Información actualizada correctamente."
                 });
 
 
             } catch (error) {
 
                 console.error(
-                    "Error editando historia:",
+                    "Error editando publicación:",
                     error
                 );
 
@@ -875,12 +938,13 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
         // =========================================================
-        // API: LISTAR HISTORIAS
+        // API: LISTAR HISTORIAS / HISTORIETAS
         // GET /api/stories
         // =========================================================
 
@@ -900,6 +964,7 @@ export default {
                                 stories.title,
                                 stories.description,
                                 stories.genre,
+                                stories.type,
                                 stories.cover_url,
                                 stories.created_at,
                                 users.username AS author
@@ -923,7 +988,7 @@ export default {
             } catch (error) {
 
                 console.error(
-                    "Error listando historias:",
+                    "Error listando publicaciones:",
                     error
                 );
 
@@ -935,12 +1000,13 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
         // =========================================================
-        // API: HISTORIA INDIVIDUAL
+        // API: PUBLICACIÓN INDIVIDUAL
         // GET /api/stories/5
         // =========================================================
 
@@ -972,6 +1038,7 @@ export default {
                                 stories.title,
                                 stories.description,
                                 stories.genre,
+                                stories.type,
                                 stories.cover_url,
                                 stories.created_at,
                                 users.username AS author
@@ -992,7 +1059,7 @@ export default {
                     return json({
                         success: false,
                         error:
-                            "La historia no existe."
+                            "La publicación no existe."
                     }, 404);
 
                 }
@@ -1009,7 +1076,7 @@ export default {
             } catch (error) {
 
                 console.error(
-                    "Error obteniendo historia:",
+                    "Error obteniendo publicación:",
                     error
                 );
 
@@ -1021,6 +1088,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -1134,7 +1202,9 @@ export default {
 
 
                 const maxSize =
-                    5 * 1024 * 1024;
+                    5 *
+                    1024 *
+                    1024;
 
 
                 if (
@@ -1172,6 +1242,10 @@ export default {
 
                 }
 
+
+                // -------------------------------------------------
+                // R2 CORRECTO
+                // -------------------------------------------------
 
                 const objectKey =
                     "covers/" +
@@ -1248,6 +1322,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -1369,12 +1444,13 @@ export default {
                 );
 
             }
+
         }
 
 
 
         // =========================================================
-        // API: CAPÍTULOS DE UNA HISTORIA
+        // API: CAPÍTULOS DE UNA PUBLICACIÓN
         // GET /api/stories/5/chapters
         // =========================================================
 
@@ -1465,6 +1541,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -1684,15 +1761,15 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
         // =========================================================
         // API: CAPÍTULO INDIVIDUAL
-        //
-        // GET    /api/chapters/10
-        // PUT    /api/chapters/10
+        // GET /api/chapters/10
+        // PUT /api/chapters/10
         // DELETE /api/chapters/10
         // =========================================================
 
@@ -1702,10 +1779,9 @@ export default {
             );
 
 
-
-        // =========================================================
+        // ---------------------------------------------------------
         // OBTENER CAPÍTULO
-        // =========================================================
+        // ---------------------------------------------------------
 
         if (
             chapterMatch &&
@@ -1774,14 +1850,14 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
-        // =========================================================
+        // ---------------------------------------------------------
         // EDITAR CAPÍTULO
-        // PUT /api/chapters/10
-        // =========================================================
+        // ---------------------------------------------------------
 
         if (
             chapterMatch &&
@@ -1951,14 +2027,14 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
-        // =========================================================
+        // ---------------------------------------------------------
         // ELIMINAR CAPÍTULO
-        // DELETE /api/chapters/10
-        // =========================================================
+        // ---------------------------------------------------------
 
         if (
             chapterMatch &&
@@ -2036,10 +2112,6 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // OBTENER IMÁGENES DEL CAPÍTULO
-                // -------------------------------------------------
-
                 const images =
                     await env.DB
                         .prepare(
@@ -2053,10 +2125,6 @@ export default {
                         )
                         .all();
 
-
-                // -------------------------------------------------
-                // ELIMINAR ARCHIVOS DE R2
-                // -------------------------------------------------
 
                 for (
                     const image of images.results
@@ -2080,10 +2148,6 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // ELIMINAR REGISTROS DE IMÁGENES
-                // -------------------------------------------------
-
                 await env.DB
                     .prepare(
                         `DELETE FROM chapter_images
@@ -2094,10 +2158,6 @@ export default {
                     )
                     .run();
 
-
-                // -------------------------------------------------
-                // ELIMINAR CAPÍTULO
-                // -------------------------------------------------
 
                 const result =
                     await env.DB
@@ -2147,14 +2207,14 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
         // =========================================================
         // API: IMÁGENES DE CAPÍTULO
-        //
-        // GET  /api/chapters/10/images
+        // GET /api/chapters/10/images
         // POST /api/chapters/10/images
         // =========================================================
 
@@ -2164,10 +2224,9 @@ export default {
             );
 
 
-
-        // =========================================================
-        // LISTAR IMÁGENES DEL CAPÍTULO
-        // =========================================================
+        // ---------------------------------------------------------
+        // LISTAR IMÁGENES
+        // ---------------------------------------------------------
 
         if (
             chapterImagesMatch &&
@@ -2249,13 +2308,14 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
-        // =========================================================
-        // SUBIR IMAGEN DE CAPÍTULO
-        // =========================================================
+        // ---------------------------------------------------------
+        // SUBIR IMAGEN
+        // ---------------------------------------------------------
 
         if (
             chapterImagesMatch &&
@@ -2269,10 +2329,6 @@ export default {
                         chapterImagesMatch[1]
                     );
 
-
-                // -------------------------------------------------
-                // COMPROBAR SESIÓN
-                // -------------------------------------------------
 
                 const session =
                     await getSession(
@@ -2291,10 +2347,6 @@ export default {
 
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR CAPÍTULO Y PROPIETARIO
-                // -------------------------------------------------
 
                 const chapter =
                     await env.DB
@@ -2341,10 +2393,6 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // OBTENER ARCHIVO
-                // -------------------------------------------------
-
                 const formData =
                     await request.formData();
 
@@ -2369,10 +2417,6 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // TAMAÑO MÁXIMO
-                // -------------------------------------------------
-
                 const maxSize =
                     10 *
                     1024 *
@@ -2391,10 +2435,6 @@ export default {
 
                 }
 
-
-                // -------------------------------------------------
-                // TIPOS PERMITIDOS
-                // -------------------------------------------------
 
                 const allowedTypes = [
                     "image/jpeg",
@@ -2418,10 +2458,6 @@ export default {
 
                 }
 
-
-                // -------------------------------------------------
-                // EXTENSIÓN
-                // -------------------------------------------------
 
                 let extension =
                     "jpg";
@@ -2460,17 +2496,9 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // IDENTIFICADOR ÚNICO
-                // -------------------------------------------------
-
                 const uniqueId =
                     crypto.randomUUID();
 
-
-                // -------------------------------------------------
-                // CLAVE R2
-                // -------------------------------------------------
 
                 const objectKey =
                     "chapters/" +
@@ -2484,7 +2512,7 @@ export default {
 
 
                 // -------------------------------------------------
-                // GUARDAR EN R2
+                // R2 IMAGES
                 // -------------------------------------------------
 
                 await env.Images.put(
@@ -2509,10 +2537,6 @@ export default {
                     }
                 );
 
-
-                // -------------------------------------------------
-                // GUARDAR REGISTRO EN D1
-                // -------------------------------------------------
 
                 const result =
                     await env.DB
@@ -2543,9 +2567,6 @@ export default {
                     !result.success
                 ) {
 
-                    // Si falla D1 eliminamos
-                    // el archivo recién subido.
-
                     await env.Images.delete(
                         objectKey
                     );
@@ -2568,10 +2589,6 @@ export default {
                     "/api/chapter-images/" +
                     imageId;
 
-
-                // -------------------------------------------------
-                // ACTUALIZAR URL
-                // -------------------------------------------------
 
                 await env.DB
                     .prepare(
@@ -2624,14 +2641,14 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
 
         // =========================================================
         // API: IMAGEN INDIVIDUAL
-        //
-        // GET    /api/chapter-images/123
+        // GET /api/chapter-images/123
         // DELETE /api/chapter-images/123
         // =========================================================
 
@@ -2641,10 +2658,9 @@ export default {
             );
 
 
-
-        // =========================================================
-        // SERVIR IMAGEN DESDE R2
-        // =========================================================
+        // ---------------------------------------------------------
+        // SERVIR IMAGEN
+        // ---------------------------------------------------------
 
         if (
             chapterImageMatch &&
@@ -2751,14 +2767,14 @@ export default {
                 );
 
             }
+
         }
 
 
 
-        // =========================================================
+        // ---------------------------------------------------------
         // ELIMINAR IMAGEN
-        // DELETE /api/chapter-images/123
-        // =========================================================
+        // ---------------------------------------------------------
 
         if (
             chapterImageMatch &&
@@ -2772,10 +2788,6 @@ export default {
                         chapterImageMatch[1]
                     );
 
-
-                // -------------------------------------------------
-                // COMPROBAR SESIÓN
-                // -------------------------------------------------
 
                 const session =
                     await getSession(
@@ -2794,10 +2806,6 @@ export default {
 
                 }
 
-
-                // -------------------------------------------------
-                // OBTENER IMAGEN Y PROPIETARIO
-                // -------------------------------------------------
 
                 const image =
                     await env.DB
@@ -2848,18 +2856,10 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // ELIMINAR DE R2
-                // -------------------------------------------------
-
                 await env.Images.delete(
                     image.object_key
                 );
 
-
-                // -------------------------------------------------
-                // ELIMINAR DE D1
-                // -------------------------------------------------
 
                 const result =
                     await env.DB
@@ -2909,6 +2909,7 @@ export default {
                 }, 500);
 
             }
+
         }
 
 
@@ -3209,6 +3210,7 @@ function getCookie(
                 );
 
         }
+
     }
 
 
