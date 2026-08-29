@@ -1,4 +1,3 @@
-
 export default {
     async fetch(request, env) {
 
@@ -328,202 +327,194 @@ export default {
             }
         }
 
+
         // ==============================
-// API: CREAR HISTORIA
-// ==============================
-if (url.pathname === "/api/stories" && request.method === "POST") {
+        // API: CREAR HISTORIA
+        // ==============================
+        if (url.pathname === "/api/stories" && request.method === "POST") {
 
-    try {
+            try {
 
-        // Obtener sesión
-        const token = getCookie(request, "session");
+                // Obtener sesión
+                const token = getCookie(request, "session");
 
-        if (!token) {
+                if (!token) {
 
-            return json({
-                success: false,
-                error: "Debes iniciar sesión para crear una historia."
-            }, 401);
+                    return json({
+                        success: false,
+                        error: "Debes iniciar sesión para crear una historia."
+                    }, 401);
+                }
 
+
+                // Buscar usuario mediante la sesión
+                const session = await env.DB
+                    .prepare(
+                        `SELECT
+                            users.id,
+                            users.username,
+                            sessions.expires_at
+                         FROM sessions
+                         INNER JOIN users
+                         ON users.id = sessions.user_id
+                         WHERE sessions.token = ?
+                         LIMIT 1`
+                    )
+                    .bind(token)
+                    .first();
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error: "La sesión no es válida."
+                    }, 401);
+                }
+
+
+                // Comprobar expiración
+                if (new Date(session.expires_at) <= new Date()) {
+
+                    await env.DB
+                        .prepare(
+                            "DELETE FROM sessions WHERE token = ?"
+                        )
+                        .bind(token)
+                        .run();
+
+                    return json({
+                        success: false,
+                        error: "La sesión ha expirado."
+                    }, 401);
+                }
+
+
+                // Obtener datos enviados por el formulario
+                const data = await request.json();
+
+                const title =
+                    String(data.title || "").trim();
+
+                const description =
+                    String(data.description || "").trim();
+
+                const genre =
+                    String(data.genre || "").trim();
+
+
+                // Validaciones
+                if (!title || !description || !genre) {
+
+                    return json({
+                        success: false,
+                        error: "Todos los campos son obligatorios."
+                    }, 400);
+                }
+
+
+                if (title.length < 2) {
+
+                    return json({
+                        success: false,
+                        error: "El título es demasiado corto."
+                    }, 400);
+                }
+
+
+                // Guardar historia
+                const result = await env.DB
+                    .prepare(
+                        `INSERT INTO stories
+                        (user_id, title, description, genre)
+                        VALUES (?, ?, ?, ?)`
+                    )
+                    .bind(
+                        session.id,
+                        title,
+                        description,
+                        genre
+                    )
+                    .run();
+
+
+                if (!result.success) {
+
+                    return json({
+                        success: false,
+                        error: "No se pudo guardar la historia."
+                    }, 500);
+                }
+
+
+                return json({
+                    success: true,
+                    message: "Historia creada correctamente.",
+                    story: {
+                        id: result.meta.last_row_id,
+                        title: title,
+                        description: description,
+                        genre: genre,
+                        author: session.username
+                    }
+                });
+
+
+            } catch (error) {
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+            }
         }
 
 
-        // Buscar usuario mediante la sesión
-        const session = await env.DB
-            .prepare(
-                `SELECT
-                    users.id,
-                    users.username,
-                    sessions.expires_at
-                 FROM sessions
-                 INNER JOIN users
-                 ON users.id = sessions.user_id
-                 WHERE sessions.token = ?
-                 LIMIT 1`
-            )
-            .bind(token)
-            .first();
+        // ==============================
+        // API: LISTAR HISTORIAS
+        // ==============================
+        if (url.pathname === "/api/stories" && request.method === "GET") {
+
+            try {
+
+                const result = await env.DB
+                    .prepare(
+                        `SELECT
+                            stories.id,
+                            stories.user_id,
+                            stories.title,
+                            stories.description,
+                            stories.genre,
+                            stories.created_at,
+                            users.username AS author
+                         FROM stories
+                         INNER JOIN users
+                         ON users.id = stories.user_id
+                         ORDER BY stories.id DESC
+                         LIMIT 20`
+                    )
+                    .all();
 
 
-        if (!session) {
+                return json({
+                    success: true,
+                    stories: result.results
+                });
 
-            return json({
-                success: false,
-                error: "La sesión no es válida."
-            }, 401);
 
+            } catch (error) {
+
+                console.error(
+                    "Error listando historias:",
+                    error
+                );
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+            }
         }
-
-
-        // Comprobar expiración
-        if (new Date(session.expires_at) <= new Date()) {
-
-            await env.DB
-                .prepare(
-                    "DELETE FROM sessions WHERE token = ?"
-                )
-                .bind(token)
-                .run();
-
-            return json({
-                success: false,
-                error: "La sesión ha expirado."
-            }, 401);
-
-        }
-
-
-        // Obtener datos enviados por el formulario
-        const data = await request.json();
-
-        const title =
-            String(data.title || "").trim();
-
-        const description =
-            String(data.description || "").trim();
-
-        const genre =
-            String(data.genre || "").trim();
-
-
-        // Validaciones
-        if (!title || !description || !genre) {
-
-            return json({
-                success: false,
-                error: "Todos los campos son obligatorios."
-            }, 400);
-
-        }
-
-
-        if (title.length < 2) {
-
-            return json({
-                success: false,
-                error: "El título es demasiado corto."
-            }, 400);
-
-        }
-
-
-        // Guardar historia
-        const result = await env.DB
-            .prepare(
-                `INSERT INTO stories
-                (user_id, title, description, genre)
-                VALUES (?, ?, ?, ?)`
-            )
-            .bind(
-                session.id,
-                title,
-                description,
-                genre
-            )
-            .run();
-// ==============================
-// API: LISTAR HISTORIAS
-// ==============================
-if (url.pathname === "/api/stories" && request.method === "GET") {
-
-    try {
-
-        const result = await env.DB
-            .prepare(
-                `SELECT
-                    stories.id,
-                    stories.user_id,
-                    stories.title,
-                    stories.description,
-                    stories.genre,
-                    stories.created_at,
-                    users.username AS author
-                 FROM stories
-                 INNER JOIN users
-                 ON users.id = stories.user_id
-                 ORDER BY stories.id DESC
-                 LIMIT 20`
-            )
-            .all();
-
-
-        return json({
-            success: true,
-            stories: result.results
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "Error listando historias:",
-            error
-        );
-
-        return json({
-            success: false,
-            error: error.message
-        }, 500);
-    }
-}
-// ==============================
-// API: LISTAR HISTORIAS
-// ==============================
-if (url.pathname === "/api/stories" && request.method === "GET") {
-
-    try {
-
-        const result = await env.DB
-            .prepare(
-                `SELECT
-                    stories.id,
-                    stories.user_id,
-                    stories.title,
-                    stories.description,
-                    stories.genre,
-                    stories.created_at,
-                    users.username
-                 FROM stories
-                 INNER JOIN users
-                 ON users.id = stories.user_id
-                 ORDER BY stories.id DESC`
-            )
-            .all();
-
-        return json({
-            success: true,
-            stories: result.results
-        });
-
-    } catch (error) {
-
-        return json({
-            success: false,
-            error: error.message
-        }, 500);
-    }
-}
-        
 
 
         // ==============================
