@@ -208,7 +208,7 @@ nav a:hover {
     font-size: 40px;
 }
 
-/* NUEVO: IMAGEN DE PORTADA */
+/* IMAGEN DE PORTADA */
 
 .cover img {
     width: 100%;
@@ -405,7 +405,7 @@ ComicWorldFiles
 Inicio
 </a>
 
-<a href="#">
+<a href="#recent-section">
 Historias
 </a>
 
@@ -441,7 +441,9 @@ placeholder="Buscar historias, historietas o autores..."
 id="search-input"
 >
 
-<button>
+<button
+onclick="buscarHistorias()"
+>
 Buscar
 </button>
 
@@ -497,22 +499,30 @@ Leer historia
 
 <!-- HISTORIAS RECIENTES -->
 
-<div class="section-title">
+<div
+class="section-title"
+id="recent-section"
+>
 
 <h2>
 Historias recientes
 </h2>
 
-<a href="#">
+<a href="#recent-section">
 Ver todas →
 </a>
 
 </div>
 
 
-<section class="stories" id="recent-stories">
+<section
+class="stories"
+id="recent-stories"
+>
 
-<!-- Las historias de D1 se cargarán aquí -->
+<div style="color:#666;">
+Cargando historias...
+</div>
 
 </section>
 
@@ -581,7 +591,7 @@ Crear historieta
 </section>
 
 
-<!-- MÁS HISTORIAS -->
+<!-- MÁS POPULARES -->
 
 <div class="section-title">
 
@@ -589,115 +599,21 @@ Crear historieta
 Más populares
 </h2>
 
-<a href="#">
+<a href="#popular-section">
 Ver todas →
 </a>
 
 </div>
 
 
-<section class="stories">
+<section
+class="stories"
+id="popular-section"
+>
 
-
-<div class="card">
-
-<div class="cover">
-🐉
+<div style="color:#666;">
+Cargando historias...
 </div>
-
-<div class="card-content">
-
-<h3>
-El despertar del dragón
-</h3>
-
-<div class="author">
-Por Alex
-</div>
-
-<a class="card-button" href="leer-historia.html?id=2">
-    Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
-🕵️
-</div>
-
-<div class="card-content">
-
-<h3>
-El misterio
-</h3>
-
-<div class="author">
-Por Laura
-</div>
-
-<a class="card-button" href="#">
-Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
-👽
-</div>
-
-<div class="card-content">
-
-<h3>
-Señal desconocida
-</h3>
-
-<div class="author">
-Por Diego
-</div>
-
-<a class="card-button" href="#">
-Leer
-</a>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cover">
-🏰
-</div>
-
-<div class="card-content">
-
-<h3>
-Las tierras de Eldor
-</h3>
-
-<div class="author">
-Por Sofía
-</div>
-
-<a class="card-button" href="#">
-Leer
-</a>
-
-</div>
-
-</div>
-
 
 </section>
 
@@ -718,6 +634,13 @@ historias independientes.
 
 
 <script>
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+let todasLasHistorias = [];
+
 
 /* ==========================================
    SESIÓN
@@ -761,8 +684,9 @@ async function checkSession() {
             userArea.innerHTML =
                 '<span style="color:white; font-size:14px;">' +
                 'Hola ' +
-                username +
+                escapeHtml(username) +
                 '</span> ' +
+
                 '<a href="#" ' +
                 'onclick="logout(); return false;" ' +
                 'style="color:white; margin-left:10px;">' +
@@ -888,15 +812,21 @@ async function checkLoginAndRedirect(pagina) {
 
 
 /* ==========================================
-   CARGAR HISTORIAS RECIENTES
+   CARGAR HISTORIAS
 ========================================== */
 
-async function loadRecentStories() {
+async function loadStories() {
 
-    const container =
+    const recentContainer =
         document.getElementById(
             "recent-stories"
         );
+
+    const popularContainer =
+        document.getElementById(
+            "popular-section"
+        );
+
 
     try {
 
@@ -925,22 +855,37 @@ async function loadRecentStories() {
             !data.success
         ) {
 
-            console.error(
-                "No se pudieron cargar las historias."
-            );
+            recentContainer.innerHTML =
+                '<p style="color:#666;">' +
+                'No se pudieron cargar las historias.' +
+                '</p>';
+
+            popularContainer.innerHTML =
+                '<p style="color:#666;">' +
+                'No se pudieron cargar las historias.' +
+                '</p>';
 
             return;
 
         }
 
 
-        const stories =
-            data.stories || [];
+        todasLasHistorias =
+            Array.isArray(data.stories)
+                ? data.stories
+                : [];
 
 
-        if (stories.length === 0) {
+        if (
+            todasLasHistorias.length === 0
+        ) {
 
-            container.innerHTML =
+            recentContainer.innerHTML =
+                '<p style="color:#666;">' +
+                'Todavía no hay historias publicadas.' +
+                '</p>';
+
+            popularContainer.innerHTML =
                 '<p style="color:#666;">' +
                 'Todavía no hay historias publicadas.' +
                 '</p>';
@@ -950,87 +895,25 @@ async function loadRecentStories() {
         }
 
 
-        container.innerHTML = "";
+        mostrarHistorias(
+            todasLasHistorias,
+            recentContainer
+        );
 
 
-        stories.forEach(function(story) {
+        /*
+         * Por ahora utilizamos las mismas
+         * historias para "Más populares".
+         *
+         * Más adelante podemos agregar
+         * visitas, likes o lecturas y ordenar
+         * esta sección realmente por popularidad.
+         */
 
-            const card =
-                document.createElement("div");
-
-            card.className =
-                "card";
-
-
-            /* ==================================
-               PORTADA
-            ================================== */
-
-            let coverHTML;
-
-
-            if (story.cover_url) {
-
-                coverHTML =
-                    '<div class="cover">' +
-
-                    '<img src="' +
-                    escapeHtml(story.cover_url) +
-                    '" alt="Portada de ' +
-                    escapeHtml(story.title) +
-                    '">' +
-
-                    '</div>';
-
-            } else {
-
-                coverHTML =
-                    '<div class="cover">' +
-                    '📖' +
-                    '</div>';
-
-            }
-
-
-            /* ==================================
-               TARJETA
-            ================================== */
-
-            card.innerHTML =
-
-                coverHTML +
-
-                '<div class="card-content">' +
-
-                '<h3>' +
-                escapeHtml(story.title) +
-                '</h3>' +
-
-                '<div class="author">' +
-                'Por ' +
-                escapeHtml(
-                    story.author || "Autor"
-                ) +
-                '</div>' +
-
-                '<p class="description">' +
-                escapeHtml(
-                    story.description || ""
-                ) +
-                '</p>' +
-
-                '<a class="card-button" href="leer-historia.html?id=' +
-                story.id +
-                '">' +
-                'Leer' +
-                '</a>' +
-
-                '</div>';
-
-
-            container.appendChild(card);
-
-        });
+        mostrarHistorias(
+            todasLasHistorias,
+            popularContainer
+        );
 
 
     } catch (error) {
@@ -1040,9 +923,291 @@ async function loadRecentStories() {
             error
         );
 
+
+        recentContainer.innerHTML =
+            '<p style="color:#666;">' +
+            'Error cargando historias.' +
+            '</p>';
+
+        popularContainer.innerHTML =
+            '<p style="color:#666;">' +
+            'Error cargando historias.' +
+            '</p>';
+
     }
 
 }
+
+
+/* ==========================================
+   MOSTRAR HISTORIAS
+========================================== */
+
+function mostrarHistorias(
+    historias,
+    container
+) {
+
+    container.innerHTML = "";
+
+
+    if (
+        historias.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p style="color:#666;">' +
+            'No se encontraron historias.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    /*
+     * Mostramos como máximo 4 tarjetas
+     * para conservar exactamente la interfaz.
+     */
+
+    const limite =
+        Math.min(
+            historias.length,
+            4
+        );
+
+
+    for (
+        let i = 0;
+        i < limite;
+        i++
+    ) {
+
+        const story =
+            historias[i];
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+        card.className =
+            "card";
+
+
+        /* ==================================
+           PORTADA
+        ================================== */
+
+        let coverHTML;
+
+
+        if (
+            story.cover_url
+        ) {
+
+            coverHTML =
+                '<div class="cover">' +
+
+                '<img src="' +
+                escapeHtml(
+                    story.cover_url
+                ) +
+                '" alt="Portada de ' +
+                escapeHtml(
+                    story.title
+                ) +
+                '">' +
+
+                '</div>';
+
+        } else {
+
+            coverHTML =
+                '<div class="cover">' +
+                '📖' +
+                '</div>';
+
+        }
+
+
+        /* ==================================
+           TARJETA
+        ================================== */
+
+        card.innerHTML =
+
+            coverHTML +
+
+            '<div class="card-content">' +
+
+            '<h3>' +
+            escapeHtml(
+                story.title || "Sin título"
+            ) +
+            '</h3>' +
+
+            '<div class="author">' +
+            'Por ' +
+            escapeHtml(
+                story.author || "Autor"
+            ) +
+            '</div>' +
+
+            '<p class="description">' +
+            escapeHtml(
+                story.description || ""
+            ) +
+            '</p>' +
+
+            '<a class="card-button" href="leer-historia.html?id=' +
+            encodeURIComponent(
+                story.id
+            ) +
+            '">' +
+            'Leer' +
+            '</a>' +
+
+            '</div>';
+
+
+        container.appendChild(
+            card
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   BUSCADOR
+========================================== */
+
+function buscarHistorias() {
+
+    const input =
+        document.getElementById(
+            "search-input"
+        );
+
+
+    const texto =
+        input.value
+            .trim()
+            .toLowerCase();
+
+
+    if (!texto) {
+
+        mostrarHistorias(
+            todasLasHistorias,
+            document.getElementById(
+                "recent-stories"
+            )
+        );
+
+        mostrarHistorias(
+            todasLasHistorias,
+            document.getElementById(
+                "popular-section"
+            )
+        );
+
+        return;
+
+    }
+
+
+    const resultados =
+        todasLasHistorias.filter(
+            function(story) {
+
+                const titulo =
+                    String(
+                        story.title || ""
+                    ).toLowerCase();
+
+                const autor =
+                    String(
+                        story.author || ""
+                    ).toLowerCase();
+
+                const genero =
+                    String(
+                        story.genre || ""
+                    ).toLowerCase();
+
+                const descripcion =
+                    String(
+                        story.description || ""
+                    ).toLowerCase();
+
+
+                return (
+                    titulo.includes(texto) ||
+                    autor.includes(texto) ||
+                    genero.includes(texto) ||
+                    descripcion.includes(texto)
+                );
+
+            }
+        );
+
+
+    const recentContainer =
+        document.getElementById(
+            "recent-stories"
+        );
+
+
+    const popularContainer =
+        document.getElementById(
+            "popular-section"
+        );
+
+
+    mostrarHistorias(
+        resultados,
+        recentContainer
+    );
+
+
+    popularContainer.innerHTML =
+        '<p style="color:#666;">' +
+        'Resultados de búsqueda arriba.' +
+        '</p>';
+
+
+    recentContainer.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+}
+
+
+/* ==========================================
+   BUSCAR AL PRESIONAR ENTER
+========================================== */
+
+document.getElementById(
+    "search-input"
+).addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            buscarHistorias();
+
+        }
+
+    }
+);
 
 
 /* ==========================================
@@ -1052,7 +1217,9 @@ async function loadRecentStories() {
 function escapeHtml(text) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     div.textContent =
         text;
@@ -1068,7 +1235,7 @@ function escapeHtml(text) {
 
 checkSession();
 
-loadRecentStories();
+loadStories();
 
 </script>
 
