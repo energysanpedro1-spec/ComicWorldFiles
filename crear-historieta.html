@@ -1,102 +1,93 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="es">
 
-<title>Crear historieta - ComicWorldFiles</title><style>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Crear historieta - ComicWorldFiles</title>
+
+<style>
 
 * {
     box-sizing: border-box;
 }
 
 body {
+
     margin: 0;
+
     font-family: Arial, sans-serif;
+
     background: #f4f4f4;
+
     color: #222;
 }
 
-/* ==============================
-   CABECERA
-============================== */
-
 header {
-    background: #20242b;
+
+    background: #222;
+
     color: white;
-    padding: 15px 20px;
+
+    padding: 15px;
+
+    text-align: center;
 }
 
-.header-content {
-    max-width: 900px;
-    margin: auto;
+header h1 {
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    margin: 0;
 
-    gap: 20px;
+    font-size: 22px;
 }
-
-.logo {
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.back {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.back:hover {
-    text-decoration: underline;
-}
-
-/* ==============================
-   CONTENEDOR
-============================== */
 
 .container {
+
+    width: 95%;
+
     max-width: 900px;
-    margin: auto;
-    padding: 25px 15px;
+
+    margin: 20px auto;
 }
 
-/* ==============================
-   CAJA
-============================== */
+.card {
 
-.form-box {
     background: white;
-    padding: 30px;
-    border-radius: 12px;
 
-    box-shadow:
-        0 2px 8px rgba(0,0,0,0.08);
-}
+    padding: 20px;
 
-.form-box h1 {
-    margin-top: 0;
-    margin-bottom: 25px;
-    font-size: 30px;
-}
-
-/* ==============================
-   CAMPOS
-============================== */
-
-.field {
     margin-bottom: 20px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-.field label {
+h2 {
+
+    margin-top: 0;
+
+    font-size: 20px;
+}
+
+label {
+
     display: block;
+
+    margin-top: 15px;
+
+    margin-bottom: 5px;
+
     font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 7px;
 }
 
-.field input,
-.field textarea,
-.field select {
+input,
+textarea,
+select {
 
     width: 100%;
 
@@ -104,198 +95,129 @@ header {
 
     border: 1px solid #ccc;
 
-    border-radius: 7px;
+    border-radius: 6px;
+
+    font-size: 16px;
 
     font-family: Arial, sans-serif;
-
-    font-size: 14px;
-
-    background: white;
-
-    color: #222;
 }
 
-.field textarea {
+textarea {
 
-    min-height: 120px;
+    min-height: 150px;
 
     resize: vertical;
 }
 
-.field input:focus,
-.field textarea:focus,
-.field select:focus {
+button {
 
-    outline: none;
+    border: none;
 
-    border-color: #ff6b35;
+    border-radius: 6px;
+
+    padding: 11px 16px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+
+    background: #222;
+
+    color: white;
 }
 
-/* ==============================
-   PORTADA
-============================== */
+button:hover {
 
-.cover-area {
+    opacity: 0.85;
+}
 
-    display: flex;
+button.secondary {
 
-    gap: 20px;
+    background: #666;
+}
 
-    align-items: flex-start;
+button.danger {
 
-    flex-wrap: wrap;
+    background: #c62828;
+}
+
+button.green {
+
+    background: #2e7d32;
+}
+
+button.blue {
+
+    background: #1565c0;
+}
+
+button:disabled {
+
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+.status {
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    border-radius: 6px;
+
+    display: none;
+}
+
+.status.success {
+
+    display: block;
+
+    background: #dff2df;
+
+    color: #256029;
+}
+
+.status.error {
+
+    display: block;
+
+    background: #f8d7da;
+
+    color: #842029;
 }
 
 .cover-preview {
 
-    width: 150px;
+    margin-top: 15px;
 
-    height: 210px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #5c677d,
-            #222831
-        );
-
-    border-radius: 8px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow: hidden;
-
-    color: white;
-
-    font-size: 40px;
-
-    flex-shrink: 0;
+    text-align: center;
 }
 
 .cover-preview img {
 
-    width: 100%;
+    max-width: 300px;
 
-    height: 100%;
+    max-height: 400px;
 
-    object-fit: cover;
+    border-radius: 8px;
 
-    display: block;
-}
-
-.cover-controls {
-
-    flex: 1;
-
-    min-width: 220px;
-}
-
-/* ==============================
-   BOTONES
-============================== */
-
-.button {
-
-    border: none;
-
-    border-radius: 7px;
-
-    padding: 11px 18px;
-
-    cursor: pointer;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    text-decoration: none;
-
-    display: inline-block;
-}
-
-.orange-button {
-
-    background: #ff6b35;
-
-    color: white;
-}
-
-.orange-button:hover {
-
-    background: #e85a2a;
-}
-
-.orange-button:disabled {
-
-    background: #aaa;
-
-    cursor: wait;
-}
-
-.dark-button {
-
-    background: #20242b;
-
-    color: white;
-}
-
-.dark-button:hover {
-
-    background: #343a40;
-}
-
-.gray-button {
-
-    background: #ddd;
-
-    color: #222;
-}
-
-.gray-button:hover {
-
-    background: #ccc;
-}
-
-.red-button {
-
-    background: #d9534f;
-
-    color: white;
-}
-
-.red-button:hover {
-
-    background: #c9302c;
-}
-
-/* ==============================
-   CAPÍTULOS
-============================== */
-
-.chapters-title {
-
-    margin-top: 35px;
-
-    margin-bottom: 15px;
-
-    font-size: 22px;
+    border: 1px solid #ccc;
 }
 
 .chapter {
 
-    background: #f8f8f8;
-
     border: 1px solid #ddd;
 
-    border-radius: 10px;
+    border-radius: 8px;
 
-    padding: 20px;
+    padding: 15px;
 
-    margin-bottom: 20px;
+    margin-top: 15px;
+
+    background: #fafafa;
 }
 
 .chapter-header {
@@ -308,2531 +230,2392 @@ header {
 
     gap: 10px;
 
-    margin-bottom: 15px;
+    flex-wrap: wrap;
 }
 
-.chapter-header h3 {
+.chapter-title {
 
-    margin: 0;
+    font-weight: bold;
+
+    font-size: 18px;
 }
 
-.chapter-number {
+.chapter-buttons {
 
-    color: #777;
+    display: flex;
+
+    gap: 5px;
+
+    flex-wrap: wrap;
+}
+
+.chapter-buttons button {
+
+    margin-top: 0;
+
+    padding: 8px 10px;
 
     font-size: 13px;
 }
 
-/* ==============================
-   BLOQUES
-============================== */
+.images {
 
-.blocks {
+    display: grid;
 
-    display: flex;
-
-    flex-direction: column;
+    grid-template-columns:
+        repeat(auto-fill, minmax(140px, 1fr));
 
     gap: 12px;
 
     margin-top: 15px;
 }
 
-.block {
+.image-item {
 
     background: white;
 
     border: 1px solid #ddd;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
-    padding: 15px;
+    padding: 8px;
 
-    position: relative;
+    text-align: center;
 }
 
-.block-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 10px;
-
-    gap: 10px;
-}
-
-.block-type {
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    color: #555;
-}
-
-.block-actions {
-
-    display: flex;
-
-    gap: 5px;
-}
-
-.small-button {
-
-    border: none;
-
-    background: #ddd;
-
-    color: #222;
-
-    border-radius: 5px;
-
-    padding: 5px 8px;
-
-    cursor: pointer;
-
-    font-size: 12px;
-}
-
-.small-button:hover {
-
-    background: #ccc;
-}
-
-.delete-block {
-
-    background: #f1d0d0;
-
-    color: #a33;
-}
-
-/* ==============================
-   TEXTO
-============================== */
-
-.block textarea {
+.image-item img {
 
     width: 100%;
 
-    min-height: 100px;
-
-    padding: 10px;
-
-    border: 1px solid #ccc;
-
-    border-radius: 6px;
-
-    resize: vertical;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 14px;
-}
-
-/* ==============================
-   IMAGEN
-============================== */
-
-.image-preview {
-
-    width: 100%;
-
-    max-height: 500px;
+    height: 180px;
 
     object-fit: contain;
 
-    display: block;
-
-    margin-top: 10px;
-
-    border-radius: 6px;
-
     background: #eee;
+
+    border-radius: 5px;
 }
 
-.image-info {
-
-    color: #777;
-
-    font-size: 12px;
-
-    margin-top: 7px;
-}
-
-.image-warning {
-
-    background: #fff3cd;
-
-    color: #856404;
-
-    border: 1px solid #ffeeba;
-
-    border-radius: 6px;
-
-    padding: 8px;
-
-    margin-top: 8px;
-
-    font-size: 12px;
-}
-
-.image-uploaded {
-
-    background: #e8f7e8;
-
-    color: #276327;
-
-    border: 1px solid #b7ddb7;
-
-    border-radius: 6px;
-
-    padding: 8px;
-
-    margin-top: 8px;
-
-    font-size: 12px;
-
-    display: none;
-}
-
-/* ==============================
-   BOTONES BLOQUES
-============================== */
-
-.block-buttons {
-
-    display: flex;
-
-    gap: 10px;
-
-    margin-top: 15px;
-
-    flex-wrap: wrap;
-}
-
-/* ==============================
-   TAMAÑO
-============================== */
-
-.size-info {
-
-    background: #f1f1f1;
-
-    border-radius: 7px;
-
-    padding: 10px 12px;
-
-    margin-top: 15px;
-
-    color: #666;
-
-    font-size: 13px;
-}
-
-/* ==============================
-   PUBLICAR
-============================== */
-
-.publish-area {
-
-    margin-top: 30px;
-
-    padding-top: 25px;
-
-    border-top: 1px solid #ddd;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 15px;
-
-    flex-wrap: wrap;
-}
-
-.publish-info {
-
-    color: #777;
-
-    font-size: 13px;
-}
-
-.status {
+.image-item button {
 
     width: 100%;
 
-    display: none;
+    margin-top: 7px;
 
-    padding: 12px;
+    padding: 7px;
 
-    border-radius: 7px;
-
-    margin-bottom: 15px;
-
-    font-size: 14px;
+    font-size: 13px;
 }
 
-.status.show {
+.upload-box {
 
-    display: block;
+    border: 2px dashed #bbb;
+
+    border-radius: 8px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    margin-top: 15px;
 }
 
-.status.info {
+.hidden {
 
-    background: #e8f1ff;
-
-    color: #245;
-
-    border: 1px solid #b8d1f5;
+    display: none !important;
 }
 
-.status.success {
-
-    background: #e8f7e8;
-
-    color: #276327;
-
-    border: 1px solid #b7ddb7;
-}
-
-.status.error {
-
-    background: #fbeaea;
-
-    color: #8b2222;
-
-    border: 1px solid #e0b5b5;
-}
-
-/* ==============================
-   FOOTER
-============================== */
-
-footer {
-
-    background: #20242b;
-
-    color: #aaa;
+.login-message {
 
     text-align: center;
 
     padding: 30px;
 
-    margin-top: 40px;
-
-    font-size: 13px;
+    font-size: 18px;
 }
 
-/* ==============================
-   CELULAR
-============================== */
+.loading {
 
-@media (max-width: 600px) {
+    text-align: center;
 
-    .container {
-
-        padding: 18px 12px;
-    }
-
-    .form-box {
-
-        padding: 20px;
-    }
-
-    .form-box h1 {
-
-        font-size: 25px;
-    }
-
-    .cover-preview {
-
-        width: 130px;
-
-        height: 180px;
-    }
-
-    .chapter {
-
-        padding: 15px;
-    }
-
-    .chapter-header {
-
-        align-items: flex-start;
-
-        flex-direction: column;
-    }
-
-    .publish-area {
-
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-    .publish-area .button {
-
-        width: 100%;
-
-        text-align: center;
-    }
-
+    padding: 20px;
 }
 
-</style></head><body><header><div class="header-content"><div class="logo">
-ComicWorldFiles
-</div><a
-class="back"
-href="index.html">
+.back {
 
-← Volver
+    display: inline-block;
 
-</a></div></header><main class="container"><section class="form-box"><h1>
-Crear historieta
-</h1><!-- ==============================
-     ESTADO
-============================== --><div
-id="status"
-class="status">
-</div><!-- ==============================
-     INFORMACIÓN
-============================== --><div class="field"><label>
-Título
-</label><input
-type="text"
-id="title"
-placeholder="Nombre de la historieta"
-maxlength="150">
+    margin-bottom: 15px;
 
-</div><div class="field"><label>
-Descripción
-</label><textarea
-id="description"
-placeholder="Describe brevemente tu historieta..."
-maxlength="2000"></textarea></div><div class="field"><label>
-Género
-</label><select id="genre"><option value="">
-Seleccionar género
-</option><option value="Acción">
-Acción
-</option><option value="Aventura">
-Aventura
-</option><option value="Ciencia ficción">
-Ciencia ficción
-</option><option value="Comedia">
-Comedia
-</option><option value="Drama">
-Drama
-</option><option value="Fantasía">
-Fantasía
-</option><option value="Horror">
-Horror
-</option><option value="Misterio">
-Misterio
-</option><option value="Romance">
-Romance
-</option><option value="Terror">
-Terror
-</option><option value="Otro">
-Otro
-</option></select></div><!-- ==============================
-     PORTADA
-============================== --><div class="field"><label>
-Portada
-</label><div class="cover-area"><div
-id="cover-preview"
-class="cover-preview">📖
+    color: #1565c0;
 
-</div><div class="cover-controls"><input
-type="file"
-id="cover-input"
-accept="image/jpeg,image/png,image/webp,image/gif">
+    text-decoration: none;
 
-<p
-style="
-color:#777;
-font-size:13px;
-line-height:1.5;
-">Selecciona una imagen para utilizar
-como portada de tu historieta.
+    font-weight: bold;
+}
 
-</p><p
-id="cover-size"
-class="image-info">
-</p></div></div></div><!-- ==============================
-     CAPÍTULOS
-============================== --><h2 class="chapters-title">
-Capítulos
-</h2><div id="chapters">
-</div><button
-type="button"
-class="button dark-button"
-onclick="agregarCapitulo()">
+.chapter-editor {
 
-+ Agregar capítulo
+    margin-top: 15px;
 
-</button><!-- ==============================
-     TAMAÑO
-============================== --><div
-id="size-info"
-class="size-info">Tamaño original aproximado: 0 Bytes
+    padding-top: 15px;
 
-</div><!-- ==============================
-     PUBLICAR
-============================== --><div class="publish-area"><div class="publish-info">La portada y las imágenes de los capítulos
-se subirán al servidor al publicar.
+    border-top: 1px solid #ddd;
+}
 
-</div><button
-type="button"
-id="save-button"
-class="button orange-button"
-onclick="guardarHistorieta()">
+.empty {
 
-Publicar historieta
+    color: #777;
 
-</button></div></section></main><footer>ComicWorldFiles © 2026
+    text-align: center;
+
+    padding: 15px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>ComicWorldFiles</h1>
+
+</header>
+
+
+<div class="container">
+
+
+<a href="historietas.html"
+   class="back">
+
+← Volver a historietas
+
+</a>
+
+
+<div id="loading"
+     class="card loading">
+
+Cargando...
+
+</div>
+
+
+<div id="loginMessage"
+     class="card login-message hidden">
+
+Debes iniciar sesión para crear o editar una historieta.
 
 <br>
-<br>Una plataforma para publicar y descubrir
-historias independientes.
 
-</footer><script>
+<button
+    onclick="window.location.href='login.html'">
 
-/* =========================================================
-   VARIABLES
-========================================================= */
+Iniciar sesión
 
-let numeroCapitulo = 0;
+</button>
 
-
-/* =========================================================
-   INICIAR
-========================================================= */
-
-agregarCapitulo();
+</div>
 
 
-/* =========================================================
-   MOSTRAR ESTADO
-========================================================= */
-
-function mostrarEstado(
-    mensaje,
-    tipo
-) {
-
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-    status.textContent =
-        mensaje;
-
-    status.className =
-        "status show " +
-        tipo;
-
-}
+<div id="main"
+     class="hidden">
 
 
-/* =========================================================
-   PORTADA
-========================================================= */
-
-document
-.getElementById("cover-input")
-.addEventListener(
-    "change",
-    function(event) {
-
-        const file =
-            event.target.files[0];
-
-        if (!file) {
-
-            return;
-
-        }
+<div id="status"
+     class="status">
+</div>
 
 
-        if (
-            !file.type.startsWith("image/")
-        ) {
-
-            alert(
-                "Selecciona una imagen válida."
-            );
-
-            event.target.value = "";
-
-            return;
-
-        }
+<!-- =====================================================
+     INFORMACIÓN
+===================================================== -->
 
 
-        const maxSize =
-            10 * 1024 * 1024;
+<div class="card">
+
+<h2 id="formTitle">
+Crear historieta
+</h2>
 
 
-        if (
-            file.size > maxSize
-        ) {
+<label for="title">
 
-            alert(
-                "La portada no puede superar los 10 MB."
-            );
+Título
 
-            event.target.value = "";
+</label>
 
-            return;
-
-        }
+<input
+    type="text"
+    id="title"
+    maxlength="200"
+    placeholder="Título de la historieta">
 
 
-        const reader =
-            new FileReader();
+<label for="description">
+
+Descripción
+
+</label>
+
+<textarea
+    id="description"
+    maxlength="5000"
+    placeholder="Describe tu historieta..."></textarea>
 
 
-        reader.onload =
-            function(e) {
+<label for="genre">
 
-                document.getElementById(
-                    "cover-preview"
-                ).innerHTML =
+Género
 
-                    '<img src="' +
-                    e.target.result +
-                    '" alt="Portada">';
+</label>
 
-            };
+<select id="genre">
+
+<option value="Acción">
+Acción
+</option>
+
+<option value="Aventura">
+Aventura
+</option>
+
+<option value="Ciencia ficción">
+Ciencia ficción
+</option>
+
+<option value="Comedia">
+Comedia
+</option>
+
+<option value="Drama">
+Drama
+</option>
+
+<option value="Fantasía">
+Fantasía
+</option>
+
+<option value="Horror">
+Horror
+</option>
+
+<option value="Romance">
+Romance
+</option>
+
+<option value="Misterio">
+Misterio
+</option>
+
+<option value="Otros">
+Otros
+</option>
+
+</select>
 
 
-        reader.readAsDataURL(file);
+<button
+    id="saveStoryButton"
+    class="green"
+    onclick="saveStory()">
+
+Crear historieta
+
+</button>
 
 
-        document.getElementById(
-            "cover-size"
-        ).textContent =
-
-            "Tamaño original: " +
-            formatearBytes(file.size);
+</div>
 
 
-        calcularTamanoTotal();
 
-    }
+<!-- =====================================================
+     PORTADA
+===================================================== -->
+
+
+<div id="coverCard"
+     class="card hidden">
+
+<h2>
+
+Portada
+
+</h2>
+
+
+<input
+    type="file"
+    id="coverInput"
+    accept="image/jpeg,image/png,image/webp,image/gif">
+
+
+<button
+    class="blue"
+    onclick="uploadCover()">
+
+Subir portada
+
+</button>
+
+
+<div id="coverPreview"
+     class="cover-preview">
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     CAPÍTULOS
+===================================================== -->
+
+
+<div id="chaptersCard"
+     class="card hidden">
+
+<h2>
+
+Capítulos
+
+</h2>
+
+
+<button
+    class="green"
+    onclick="showNewChapter()">
+
++ Nuevo capítulo
+
+</button>
+
+
+<div id="newChapter"
+     class="chapter-editor hidden">
+
+
+<h3>
+
+Nuevo capítulo
+
+</h3>
+
+
+<label>
+
+Título del capítulo
+
+</label>
+
+<input
+    type="text"
+    id="newChapterTitle"
+    placeholder="Ejemplo: Capítulo 1">
+
+
+<label>
+
+Contenido
+
+</label>
+
+<textarea
+    id="newChapterContent"
+    placeholder="Escribe aquí el contenido del capítulo..."></textarea>
+
+
+<button
+    class="green"
+    onclick="createChapter()">
+
+Guardar capítulo
+
+</button>
+
+
+<button
+    class="secondary"
+    onclick="cancelNewChapter()">
+
+Cancelar
+
+</button>
+
+
+</div>
+
+
+<div id="chaptersList">
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+// =========================================================
+// VARIABLES
+// =========================================================
+
+
+let currentUser = null;
+
+let storyId = null;
+
+let story = null;
+
+let chapters = [];
+
+
+// =========================================================
+// INICIO
+// =========================================================
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    init
 );
 
 
-/* =========================================================
-   AGREGAR CAPÍTULO
-========================================================= */
-
-function agregarCapitulo() {
-
-    numeroCapitulo++;
-
-
-    const chapter =
-        document.createElement(
-            "div"
-        );
-
-
-    chapter.className =
-        "chapter";
-
-
-    chapter.dataset.chapter =
-        numeroCapitulo;
-
-
-    chapter.innerHTML =
-
-        '<div class="chapter-header">' +
-
-            '<div>' +
-
-                '<h3>' +
-                    'Capítulo ' +
-                    numeroCapitulo +
-                '</h3>' +
-
-                '<div class="chapter-number">' +
-                    'Organiza las imágenes y textos de este capítulo.' +
-                '</div>' +
-
-            '</div>' +
-
-            '<button ' +
-                'type="button" ' +
-                'class="button red-button" ' +
-                'onclick="eliminarCapitulo(this)">' +
-
-                'Eliminar capítulo' +
-
-            '</button>' +
-
-        '</div>' +
-
-
-        '<div class="field">' +
-
-            '<label>' +
-                'Título del capítulo' +
-            '</label>' +
-
-            '<input ' +
-                'type="text" ' +
-                'class="chapter-title" ' +
-                'placeholder="Ej: El comienzo" ' +
-                'maxlength="150">' +
-
-        '</div>' +
-
-
-        '<div class="blocks">' +
-        '</div>' +
-
-
-        '<div class="block-buttons">' +
-
-            '<button ' +
-                'type="button" ' +
-                'class="button dark-button" ' +
-                'onclick="agregarImagen(this)">' +
-
-                '+ Imagen' +
-
-            '</button>' +
-
-            '<button ' +
-                'type="button" ' +
-                'class="button dark-button" ' +
-                'onclick="agregarTexto(this)">' +
-
-                '+ Texto' +
-
-            '</button>' +
-
-        '</div>';
-
-
-    document
-        .getElementById("chapters")
-        .appendChild(
-            chapter
-        );
-
-}
-
-
-/* =========================================================
-   ELIMINAR CAPÍTULO
-========================================================= */
-
-function eliminarCapitulo(button) {
-
-    const chapter =
-        button.closest(
-            ".chapter"
-        );
-
-
-    if (!chapter) {
-
-        return;
-
-    }
-
-
-    const chapters =
-        document.querySelectorAll(
-            ".chapter"
-        );
-
-
-    if (
-        chapters.length <= 1
-    ) {
-
-        alert(
-            "La historieta debe tener al menos un capítulo."
-        );
-
-        return;
-
-    }
-
-
-    chapter.remove();
-
-
-    renumerarCapitulos();
-
-}
-
-
-/* =========================================================
-   RENUMERAR CAPÍTULOS
-========================================================= */
-
-function renumerarCapitulos() {
-
-    const chapters =
-        document.querySelectorAll(
-            ".chapter"
-        );
-
-
-    chapters.forEach(
-        function(
-            chapter,
-            index
-        ) {
-
-            const numero =
-                index + 1;
-
-
-            chapter.dataset.chapter =
-                numero;
-
-
-            const titulo =
-                chapter.querySelector(
-                    "h3"
-                );
-
-
-            if (titulo) {
-
-                titulo.textContent =
-                    "Capítulo " +
-                    numero;
-
-            }
-
-        }
-    );
-
-
-    numeroCapitulo =
-        chapters.length;
-
-}
-
-
-/* =========================================================
-   AGREGAR IMAGEN
-========================================================= */
-
-function agregarImagen(button) {
-
-    const chapter =
-        button.closest(
-            ".chapter"
-        );
-
-
-    const blocks =
-        chapter.querySelector(
-            ".blocks"
-        );
-
-
-    const block =
-        document.createElement(
-            "div"
-        );
-
-
-    block.className =
-        "block";
-
-
-    block.dataset.type =
-        "image";
-
-
-    block.innerHTML =
-
-        '<div class="block-header">' +
-
-            '<span class="block-type">' +
-                '🖼️ Imagen' +
-            '</span>' +
-
-            '<div class="block-actions">' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="small-button" ' +
-                    'onclick="moverBloque(this, -1)">' +
-                    '↑' +
-                '</button>' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="small-button" ' +
-                    'onclick="moverBloque(this, 1)">' +
-                    '↓' +
-                '</button>' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="small-button delete-block" ' +
-                    'onclick="eliminarBloque(this)">' +
-                    'Eliminar' +
-                '</button>' +
-
-            '</div>' +
-
-        '</div>' +
-
-
-        '<input ' +
-            'type="file" ' +
-            'accept="image/jpeg,image/png,image/webp,image/gif" ' +
-            'onchange="previsualizarImagen(this)">' +
-
-
-        '<div class="image-container"></div>' +
-
-
-        '<div class="image-info"></div>' +
-
-
-        '<div class="image-warning">' +
-            'La imagen se subirá al servidor al publicar la historieta. Máximo 10 MB.' +
-        '</div>' +
-
-
-        '<div class="image-uploaded">' +
-            '✓ Imagen subida correctamente.' +
-        '</div>';
-
-
-    blocks.appendChild(
-        block
-    );
-
-}
-
-
-/* =========================================================
-   AGREGAR TEXTO
-========================================================= */
-
-function agregarTexto(button) {
-
-    const chapter =
-        button.closest(
-            ".chapter"
-        );
-
-
-    const blocks =
-        chapter.querySelector(
-            ".blocks"
-        );
-
-
-    const block =
-        document.createElement(
-            "div"
-        );
-
-
-    block.className =
-        "block";
-
-
-    block.dataset.type =
-        "text";
-
-
-    block.innerHTML =
-
-        '<div class="block-header">' +
-
-            '<span class="block-type">' +
-                '📝 Texto' +
-            '</span>' +
-
-            '<div class="block-actions">' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="small-button" ' +
-                    'onclick="moverBloque(this, -1)">' +
-                    '↑' +
-                '</button>' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="small-button" ' +
-                    'onclick="moverBloque(this, 1)">' +
-                    '↓' +
-                '</button>' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="small-button delete-block" ' +
-                    'onclick="eliminarBloque(this)">' +
-                    'Eliminar' +
-                '</button>' +
-
-            '</div>' +
-
-        '</div>' +
-
-
-        '<textarea ' +
-            'placeholder="Escribe aquí la narración, diálogo o descripción...">' +
-        '</textarea>';blocks.appendChild(
-    block
-);
-
-}
-
-/* =========================================================
-PREVISUALIZAR IMAGEN
-========================================================= */
-
-function previsualizarImagen(input) {
-
-const file =
-    input.files[0];
-
-
-if (!file) {
-
-    return;
-
-}
-
-
-const allowedTypes = [
-
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-    "image/gif"
-
-];
-
-
-if (
-    !allowedTypes.includes(
-        file.type
-    )
-) {
-
-    alert(
-        "Formato no permitido. Usa JPG, PNG, WEBP o GIF."
-    );
-
-    input.value = "";
-
-    return;
-
-}
-
-
-const maxSize =
-    10 * 1024 * 1024;
-
-
-if (
-    file.size > maxSize
-) {
-
-    alert(
-        "La imagen no puede superar los 10 MB."
-    );
-
-    input.value = "";
-
-    return;
-
-}
-
-
-const block =
-    input.closest(
-        ".block"
-    );
-
-
-const container =
-    block.querySelector(
-        ".image-container"
-    );
-
-
-const info =
-    block.querySelector(
-        ".image-info"
-    );
-
-
-const uploaded =
-    block.querySelector(
-        ".image-uploaded"
-    );
-
-
-uploaded.style.display =
-    "none";
-
-
-const reader =
-    new FileReader();
-
-
-reader.onload =
-    function(event) {
-
-        container.innerHTML =
-
-            '<img ' +
-                'class="image-preview" ' +
-                'src="' +
-                    event.target.result +
-                '" ' +
-                'alt="Imagen del capítulo">';
-
-    };
-
-
-reader.readAsDataURL(file);
-
-
-info.textContent =
-    "Tamaño original: " +
-    formatearBytes(
-        file.size
-    );
-
-
-calcularTamanoTotal();
-
-}
-
-/* =========================================================
-MOVER BLOQUE
-========================================================= */
-
-function moverBloque(
-button,
-direccion
-) {
-
-const block =
-    button.closest(
-        ".block"
-    );
-
-
-const blocks =
-    block.parentElement;
-
-
-if (
-    direccion === -1
-) {
-
-    const anterior =
-        block.previousElementSibling;
-
-
-    if (anterior) {
-
-        blocks.insertBefore(
-            block,
-            anterior
-        );
-
-    }
-
-} else {
-
-    const siguiente =
-        block.nextElementSibling;
-
-
-    if (siguiente) {
-
-        blocks.insertBefore(
-            siguiente,
-            block
-        );
-
-    }
-
-}
-
-}
-
-/* =========================================================
-ELIMINAR BLOQUE
-========================================================= */
-
-function eliminarBloque(button) {
-
-const block =
-    button.closest(
-        ".block"
-    );
-
-
-if (block) {
-
-    block.remove();
-
-    calcularTamanoTotal();
-
-}
-
-}
-
-/* =========================================================
-CALCULAR TAMAÑO
-========================================================= */
-
-function calcularTamanoTotal() {
-
-let total =
-    0;
-
-
-const cover =
-    document.getElementById(
-        "cover-input"
-    ).files[0];
-
-
-if (cover) {
-
-    total +=
-        cover.size;
-
-}
-
-
-const inputs =
-    document.querySelectorAll(
-        '.block input[type="file"]'
-    );
-
-
-inputs.forEach(
-    function(input) {
-
-        if (
-            input.files &&
-            input.files[0]
-        ) {
-
-            total +=
-                input.files[0].size;
-
-        }
-
-    }
-);
-
-
-document.getElementById(
-    "size-info"
-).textContent =
-
-    "Tamaño original aproximado: " +
-    formatearBytes(
-        total
-    );
-
-}
-
-/* =========================================================
-FORMATEAR BYTES
-========================================================= */
-
-function formatearBytes(
-bytes
-) {
-
-if (
-    bytes === 0
-) {
-
-    return "0 Bytes";
-
-}
-
-
-const unidades = [
-
-    "Bytes",
-    "KB",
-    "MB",
-    "GB"
-
-];
-
-
-const indice =
-    Math.floor(
-        Math.log(bytes) /
-        Math.log(1024)
-    );
-
-
-return (
-
-    bytes /
-    Math.pow(
-        1024,
-        indice
-    )
-
-).toFixed(2) +
-
-" " +
-
-unidades[indice];
-
-}
-
-/* =========================================================
-COMPRIMIR IMAGEN
-========================================================= */
-
-function comprimirImagen(
-file,
-maxWidth,
-maxHeight,
-quality
-) {
-
-return new Promise(
-    function(
-        resolve,
-        reject
-    ) {
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            function(event) {
-
-                const img =
-                    new Image();
-
-
-                img.onload =
-                    function() {
-
-                        let width =
-                            img.width;
-
-                        let height =
-                            img.height;
-
-
-                        const escala =
-                            Math.min(
-                                1,
-                                maxWidth / width,
-                                maxHeight / height
-                            );
-
-
-                        width =
-                            Math.round(
-                                width *
-                                escala
-                            );
-
-
-                        height =
-                            Math.round(
-                                height *
-                                escala
-                            );
-
-
-                        const canvas =
-                            document.createElement(
-                                "canvas"
-                            );
-
-
-                        canvas.width =
-                            width;
-
-                        canvas.height =
-                            height;
-
-
-                        const ctx =
-                            canvas.getContext(
-                                "2d"
-                            );
-
-
-                        ctx.drawImage(
-                            img,
-                            0,
-                            0,
-                            width,
-                            height
-                        );
-
-
-                        canvas.toBlob(
-                            function(blob) {
-
-                                if (!blob) {
-
-                                    reject(
-                                        new Error(
-                                            "No se pudo comprimir la imagen."
-                                        )
-                                    );
-
-                                    return;
-
-                                }
-
-
-                                resolve(
-                                    new File(
-                                        [blob],
-                                        file.name.replace(
-                                            /\.[^/.]+$/,
-                                            ".jpg"
-                                        ),
-                                        {
-                                            type:
-                                                "image/jpeg"
-                                        }
-                                    )
-                                );
-
-                            },
-                            "image/jpeg",
-                            quality
-                        );
-
-                    };
-
-
-                img.onerror =
-                    function() {
-
-                        reject(
-                            new Error(
-                                "No se pudo leer la imagen."
-                            )
-                        );
-
-                    };
-
-
-                img.src =
-                    event.target.result;
-
-            };
-
-
-        reader.onerror =
-            function() {
-
-                reject(
-                    new Error(
-                        "No se pudo leer el archivo."
-                    )
-                );
-
-            };
-
-
-        reader.readAsDataURL(
-            file
-        );
-
-    }
-);
-
-}
-
-/* =========================================================
-CONSTRUIR CONTENIDO INICIAL
-========================================================= */
-
-function obtenerBloquesCapitulo(
-chapter
-) {
-
-const blocks =
-    chapter.querySelectorAll(
-        ".block"
-    );
-
-
-const contenido = [];
-
-
-blocks.forEach(
-    function(block) {
-
-        const tipo =
-            block.dataset.type;
-
-
-        if (
-            tipo === "text"
-        ) {
-
-            const textarea =
-                block.querySelector(
-                    "textarea"
-                );
-
-
-            contenido.push({
-
-                type:
-                    "text",
-
-                text:
-                    textarea
-                        ? textarea.value
-                        : ""
-
-            });
-
-        }
-
-
-        else if (
-            tipo === "image"
-        ) {
-
-            contenido.push({
-
-                type:
-                    "image",
-
-                imageId:
-                    null,
-
-                url:
-                    null
-
-            });
-
-        }
-
-    }
-);
-
-
-return contenido;
-
-}
-
-/* =========================================================
-SUBIR IMAGEN DE CAPÍTULO
-========================================================= */
-
-async function subirImagen(
-chapterId,
-block
-) {
-
-const input =
-    block.querySelector(
-        'input[type="file"]'
-    );
-
-
-if (
-    !input ||
-    !input.files ||
-    !input.files[0]
-) {
-
-    throw new Error(
-        "Uno de los bloques de imagen no contiene ningún archivo."
-    );
-
-}
-
-
-let file =
-    input.files[0];
-
-
-/* -----------------------------------------
-   COMPRIMIR
------------------------------------------ */
-
-file =
-    await comprimirImagen(
-        file,
-        1800,
-        2400,
-        0.82
-    );
-
-
-const formData =
-    new FormData();
-
-
-formData.append(
-    "image",
-    file
-);
-
-
-const response =
-    await fetch(
-        "/api/chapters/" +
-        encodeURIComponent(
-            chapterId
-        ) +
-        "/images",
-        {
-
-            method:
-                "POST",
-
-            credentials:
-                "include",
-
-            body:
-                formData
-
-        }
-    );
-
-
-const text =
-    await response.text();
-
-
-let data;
-
-
-try {
-
-    data =
-        JSON.parse(
-            text
-        );
-
-} catch (error) {
-
-    console.error(
-        "Respuesta del servidor:",
-        text
-    );
-
-    throw new Error(
-        "El servidor no devolvió JSON al subir una imagen."
-    );
-
-}
-
-
-if (
-    !response.ok ||
-    !data.success ||
-    !data.image
-) {
-
-    throw new Error(
-        data.error ||
-        "No se pudo subir una imagen."
-    );
-
-}
-
-
-const uploaded =
-    block.querySelector(
-        ".image-uploaded"
-    );
-
-
-if (uploaded) {
-
-    uploaded.textContent =
-        "✓ Imagen subida correctamente.";
-
-    uploaded.style.display =
-        "block";
-
-}
-
-
-return data.image;
-
-}
-
-/* =========================================================
-CREAR CONTENIDO FINAL
-========================================================= */
-
-async function construirContenidoFinal(
-chapter,
-chapterId
-) {
-
-const blocks =
-    chapter.querySelectorAll(
-        ".block"
-    );
-
-
-const contenido = [];
-
-
-for (
-    let i = 0;
-    i < blocks.length;
-    i++
-) {
-
-    const block =
-        blocks[i];
-
-
-    const tipo =
-        block.dataset.type;
-
-
-    /* -------------------------------------
-       TEXTO
-    ------------------------------------- */
-
-    if (
-        tipo === "text"
-    ) {
-
-        const textarea =
-            block.querySelector(
-                "textarea"
-            );
-
-
-        contenido.push({
-
-            type:
-                "text",
-
-            text:
-                textarea
-                    ? textarea.value
-                    : ""
-
-        });
-
-    }
-
-
-    /* -------------------------------------
-       IMAGEN
-    ------------------------------------- */
-
-    else if (
-        tipo === "image"
-    ) {
-
-        mostrarEstado(
-            "Subiendo imagen " +
-            (i + 1) +
-            " del capítulo...",
-            "info"
-        );
-
-
-        const image =
-            await subirImagen(
-                chapterId,
-                block
-            );
-
-
-        /*
-         * IMPORTANTE:
-         * Guardamos los datos que devuelve
-         * el Worker.
-         */
-
-        contenido.push({
-
-            type:
-                "image",
-
-            imageId:
-                image.id,
-
-            url:
-                image.image_url ||
-                image.url ||
-                null,
-
-            filename:
-                image.filename ||
-                null
-
-        });
-
-    }
-
-}
-
-
-return contenido;
-
-}
-
-/* =========================================================
-GUARDAR HISTORIETA
-========================================================= */
-
-async function guardarHistorieta() {
-
-const saveButton =
-    document.getElementById(
-        "save-button"
-    );
-
-
-const title =
-    document.getElementById(
-        "title"
-    ).value.trim();
-
-
-const description =
-    document.getElementById(
-        "description"
-    ).value.trim();
-
-
-const genre =
-    document.getElementById(
-        "genre"
-    ).value;
-
-
-/* -----------------------------------------
-   VALIDACIONES
------------------------------------------ */
-
-if (!title) {
-
-    alert(
-        "Escribe un título para la historieta."
-    );
-
-    return;
-
-}
-
-
-if (!description) {
-
-    alert(
-        "Escribe una descripción."
-    );
-
-    return;
-
-}
-
-
-if (!genre) {
-
-    alert(
-        "Selecciona un género."
-    );
-
-    return;
-
-}
-
-
-const chapters =
-    document.querySelectorAll(
-        ".chapter"
-    );
-
-
-if (
-    chapters.length === 0
-) {
-
-    alert(
-        "Agrega al menos un capítulo."
-    );
-
-    return;
-
-}
-
-
-for (
-    let i = 0;
-    i < chapters.length;
-    i++
-) {
-
-    const titleInput =
-        chapters[i].querySelector(
-            ".chapter-title"
-        );
-
-
-    if (
-        !titleInput ||
-        !titleInput.value.trim()
-    ) {
-
-        alert(
-            "El capítulo " +
-            (i + 1) +
-            " necesita un título."
-        );
-
-        return;
-
-    }
-
-
-    const blocks =
-        chapters[i].querySelectorAll(
-            ".block"
-        );
-
-
-    if (
-        blocks.length === 0
-    ) {
-
-        alert(
-            "El capítulo " +
-            (i + 1) +
-            " está vacío."
-        );
-
-        return;
-
-    }
-
-
-    for (
-        let j = 0;
-        j < blocks.length;
-        j++
-    ) {
-
-        if (
-            blocks[j].dataset.type ===
-            "image"
-        ) {
-
-            const input =
-                blocks[j].querySelector(
-                    'input[type="file"]'
-                );
-
-
-            if (
-                !input ||
-                !input.files ||
-                !input.files[0]
-            ) {
-
-                alert(
-                    "Hay un bloque de imagen vacío en el capítulo " +
-                    (i + 1) +
-                    "."
-                );
-
-                return;
-
-            }
-
-        }
-
-    }
-
-}
-
-
-/* -----------------------------------------
-   DESACTIVAR BOTÓN
------------------------------------------ */
-
-saveButton.disabled =
-    true;
-
-
-mostrarEstado(
-    "Creando la historieta...",
-    "info"
-);
-
-
-try {
-
-    /* =====================================
-       1. CREAR HISTORIETA
-    ===================================== */
-
-    const storyResponse =
-        await fetch(
-            "/api/stories",
-            {
-
-                method:
-                    "POST",
-
-                credentials:
-                    "include",
-
-                headers: {
-
-                    "Content-Type":
-                        "application/json"
-
-                },
-
-                body:
-                    JSON.stringify({
-
-                        title:
-                            title,
-
-                        description:
-                            description,
-
-                        genre:
-                            genre,
-
-                        /*
-                         * IMPORTANTE:
-                         * Esto diferencia una
-                         * historieta de una historia.
-                         */
-
-                        type:
-                            "comic"
-
-                    })
-
-            }
-        );
-
-
-    const storyText =
-        await storyResponse.text();
-
-
-    let storyData;
-
+async function init() {
 
     try {
 
-        storyData =
-            JSON.parse(
-                storyText
-            );
-
-    } catch (error) {
-
-        console.error(
-            "Respuesta del servidor:",
-            storyText
-        );
-
-        throw new Error(
-            "El servidor no devolvió JSON al crear la historieta."
-        );
-
-    }
-
-
-    if (
-        !storyResponse.ok ||
-        !storyData.success ||
-        !storyData.story
-    ) {
-
-        throw new Error(
-            storyData.error ||
-            "No se pudo crear la historieta."
-        );
-
-    }
-
-
-    const story =
-        storyData.story;
-
-
-    const storyId =
-        story.id;
-
-
-    if (!storyId) {
-
-        throw new Error(
-            "El servidor creó la publicación pero no devolvió su ID."
-        );
-
-    }
-
-
-    console.log(
-        "Historieta creada:",
-        story
-    );
-
-
-    /* =====================================
-       2. SUBIR PORTADA
-    ===================================== */
-
-    const coverInput =
-        document.getElementById(
-            "cover-input"
-        );
-
-
-    if (
-        coverInput.files &&
-        coverInput.files[0]
-    ) {
-
-        mostrarEstado(
-            "Historieta creada. Procesando portada...",
-            "info"
-        );
-
-
-        let coverFile =
-            coverInput.files[0];
-
-
-        coverFile =
-            await comprimirImagen(
-                coverFile,
-                1200,
-                1600,
-                0.82
-            );
-
-
-        const formData =
-            new FormData();
-
-
-        formData.append(
-            "cover",
-            coverFile
-        );
-
-
-        mostrarEstado(
-            "Subiendo portada...",
-            "info"
-        );
-
-
-        const coverResponse =
+        const response =
             await fetch(
-                "/api/stories/" +
-                encodeURIComponent(
-                    storyId
-                ) +
-                "/cover",
+                "/api/me",
                 {
-
-                    method:
-                        "POST",
-
-                    credentials:
-                        "include",
-
-                    body:
-                        formData
-
+                    method: "GET",
+                    credentials: "same-origin"
                 }
             );
 
 
-        const coverText =
-            await coverResponse.text();
+        const data =
+            await response.json();
 
 
-        let coverData;
+        if (
+            !data.success ||
+            !data.loggedIn
+        ) {
+
+            showLogin();
+
+            return;
+
+        }
 
 
-        try {
+        currentUser =
+            data.user;
 
-            coverData =
-                JSON.parse(
-                    coverText
-                );
 
-        } catch (error) {
-
-            console.error(
-                "Respuesta de portada:",
-                coverText
+        const params =
+            new URLSearchParams(
+                window.location.search
             );
 
-            throw new Error(
-                "El servidor no devolvió JSON al subir la portada."
+
+        const id =
+            params.get("id");
+
+
+        if (id) {
+
+            storyId =
+                Number(id);
+
+            await loadStory();
+
+        } else {
+
+            document
+                .getElementById("loading")
+                .classList.add("hidden");
+
+            document
+                .getElementById("main")
+                .classList.remove("hidden");
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            "No se pudo comprobar la sesión.",
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// LOGIN
+// =========================================================
+
+
+function showLogin() {
+
+    document
+        .getElementById("loading")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginMessage")
+        .classList.remove("hidden");
+
+}
+
+
+// =========================================================
+// CARGAR HISTORIA
+// =========================================================
+
+
+async function loadStory() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId,
+                {
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            showStatus(
+                data.error ||
+                "No se pudo cargar la historieta.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        story =
+            data.story;
+
+
+        // -------------------------------------------------
+        // Comprobar propietario
+        // -------------------------------------------------
+
+
+        if (
+            Number(story.user_id) !==
+            Number(currentUser.id)
+        ) {
+
+            document
+                .getElementById("loading")
+                .classList.add("hidden");
+
+            document
+                .getElementById("main")
+                .classList.remove("hidden");
+
+
+            showStatus(
+                "No tienes permiso para editar esta historieta.",
+                "error"
+            );
+
+
+            disableEditing();
+
+            return;
+
+        }
+
+
+        // -------------------------------------------------
+        // Datos
+        // -------------------------------------------------
+
+
+        document
+            .getElementById("title")
+            .value =
+            story.title || "";
+
+
+        document
+            .getElementById("description")
+            .value =
+            story.description || "";
+
+
+        document
+            .getElementById("genre")
+            .value =
+            story.genre || "Otros";
+
+
+        document
+            .getElementById("formTitle")
+            .textContent =
+            "Editar historieta";
+
+
+        document
+            .getElementById("saveStoryButton")
+            .textContent =
+            "Guardar cambios";
+
+
+        // -------------------------------------------------
+        // Mostrar interfaz
+        // -------------------------------------------------
+
+
+        document
+            .getElementById("loading")
+            .classList.add("hidden");
+
+
+        document
+            .getElementById("main")
+            .classList.remove("hidden");
+
+
+        document
+            .getElementById("coverCard")
+            .classList.remove("hidden");
+
+
+        document
+            .getElementById("chaptersCard")
+            .classList.remove("hidden");
+
+
+        // -------------------------------------------------
+        // Portada
+        // -------------------------------------------------
+
+
+        if (story.cover_url) {
+
+            showCover(
+                story.cover_url
             );
 
         }
 
 
-        if (
-            !coverResponse.ok ||
-            !coverData.success
-        ) {
+        await loadChapters();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        document
+            .getElementById("loading")
+            .classList.add("hidden");
+
+        document
+            .getElementById("main")
+            .classList.remove("hidden");
+
+        showStatus(
+            "Error cargando la historieta.",
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// CREAR / EDITAR HISTORIA
+// =========================================================
+
+
+async function saveStory() {
+
+    const title =
+        document
+            .getElementById("title")
+            .value
+            .trim();
+
+
+    const description =
+        document
+            .getElementById("description")
+            .value
+            .trim();
+
+
+    const genre =
+        document
+            .getElementById("genre")
+            .value
+            .trim();
+
+
+    if (!title) {
+
+        showStatus(
+            "Escribe un título.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!description) {
+
+        showStatus(
+            "Escribe una descripción.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!genre) {
+
+        showStatus(
+            "Selecciona un género.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document
+            .getElementById(
+                "saveStoryButton"
+            );
+
+
+    button.disabled =
+        true;
+
+
+    try {
+
+        let response;
+
+
+        // =================================================
+        // CREAR
+        // =================================================
+
+
+        if (!storyId) {
+
+            response =
+                await fetch(
+                    "/api/stories",
+                    {
+                        method: "POST",
+
+                        credentials:
+                            "same-origin",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                title:
+                                    title,
+
+                                description:
+                                    description,
+
+                                genre:
+                                    genre,
+
+                                type:
+                                    "historieta"
+                            })
+                    }
+                );
+
+        }
+
+
+        // =================================================
+        // EDITAR
+        // =================================================
+
+
+        else {
+
+            response =
+                await fetch(
+                    "/api/stories/" +
+                    storyId,
+                    {
+                        method: "PUT",
+
+                        credentials:
+                            "same-origin",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                title:
+                                    title,
+
+                                description:
+                                    description,
+
+                                genre:
+                                    genre,
+
+                                type:
+                                    "historieta"
+                            })
+                    }
+                );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
 
             throw new Error(
-                coverData.error ||
+                data.error ||
+                "No se pudo guardar."
+            );
+
+        }
+
+
+        // =================================================
+        // NUEVA HISTORIETA
+        // =================================================
+
+
+        if (!storyId) {
+
+            storyId =
+                data.story.id;
+
+
+            story =
+                data.story;
+
+
+            document
+                .getElementById(
+                    "formTitle"
+                )
+                .textContent =
+                "Editar historieta";
+
+
+            button.textContent =
+                "Guardar cambios";
+
+
+            document
+                .getElementById(
+                    "coverCard"
+                )
+                .classList.remove("hidden");
+
+
+            document
+                .getElementById(
+                    "chaptersCard"
+                )
+                .classList.remove("hidden");
+
+
+            // Cambiar URL sin recargar
+            window.history.replaceState(
+                null,
+                "",
+                "crear-historieta.html?id=" +
+                storyId
+            );
+
+        }
+
+
+        showStatus(
+            data.message ||
+            "Cambios guardados correctamente.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message ||
+            "No se pudo guardar la historieta.",
+            "error"
+        );
+
+    }
+
+
+    button.disabled =
+        false;
+
+}
+
+
+// =========================================================
+// PORTADA
+// =========================================================
+
+
+async function uploadCover() {
+
+    if (!storyId) {
+
+        showStatus(
+            "Primero debes guardar la historieta.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        document
+            .getElementById(
+                "coverInput"
+            );
+
+
+    if (
+        !input.files ||
+        !input.files.length
+    ) {
+
+        showStatus(
+            "Selecciona una imagen.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const file =
+        input.files[0];
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "cover",
+        file
+    );
+
+
+    try {
+
+        showStatus(
+            "Subiendo portada...",
+            "success"
+        );
+
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/cover",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    body:
+                        formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
                 "No se pudo subir la portada."
             );
 
         }
 
-    }
 
-
-    /* =====================================
-       3. CREAR CAPÍTULOS
-    ===================================== */
-
-    for (
-        let i = 0;
-        i < chapters.length;
-        i++
-    ) {
-
-        const chapter =
-            chapters[i];
-
-
-        const titleInput =
-            chapter.querySelector(
-                ".chapter-title"
-            );
-
-
-        const chapterTitle =
-            titleInput.value.trim();
-
-
-        mostrarEstado(
-            "Creando capítulo " +
-            (i + 1) +
-            " de " +
-            chapters.length +
-            "...",
-            "info"
+        showCover(
+            data.cover_url
         );
 
 
-        /*
-         * Primero creamos el capítulo.
-         */
+        showStatus(
+            "Portada subida correctamente.",
+            "success"
+        );
 
-        const initialContent =
-            obtenerBloquesCapitulo(
-                chapter
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// MOSTRAR PORTADA
+// =========================================================
+
+
+function showCover(url) {
+
+    const container =
+        document
+            .getElementById(
+                "coverPreview"
             );
 
 
-        const chapterResponse =
+    container.innerHTML =
+        "";
+
+
+    const img =
+        document.createElement(
+            "img"
+        );
+
+
+    img.src =
+        url +
+        (
+            url.includes("?")
+                ? "&"
+                : "?"
+        ) +
+        "t=" +
+        Date.now();
+
+
+    img.alt =
+        "Portada";
+
+
+    container.appendChild(
+        img
+    );
+
+}
+
+
+// =========================================================
+// CAPÍTULOS
+// =========================================================
+
+
+async function loadChapters() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
             await fetch(
                 "/api/stories/" +
-                encodeURIComponent(
-                    storyId
-                ) +
+                storyId +
                 "/chapters",
                 {
-
-                    method:
-                        "POST",
-
                     credentials:
-                        "include",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            title:
-                                chapterTitle,
-
-                            content:
-                                JSON.stringify(
-                                    initialContent
-                                )
-
-                        })
-
+                        "same-origin"
                 }
             );
 
 
-        const chapterText =
-            await chapterResponse.text();
+        const data =
+            await response.json();
 
 
-        let chapterData;
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar los capítulos."
+            );
+
+        }
 
 
-        try {
+        chapters =
+            data.chapters || [];
 
-            chapterData =
-                JSON.parse(
-                    chapterText
+
+        renderChapters();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// MOSTRAR CAPÍTULOS
+// =========================================================
+
+
+function renderChapters() {
+
+    const container =
+        document
+            .getElementById(
+                "chaptersList"
+            );
+
+
+    container.innerHTML =
+        "";
+
+
+    if (!chapters.length) {
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'Todavía no hay capítulos.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    chapters.forEach(
+        function(chapter) {
+
+            const div =
+                document.createElement(
+                    "div"
                 );
 
-        } catch (error) {
 
-            console.error(
-                "Respuesta del capítulo:",
-                chapterText
+            div.className =
+                "chapter";
+
+
+            div.innerHTML =
+
+                '<div class="chapter-header">' +
+
+                    '<div class="chapter-title">' +
+
+                        'Capítulo ' +
+                        escapeHtml(
+                            chapter.chapter_number
+                        ) +
+                        ' — ' +
+                        escapeHtml(
+                            chapter.title
+                        ) +
+
+                    '</div>' +
+
+                    '<div class="chapter-buttons">' +
+
+                        '<button class="blue" ' +
+                        'onclick="editChapter(' +
+                        chapter.id +
+                        ')">' +
+                        'Editar' +
+                        '</button>' +
+
+                        '<button class="danger" ' +
+                        'onclick="deleteChapter(' +
+                        chapter.id +
+                        ')">' +
+                        'Eliminar' +
+                        '</button>' +
+
+                    '</div>' +
+
+                '</div>' +
+
+
+                '<div id="chapterContent-' +
+                chapter.id +
+                '" class="chapter-editor">' +
+
+                    '<p>' +
+
+                        escapeHtml(
+                            getContentPreview(
+                                chapter.content
+                            )
+                        ) +
+
+                    '</p>' +
+
+                '</div>';
+
+
+            container.appendChild(
+                div
             );
 
+
+            loadChapterImages(
+                chapter.id,
+                div
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// PREVISUALIZACIÓN DE CONTENIDO
+// =========================================================
+
+
+function getContentPreview(
+    content
+) {
+
+    if (!content) {
+
+        return "";
+
+    }
+
+
+    const text =
+        content
+            .replace(/\s+/g, " ")
+            .trim();
+
+
+    if (
+        text.length > 250
+    ) {
+
+        return text.substring(
+            0,
+            250
+        ) + "...";
+
+    }
+
+
+    return text;
+
+}
+
+
+// =========================================================
+// NUEVO CAPÍTULO
+// =========================================================
+
+
+function showNewChapter() {
+
+    document
+        .getElementById(
+            "newChapter"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "newChapterTitle"
+        )
+        .focus();
+
+}
+
+
+function cancelNewChapter() {
+
+    document
+        .getElementById(
+            "newChapter"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "newChapterTitle"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "newChapterContent"
+        )
+        .value =
+        "";
+
+}
+
+
+// =========================================================
+// CREAR CAPÍTULO
+// =========================================================
+
+
+async function createChapter() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    const title =
+        document
+            .getElementById(
+                "newChapterTitle"
+            )
+            .value
+            .trim();
+
+
+    const content =
+        document
+            .getElementById(
+                "newChapterContent"
+            )
+            .value;
+
+
+    if (!title) {
+
+        showStatus(
+            "Escribe el título del capítulo.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!content.trim()) {
+
+        showStatus(
+            "Escribe el contenido del capítulo.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/chapters",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            title:
+                                title,
+
+                            content:
+                                content
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
             throw new Error(
-                "El servidor no devolvió JSON al crear el capítulo " +
-                (i + 1) +
-                "."
+                data.error ||
+                "No se pudo crear el capítulo."
             );
 
         }
 
 
-        if (
-            !chapterResponse.ok ||
-            !chapterData.success ||
-            !chapterData.chapter
-        ) {
+        cancelNewChapter();
+
+
+        showStatus(
+            "Capítulo creado correctamente.",
+            "success"
+        );
+
+
+        await loadChapters();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// EDITAR CAPÍTULO
+// =========================================================
+
+
+async function editChapter(
+    chapterId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                chapterId,
+                {
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
 
             throw new Error(
-                chapterData.error ||
-                "No se pudo crear el capítulo " +
-                (i + 1) +
-                "."
+                data.error ||
+                "No se pudo cargar el capítulo."
             );
 
         }
 
 
-        const chapterId =
-            chapterData.chapter.id;
+        const chapter =
+            data.chapter;
 
 
-        if (!chapterId) {
+        const container =
+            document
+                .getElementById(
+                    "chapterContent-" +
+                    chapterId
+                );
+
+
+        if (!container) {
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+
+            '<label>Título</label>' +
+
+            '<input ' +
+            'type="text" ' +
+            'id="editTitle-' +
+            chapterId +
+            '" ' +
+            'value="' +
+            escapeAttribute(
+                chapter.title
+            ) +
+            '">' +
+
+
+            '<label>Contenido</label>' +
+
+            '<textarea ' +
+            'id="editContent-' +
+            chapterId +
+            '">' +
+            escapeHtml(
+                chapter.content
+            ) +
+            '</textarea>' +
+
+
+            '<button class="green" ' +
+            'onclick="saveChapter(' +
+            chapterId +
+            ')">' +
+            'Guardar cambios' +
+            '</button> ' +
+
+
+            '<button class="secondary" ' +
+            'onclick="loadChapters()">' +
+            'Cancelar' +
+            '</button>' +
+
+
+            '<div id="images-' +
+            chapterId +
+            '">' +
+
+                '<div class="upload-box">' +
+
+                    '<strong>Imágenes del capítulo</strong>' +
+
+                    '<br><br>' +
+
+                    '<input ' +
+                    'type="file" ' +
+                    'id="imagesInput-' +
+                    chapterId +
+                    '" ' +
+                    'accept="image/jpeg,image/png,image/webp,image/gif" ' +
+                    'multiple>' +
+
+                    '<br>' +
+
+                    '<button class="blue" ' +
+                    'onclick="uploadImages(' +
+                    chapterId +
+                    ')">' +
+                    'Subir imágenes' +
+                    '</button>' +
+
+                '</div>' +
+
+                '<div class="images" ' +
+                'id="imageList-' +
+                chapterId +
+                '">' +
+
+                '</div>' +
+
+            '</div>';
+
+
+        await loadImages(
+            chapterId
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// GUARDAR CAPÍTULO
+// =========================================================
+
+
+async function saveChapter(
+    chapterId
+) {
+
+    const title =
+        document
+            .getElementById(
+                "editTitle-" +
+                chapterId
+            )
+            .value
+            .trim();
+
+
+    const content =
+        document
+            .getElementById(
+                "editContent-" +
+                chapterId
+            )
+            .value;
+
+
+    if (!title) {
+
+        showStatus(
+            "El título es obligatorio.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!content.trim()) {
+
+        showStatus(
+            "El contenido es obligatorio.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                chapterId,
+                {
+                    method: "PUT",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            title:
+                                title,
+
+                            content:
+                                content
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
 
             throw new Error(
-                "El servidor no devolvió el ID del capítulo " +
-                (i + 1) +
-                "."
+                data.error ||
+                "No se pudo actualizar el capítulo."
             );
 
         }
 
 
-        /* =================================
-           SUBIR IMÁGENES
-        ================================= */
+        showStatus(
+            "Capítulo actualizado correctamente.",
+            "success"
+        );
 
-        const contenidoFinal =
-            await construirContenidoFinal(
-                chapter,
+
+        await loadChapters();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// ELIMINAR CAPÍTULO
+// =========================================================
+
+
+async function deleteChapter(
+    chapterId
+) {
+
+    if (
+        !confirm(
+            "¿Seguro que quieres eliminar este capítulo?\n\nTambién se eliminarán sus imágenes."
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                chapterId,
+                {
+                    method: "DELETE",
+
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo eliminar el capítulo."
+            );
+
+        }
+
+
+        showStatus(
+            "Capítulo eliminado correctamente.",
+            "success"
+        );
+
+
+        await loadChapters();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// CARGAR IMÁGENES DE UN CAPÍTULO
+// =========================================================
+
+
+async function loadChapterImages(
+    chapterId,
+    chapterElement
+) {
+
+    // Las imágenes solo se muestran
+    // al entrar en edición del capítulo.
+
+}
+
+
+// =========================================================
+// CARGAR IMÁGENES
+// =========================================================
+
+
+async function loadImages(
+    chapterId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                chapterId +
+                "/images",
+                {
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar las imágenes."
+            );
+
+        }
+
+
+        renderImages(
+            chapterId,
+            data.images || []
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// MOSTRAR IMÁGENES
+// =========================================================
+
+
+function renderImages(
+    chapterId,
+    images
+) {
+
+    const container =
+        document
+            .getElementById(
+                "imageList-" +
                 chapterId
             );
 
 
-        /* =================================
-           ACTUALIZAR CAPÍTULO
-        ================================= */
+    if (!container) {
 
-        mostrarEstado(
-            "Guardando contenido del capítulo " +
-            (i + 1) +
-            "...",
-            "info"
-        );
-
-
-        const updateResponse =
-            await fetch(
-                "/api/chapters/" +
-                encodeURIComponent(
-                    chapterId
-                ),
-                {
-
-                    method:
-                        "PUT",
-
-                    credentials:
-                        "include",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            title:
-                                chapterTitle,
-
-                            content:
-                                JSON.stringify(
-                                    contenidoFinal
-                                )
-
-                        })
-
-                }
-            );
-
-
-        const updateText =
-            await updateResponse.text();
-
-
-        let updateData;
-
-
-        try {
-
-            updateData =
-                JSON.parse(
-                    updateText
-                );
-
-        } catch (error) {
-
-            console.error(
-                "Respuesta actualización:",
-                updateText
-            );
-
-            throw new Error(
-                "El servidor no devolvió JSON al actualizar el capítulo."
-            );
-
-        }
-
-
-        if (
-            !updateResponse.ok ||
-            !updateData.success
-        ) {
-
-            throw new Error(
-                updateData.error ||
-                "No se pudo actualizar el capítulo " +
-                (i + 1) +
-                "."
-            );
-
-        }
+        return;
 
     }
 
 
-    /* =====================================
-       FINALIZADO
-    ===================================== */
+    container.innerHTML =
+        "";
 
-    mostrarEstado(
-        "¡Historieta publicada correctamente!",
-        "success"
+
+    if (!images.length) {
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'No hay imágenes en este capítulo.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    images.forEach(
+        function(image) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "image-item";
+
+
+            item.innerHTML =
+
+                '<img src="' +
+                escapeAttribute(
+                    image.image_url
+                ) +
+                '" alt="' +
+                escapeAttribute(
+                    image.filename ||
+                    "Imagen"
+                ) +
+                '">' +
+
+
+                '<div>' +
+                escapeHtml(
+                    image.filename ||
+                    "Imagen"
+                ) +
+                '</div>' +
+
+
+                '<button class="danger" ' +
+                'onclick="deleteImage(' +
+                image.id +
+                ',' +
+                chapterId +
+                ')">' +
+                'Eliminar' +
+                '</button>';
+
+
+            container.appendChild(
+                item
+            );
+
+        }
     );
 
-
-    alert(
-        "La historieta se publicó correctamente."
-    );
+}
 
 
-    /*
-     * IMPORTANTE:
-     * Las historietas utilizan su propio lector.
-     */
+// =========================================================
+// SUBIR IMÁGENES
+// =========================================================
 
-    window.location.href =
-        "leer-historieta.html?id=" +
-        encodeURIComponent(
-            storyId
+
+async function uploadImages(
+    chapterId
+) {
+
+    const input =
+        document
+            .getElementById(
+                "imagesInput-" +
+                chapterId
+            );
+
+
+    if (
+        !input ||
+        !input.files.length
+    ) {
+
+        showStatus(
+            "Selecciona una o más imágenes.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        let uploaded = 0;
+
+
+        for (
+            const file of input.files
+        ) {
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "image",
+                file
+            );
+
+
+            const response =
+                await fetch(
+                    "/api/chapters/" +
+                    chapterId +
+                    "/images",
+                    {
+                        method: "POST",
+
+                        credentials:
+                            "same-origin",
+
+                        body:
+                            formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "No se pudo subir " +
+                    file.name
+                );
+
+            }
+
+
+            uploaded++;
+
+        }
+
+
+        input.value =
+            "";
+
+
+        showStatus(
+            uploaded +
+            " imagen(es) subida(s) correctamente.",
+            "success"
         );
 
 
-} catch (error) {
-
-    console.error(
-        "Error publicando historieta:",
-        error
-    );
+        await loadImages(
+            chapterId
+        );
 
 
-    mostrarEstado(
-        error.message ||
-        "Ocurrió un error al publicar la historieta.",
-        "error"
-    );
+    } catch (error) {
 
+        console.error(error);
 
-    alert(
-        error.message ||
-        "Ocurrió un error al publicar la historieta."
-    );
+        showStatus(
+            error.message,
+            "error"
+        );
 
-
-    saveButton.disabled =
-        false;
+    }
 
 }
 
+
+// =========================================================
+// ELIMINAR IMAGEN
+// =========================================================
+
+
+async function deleteImage(
+    imageId,
+    chapterId
+) {
+
+    if (
+        !confirm(
+            "¿Eliminar esta imagen?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapter-images/" +
+                imageId,
+                {
+                    method: "DELETE",
+
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo eliminar la imagen."
+            );
+
+        }
+
+
+        showStatus(
+            "Imagen eliminada correctamente.",
+            "success"
+        );
+
+
+        await loadImages(
+            chapterId
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message,
+            "error"
+        );
+
+    }
+
 }
 
-</script></body></html>
+
+// =========================================================
+// DESACTIVAR EDICIÓN
+// =========================================================
+
+
+function disableEditing() {
+
+    document
+        .getElementById(
+            "title"
+        )
+        .disabled =
+        true;
+
+
+    document
+        .getElementById(
+            "description"
+        )
+        .disabled =
+        true;
+
+
+    document
+        .getElementById(
+            "genre"
+        )
+        .disabled =
+        true;
+
+
+    document
+        .getElementById(
+            "saveStoryButton"
+        )
+        .disabled =
+        true;
+
+}
+
+
+// =========================================================
+// MENSAJES
+// =========================================================
+
+
+function showStatus(
+    message,
+    type
+) {
+
+    const status =
+        document
+            .getElementById(
+                "status"
+            );
+
+
+    status.textContent =
+        message;
+
+
+    status.className =
+        "status " +
+        type;
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+// =========================================================
+// ESCAPE HTML
+// =========================================================
+
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+// =========================================================
+// ESCAPE ATRIBUTO
+// =========================================================
+
+
+function escapeAttribute(
+    value
+) {
+
+    return escapeHtml(
+        value
+    );
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
