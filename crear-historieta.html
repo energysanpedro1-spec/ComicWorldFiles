@@ -876,6 +876,25 @@ document
         }
 
 
+        const maxSize =
+            10 * 1024 * 1024;
+
+
+        if (
+            file.size > maxSize
+        ) {
+
+            alert(
+                "La portada no puede superar los 10 MB."
+            );
+
+            event.target.value = "";
+
+            return;
+
+        }
+
+
         const reader =
             new FileReader();
 
@@ -1926,6 +1945,11 @@ try {
 
 } catch (error) {
 
+    console.error(
+        "Respuesta del servidor:",
+        text
+    );
+
     throw new Error(
         "El servidor no devolvió JSON al subir una imagen."
     );
@@ -2052,6 +2076,12 @@ for (
             );
 
 
+        /*
+         * IMPORTANTE:
+         * Guardamos los datos que devuelve
+         * el Worker.
+         */
+
         contenido.push({
 
             type:
@@ -2061,10 +2091,13 @@ for (
                 image.id,
 
             url:
-                image.image_url,
+                image.image_url ||
+                image.url ||
+                null,
 
             filename:
-                image.filename
+                image.filename ||
+                null
 
         });
 
@@ -2176,6 +2209,7 @@ for (
 
 
     if (
+        !titleInput ||
         !titleInput.value.trim()
     ) {
 
@@ -2252,7 +2286,7 @@ for (
 
 
 /* -----------------------------------------
-   DESACTIVAR
+   DESACTIVAR BOTÓN
 ----------------------------------------- */
 
 saveButton.disabled =
@@ -2268,7 +2302,7 @@ mostrarEstado(
 try {
 
     /* =====================================
-       1. CREAR HISTORIA
+       1. CREAR HISTORIETA
     ===================================== */
 
     const storyResponse =
@@ -2299,7 +2333,16 @@ try {
                             description,
 
                         genre:
-                            genre
+                            genre,
+
+                        /*
+                         * IMPORTANTE:
+                         * Esto diferencia una
+                         * historieta de una historia.
+                         */
+
+                        type:
+                            "comic"
 
                     })
 
@@ -2322,6 +2365,11 @@ try {
             );
 
     } catch (error) {
+
+        console.error(
+            "Respuesta del servidor:",
+            storyText
+        );
 
         throw new Error(
             "El servidor no devolvió JSON al crear la historieta."
@@ -2352,8 +2400,17 @@ try {
         story.id;
 
 
+    if (!storyId) {
+
+        throw new Error(
+            "El servidor creó la publicación pero no devolvió su ID."
+        );
+
+    }
+
+
     console.log(
-        "Historia creada:",
+        "Historieta creada:",
         story
     );
 
@@ -2446,6 +2503,11 @@ try {
 
         } catch (error) {
 
+            console.error(
+                "Respuesta de portada:",
+                coverText
+            );
+
             throw new Error(
                 "El servidor no devolvió JSON al subir la portada."
             );
@@ -2504,8 +2566,6 @@ try {
 
         /*
          * Primero creamos el capítulo.
-         * El contenido temporal se reemplazará
-         * después de subir las imágenes.
          */
 
         const initialContent =
@@ -2569,6 +2629,11 @@ try {
 
         } catch (error) {
 
+            console.error(
+                "Respuesta del capítulo:",
+                chapterText
+            );
+
             throw new Error(
                 "El servidor no devolvió JSON al crear el capítulo " +
                 (i + 1) +
@@ -2598,8 +2663,19 @@ try {
             chapterData.chapter.id;
 
 
+        if (!chapterId) {
+
+            throw new Error(
+                "El servidor no devolvió el ID del capítulo " +
+                (i + 1) +
+                "."
+            );
+
+        }
+
+
         /* =================================
-           SUBIR IMÁGENES Y CONSTRUIR JSON
+           SUBIR IMÁGENES
         ================================= */
 
         const contenidoFinal =
@@ -2675,6 +2751,11 @@ try {
 
         } catch (error) {
 
+            console.error(
+                "Respuesta actualización:",
+                updateText
+            );
+
             throw new Error(
                 "El servidor no devolvió JSON al actualizar el capítulo."
             );
@@ -2714,8 +2795,13 @@ try {
     );
 
 
+    /*
+     * IMPORTANTE:
+     * Las historietas utilizan su propio lector.
+     */
+
     window.location.href =
-        "leer-historia.html?id=" +
+        "leer-historieta.html?id=" +
         encodeURIComponent(
             storyId
         );
