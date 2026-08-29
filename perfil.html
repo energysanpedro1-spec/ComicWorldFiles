@@ -41,7 +41,7 @@ header {
 }
 
 .back {
-    color: white;
+    color: white !important;
     text-decoration: none;
     font-size: 14px;
 }
@@ -81,6 +81,8 @@ header {
     margin-bottom: 20px;
 
     font-size: 30px;
+
+    color: #222;
 }
 
 .profile-info {
@@ -112,6 +114,8 @@ header {
     font-size: 16px;
 
     font-weight: bold;
+
+    color: #222;
 }
 
 /* ==============================
@@ -145,6 +149,8 @@ header {
     font-size: 28px;
 
     font-weight: bold;
+
+    color: white;
 }
 
 .stat-label {
@@ -191,7 +197,7 @@ button,
 .home-button {
     background: #ff6b35;
 
-    color: white;
+    color: white !important;
 }
 
 .home-button:hover {
@@ -218,6 +224,8 @@ button,
 
 .section-title h2 {
     margin: 0;
+
+    color: #222;
 }
 
 .stories {
@@ -272,12 +280,16 @@ button,
 
 .story-content {
     padding: 15px;
+
+    color: #222;
 }
 
 .story-content h3 {
     margin: 0 0 7px;
 
     font-size: 17px;
+
+    color: #222;
 }
 
 .story-description {
@@ -297,7 +309,7 @@ button,
 
     background: #20242b;
 
-    color: white;
+    color: white !important;
 
     text-decoration: none;
 
@@ -312,6 +324,22 @@ button,
 
 .read-button:hover {
     background: #343a40;
+}
+
+/* ==============================
+   ENLACES DENTRO DEL CONTENIDO
+============================== */
+
+.empty a {
+    color: #ff6b35 !important;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+.empty a:hover {
+    text-decoration: underline;
 }
 
 /* ==============================
@@ -672,19 +700,13 @@ async function cargarHistorias(
             !data.success
         ) {
 
-            console.error(
-                "No se pudieron cargar las historias."
-            );
-
             return;
 
         }
 
 
         const allStories =
-            Array.isArray(
-                data.stories
-            )
+            Array.isArray(data.stories)
                 ? data.stories
                 : [];
 
@@ -724,16 +746,13 @@ async function cargarHistorias(
             function(story) {
 
                 if (
-                    story.chapter_count !==
-                    undefined &&
-                    story.chapter_count !==
-                    null
+                    story.chapter_count
                 ) {
 
                     totalChapters +=
                         Number(
                             story.chapter_count
-                        ) || 0;
+                        );
 
                 }
 
@@ -800,26 +819,20 @@ async function cargarHistorias(
                    PORTADA
                 ============================== */
 
-                /*
-                 * El backend puede entregar
-                 * la portada como cover_url.
-                 *
-                 * También aceptamos coverUrl
-                 * y cover como respaldo.
-                 */
-
-                const coverUrl =
-                    story.cover_url ||
-                    story.coverUrl ||
-                    story.cover ||
-                    "";
-
-
                 let coverHTML;
 
 
+                /*
+                 * Aceptamos cover_url como
+                 * viene actualmente desde
+                 * /api/stories.
+                 */
+
                 if (
-                    coverUrl
+                    story.cover_url &&
+                    String(
+                        story.cover_url
+                    ).trim() !== ""
                 ) {
 
                     coverHTML =
@@ -827,18 +840,15 @@ async function cargarHistorias(
 
                         '<img src="' +
                         escapeHtml(
-                            coverUrl
+                            story.cover_url
                         ) +
-                        '" ' +
-
-                        'alt="Portada de ' +
+                        '" alt="Portada de ' +
                         escapeHtml(
-                            story.title ||
-                            "historia"
+                            story.title || "Historia"
                         ) +
                         '" ' +
 
-                        'onerror="mostrarPortadaFallback(this)">' +
+                        'onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'📖\';">' +
 
                         '</div>';
 
@@ -864,15 +874,13 @@ async function cargarHistorias(
 
                     '<h3>' +
                     escapeHtml(
-                        story.title ||
-                        "Sin título"
+                        story.title || "Sin título"
                     ) +
                     '</h3>' +
 
                     '<p class="story-description">' +
                     escapeHtml(
-                        story.description ||
-                        ""
+                        story.description || ""
                     ) +
                     '</p>' +
 
@@ -891,14 +899,6 @@ async function cargarHistorias(
                     card
                 );
 
-
-                console.log(
-                    "Historia:",
-                    story.title,
-                    "Portada:",
-                    coverUrl
-                );
-
             }
         );
 
@@ -910,33 +910,7 @@ async function cargarHistorias(
             error
         );
 
-        storiesContainer.innerHTML =
-            '<div class="empty">' +
-            'No se pudieron cargar tus historias.' +
-            '</div>';
-
     }
-
-}
-
-
-/* ==========================================
-   PORTADA FALLBACK
-========================================== */
-
-function mostrarPortadaFallback(
-    image
-) {
-
-    const cover =
-        image.parentElement;
-
-
-    image.remove();
-
-
-    cover.textContent =
-        "📖";
 
 }
 
