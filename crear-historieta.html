@@ -1,0 +1,1830 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Crear historieta - ComicWorldFiles</title><style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+/* ==============================
+   CABECERA
+============================== */
+
+header {
+    background: #20242b;
+    color: white;
+    padding: 15px 20px;
+}
+
+.header-content {
+    max-width: 900px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.back {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back:hover {
+    text-decoration: underline;
+}
+
+/* ==============================
+   CONTENEDOR
+============================== */
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 25px 15px;
+}
+
+/* ==============================
+   CAJA PRINCIPAL
+============================== */
+
+.form-box {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ==============================
+   TITULO
+============================== */
+
+.form-box h1 {
+    margin-top: 0;
+
+    margin-bottom: 25px;
+
+    font-size: 30px;
+
+    color: #222;
+}
+
+/* ==============================
+   CAMPOS
+============================== */
+
+.field {
+    margin-bottom: 20px;
+}
+
+.field label {
+    display: block;
+
+    font-weight: bold;
+
+    font-size: 14px;
+
+    margin-bottom: 7px;
+
+    color: #222;
+}
+
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 7px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+
+    background: white;
+
+    color: #222;
+}
+
+.field textarea {
+    min-height: 120px;
+
+    resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    outline: none;
+
+    border-color: #ff6b35;
+}
+
+/* ==============================
+   PORTADA
+============================== */
+
+.cover-area {
+    display: flex;
+
+    gap: 20px;
+
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+}
+
+.cover-preview {
+    width: 150px;
+
+    height: 210px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5c677d,
+            #222831
+        );
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    color: white;
+
+    font-size: 40px;
+
+    flex-shrink: 0;
+}
+
+.cover-preview img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.cover-controls {
+    flex: 1;
+
+    min-width: 220px;
+}
+
+/* ==============================
+   BOTONES
+============================== */
+
+.button {
+    border: none;
+
+    border-radius: 7px;
+
+    padding: 11px 18px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    text-decoration: none;
+
+    display: inline-block;
+}
+
+.orange-button {
+    background: #ff6b35;
+
+    color: white;
+}
+
+.orange-button:hover {
+    background: #e85a2a;
+}
+
+.dark-button {
+    background: #20242b;
+
+    color: white;
+}
+
+.dark-button:hover {
+    background: #343a40;
+}
+
+.gray-button {
+    background: #ddd;
+
+    color: #222;
+}
+
+.gray-button:hover {
+    background: #ccc;
+}
+
+.red-button {
+    background: #d9534f;
+
+    color: white;
+}
+
+.red-button:hover {
+    background: #c9302c;
+}
+
+/* ==============================
+   CAPÍTULOS
+============================== */
+
+.chapters-title {
+    margin-top: 35px;
+
+    margin-bottom: 15px;
+
+    font-size: 22px;
+}
+
+.chapter {
+    background: #f8f8f8;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+}
+
+.chapter-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+.chapter-header h3 {
+    margin: 0;
+
+    color: #222;
+}
+
+.chapter-number {
+    color: #777;
+
+    font-size: 13px;
+}
+
+/* ==============================
+   BLOQUES
+============================== */
+
+.blocks {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 15px;
+}
+
+.block {
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    padding: 15px;
+
+    position: relative;
+}
+
+.block-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+
+    gap: 10px;
+}
+
+.block-type {
+    font-size: 13px;
+
+    font-weight: bold;
+
+    color: #555;
+}
+
+.block-actions {
+    display: flex;
+
+    gap: 5px;
+}
+
+.small-button {
+    border: none;
+
+    background: #ddd;
+
+    color: #222;
+
+    border-radius: 5px;
+
+    padding: 5px 8px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+.small-button:hover {
+    background: #ccc;
+}
+
+.delete-block {
+    background: #f1d0d0;
+
+    color: #a33;
+}
+
+.delete-block:hover {
+    background: #e8baba;
+}
+
+/* ==============================
+   BLOQUE TEXTO
+============================== */
+
+.block textarea {
+    width: 100%;
+
+    min-height: 100px;
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    resize: vertical;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+
+    color: #222;
+
+    background: white;
+}
+
+/* ==============================
+   IMAGEN DEL BLOQUE
+============================== */
+
+.image-preview {
+    width: 100%;
+
+    max-height: 500px;
+
+    object-fit: contain;
+
+    display: block;
+
+    margin-top: 10px;
+
+    border-radius: 6px;
+
+    background: #eee;
+}
+
+.image-info {
+    color: #777;
+
+    font-size: 12px;
+
+    margin-top: 7px;
+}
+
+/* ==============================
+   BOTONES DE BLOQUES
+============================== */
+
+.block-buttons {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 15px;
+
+    flex-wrap: wrap;
+}
+
+/* ==============================
+   TAMAÑO
+============================== */
+
+.size-info {
+    background: #f1f1f1;
+
+    border-radius: 7px;
+
+    padding: 10px 12px;
+
+    margin-top: 15px;
+
+    color: #666;
+
+    font-size: 13px;
+}
+
+/* ==============================
+   PUBLICAR
+============================== */
+
+.publish-area {
+    margin-top: 30px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid #ddd;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+.publish-info {
+    color: #777;
+
+    font-size: 13px;
+}
+
+/* ==============================
+   FOOTER
+============================== */
+
+footer {
+    background: #20242b;
+
+    color: #aaa;
+
+    text-align: center;
+
+    padding: 30px;
+
+    margin-top: 40px;
+
+    font-size: 13px;
+}
+
+/* ==============================
+   CELULAR
+============================== */
+
+@media (max-width: 600px) {
+
+    .container {
+        padding: 18px 12px;
+    }
+
+    .form-box {
+        padding: 20px;
+    }
+
+    .form-box h1 {
+        font-size: 25px;
+    }
+
+    .cover-preview {
+        width: 130px;
+
+        height: 180px;
+    }
+
+    .chapter {
+        padding: 15px;
+    }
+
+    .chapter-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .publish-area {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .publish-area .button {
+        width: 100%;
+
+        text-align: center;
+    }
+
+}
+
+</style></head><body><header><div class="header-content"><div class="logo">
+ComicWorldFiles
+</div><a
+class="back"
+href="index.html"
+
+«»
+
+← Volver
+</a>
+
+</div></header><main class="container"><section class="form-box"><h1>
+Crear historieta
+</h1><!-- ==============================
+     INFORMACIÓN
+============================== --><div class="field"><label>
+Título
+</label><input
+type="text"
+id="title"
+placeholder="Nombre de la historieta"
+maxlength="150"
+
+«»
+
+</div><div class="field"><label>
+Descripción
+</label><textarea
+id="description"
+placeholder="Describe brevemente tu historieta..."
+maxlength="2000"
+></textarea></div><div class="field"><label>
+Género
+</label><select id="genre"><option value="">
+Seleccionar género
+</option><option value="Acción">
+Acción
+</option><option value="Aventura">
+Aventura
+</option><option value="Ciencia ficción">
+Ciencia ficción
+</option><option value="Comedia">
+Comedia
+</option><option value="Drama">
+Drama
+</option><option value="Fantasía">
+Fantasía
+</option><option value="Horror">
+Horror
+</option><option value="Misterio">
+Misterio
+</option><option value="Romance">
+Romance
+</option><option value="Terror">
+Terror
+</option><option value="Otro">
+Otro
+</option></select></div><!-- ==============================
+     PORTADA
+============================== --><div class="field"><label>
+Portada
+</label><div class="cover-area"><div
+id="cover-preview"
+class="cover-preview"
+>
+📖
+</div><div class="cover-controls"><input
+type="file"
+id="cover-input"
+accept="image/*"
+
+«»
+
+<p
+style="
+color:#777;
+font-size:13px;
+line-height:1.5;
+"
+>
+Selecciona una imagen para utilizar
+como portada de tu historieta.
+</p><p
+id="cover-size"
+class="image-info"
+>
+</p></div></div></div><!-- ==============================
+     CAPÍTULOS
+============================== --><h2 class="chapters-title">
+Capítulos
+</h2><div id="chapters">
+</div><button
+type="button"
+class="button dark-button"
+onclick="agregarCapitulo()"
+
+«»
+
++ Agregar capítulo
+  </button>
+
+<!-- ==============================
+     TAMAÑO
+============================== --><div
+id="size-info"
+class="size-info"
+>
+Tamaño aproximado: 0 MB
+</div><!-- ==============================
+     PUBLICAR
+============================== --><div class="publish-area"><div class="publish-info">Las imágenes serán comprimidas antes
+de ser enviadas al servidor.
+
+</div><button
+type="button"
+class="button orange-button"
+onclick="publicarHistorieta()"
+
+«»
+
+Publicar historieta
+</button>
+
+</div></section></main><footer>ComicWorldFiles © 2026
+
+<br><br>
+
+Una plataforma para publicar y descubrir
+historias independientes.
+
+</footer><script>
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+let numeroCapitulo = 0;
+
+let archivosImagenes = [];
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+agregarCapitulo();
+
+
+/* ==========================================
+   PORTADA
+========================================== */
+
+document.getElementById(
+    "cover-input"
+).addEventListener(
+    "change",
+    function(event) {
+
+        const file =
+            event.target.files[0];
+
+        if (!file) {
+
+            return;
+
+        }
+
+
+        if (
+            !file.type.startsWith("image/")
+        ) {
+
+            alert(
+                "Selecciona una imagen válida."
+            );
+
+            event.target.value = "";
+
+            return;
+
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function(e) {
+
+                document.getElementById(
+                    "cover-preview"
+                ).innerHTML =
+
+                    '<img src="' +
+                    e.target.result +
+                    '" alt="Portada">';
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+
+        document.getElementById(
+            "cover-size"
+        ).textContent =
+
+            "Tamaño original: " +
+            formatearBytes(file.size);
+
+    }
+);
+
+
+/* ==========================================
+   AGREGAR CAPÍTULO
+========================================== */
+
+function agregarCapitulo() {
+
+    numeroCapitulo++;
+
+
+    const chapter =
+        document.createElement(
+            "div"
+        );
+
+    chapter.className =
+        "chapter";
+
+    chapter.dataset.chapter =
+        numeroCapitulo;
+
+
+    chapter.innerHTML =
+
+        '<div class="chapter-header">' +
+
+        '<div>' +
+
+        '<h3>' +
+        'Capítulo ' +
+        numeroCapitulo +
+        '</h3>' +
+
+        '<div class="chapter-number">' +
+        'Organiza las imágenes y textos de este capítulo.' +
+        '</div>' +
+
+        '</div>' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="button red-button" ' +
+        'onclick="eliminarCapitulo(this)">' +
+        'Eliminar capítulo' +
+        '</button>' +
+
+        '</div>' +
+
+
+        '<div class="field">' +
+
+        '<label>' +
+        'Título del capítulo' +
+        '</label>' +
+
+        '<input ' +
+        'type="text" ' +
+        'class="chapter-title" ' +
+        'placeholder="Ej: El comienzo" ' +
+        'maxlength="150">' +
+
+        '</div>' +
+
+
+        '<div class="blocks">' +
+        '</div>' +
+
+
+        '<div class="block-buttons">' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="button dark-button" ' +
+        'onclick="agregarImagen(this)">' +
+        '+ Imagen' +
+        '</button>' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="button dark-button" ' +
+        'onclick="agregarTexto(this)">' +
+        '+ Texto' +
+        '</button>' +
+
+        '</div>';
+
+
+    document.getElementById(
+        "chapters"
+    ).appendChild(
+        chapter
+    );
+
+}
+
+
+/* ==========================================
+   ELIMINAR CAPÍTULO
+========================================== */
+
+function eliminarCapitulo(button) {
+
+    const chapter =
+        button.closest(
+            ".chapter"
+        );
+
+
+    if (!chapter) {
+
+        return;
+
+    }
+
+
+    const chapters =
+        document.querySelectorAll(
+            ".chapter"
+        );
+
+
+    if (
+        chapters.length <= 1
+    ) {
+
+        alert(
+            "La historieta debe tener al menos un capítulo."
+        );
+
+        return;
+
+    }
+
+
+    chapter.remove();
+
+
+    renumerarCapitulos();
+
+}
+
+
+/* ==========================================
+   RENUMERAR CAPÍTULOS
+========================================== */
+
+function renumerarCapitulos() {
+
+    const chapters =
+        document.querySelectorAll(
+            ".chapter"
+        );
+
+
+    chapters.forEach(
+        function(chapter, index) {
+
+            const numero =
+                index + 1;
+
+
+            chapter.dataset.chapter =
+                numero;
+
+
+            const titulo =
+                chapter.querySelector(
+                    "h3"
+                );
+
+
+            if (titulo) {
+
+                titulo.textContent =
+                    "Capítulo " +
+                    numero;
+
+            }
+
+        }
+    );
+
+
+    numeroCapitulo =
+        chapters.length;
+
+}
+
+
+/* ==========================================
+   AGREGAR IMAGEN
+========================================== */
+
+function agregarImagen(button) {
+
+    const chapter =
+        button.closest(
+            ".chapter"
+        );
+
+
+    const blocks =
+        chapter.querySelector(
+            ".blocks"
+        );
+
+
+    const block =
+        document.createElement(
+            "div"
+        );
+
+    block.className =
+        "block";
+
+    block.dataset.type =
+        "image";
+
+
+    block.innerHTML =
+
+        '<div class="block-header">' +
+
+        '<span class="block-type">' +
+        '🖼️ Imagen' +
+        '</span>' +
+
+        '<div class="block-actions">' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="small-button" ' +
+        'onclick="moverBloque(this, -1)">' +
+        '↑' +
+        '</button>' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="small-button" ' +
+        'onclick="moverBloque(this, 1)">' +
+        '↓' +
+        '</button>' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="small-button delete-block" ' +
+        'onclick="eliminarBloque(this)">' +
+        'Eliminar' +
+        '</button>' +
+
+        '</div>' +
+
+        '</div>' +
+
+
+        '<input ' +
+        'type="file" ' +
+        'accept="image/*" ' +
+        'onchange="previsualizarImagen(this)">' +
+
+
+        '<div class="image-container"></div>' +
+
+
+        '<div class="image-info">' +
+        '</div>';
+
+
+    blocks.appendChild(
+        block
+    );
+
+}
+
+
+/* ==========================================
+   AGREGAR TEXTO
+========================================== */
+
+function agregarTexto(button) {
+
+    const chapter =
+        button.closest(
+            ".chapter"
+        );
+
+
+    const blocks =
+        chapter.querySelector(
+            ".blocks"
+        );
+
+
+    const block =
+        document.createElement(
+            "div"
+        );
+
+    block.className =
+        "block";
+
+    block.dataset.type =
+        "text";
+
+
+    block.innerHTML =
+
+        '<div class="block-header">' +
+
+        '<span class="block-type">' +
+        '📝 Texto' +
+        '</span>' +
+
+        '<div class="block-actions">' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="small-button" ' +
+        'onclick="moverBloque(this, -1)">' +
+        '↑' +
+        '</button>' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="small-button" ' +
+        'onclick="moverBloque(this, 1)">' +
+        '↓' +
+        '</button>' +
+
+        '<button ' +
+        'type="button" ' +
+        'class="small-button delete-block" ' +
+        'onclick="eliminarBloque(this)">' +
+        'Eliminar' +
+        '</button>' +
+
+        '</div>' +
+
+        '</div>' +
+
+
+        '<textarea ' +
+        'placeholder="Escribe aquí la narración, diálogo o descripción...">' +
+        '</textarea>';blocks.appendChild(
+    block
+);
+
+}
+
+/* ==========================================
+PREVISUALIZAR IMAGEN
+========================================== */
+
+function previsualizarImagen(input) {
+
+const file =
+    input.files[0];
+
+
+if (!file) {
+
+    return;
+
+}
+
+
+if (
+    !file.type.startsWith("image/")
+) {
+
+    alert(
+        "El archivo seleccionado no es una imagen."
+    );
+
+    input.value = "";
+
+    return;
+
+}
+
+
+const block =
+    input.closest(
+        ".block"
+    );
+
+
+const container =
+    block.querySelector(
+        ".image-container"
+    );
+
+
+const info =
+    block.querySelector(
+        ".image-info"
+    );
+
+
+const reader =
+    new FileReader();
+
+
+reader.onload =
+    function(event) {
+
+        container.innerHTML =
+
+            '<img ' +
+            'class="image-preview" ' +
+            'src="' +
+            event.target.result +
+            '" ' +
+            'alt="Imagen del capítulo">';
+
+    };
+
+
+reader.readAsDataURL(file);
+
+
+info.textContent =
+    "Tamaño original: " +
+    formatearBytes(file.size);
+
+
+calcularTamanoTotal();
+
+}
+
+/* ==========================================
+MOVER BLOQUE
+========================================== */
+
+function moverBloque(
+button,
+direccion
+) {
+
+const block =
+    button.closest(
+        ".block"
+    );
+
+
+const blocks =
+    block.parentElement;
+
+
+if (
+    direccion === -1
+) {
+
+    const anterior =
+        block.previousElementSibling;
+
+
+    if (anterior) {
+
+        blocks.insertBefore(
+            block,
+            anterior
+        );
+
+    }
+
+} else {
+
+    const siguiente =
+        block.nextElementSibling;
+
+
+    if (siguiente) {
+
+        blocks.insertBefore(
+            siguiente,
+            block
+        );
+
+    }
+
+}
+
+}
+
+/* ==========================================
+ELIMINAR BLOQUE
+========================================== */
+
+function eliminarBloque(button) {
+
+const block =
+    button.closest(
+        ".block"
+    );
+
+
+if (block) {
+
+    block.remove();
+
+    calcularTamanoTotal();
+
+}
+
+}
+
+/* ==========================================
+CALCULAR TAMAÑO
+========================================== */
+
+function calcularTamanoTotal() {
+
+let total =
+    0;
+
+
+const cover =
+    document.getElementById(
+        "cover-input"
+    ).files[0];
+
+
+if (cover) {
+
+    total +=
+        cover.size;
+
+}
+
+
+const inputs =
+    document.querySelectorAll(
+        '.block input[type="file"]'
+    );
+
+
+inputs.forEach(
+    function(input) {
+
+        if (
+            input.files &&
+            input.files[0]
+        ) {
+
+            total +=
+                input.files[0].size;
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "size-info"
+).textContent =
+
+    "Tamaño original aproximado: " +
+    formatearBytes(total);
+
+}
+
+/* ==========================================
+FORMATEAR BYTES
+========================================== */
+
+function formatearBytes(
+bytes
+) {
+
+if (
+    bytes === 0
+) {
+
+    return "0 Bytes";
+
+}
+
+
+const unidades =
+    [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+
+const indice =
+    Math.floor(
+        Math.log(bytes) /
+        Math.log(1024)
+    );
+
+
+return (
+    bytes /
+    Math.pow(
+        1024,
+        indice
+    )
+).toFixed(2) +
+    " " +
+    unidades[indice];
+
+}
+
+/* ==========================================
+COMPRIMIR IMAGEN
+========================================== */
+
+function comprimirImagen(
+file,
+maxWidth,
+maxHeight,
+quality
+) {
+
+return new Promise(
+    function(resolve, reject) {
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function(event) {
+
+                const img =
+                    new Image();
+
+
+                img.onload =
+                    function() {
+
+                        let width =
+                            img.width;
+
+                        let height =
+                            img.height;
+
+
+                        const escala =
+                            Math.min(
+                                1,
+                                maxWidth / width,
+                                maxHeight / height
+                            );
+
+
+                        width =
+                            Math.round(
+                                width *
+                                escala
+                            );
+
+
+                        height =
+                            Math.round(
+                                height *
+                                escala
+                            );
+
+
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
+
+
+                        canvas.width =
+                            width;
+
+                        canvas.height =
+                            height;
+
+
+                        const ctx =
+                            canvas.getContext(
+                                "2d"
+                            );
+
+
+                        ctx.drawImage(
+                            img,
+                            0,
+                            0,
+                            width,
+                            height
+                        );
+
+
+                        canvas.toBlob(
+                            function(blob) {
+
+                                if (!blob) {
+
+                                    reject(
+                                        new Error(
+                                            "No se pudo comprimir la imagen."
+                                        )
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                resolve(
+                                    new File(
+                                        [
+                                            blob
+                                        ],
+                                        file.name.replace(
+                                            /\.[^/.]+$/,
+                                            ".jpg"
+                                        ),
+                                        {
+                                            type:
+                                                "image/jpeg"
+                                        }
+                                    )
+                                );
+
+                            },
+                            "image/jpeg",
+                            quality
+                        );
+
+                    };
+
+
+                img.onerror =
+                    function() {
+
+                        reject(
+                            new Error(
+                                "No se pudo leer la imagen."
+                            )
+                        );
+
+                    };
+
+
+                img.src =
+                    event.target.result;
+
+            };
+
+
+        reader.onerror =
+            function() {
+
+                reject(
+                    new Error(
+                        "No se pudo leer el archivo."
+                    )
+                );
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+    }
+);
+
+}
+
+/* ==========================================
+PUBLICAR
+========================================== */
+
+async function publicarHistorieta() {
+
+const title =
+    document.getElementById(
+        "title"
+    ).value.trim();
+
+
+const description =
+    document.getElementById(
+        "description"
+    ).value.trim();
+
+
+const genre =
+    document.getElementById(
+        "genre"
+    ).value;
+
+
+if (!title) {
+
+    alert(
+        "Escribe un título para la historieta."
+    );
+
+    return;
+
+}
+
+
+if (!description) {
+
+    alert(
+        "Escribe una descripción."
+    );
+
+    return;
+
+}
+
+
+if (!genre) {
+
+    alert(
+        "Selecciona un género."
+    );
+
+    return;
+
+}
+
+
+const chapters =
+    document.querySelectorAll(
+        ".chapter"
+    );
+
+
+if (
+    chapters.length === 0
+) {
+
+    alert(
+        "Agrega al menos un capítulo."
+    );
+
+    return;
+
+}
+
+
+for (
+    let i = 0;
+    i < chapters.length;
+    i++
+) {
+
+    const titleInput =
+        chapters[i].querySelector(
+            ".chapter-title"
+        );
+
+
+    if (
+        !titleInput.value.trim()
+    ) {
+
+        alert(
+            "El capítulo " +
+            (i + 1) +
+            " necesita un título."
+        );
+
+        return;
+
+    }
+
+
+    const blocks =
+        chapters[i].querySelectorAll(
+            ".block"
+        );
+
+
+    if (
+        blocks.length === 0
+    ) {
+
+        alert(
+            "El capítulo " +
+            (i + 1) +
+            " está vacío."
+        );
+
+        return;
+
+    }
+
+}
+
+
+/*
+ * Todavía no enviamos los datos
+ * al servidor.
+ *
+ * Primero comprimimos las imágenes
+ * para comprobar que el proceso funciona.
+ */
+
+const coverInput =
+    document.getElementById(
+        "cover-input"
+    );
+
+
+if (
+    coverInput.files[0]
+) {
+
+    try {
+
+        const compressed =
+            await comprimirImagen(
+                coverInput.files[0],
+                1200,
+                1600,
+                0.82
+            );
+
+
+        console.log(
+            "Cover original:",
+            formatearBytes(
+                coverInput.files[0].size
+            )
+        );
+
+
+        console.log(
+            "Cover comprimida:",
+            formatearBytes(
+                compressed.size
+            )
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "No se pudo procesar la portada."
+        );
+
+        return;
+
+    }
+
+}
+
+
+const imageInputs =
+    document.querySelectorAll(
+        '.block input[type="file"]'
+    );
+
+
+for (
+    let i = 0;
+    i < imageInputs.length;
+    i++
+) {
+
+    if (
+        !imageInputs[i].files[0]
+    ) {
+
+        continue;
+
+    }
+
+
+    try {
+
+        const compressed =
+            await comprimirImagen(
+                imageInputs[i].files[0],
+                1600,
+                2400,
+                0.82
+            );
+
+
+        console.log(
+            "Imagen original:",
+            formatearBytes(
+                imageInputs[i].files[0].size
+            )
+        );
+
+
+        console.log(
+            "Imagen comprimida:",
+            formatearBytes(
+                compressed.size
+            )
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "No se pudo procesar una de las imágenes."
+        );
+
+        return;
+
+    }
+
+}
+
+
+alert(
+    "La historieta está correctamente preparada. En el siguiente paso conectaremos el botón con la API para guardarla."
+);
+
+}
+
+/* ==========================================
+ACTUALIZAR TAMAÑO AL CAMBIAR PORTADA
+========================================== */
+
+document.getElementById(
+"cover-input"
+).addEventListener(
+"change",
+function() {
+
+    calcularTamanoTotal();
+
+}
+
+);
+
+</script></body></html>
