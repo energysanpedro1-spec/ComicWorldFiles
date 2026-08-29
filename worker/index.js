@@ -475,6 +475,44 @@ if (url.pathname === "/api/stories" && request.method === "POST") {
 
     }
 }
+// ==============================
+// API: LISTAR HISTORIAS
+// ==============================
+if (url.pathname === "/api/stories" && request.method === "GET") {
+
+    try {
+
+        const result = await env.DB
+            .prepare(
+                `SELECT
+                    stories.id,
+                    stories.user_id,
+                    stories.title,
+                    stories.description,
+                    stories.genre,
+                    stories.created_at,
+                    users.username
+                 FROM stories
+                 INNER JOIN users
+                 ON users.id = stories.user_id
+                 ORDER BY stories.id DESC`
+            )
+            .all();
+
+        return json({
+            success: true,
+            stories: result.results
+        });
+
+    } catch (error) {
+
+        return json({
+            success: false,
+            error: error.message
+        }, 500);
+    }
+}
+        
 
 
         // ==============================
