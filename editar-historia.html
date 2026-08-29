@@ -380,8 +380,9 @@ id="story-description">
 Cargando descripción...
 </p><span class="genre"
 id="story-genre">
+</span>
 
-</span><!-- ==============================
+<!-- ==============================
      PORTADA
 ============================== --><div class="cover-section"><h3>
 Portada
@@ -392,9 +393,9 @@ alt="Portada de la historia">
 
 <div
 id="cover-placeholder"
-class="cover-placeholder">
-Esta historia todavía no tiene portada.
-</div></div><input
+class="cover-placeholder">Esta historia todavía no tiene portada.
+
+</div></div><div id="cover-controls"><input
 type="file"
 id="cover-file"
 class="cover-input"
@@ -403,10 +404,10 @@ accept="image/jpeg,image/png,image/webp">
 <button
 class="cover-button"
 onclick="uploadCover()">
-Subir portada
-</button>
 
-<div
+Subir portada
+
+</button></div><div
 id="cover-status"
 class="cover-status">
 </div></div></section><!-- ==============================
@@ -436,18 +437,18 @@ placeholder="Escribe aquí el contenido de tu capítulo..."
 ></textarea><div class="buttons"><button
 class="save-button"
 onclick="saveChapter()">
-Guardar capítulo
-</button>
 
-<button
+Guardar capítulo
+
+</button><button
 class="cancel-button"
 id="cancel-button"
 onclick="cancelEdit()"
 style="display:none;">
-Cancelar edición
-</button>
 
-</div></section><!-- ==============================
+Cancelar edición
+
+</button></div></section><!-- ==============================
      CAPÍTULOS
 ============================== --><div class="section-title"><h2>
 Capítulos
@@ -464,10 +465,19 @@ const params =
         window.location.search
     );
 
+
 const storyId =
     params.get("id");
 
-let editingChapterId = null;
+
+let editingChapterId =
+    null;
+
+
+/* NUEVO */
+
+let isAuthor =
+    false;
 
 
 /* ==========================================
@@ -487,6 +497,81 @@ if (!storyId) {
     loadChapters();
 
 }
+
+
+/* ==========================================
+   PREVISUALIZAR PORTADA
+========================================== */
+
+document.getElementById(
+    "cover-file"
+).addEventListener(
+    "change",
+    function(event) {
+
+        const file =
+            event.target.files[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+
+        if (
+            !allowedTypes.includes(
+                file.type
+            )
+        ) {
+
+            showError(
+                "La portada debe ser JPG, PNG o WEBP."
+            );
+
+            event.target.value =
+                "";
+
+            return;
+
+        }
+
+
+        if (
+            file.size >
+            5 * 1024 * 1024
+        ) {
+
+            showError(
+                "La imagen no puede superar los 5 MB."
+            );
+
+            event.target.value =
+                "";
+
+            return;
+
+        }
+
+
+        const previewUrl =
+            URL.createObjectURL(
+                file
+            );
+
+
+        showCover(
+            previewUrl
+        );
+
+    }
+);
 
 
 /* ==========================================
@@ -597,16 +682,20 @@ function showCover(url) {
             "cover-image"
         );
 
+
     const placeholder =
         document.getElementById(
             "cover-placeholder"
         );
 
 
-    image.src = url;
+    image.src =
+        url;
+
 
     image.style.display =
         "block";
+
 
     placeholder.style.display =
         "none";
@@ -620,10 +709,22 @@ function showCover(url) {
 
 async function uploadCover() {
 
+    if (!isAuthor) {
+
+        showError(
+            "No tienes permiso para modificar esta historia."
+        );
+
+        return;
+
+    }
+
+
     const fileInput =
         document.getElementById(
             "cover-file"
         );
+
 
     const file =
         fileInput.files[0];
@@ -733,6 +834,7 @@ async function uploadCover() {
                 "No se pudo subir la portada."
             );
 
+
             status.textContent =
                 "";
 
@@ -740,10 +842,6 @@ async function uploadCover() {
 
         }
 
-
-        /* ==============================
-           MOSTRAR NUEVA PORTADA
-        ============================== */
 
         if (data.cover_url) {
 
@@ -771,8 +869,10 @@ async function uploadCover() {
 
         console.error(error);
 
+
         status.textContent =
             "";
+
 
         showError(
             "No se pudo conectar con el servidor."
@@ -822,27 +922,37 @@ async function checkAuthor(
 
 
         if (
-            Number(data.user.id) !==
+            Number(data.user.id) ===
             Number(storyUserId)
         ) {
 
-            showError(
-                "No tienes permiso para editar esta historia."
-            );
+            isAuthor =
+                true;
 
-
-            document.querySelector(
-                ".editor"
-            ).style.display =
-                "none";
-
-
-            document.querySelector(
-                ".cover-section"
-            ).style.display =
-                "none";
+            return;
 
         }
+
+
+        isAuthor =
+            false;
+
+
+        showError(
+            "No tienes permiso para editar esta historia."
+        );
+
+
+        document.querySelector(
+            ".editor"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "cover-controls"
+        ).style.display =
+            "none";
 
 
     } catch (error) {
@@ -915,7 +1025,8 @@ async function loadChapters() {
         }
 
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
 
         chapters.forEach(
@@ -991,6 +1102,7 @@ async function loadChapters() {
     } catch (error) {
 
         console.error(error);
+
 
         container.innerHTML =
             "<p>Error cargando capítulos.</p>";
@@ -1069,9 +1181,7 @@ async function saveChapter() {
                     }
                 );
 
-        }
-
-        else {
+        } else {
 
             response =
                 await fetch(
