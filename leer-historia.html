@@ -30,9 +30,11 @@ header {
 .header-content {
     max-width: 900px;
     margin: auto;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
 }
 
@@ -74,7 +76,9 @@ nav a:hover {
     background: white;
     border-radius: 12px;
     padding: 35px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
 }
 
 .story h1 {
@@ -91,17 +95,25 @@ nav a:hover {
 
 .tag {
     display: inline-block;
+
     background: #eee;
+
     padding: 6px 10px;
+
     border-radius: 20px;
+
     font-size: 12px;
+
     margin-bottom: 25px;
 }
 
 .description {
     color: #555;
+
     font-size: 17px;
+
     line-height: 1.7;
+
     white-space: pre-line;
 }
 
@@ -111,13 +123,21 @@ nav a:hover {
 
 .edit-button {
     display: none;
+
     margin-top: 20px;
+
     padding: 11px 18px;
+
     background: #ff6b35;
+
     color: white;
+
     text-decoration: none;
+
     border-radius: 7px;
+
     font-size: 14px;
+
     font-weight: bold;
 }
 
@@ -131,7 +151,9 @@ nav a:hover {
 
 .separator {
     height: 1px;
+
     background: #ddd;
+
     margin: 30px 0;
 }
 
@@ -146,32 +168,47 @@ nav a:hover {
 
 .chapter {
     background: #f8f8f8;
+
     border-radius: 10px;
+
     padding: 18px;
+
     margin-bottom: 12px;
+
     border: 1px solid #e5e5e5;
 }
 
 .chapter-number {
     color: #ff6b35;
+
     font-size: 12px;
+
     font-weight: bold;
+
     margin-bottom: 5px;
 }
 
 .chapter-title {
     margin: 0;
+
     font-size: 18px;
 }
 
 .chapter-button {
     display: inline-block;
+
     margin-top: 12px;
+
     padding: 9px 15px;
+
     background: #20242b;
+
     color: white;
+
     text-decoration: none;
+
     border-radius: 6px;
+
     font-size: 13px;
 }
 
@@ -180,41 +217,63 @@ nav a:hover {
 }
 
 /* ==============================
-   LECTURA
+   LECTOR
 ============================== */
 
 .reader {
     display: none;
+
     background: #181a1f;
+
     color: white;
+
     border-radius: 12px;
+
     padding: 35px;
+
     margin-top: 25px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,0.2);
 }
 
 .reader h2 {
     margin-top: 0;
+
     color: white;
+
     font-size: 28px;
 }
 
 .reader-content {
     color: #f1f1f1;
+
     font-size: 18px;
+
     line-height: 1.9;
+
     white-space: pre-wrap;
+
+    overflow-wrap: break-word;
 }
 
 .close-reader {
     display: inline-block;
+
     margin-top: 25px;
+
     padding: 10px 16px;
+
     background: #333842;
+
     color: white;
+
     border: none;
+
     border-radius: 6px;
+
     cursor: pointer;
+
     font-size: 14px;
 }
 
@@ -228,17 +287,25 @@ nav a:hover {
 
 .loading {
     text-align: center;
+
     padding: 50px 20px;
+
     color: #777;
 }
 
 .error {
     background: white;
+
     border-radius: 10px;
+
     padding: 30px;
+
     text-align: center;
+
     color: #c0392b;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
 }
 
 /* ==============================
@@ -247,12 +314,19 @@ nav a:hover {
 
 .back-button {
     display: inline-block;
+
     margin-top: 30px;
+
     padding: 11px 18px;
+
     background: #20242b;
+
     color: white;
+
     text-decoration: none;
+
     border-radius: 7px;
+
     font-size: 14px;
 }
 
@@ -262,10 +336,15 @@ nav a:hover {
 
 footer {
     background: #20242b;
+
     color: #aaa;
+
     text-align: center;
+
     padding: 30px;
+
     margin-top: 40px;
+
     font-size: 13px;
 }
 
@@ -322,9 +401,14 @@ ComicWorldFiles
 Inicio
 </a><a href="index.html">
 Historias
-</a></nav></div></header><main class="container"><!-- CARGANDO --><div id="loading" class="loading">
-Cargando historia...
-</div><!-- ERROR --><div id="error"
+</a></nav></div></header><main class="container"><!-- ==============================
+     CARGANDO
+============================== --><div id="loading"
+     class="loading">Cargando historia...
+
+</div><!-- ==============================
+     ERROR
+============================== --><div id="error"
      class="error"
      style="display:none;"><h2>
 No se pudo cargar la historia
@@ -335,13 +419,15 @@ href="index.html">
 
 Volver al inicio
 
-</a></div><!-- HISTORIA --><article id="story"
+</a></div><!-- ==============================
+     HISTORIA
+============================== --><article id="story"
          class="story"
          style="display:none;"><h1 id="story-title">
 </h1><div class="author">Por
-<strong id="story-author"></strong>
 
-</div><span id="story-genre"
+<strong id="story-author">
+</strong></div><span id="story-genre"
 class="tag">
 </span>
 
@@ -363,7 +449,9 @@ href="index.html">
 
 ← Volver
 
-</a></article><!-- LECTOR --><section id="reader"
+</a></article><!-- ==============================
+     LECTOR
+============================== --><section id="reader"
          class="reader"><h2 id="reader-title">
 </h2><div id="reader-content"
      class="reader-content">
@@ -381,7 +469,7 @@ historias independientes.
 </footer><script>
 
 /* ==========================================
-   ID DE HISTORIA
+   OBTENER ID DE HISTORIA
 ========================================== */
 
 const params =
@@ -398,16 +486,24 @@ const storyId =
 ========================================== */
 
 const loading =
-    document.getElementById("loading");
+    document.getElementById(
+        "loading"
+    );
 
 const story =
-    document.getElementById("story");
+    document.getElementById(
+        "story"
+    );
 
 const error =
-    document.getElementById("error");
+    document.getElementById(
+        "error"
+    );
 
 const errorMessage =
-    document.getElementById("error-message");
+    document.getElementById(
+        "error-message"
+    );
 
 const chaptersContainer =
     document.getElementById(
@@ -416,7 +512,7 @@ const chaptersContainer =
 
 
 /* ==========================================
-   INICIO
+   INICIAR
 ========================================== */
 
 if (!storyId) {
@@ -427,8 +523,32 @@ if (!storyId) {
 
 } else {
 
-    cargarHistoria(storyId);
-    cargarCapitulos(storyId);
+    iniciarPagina(storyId);
+
+}
+
+
+/* ==========================================
+   INICIAR PÁGINA
+========================================== */
+
+async function iniciarPagina(id) {
+
+    /*
+     * Primero cargamos la historia.
+     * Cuando sabemos que existe,
+     * cargamos sus capítulos.
+     */
+
+    const historiaCorrecta =
+        await cargarHistoria(id);
+
+    if (!historiaCorrecta) {
+        return;
+    }
+
+    await cargarCapitulos(id);
+
 }
 
 
@@ -440,22 +560,55 @@ async function cargarHistoria(id) {
 
     try {
 
+        console.log(
+            "Cargando historia:",
+            id
+        );
+
+
         const response =
             await fetch(
                 "/api/stories/" +
                 encodeURIComponent(id),
                 {
+                    method: "GET",
                     credentials: "include"
                 }
             );
 
-        const data =
-            await response.json();
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta historia:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(texto);
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió JSON. Código HTTP: " +
+                response.status
+            );
+
+        }
 
 
         if (
             !response.ok ||
-            !data.success
+            !data.success ||
+            !data.story
         ) {
 
             throw new Error(
@@ -476,13 +629,24 @@ async function cargarHistoria(id) {
         );
 
 
+        return true;
+
+
     } catch (err) {
 
-        console.error(err);
+        console.error(
+            "Error cargando historia:",
+            err
+        );
+
 
         mostrarError(
-            err.message
+            err.message ||
+            "No se pudo cargar la historia."
         );
+
+
+        return false;
 
     }
 
@@ -498,7 +662,7 @@ function mostrarHistoria(data) {
     document.getElementById(
         "story-title"
     ).textContent =
-        data.title;
+        data.title || "";
 
 
     document.getElementById(
@@ -530,7 +694,7 @@ function mostrarHistoria(data) {
 
 
 /* ==========================================
-   COMPROBAR SI ES EL AUTOR
+   COMPROBAR AUTOR
 ========================================== */
 
 async function comprobarAutor(
@@ -549,12 +713,16 @@ async function comprobarAutor(
             );
 
 
+        if (!response.ok) {
+            return;
+        }
+
+
         const data =
             await response.json();
 
 
         if (
-            !response.ok ||
             !data.success ||
             !data.loggedIn ||
             !data.user
@@ -578,7 +746,9 @@ async function comprobarAutor(
 
             editButton.href =
                 "editar-historia.html?id=" +
-                encodeURIComponent(storyId);
+                encodeURIComponent(
+                    storyId
+                );
 
 
             editButton.style.display =
@@ -606,19 +776,49 @@ async function cargarCapitulos(id) {
 
     try {
 
+        console.log(
+            "Cargando capítulos de historia:",
+            id
+        );
+
+
         const response =
             await fetch(
                 "/api/stories/" +
                 encodeURIComponent(id) +
                 "/chapters",
                 {
+                    method: "GET",
                     credentials: "include"
                 }
             );
 
 
-        const data =
-            await response.json();
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta capítulos:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(texto);
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió JSON al cargar los capítulos."
+            );
+
+        }
 
 
         if (
@@ -629,16 +829,27 @@ async function cargarCapitulos(id) {
             chaptersContainer.innerHTML =
                 "<p>No se pudieron cargar los capítulos.</p>";
 
+            console.error(
+                "Error capítulos:",
+                data.error
+            );
+
             return;
 
         }
 
 
         const chapters =
-            data.chapters || [];
+            Array.isArray(
+                data.chapters
+            )
+                ? data.chapters
+                : [];
 
 
-        if (chapters.length === 0) {
+        if (
+            chapters.length === 0
+        ) {
 
             chaptersContainer.innerHTML =
                 "<p>Aún no hay capítulos publicados.</p>";
@@ -648,7 +859,8 @@ async function cargarCapitulos(id) {
         }
 
 
-        chaptersContainer.innerHTML = "";
+        chaptersContainer.innerHTML =
+            "";
 
 
         chapters.forEach(
@@ -664,30 +876,74 @@ async function cargarCapitulos(id) {
                     "chapter";
 
 
-                element.innerHTML =
+                const number =
+                    document.createElement(
+                        "div"
+                    );
 
-                    '<div class="chapter-number">' +
-                    'CAPÍTULO ' +
-                    escapeHtml(
-                        String(
-                            chapter.chapter_number
-                        )
-                    ) +
-                    '</div>' +
+                number.className =
+                    "chapter-number";
 
-                    '<h3 class="chapter-title">' +
-                    escapeHtml(
-                        chapter.title
-                    ) +
-                    '</h3>' +
+                number.textContent =
+                    "CAPÍTULO " +
+                    chapter.chapter_number;
 
-                    '<a class="chapter-button" ' +
-                    'href="#" ' +
-                    'onclick="openChapter(' +
-                    chapter.id +
-                    '); return false;">' +
-                    'Leer capítulo' +
-                    '</a>';
+
+                const title =
+                    document.createElement(
+                        "h3"
+                    );
+
+                title.className =
+                    "chapter-title";
+
+                title.textContent =
+                    chapter.title || "";
+
+
+                const button =
+                    document.createElement(
+                        "a"
+                    );
+
+                button.className =
+                    "chapter-button";
+
+                button.href =
+                    "#";
+
+
+                button.textContent =
+                    "Leer capítulo";
+
+
+                button.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.preventDefault();
+
+                        openChapter(
+                            chapter.id
+                        );
+
+                    }
+                );
+
+
+                element.appendChild(
+                    number
+                );
+
+
+                element.appendChild(
+                    title
+                );
+
+
+                element.appendChild(
+                    button
+                );
 
 
                 chaptersContainer.appendChild(
@@ -700,7 +956,11 @@ async function cargarCapitulos(id) {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error cargando capítulos:",
+            error
+        );
+
 
         chaptersContainer.innerHTML =
             "<p>Error cargando capítulos.</p>";
@@ -720,6 +980,12 @@ async function openChapter(
 
     try {
 
+        console.log(
+            "Abriendo capítulo:",
+            chapterId
+        );
+
+
         const response =
             await fetch(
                 "/api/chapters/" +
@@ -727,18 +993,43 @@ async function openChapter(
                     chapterId
                 ),
                 {
+                    method: "GET",
                     credentials: "include"
                 }
             );
 
 
-        const data =
-            await response.json();
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta capítulo:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(texto);
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió JSON al abrir el capítulo."
+            );
+
+        }
 
 
         if (
             !response.ok ||
-            !data.success
+            !data.success ||
+            !data.chapter
         ) {
 
             alert(
@@ -763,7 +1054,7 @@ async function openChapter(
         document.getElementById(
             "reader-content"
         ).textContent =
-            data.chapter.content;
+            data.chapter.content || "";
 
 
         story.style.display =
@@ -776,17 +1067,24 @@ async function openChapter(
             "block";
 
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        window.scrollTo(
+            {
+                top: 0,
+                behavior: "smooth"
+            }
+        );
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error abriendo capítulo:",
+            error
+        );
+
 
         alert(
+            error.message ||
             "No se pudo conectar con el servidor."
         );
 
@@ -811,21 +1109,29 @@ function closeReader() {
         "block";
 
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    window.scrollTo(
+        {
+            top: 0,
+            behavior: "smooth"
+        }
+    );
 
 }
 
 
 /* ==========================================
-   ERROR
+   MOSTRAR ERROR
 ========================================== */
 
-function mostrarError(message) {
+function mostrarError(
+    message
+) {
 
     loading.style.display =
+        "none";
+
+
+    story.style.display =
         "none";
 
 
@@ -846,7 +1152,9 @@ function mostrarError(message) {
 function escapeHtml(text) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     div.textContent =
