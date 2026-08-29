@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Mi perfil - ComicWorldFiles</title>
-
-<style>
+<title>Mi perfil - ComicWorldFiles</title><style>
 
 * {
     box-sizing: border-box;
@@ -422,206 +413,103 @@ footer {
 
 }
 
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<div class="header-content">
-
-<div class="logo">
+</style></head><body><header><div class="header-content"><div class="logo">
 ComicWorldFiles
-</div>
-
-<a
+</div><a
 class="back"
 href="index.html"
->
+
+«»
+
 ← Volver
 </a>
 
-</div>
-
-</header>
-
-
-<main class="container">
-
-
-<!-- ==============================
+</div></header><main class="container"><!-- ==============================
      CARGANDO
-============================== -->
-
-<div
+============================== --><div
 id="loading"
 class="loading"
 >
 Cargando perfil...
-</div>
-
-
-<!-- ==============================
+</div><!-- ==============================
      PERFIL
-============================== -->
-
-<section
+============================== --><section
 id="profile"
 class="profile"
 style="display:none;"
->
-
-<h1>
+><h1>
 Mi perfil
-</h1>
-
-
-<div class="profile-info">
-
-
-<div class="info-row">
-
-<span class="info-label">
+</h1><div class="profile-info"><div class="info-row"><span class="info-label">
 Nombre de usuario
-</span>
-
-<span
+</span><span
 id="username"
 class="info-value"
->
--
-</span>
 
-</div>
+«»
 
+- 
 
-<div class="info-row">
-
-<span class="info-label">
+</span></div><div class="info-row"><span class="info-label">
 ID de usuario
-</span>
-
-<span
+</span><span
 id="user-id"
 class="info-value"
->
--
-</span>
 
-</div>
+«»
 
+- 
 
-</div>
-
-
-<!-- ESTADÍSTICAS -->
-
-<div class="stats">
-
-
-<div class="stat">
-
-<div
+</span></div></div><!-- ESTADÍSTICAS --><div class="stats"><div class="stat"><div
 id="stories-count"
 class="stat-number"
 >
 0
-</div>
-
-<div class="stat-label">
+</div><div class="stat-label">
 Historias publicadas
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div
+</div></div><div class="stat"><div
 id="chapters-count"
 class="stat-number"
 >
 0
-</div>
-
-<div class="stat-label">
+</div><div class="stat-label">
 Capítulos
-</div>
-
-</div>
-
-
-</div>
-
-
-<!-- BOTONES -->
-
-<div class="buttons">
-
-<a
+</div></div></div><!-- BOTONES --><div class="buttons"><a
 class="button home-button"
 href="index.html"
->
+
+«»
+
 Volver al inicio
 </a>
 
 <button
 class="logout-button"
 onclick="logout()"
->
+
+«»
+
 Cerrar sesión
 </button>
 
-</div>
-
-</section>
-
-
-<!-- ==============================
+</div></section><!-- ==============================
      HISTORIAS
-============================== -->
-
-<div
+============================== --><div
 id="stories-section"
 style="display:none;"
->
-
-<div class="section-title">
-
-<h2>
+><div class="section-title"><h2>
 Mis historias
-</h2>
-
-</div>
-
-
-<section
+</h2></div><section
 id="stories"
 class="stories"
 >
-</section>
-
-</div>
-
-
-</main>
-
-
-<footer>
-
-ComicWorldFiles © 2026
+</section></div></main><footer>ComicWorldFiles © 2026
 
 <br><br>
 
 Una plataforma para publicar y descubrir
 historias independientes.
 
-</footer>
-
-
-<script>
+</footer><script>
 
 /* ==========================================
    ELEMENTOS
@@ -784,13 +672,21 @@ async function cargarHistorias(
             !data.success
         ) {
 
+            console.error(
+                "No se pudieron cargar las historias."
+            );
+
             return;
 
         }
 
 
         const allStories =
-            data.stories || [];
+            Array.isArray(
+                data.stories
+            )
+                ? data.stories
+                : [];
 
 
         /* ==============================
@@ -828,13 +724,16 @@ async function cargarHistorias(
             function(story) {
 
                 if (
-                    story.chapter_count
+                    story.chapter_count !==
+                    undefined &&
+                    story.chapter_count !==
+                    null
                 ) {
 
                     totalChapters +=
                         Number(
                             story.chapter_count
-                        );
+                        ) || 0;
 
                 }
 
@@ -897,13 +796,30 @@ async function cargarHistorias(
                     "story-card";
 
 
-                /* PORTADA */
+                /* ==============================
+                   PORTADA
+                ============================== */
+
+                /*
+                 * El backend puede entregar
+                 * la portada como cover_url.
+                 *
+                 * También aceptamos coverUrl
+                 * y cover como respaldo.
+                 */
+
+                const coverUrl =
+                    story.cover_url ||
+                    story.coverUrl ||
+                    story.cover ||
+                    "";
+
 
                 let coverHTML;
 
 
                 if (
-                    story.cover_url
+                    coverUrl
                 ) {
 
                     coverHTML =
@@ -911,9 +827,18 @@ async function cargarHistorias(
 
                         '<img src="' +
                         escapeHtml(
-                            story.cover_url
+                            coverUrl
                         ) +
-                        '" alt="Portada">' +
+                        '" ' +
+
+                        'alt="Portada de ' +
+                        escapeHtml(
+                            story.title ||
+                            "historia"
+                        ) +
+                        '" ' +
+
+                        'onerror="mostrarPortadaFallback(this)">' +
 
                         '</div>';
 
@@ -927,7 +852,9 @@ async function cargarHistorias(
                 }
 
 
-                /* CONTENIDO */
+                /* ==============================
+                   CONTENIDO
+                ============================== */
 
                 card.innerHTML =
 
@@ -937,13 +864,15 @@ async function cargarHistorias(
 
                     '<h3>' +
                     escapeHtml(
-                        story.title
+                        story.title ||
+                        "Sin título"
                     ) +
                     '</h3>' +
 
                     '<p class="story-description">' +
                     escapeHtml(
-                        story.description || ""
+                        story.description ||
+                        ""
                     ) +
                     '</p>' +
 
@@ -962,6 +891,14 @@ async function cargarHistorias(
                     card
                 );
 
+
+                console.log(
+                    "Historia:",
+                    story.title,
+                    "Portada:",
+                    coverUrl
+                );
+
             }
         );
 
@@ -973,7 +910,33 @@ async function cargarHistorias(
             error
         );
 
+        storiesContainer.innerHTML =
+            '<div class="empty">' +
+            'No se pudieron cargar tus historias.' +
+            '</div>';
+
     }
+
+}
+
+
+/* ==========================================
+   PORTADA FALLBACK
+========================================== */
+
+function mostrarPortadaFallback(
+    image
+) {
+
+    const cover =
+        image.parentElement;
+
+
+    image.remove();
+
+
+    cover.textContent =
+        "📖";
 
 }
 
@@ -1033,8 +996,4 @@ function escapeHtml(text) {
 
 }
 
-</script>
-
-</body>
-
-</html>
+</script></body></html>
