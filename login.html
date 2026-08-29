@@ -378,32 +378,35 @@ form.addEventListener("submit", async function(event) {
         escribiendo el usuario como el email.
         */
 
-        const username =
-            data.username ||
-            data.user ||
-            data.name;
+        /* GUARDAR USUARIO */
 
+let username = data.username;
 
-        if (!username) {
+/*
+   Si el servidor devuelve un objeto,
+   intentamos obtener el nombre real.
+*/
+if (typeof username === "object" && username !== null) {
 
-            alert(
-                "El servidor inició sesión correctamente, " +
-                "pero no devolvió el nombre de usuario."
-            );
+    username =
+        username.username ||
+        username.name ||
+        username.usuario ||
+        username.email ||
+        "";
 
-            button.disabled = false;
+}
 
-            button.textContent =
-                originalText;
+/* Si por alguna razón no vino username,
+   usamos el login introducido */
+if (!username) {
+    username = login;
+}
 
-            return;
-        }
-
-
-        localStorage.setItem(
-            "comicworld_user",
-            username
-        );
+localStorage.setItem(
+    "comicworld_user",
+    username
+);
 
 
         window.location.href =
