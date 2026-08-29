@@ -516,78 +516,85 @@ historias independientes.
 
 
 /* ==========================================
-   COMPROBAR SESIÓN
+COMPROBAR SESIÓN
 ========================================== */
 
 async function checkSession() {
 
-    try {
+const userArea =
+    document.getElementById("user-area");
 
-        const response =
-            await fetch(
-                "/api/me",
-                {
-                    method: "GET",
+try {
 
-                    credentials: "include"
-                }
-            );
-
-
-        const data =
-            await response.json();
+    const response =
+        await fetch(
+            "/api/me",
+            {
+                method: "GET",
+                credentials: "include"
+            }
+        );
 
 
-        if (
-            !data.success ||
-            !data.loggedIn
-        ) {
-
-            window.location.href =
-                "login.html";
-
-            return;
-
-        }
+    const data =
+        await response.json();
 
 
-        /*
-         * Mostramos el nombre real
-         * del usuario.
-         */
-
-        const userArea =
-            document.getElementById(
-                "user-area"
-            );
+    console.log("Respuesta /api/me:", data);
 
 
-        userArea.innerHTML =
-
-            '<span style="color:white;">' +
-
-            'Hola ' +
-
-            data.user.username +
-
-            '</span> ' +
-
-            '<a href="#" onclick="logout(); return false;">' +
-
-            'Cerrar sesión' +
-
-            '</a>';
-
-    }
-
-    catch (error) {
-
-        console.error(error);
+    if (
+        !response.ok ||
+        !data.success ||
+        !data.loggedIn ||
+        !data.user
+    ) {
 
         window.location.href =
             "login.html";
 
+        return;
+
     }
+
+
+    /*
+     * El Worker devuelve:
+     *
+     * data.user.username
+     *
+     * Por ejemplo:
+     *
+     * Freeman
+     */
+
+    const username =
+        data.user.username;
+
+
+    userArea.innerHTML =
+        '<span style="color:white; font-size:14px;">' +
+        'Hola ' +
+        username +
+        '</span> ' +
+        '<a href="#" onclick="logout(); return false;" ' +
+        'style="color:white; margin-left:10px;">' +
+        'Cerrar sesión' +
+        '</a>';
+
+
+} catch (error) {
+
+    console.error(
+        "Error comprobando sesión:",
+        error
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
 
 }
 
