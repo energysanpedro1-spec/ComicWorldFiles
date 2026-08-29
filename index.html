@@ -376,11 +376,18 @@ footer {
 </style></head><body><header><div class="header-content"><div class="logo">
 ComicWorldFiles
 </div><nav>
+
 <a href="#">Inicio</a>
+
 <a href="#">Historias</a>
+
 <a href="#">Autores</a>
+
+<span id="user-area">
+
 <a href="login.html">Iniciar sesión</a>
-<a href="registro.html">Registrarse</a>
+
+</span>
 </nav></div></header><main class="container"><!-- BUSCADOR --><div class="search"><input
 type="text"
 placeholder="Buscar historias, historietas o autores..."
@@ -483,6 +490,38 @@ Leer
 <br><br>
 
 Una plataforma para publicar y descubrir historias independientes.
+
+    <script>
+
+const user =
+    localStorage.getItem("comicworld_user");
+
+const userArea =
+    document.getElementById("user-area");
+
+
+if (user) {
+
+    userArea.innerHTML =
+        '<span style="color:white; font-size:14px;">' +
+        'Hola ' + user +
+        '</span> ' +
+        '<a href="#" onclick="logout(); return false;">' +
+        'Cerrar sesión' +
+        '</a>';
+
+}
+
+
+function logout() {
+
+    localStorage.removeItem("comicworld_user");
+
+    window.location.reload();
+
+}
+
+</script>
 
 </footer></body>
 </html>
