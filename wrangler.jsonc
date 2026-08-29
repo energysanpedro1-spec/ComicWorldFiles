@@ -1,1 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
 
+  "name": "comicworldfiles",
+
+  "main": "worker/index.js",
+
+  "compatibility_date": "2026-08-28",
+
+  "assets": {
+    "directory": "."
+  }
+}
