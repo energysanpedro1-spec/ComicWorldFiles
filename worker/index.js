@@ -5,181 +5,6 @@ export default {
 
 
         // =========================================================
-        // SITEMAP.XML DINÁMICO
-        //
-        // GET /sitemap.xml
-        //
-        // Genera automáticamente el sitemap usando las
-        // publicaciones existentes en la base de datos.
-        // =========================================================
-
-        if (
-            url.pathname === "/sitemap.xml" &&
-            request.method === "GET"
-        ) {
-
-            try {
-
-                const result =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                id,
-                                created_at
-                             FROM stories
-                             ORDER BY id ASC`
-                        )
-                        .all();
-
-
-                const baseUrl =
-                    url.origin;
-
-
-                const urls = [];
-
-
-                // -------------------------------------------------
-                // PÁGINA PRINCIPAL
-                // -------------------------------------------------
-
-                urls.push(
-                    `
-    <url>
-        <loc>${escapeXml(baseUrl + "/")}</loc>
-        <changefreq>daily</changefreq>
-        <priority>1.0</priority>
-    </url>`
-                );
-
-
-                // -------------------------------------------------
-                // CREAR HISTORIETA / HISTORIA
-                // -------------------------------------------------
-
-                urls.push(
-                    `
-    <url>
-        <loc>${escapeXml(
-            baseUrl + "/crear-historieta.html"
-        )}</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>`
-                );
-
-
-                // -------------------------------------------------
-                // PUBLICACIONES
-                // -------------------------------------------------
-
-                for (
-                    const story of result.results
-                ) {
-
-                    const storyUrl =
-                        baseUrl +
-                        "/leer-historieta.html?id=" +
-                        encodeURIComponent(
-                            story.id
-                        );
-
-
-                    let lastmod = "";
-
-
-                    if (
-                        story.created_at
-                    ) {
-
-                        const date =
-                            new Date(
-                                story.created_at
-                            );
-
-
-                        if (
-                            !Number.isNaN(
-                                date.getTime()
-                            )
-                        ) {
-
-                            lastmod =
-                                `
-        <lastmod>${date.toISOString()}</lastmod>`;
-
-                        }
-
-                    }
-
-
-                    urls.push(
-                        `
-    <url>
-        <loc>${escapeXml(
-            storyUrl
-        )}</loc>${lastmod}
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>`
-                    );
-
-                }
-
-
-                const sitemap =
-                    `<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join("")}
-</urlset>`;
-
-
-                return new Response(
-                    sitemap,
-                    {
-                        status: 200,
-
-                        headers: {
-                            "Content-Type":
-                                "application/xml; charset=UTF-8",
-
-                            "Cache-Control":
-                                "public, max-age=3600"
-                        }
-                    }
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error generando sitemap:",
-                    error
-                );
-
-
-                return new Response(
-                    `<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-</urlset>`,
-                    {
-                        status: 500,
-
-                        headers: {
-                            "Content-Type":
-                                "application/xml; charset=UTF-8"
-                        }
-                    }
-                );
-
-            }
-
-        }
-
-
-
-        // =========================================================
         // API: REGISTRO
         // =========================================================
 
@@ -901,6 +726,7 @@ export default {
 
         // =========================================================
         // API: REGISTRAR VISITA
+        //
         // POST /api/stories/5/view
         // =========================================================
 
@@ -3649,6 +3475,224 @@ export default {
 
 
         // =========================================================
+        // SITEMAP.XML DINÁMICO
+        //
+        // GET /sitemap.xml
+        //
+        // Genera automáticamente el sitemap utilizando
+        // las publicaciones existentes en la base de datos.
+        // =========================================================
+
+        if (
+            url.pathname === "/sitemap.xml" &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                type,
+                                created_at
+                             FROM stories
+                             ORDER BY id DESC`
+                        )
+                        .all();
+
+
+                const baseUrl =
+                    url.origin;
+
+
+                let xml =
+                    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+                    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+
+                // -------------------------------------------------
+                // PÁGINA PRINCIPAL
+                // -------------------------------------------------
+
+                xml +=
+                    `  <url>\n` +
+                    `    <loc>${escapeXml(baseUrl + "/")}</loc>\n` +
+                    `    <changefreq>daily</changefreq>\n` +
+                    `    <priority>1.0</priority>\n` +
+                    `  </url>\n`;
+
+
+                // -------------------------------------------------
+                // PUBLICACIONES
+                // -------------------------------------------------
+
+                for (
+                    const story of result.results
+                ) {
+
+                    let storyUrl;
+
+
+                    if (
+                        story.type === "historieta"
+                    ) {
+
+                        storyUrl =
+                            baseUrl +
+                            "/leer-historieta.html?id=" +
+                            encodeURIComponent(
+                                story.id
+                            );
+
+                    } else {
+
+                        storyUrl =
+                            baseUrl +
+                            "/leer-historia.html?id=" +
+                            encodeURIComponent(
+                                story.id
+                            );
+
+                    }
+
+
+                    xml +=
+                        `  <url>\n` +
+                        `    <loc>${escapeXml(storyUrl)}</loc>\n`;
+
+
+                    if (
+                        story.created_at
+                    ) {
+
+                        try {
+
+                            const lastmod =
+                                new Date(
+                                    story.created_at
+                                )
+                                .toISOString()
+                                .split("T")[0];
+
+
+                            xml +=
+                                `    <lastmod>${lastmod}</lastmod>\n`;
+
+                        } catch (
+                            dateError
+                        ) {
+
+                            console.error(
+                                "Error procesando fecha del sitemap:",
+                                dateError
+                            );
+
+                        }
+
+                    }
+
+
+                    xml +=
+                        `    <changefreq>weekly</changefreq>\n` +
+                        `    <priority>0.8</priority>\n` +
+                        `  </url>\n`;
+
+                }
+
+
+                xml +=
+                    `</urlset>`;
+
+
+                return new Response(
+                    xml,
+                    {
+                        status: 200,
+
+                        headers: {
+                            "Content-Type":
+                                "application/xml; charset=utf-8",
+
+                            "Cache-Control":
+                                "public, max-age=3600"
+                        }
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error generando sitemap:",
+                    error
+                );
+
+
+                return new Response(
+                    "Error generando sitemap.",
+                    {
+                        status: 500,
+
+                        headers: {
+                            "Content-Type":
+                                "text/plain; charset=utf-8"
+                        }
+                    }
+                );
+
+            }
+
+        }
+
+
+
+        // =========================================================
+        // ROBOTS.TXT
+        //
+        // GET /robots.txt
+        //
+        // Apunta automáticamente al sitemap del dominio actual.
+        // =========================================================
+
+        if (
+            url.pathname === "/robots.txt" &&
+            request.method === "GET"
+        ) {
+
+            const robots =
+                [
+                    "User-agent: *",
+                    "Allow: /",
+                    "",
+                    "Sitemap: " +
+                    url.origin +
+                    "/sitemap.xml"
+                ]
+                .join("\n");
+
+
+            return new Response(
+                robots,
+                {
+                    status: 200,
+
+                    headers: {
+                        "Content-Type":
+                            "text/plain; charset=utf-8",
+
+                        "Cache-Control":
+                            "public, max-age=3600"
+                    }
+                }
+            );
+
+        }
+
+
+
+        // =========================================================
         // ARCHIVOS HTML / ESTÁTICOS
         // =========================================================
 
@@ -3658,40 +3702,6 @@ export default {
 
     }
 };
-
-
-
-// =========================================================
-// ESCAPAR XML
-// =========================================================
-
-function escapeXml(
-    value
-) {
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&apos;"
-        );
-
-}
 
 
 
@@ -3983,5 +3993,41 @@ function getCookie(
 
 
     return null;
+
+}
+
+
+
+// =========================================================
+// ESCAPAR TEXTO PARA XML
+// =========================================================
+
+function escapeXml(
+    value
+) {
+
+    return String(
+        value
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&apos;"
+        );
 
 }
