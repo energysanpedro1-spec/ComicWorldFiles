@@ -300,15 +300,131 @@ historias e historietas independientes.
 
 <script>
 
-document
-.getElementById("loginForm")
-.addEventListener("submit", function(event) {
+const form = document.getElementById("loginForm");
+
+form.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
-    alert(
-        "El sistema de login todavía no está conectado al servidor."
-    );
+
+    const login =
+        document.getElementById("username")
+        .value
+        .trim();
+
+
+    const password =
+        document.getElementById("password")
+        .value;
+
+
+    const button =
+        document.querySelector(".login-button");
+
+
+    const originalText =
+        button.textContent;
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Iniciando sesión...";
+
+
+    try {
+
+        const response = await fetch(
+            "/api/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                    login: login,
+                    password: password
+                })
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            alert(
+                data.error ||
+                "Usuario o contraseña incorrectos."
+            );
+
+            button.disabled = false;
+
+            button.textContent =
+                originalText;
+
+            return;
+        }
+
+
+        /*
+        Guardamos siempre el nombre de usuario.
+        Esto funciona tanto si el login se hizo
+        escribiendo el usuario como el email.
+        */
+
+        const username =
+            data.username ||
+            data.user ||
+            data.name;
+
+
+        if (!username) {
+
+            alert(
+                "El servidor inició sesión correctamente, " +
+                "pero no devolvió el nombre de usuario."
+            );
+
+            button.disabled = false;
+
+            button.textContent =
+                originalText;
+
+            return;
+        }
+
+
+        localStorage.setItem(
+            "comicworld_user",
+            username
+        );
+
+
+        window.location.href =
+            "index.html";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        alert(
+            "Error de conexión con el servidor."
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            originalText;
+    }
 
 });
 
