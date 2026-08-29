@@ -15,47 +15,63 @@ export default {
 
             try {
 
-                const data = await request.json();
+                const data =
+                    await request.json();
+
 
                 const username =
-                    String(data.username || "").trim();
+                    String(data.username || "")
+                        .trim();
+
 
                 const email =
                     String(data.email || "")
                         .trim()
                         .toLowerCase();
 
+
                 const password =
                     String(data.password || "");
 
 
-                if (!username || !email || !password) {
+                if (
+                    !username ||
+                    !email ||
+                    !password
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "Todos los campos son obligatorios."
                     }, 400);
+
                 }
 
 
-                if (username.length < 3) {
+                if (
+                    username.length < 3
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "El nombre de usuario debe tener al menos 3 caracteres."
                     }, 400);
+
                 }
 
 
-                if (password.length < 6) {
+                if (
+                    password.length < 6
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "La contraseña debe tener al menos 6 caracteres."
                     }, 400);
+
                 }
 
 
@@ -82,11 +98,14 @@ export default {
                         error:
                             "El usuario o correo electrónico ya está registrado."
                     }, 409);
+
                 }
 
 
                 const passwordHash =
-                    await hashPassword(password);
+                    await hashPassword(
+                        password
+                    );
 
 
                 const result =
@@ -108,13 +127,16 @@ export default {
                         .run();
 
 
-                if (!result.success) {
+                if (
+                    !result.success
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "No se pudo crear la cuenta."
                     }, 500);
+
                 }
 
 
@@ -138,6 +160,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -168,13 +191,17 @@ export default {
                     String(data.password || "");
 
 
-                if (!login || !password) {
+                if (
+                    !login ||
+                    !password
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "Completa todos los campos."
                     }, 400);
+
                 }
 
 
@@ -205,6 +232,7 @@ export default {
                         error:
                             "Usuario o contraseña incorrectos."
                     }, 401);
+
                 }
 
 
@@ -222,6 +250,7 @@ export default {
                         error:
                             "Usuario o contraseña incorrectos."
                     }, 401);
+
                 }
 
 
@@ -303,6 +332,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -333,6 +363,7 @@ export default {
                         success: false,
                         loggedIn: false
                     }, 401);
+
                 }
 
 
@@ -367,6 +398,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -398,8 +430,11 @@ export default {
                             `DELETE FROM sessions
                              WHERE token = ?`
                         )
-                        .bind(token)
+                        .bind(
+                            token
+                        )
                         .run();
+
                 }
 
 
@@ -436,6 +471,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -478,6 +514,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -509,6 +546,7 @@ export default {
                         error:
                             "Debes iniciar sesión para crear una historia."
                     }, 401);
+
                 }
 
 
@@ -545,16 +583,20 @@ export default {
                         error:
                             "Todos los campos son obligatorios."
                     }, 400);
+
                 }
 
 
-                if (title.length < 2) {
+                if (
+                    title.length < 2
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "El título es demasiado corto."
                     }, 400);
+
                 }
 
 
@@ -579,13 +621,16 @@ export default {
                         .run();
 
 
-                if (!result.success) {
+                if (
+                    !result.success
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "No se pudo guardar la historia."
                     }, 500);
+
                 }
 
 
@@ -637,6 +682,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -666,10 +712,6 @@ export default {
                     );
 
 
-                // -------------------------------------------------
-                // COMPROBAR SESIÓN
-                // -------------------------------------------------
-
                 const session =
                     await getSession(
                         request,
@@ -684,12 +726,9 @@ export default {
                         error:
                             "Debes iniciar sesión."
                     }, 401);
+
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR HISTORIA
-                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -714,12 +753,9 @@ export default {
                         error:
                             "La historia no existe."
                     }, 404);
+
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR PROPIETARIO
-                // -------------------------------------------------
 
                 if (
                     Number(story.user_id) !==
@@ -731,12 +767,9 @@ export default {
                         error:
                             "No tienes permiso para modificar esta historia."
                     }, 403);
+
                 }
 
-
-                // -------------------------------------------------
-                // OBTENER DATOS
-                // -------------------------------------------------
 
                 const data =
                     await request.json();
@@ -748,26 +781,30 @@ export default {
                     ).trim();
 
 
+                const description =
+                    String(
+                        data.description || ""
+                    ).trim();
+
+
                 const genre =
                     String(
                         data.genre || ""
                     ).trim();
 
 
-                // -------------------------------------------------
-                // VALIDAR
-                // -------------------------------------------------
-
                 if (
                     !title ||
+                    !description ||
                     !genre
                 ) {
 
                     return json({
                         success: false,
                         error:
-                            "El título y el género son obligatorios."
+                            "El título, la descripción y el género son obligatorios."
                     }, 400);
+
                 }
 
 
@@ -780,42 +817,40 @@ export default {
                         error:
                             "El título debe tener al menos 2 caracteres."
                     }, 400);
+
                 }
 
-
-                // -------------------------------------------------
-                // ACTUALIZAR
-                // -------------------------------------------------
 
                 const result =
                     await env.DB
                         .prepare(
                             `UPDATE stories
                              SET title = ?,
+                                 description = ?,
                                  genre = ?
                              WHERE id = ?`
                         )
                         .bind(
                             title,
+                            description,
                             genre,
                             storyId
                         )
                         .run();
 
 
-                if (!result.success) {
+                if (
+                    !result.success
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "No se pudo actualizar la historia."
                     }, 500);
+
                 }
 
-
-                // -------------------------------------------------
-                // RESPUESTA
-                // -------------------------------------------------
 
                 return json({
                     success: true,
@@ -838,6 +873,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -897,6 +933,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -957,6 +994,7 @@ export default {
                         error:
                             "La historia no existe."
                     }, 404);
+
                 }
 
 
@@ -981,6 +1019,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -988,11 +1027,7 @@ export default {
 
         // =========================================================
         // API: SUBIR / REEMPLAZAR PORTADA
-        //
         // POST /api/stories/5/cover
-        //
-        // FormData:
-        // cover = archivo
         // =========================================================
 
         const coverMatch =
@@ -1014,10 +1049,6 @@ export default {
                     );
 
 
-                // -------------------------------------------------
-                // COMPROBAR SESIÓN
-                // -------------------------------------------------
-
                 const session =
                     await getSession(
                         request,
@@ -1032,12 +1063,9 @@ export default {
                         error:
                             "Debes iniciar sesión."
                     }, 401);
+
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR HISTORIA
-                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -1063,12 +1091,9 @@ export default {
                         error:
                             "La historia no existe."
                     }, 404);
+
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR PROPIETARIO
-                // -------------------------------------------------
 
                 if (
                     Number(story.user_id) !==
@@ -1080,19 +1105,18 @@ export default {
                         error:
                             "No tienes permiso para modificar esta historia."
                     }, 403);
+
                 }
 
-
-                // -------------------------------------------------
-                // OBTENER FORM DATA
-                // -------------------------------------------------
 
                 const formData =
                     await request.formData();
 
 
                 const file =
-                    formData.get("cover");
+                    formData.get(
+                        "cover"
+                    );
 
 
                 if (
@@ -1105,13 +1129,9 @@ export default {
                         error:
                             "No se recibió ninguna imagen."
                     }, 400);
+
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR TAMAÑO
-                // Máximo: 5 MB
-                // -------------------------------------------------
 
                 const maxSize =
                     5 * 1024 * 1024;
@@ -1126,12 +1146,9 @@ export default {
                         error:
                             "La imagen no puede superar los 5 MB."
                     }, 400);
+
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR TIPO
-                // -------------------------------------------------
 
                 const allowedTypes = [
                     "image/jpeg",
@@ -1152,12 +1169,9 @@ export default {
                         error:
                             "Formato no permitido. Usa JPG, PNG, WEBP o GIF."
                     }, 400);
+
                 }
 
-
-                // -------------------------------------------------
-                // CLAVE R2
-                // -------------------------------------------------
 
                 const objectKey =
                     "covers/" +
@@ -1165,10 +1179,6 @@ export default {
                     "/" +
                     storyId;
 
-
-                // -------------------------------------------------
-                // GUARDAR EN R2
-                // -------------------------------------------------
 
                 await env.Cover.put(
                     objectKey,
@@ -1193,19 +1203,11 @@ export default {
                 );
 
 
-                // -------------------------------------------------
-                // URL PÚBLICA DE SERVICIO
-                // -------------------------------------------------
-
                 const coverUrl =
                     "/api/stories/" +
                     storyId +
                     "/cover";
 
-
-                // -------------------------------------------------
-                // GUARDAR URL EN D1
-                // -------------------------------------------------
 
                 await env.DB
                     .prepare(
@@ -1219,10 +1221,6 @@ export default {
                     )
                     .run();
 
-
-                // -------------------------------------------------
-                // RESPUESTA
-                // -------------------------------------------------
 
                 return json({
                     success: true,
@@ -1248,6 +1246,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -1255,7 +1254,6 @@ export default {
 
         // =========================================================
         // API: SERVIR PORTADA DESDE R2
-        //
         // GET /api/stories/5/cover
         // =========================================================
 
@@ -1271,10 +1269,6 @@ export default {
                         coverMatch[1]
                     );
 
-
-                // -------------------------------------------------
-                // COMPROBAR QUE LA HISTORIA EXISTE
-                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -1300,12 +1294,9 @@ export default {
                             status: 404
                         }
                     );
+
                 }
 
-
-                // -------------------------------------------------
-                // CLAVE R2
-                // -------------------------------------------------
 
                 const objectKey =
                     "covers/" +
@@ -1313,10 +1304,6 @@ export default {
                     "/" +
                     storyId;
 
-
-                // -------------------------------------------------
-                // OBTENER IMAGEN
-                // -------------------------------------------------
 
                 const object =
                     await env.Cover.get(
@@ -1332,12 +1319,9 @@ export default {
                             status: 404
                         }
                     );
+
                 }
 
-
-                // -------------------------------------------------
-                // CABECERAS
-                // -------------------------------------------------
 
                 const headers =
                     new Headers();
@@ -1349,7 +1333,7 @@ export default {
 
 
                 headers.set(
-                    "etag",
+                    "ETag",
                     object.httpEtag
                 );
 
@@ -1359,10 +1343,6 @@ export default {
                     "public, max-age=3600"
                 );
 
-
-                // -------------------------------------------------
-                // RESPUESTA
-                // -------------------------------------------------
 
                 return new Response(
                     object.body,
@@ -1387,6 +1367,7 @@ export default {
                         status: 500
                     }
                 );
+
             }
         }
 
@@ -1437,6 +1418,7 @@ export default {
                         error:
                             "La historia no existe."
                     }, 404);
+
                 }
 
 
@@ -1481,6 +1463,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -1518,6 +1501,7 @@ export default {
                         error:
                             "Debes iniciar sesión."
                     }, 401);
+
                 }
 
 
@@ -1544,6 +1528,7 @@ export default {
                         error:
                             "La historia no existe."
                     }, 404);
+
                 }
 
 
@@ -1557,6 +1542,7 @@ export default {
                         error:
                             "No tienes permiso para modificar esta historia."
                     }, 403);
+
                 }
 
 
@@ -1583,16 +1569,20 @@ export default {
                         error:
                             "El título del capítulo es obligatorio."
                     }, 400);
+
                 }
 
 
-                if (!content.trim()) {
+                if (
+                    !content.trim()
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "El contenido del capítulo es obligatorio."
                     }, 400);
+
                 }
 
 
@@ -1641,13 +1631,16 @@ export default {
                         .run();
 
 
-                if (!result.success) {
+                if (
+                    !result.success
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "No se pudo guardar el capítulo."
                     }, 500);
+
                 }
 
 
@@ -1689,6 +1682,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -1753,6 +1747,7 @@ export default {
                         error:
                             "El capítulo no existe."
                     }, 404);
+
                 }
 
 
@@ -1777,6 +1772,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -1814,6 +1810,7 @@ export default {
                         error:
                             "Debes iniciar sesión."
                     }, 401);
+
                 }
 
 
@@ -1844,6 +1841,7 @@ export default {
                         error:
                             "El capítulo no existe."
                     }, 404);
+
                 }
 
 
@@ -1857,6 +1855,7 @@ export default {
                         error:
                             "No tienes permiso para editar este capítulo."
                     }, 403);
+
                 }
 
 
@@ -1883,16 +1882,20 @@ export default {
                         error:
                             "El título del capítulo es obligatorio."
                     }, 400);
+
                 }
 
 
-                if (!content.trim()) {
+                if (
+                    !content.trim()
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "El contenido del capítulo es obligatorio."
                     }, 400);
+
                 }
 
 
@@ -1912,13 +1915,16 @@ export default {
                         .run();
 
 
-                if (!result.success) {
+                if (
+                    !result.success
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "No se pudo actualizar el capítulo."
                     }, 500);
+
                 }
 
 
@@ -1943,6 +1949,7 @@ export default {
                     error:
                         error.message
                 }, 500);
+
             }
         }
 
@@ -1980,6 +1987,7 @@ export default {
                         error:
                             "Debes iniciar sesión."
                     }, 401);
+
                 }
 
 
@@ -2010,6 +2018,7 @@ export default {
                         error:
                             "El capítulo no existe."
                     }, 404);
+
                 }
 
 
@@ -2023,8 +2032,72 @@ export default {
                         error:
                             "No tienes permiso para eliminar este capítulo."
                     }, 403);
+
                 }
 
+
+                // -------------------------------------------------
+                // OBTENER IMÁGENES DEL CAPÍTULO
+                // -------------------------------------------------
+
+                const images =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                object_key
+                             FROM chapter_images
+                             WHERE chapter_id = ?`
+                        )
+                        .bind(
+                            chapterId
+                        )
+                        .all();
+
+
+                // -------------------------------------------------
+                // ELIMINAR ARCHIVOS DE R2
+                // -------------------------------------------------
+
+                for (
+                    const image of images.results
+                ) {
+
+                    try {
+
+                        await env.Images.delete(
+                            image.object_key
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error eliminando imagen de R2:",
+                            error
+                        );
+
+                    }
+
+                }
+
+
+                // -------------------------------------------------
+                // ELIMINAR REGISTROS DE IMÁGENES
+                // -------------------------------------------------
+
+                await env.DB
+                    .prepare(
+                        `DELETE FROM chapter_images
+                         WHERE chapter_id = ?`
+                    )
+                    .bind(
+                        chapterId
+                    )
+                    .run();
+
+
+                // -------------------------------------------------
+                // ELIMINAR CAPÍTULO
+                // -------------------------------------------------
 
                 const result =
                     await env.DB
@@ -2038,13 +2111,16 @@ export default {
                         .run();
 
 
-                if (!result.success) {
+                if (
+                    !result.success
+                ) {
 
                     return json({
                         success: false,
                         error:
                             "No se pudo eliminar el capítulo."
                     }, 500);
+
                 }
 
 
@@ -2069,6 +2145,769 @@ export default {
                     error:
                         error.message
                 }, 500);
+
+            }
+        }
+
+
+
+        // =========================================================
+        // API: IMÁGENES DE CAPÍTULO
+        //
+        // GET  /api/chapters/10/images
+        // POST /api/chapters/10/images
+        // =========================================================
+
+        const chapterImagesMatch =
+            url.pathname.match(
+                /^\/api\/chapters\/(\d+)\/images$/
+            );
+
+
+
+        // =========================================================
+        // LISTAR IMÁGENES DEL CAPÍTULO
+        // =========================================================
+
+        if (
+            chapterImagesMatch &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const chapterId =
+                    Number(
+                        chapterImagesMatch[1]
+                    );
+
+
+                const chapter =
+                    await env.DB
+                        .prepare(
+                            `SELECT id
+                             FROM chapters
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            chapterId
+                        )
+                        .first();
+
+
+                if (!chapter) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El capítulo no existe."
+                    }, 404);
+
+                }
+
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                chapter_id,
+                                image_url,
+                                filename,
+                                created_at
+                             FROM chapter_images
+                             WHERE chapter_id = ?
+                             ORDER BY id ASC`
+                        )
+                        .bind(
+                            chapterId
+                        )
+                        .all();
+
+
+                return json({
+                    success: true,
+
+                    images:
+                        result.results
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error listando imágenes:",
+                    error
+                );
+
+
+                return json({
+                    success: false,
+                    error:
+                        error.message
+                }, 500);
+
+            }
+        }
+
+
+
+        // =========================================================
+        // SUBIR IMAGEN DE CAPÍTULO
+        // =========================================================
+
+        if (
+            chapterImagesMatch &&
+            request.method === "POST"
+        ) {
+
+            try {
+
+                const chapterId =
+                    Number(
+                        chapterImagesMatch[1]
+                    );
+
+
+                // -------------------------------------------------
+                // COMPROBAR SESIÓN
+                // -------------------------------------------------
+
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+
+                }
+
+
+                // -------------------------------------------------
+                // COMPROBAR CAPÍTULO Y PROPIETARIO
+                // -------------------------------------------------
+
+                const chapter =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                chapters.id,
+                                chapters.story_id,
+                                stories.user_id
+                             FROM chapters
+                             INNER JOIN stories
+                             ON stories.id =
+                                chapters.story_id
+                             WHERE chapters.id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            chapterId
+                        )
+                        .first();
+
+
+                if (!chapter) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El capítulo no existe."
+                    }, 404);
+
+                }
+
+
+                if (
+                    Number(chapter.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para modificar este capítulo."
+                    }, 403);
+
+                }
+
+
+                // -------------------------------------------------
+                // OBTENER ARCHIVO
+                // -------------------------------------------------
+
+                const formData =
+                    await request.formData();
+
+
+                const file =
+                    formData.get(
+                        "image"
+                    );
+
+
+                if (
+                    !file ||
+                    typeof file === "string"
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se recibió ninguna imagen."
+                    }, 400);
+
+                }
+
+
+                // -------------------------------------------------
+                // TAMAÑO MÁXIMO
+                // -------------------------------------------------
+
+                const maxSize =
+                    10 *
+                    1024 *
+                    1024;
+
+
+                if (
+                    file.size > maxSize
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La imagen no puede superar los 10 MB."
+                    }, 400);
+
+                }
+
+
+                // -------------------------------------------------
+                // TIPOS PERMITIDOS
+                // -------------------------------------------------
+
+                const allowedTypes = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp",
+                    "image/gif"
+                ];
+
+
+                if (
+                    !allowedTypes.includes(
+                        file.type
+                    )
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Formato no permitido. Usa JPG, PNG, WEBP o GIF."
+                    }, 400);
+
+                }
+
+
+                // -------------------------------------------------
+                // EXTENSIÓN
+                // -------------------------------------------------
+
+                let extension =
+                    "jpg";
+
+
+                if (
+                    file.type ===
+                    "image/png"
+                ) {
+
+                    extension =
+                        "png";
+
+                }
+
+
+                if (
+                    file.type ===
+                    "image/webp"
+                ) {
+
+                    extension =
+                        "webp";
+
+                }
+
+
+                if (
+                    file.type ===
+                    "image/gif"
+                ) {
+
+                    extension =
+                        "gif";
+
+                }
+
+
+                // -------------------------------------------------
+                // IDENTIFICADOR ÚNICO
+                // -------------------------------------------------
+
+                const uniqueId =
+                    crypto.randomUUID();
+
+
+                // -------------------------------------------------
+                // CLAVE R2
+                // -------------------------------------------------
+
+                const objectKey =
+                    "chapters/" +
+                    session.id +
+                    "/" +
+                    chapterId +
+                    "/" +
+                    uniqueId +
+                    "." +
+                    extension;
+
+
+                // -------------------------------------------------
+                // GUARDAR EN R2
+                // -------------------------------------------------
+
+                await env.Images.put(
+                    objectKey,
+                    file.stream(),
+                    {
+                        httpMetadata: {
+                            contentType:
+                                file.type,
+
+                            cacheControl:
+                                "public, max-age=3600"
+                        },
+
+                        customMetadata: {
+                            chapterId:
+                                String(chapterId),
+
+                            userId:
+                                String(session.id)
+                        }
+                    }
+                );
+
+
+                // -------------------------------------------------
+                // GUARDAR REGISTRO EN D1
+                // -------------------------------------------------
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `INSERT INTO chapter_images
+                             (
+                                chapter_id,
+                                image_url,
+                                object_key,
+                                filename
+                             )
+                             VALUES (?, ?, ?, ?)`
+                        )
+                        .bind(
+                            chapterId,
+
+                            "",
+
+                            objectKey,
+
+                            file.name ||
+                                "imagen"
+                        )
+                        .run();
+
+
+                if (
+                    !result.success
+                ) {
+
+                    // Si falla D1 eliminamos
+                    // el archivo recién subido.
+
+                    await env.Images.delete(
+                        objectKey
+                    );
+
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se pudo registrar la imagen."
+                    }, 500);
+
+                }
+
+
+                const imageId =
+                    result.meta.last_row_id;
+
+
+                const imageUrl =
+                    "/api/chapter-images/" +
+                    imageId;
+
+
+                // -------------------------------------------------
+                // ACTUALIZAR URL
+                // -------------------------------------------------
+
+                await env.DB
+                    .prepare(
+                        `UPDATE chapter_images
+                         SET image_url = ?
+                         WHERE id = ?`
+                    )
+                    .bind(
+                        imageUrl,
+                        imageId
+                    )
+                    .run();
+
+
+                return json({
+                    success: true,
+
+                    message:
+                        "Imagen subida correctamente.",
+
+                    image: {
+                        id:
+                            imageId,
+
+                        chapter_id:
+                            chapterId,
+
+                        image_url:
+                            imageUrl,
+
+                        filename:
+                            file.name ||
+                                "imagen"
+                    }
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error subiendo imagen:",
+                    error
+                );
+
+
+                return json({
+                    success: false,
+                    error:
+                        error.message
+                }, 500);
+
+            }
+        }
+
+
+
+        // =========================================================
+        // API: IMAGEN INDIVIDUAL
+        //
+        // GET    /api/chapter-images/123
+        // DELETE /api/chapter-images/123
+        // =========================================================
+
+        const chapterImageMatch =
+            url.pathname.match(
+                /^\/api\/chapter-images\/(\d+)$/
+            );
+
+
+
+        // =========================================================
+        // SERVIR IMAGEN DESDE R2
+        // =========================================================
+
+        if (
+            chapterImageMatch &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const imageId =
+                    Number(
+                        chapterImageMatch[1]
+                    );
+
+
+                const image =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                object_key
+                             FROM chapter_images
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            imageId
+                        )
+                        .first();
+
+
+                if (!image) {
+
+                    return new Response(
+                        "Imagen no encontrada.",
+                        {
+                            status: 404
+                        }
+                    );
+
+                }
+
+
+                const object =
+                    await env.Images.get(
+                        image.object_key
+                    );
+
+
+                if (!object) {
+
+                    return new Response(
+                        "Archivo no encontrado.",
+                        {
+                            status: 404
+                        }
+                    );
+
+                }
+
+
+                const headers =
+                    new Headers();
+
+
+                object.writeHttpMetadata(
+                    headers
+                );
+
+
+                headers.set(
+                    "ETag",
+                    object.httpEtag
+                );
+
+
+                headers.set(
+                    "Cache-Control",
+                    "public, max-age=3600"
+                );
+
+
+                return new Response(
+                    object.body,
+                    {
+                        status: 200,
+                        headers: headers
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error sirviendo imagen:",
+                    error
+                );
+
+
+                return new Response(
+                    "Error obteniendo imagen.",
+                    {
+                        status: 500
+                    }
+                );
+
+            }
+        }
+
+
+
+        // =========================================================
+        // ELIMINAR IMAGEN
+        // DELETE /api/chapter-images/123
+        // =========================================================
+
+        if (
+            chapterImageMatch &&
+            request.method === "DELETE"
+        ) {
+
+            try {
+
+                const imageId =
+                    Number(
+                        chapterImageMatch[1]
+                    );
+
+
+                // -------------------------------------------------
+                // COMPROBAR SESIÓN
+                // -------------------------------------------------
+
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+
+                }
+
+
+                // -------------------------------------------------
+                // OBTENER IMAGEN Y PROPIETARIO
+                // -------------------------------------------------
+
+                const image =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                chapter_images.id,
+                                chapter_images.object_key,
+                                chapters.id AS chapter_id,
+                                stories.user_id
+                             FROM chapter_images
+                             INNER JOIN chapters
+                             ON chapters.id =
+                                chapter_images.chapter_id
+                             INNER JOIN stories
+                             ON stories.id =
+                                chapters.story_id
+                             WHERE chapter_images.id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            imageId
+                        )
+                        .first();
+
+
+                if (!image) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La imagen no existe."
+                    }, 404);
+
+                }
+
+
+                if (
+                    Number(image.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para eliminar esta imagen."
+                    }, 403);
+
+                }
+
+
+                // -------------------------------------------------
+                // ELIMINAR DE R2
+                // -------------------------------------------------
+
+                await env.Images.delete(
+                    image.object_key
+                );
+
+
+                // -------------------------------------------------
+                // ELIMINAR DE D1
+                // -------------------------------------------------
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `DELETE FROM chapter_images
+                             WHERE id = ?`
+                        )
+                        .bind(
+                            imageId
+                        )
+                        .run();
+
+
+                if (
+                    !result.success
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se pudo eliminar el registro de la imagen."
+                    }, 500);
+
+                }
+
+
+                return json({
+                    success: true,
+
+                    message:
+                        "Imagen eliminada correctamente."
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error eliminando imagen:",
+                    error
+                );
+
+
+                return json({
+                    success: false,
+                    error:
+                        error.message
+                }, 500);
+
             }
         }
 
@@ -2078,7 +2917,10 @@ export default {
         // ARCHIVOS HTML / ESTÁTICOS
         // =========================================================
 
-        return env.ASSETS.fetch(request);
+        return env.ASSETS.fetch(
+            request
+        );
+
     }
 };
 
@@ -2101,7 +2943,9 @@ async function getSession(
 
 
     if (!token) {
+
         return null;
+
     }
 
 
@@ -2127,13 +2971,16 @@ async function getSession(
 
 
     if (!session) {
+
         return null;
+
     }
 
 
     if (
-        new Date(session.expires_at)
-        <= new Date()
+        new Date(
+            session.expires_at
+        ) <= new Date()
     ) {
 
         await env.DB
@@ -2148,10 +2995,12 @@ async function getSession(
 
 
         return null;
+
     }
 
 
     return session;
+
 }
 
 
@@ -2166,7 +3015,9 @@ function json(
 ) {
 
     return new Response(
-        JSON.stringify(data),
+        JSON.stringify(
+            data
+        ),
         {
             status:
                 status,
@@ -2177,6 +3028,7 @@ function json(
             }
         }
     );
+
 }
 
 
@@ -2209,6 +3061,7 @@ async function hashPassword(
     return arrayBufferToHex(
         hash
     );
+
 }
 
 
@@ -2229,6 +3082,7 @@ async function verifyPassword(
 
 
     return hash === storedHash;
+
 }
 
 
@@ -2248,15 +3102,19 @@ function arrayBufferToHex(
             )
         )
         .map(
-            byte =>
-                byte
+            function(byte) {
+
+                return byte
                     .toString(16)
                     .padStart(
                         2,
                         "0"
-                    )
+                    );
+
+            }
         )
         .join("");
+
 }
 
 
@@ -2268,7 +3126,9 @@ function arrayBufferToHex(
 function generateToken() {
 
     const bytes =
-        new Uint8Array(32);
+        new Uint8Array(
+            32
+        );
 
 
     crypto.getRandomValues(
@@ -2277,17 +3137,23 @@ function generateToken() {
 
 
     return Array
-        .from(bytes)
+        .from(
+            bytes
+        )
         .map(
-            byte =>
-                byte
+            function(byte) {
+
+                return byte
                     .toString(16)
                     .padStart(
                         2,
                         "0"
-                    )
+                    );
+
+            }
         )
         .join("");
+
 }
 
 
@@ -2308,12 +3174,16 @@ function getCookie(
 
 
     if (!cookieHeader) {
+
         return null;
+
     }
 
 
     const cookies =
-        cookieHeader.split(";");
+        cookieHeader.split(
+            ";"
+        );
 
 
     for (
@@ -2323,7 +3193,9 @@ function getCookie(
         const parts =
             cookie
                 .trim()
-                .split("=");
+                .split(
+                    "="
+                );
 
 
         if (
@@ -2332,10 +3204,14 @@ function getCookie(
 
             return parts
                 .slice(1)
-                .join("=");
+                .join(
+                    "="
+                );
+
         }
     }
 
 
     return null;
+
 }
