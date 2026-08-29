@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-   content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0">
 
 <title>Leer historieta - ComicWorldFiles</title>
 
@@ -85,6 +85,21 @@ header h1 {
     color: #aaa;
 
     font-size: 15px;
+}
+
+/* =====================================================
+   CONTADOR DE VISITAS
+===================================================== */
+
+.views {
+
+    color: #aaa;
+
+    font-size: 14px;
+
+    margin-top: 8px;
+
+    display: inline-block;
 }
 
 .blocks {
@@ -430,6 +445,13 @@ textarea {
 Cargando historieta...
 </h1>
 
+<div id="views"
+     class="views">
+
+👁 Cargando visitas...
+
+</div>
+
 </header>
 
 <div class="container">
@@ -484,8 +506,8 @@ Cargando capítulo...
 <div class="actions">
 
 <button id="editButton"
-     class="primary hidden"
-     onclick="activarEdicion()">
+  class="primary hidden"
+  onclick="activarEdicion()">
 
 ✏️ Editar capítulo
 
@@ -522,7 +544,7 @@ el texto existente.
           placeholder="Escribe el texto que quieres agregar..."></textarea>
 
 <button class="primary"
-     onclick="agregarTexto()">
+  onclick="agregarTexto()">
 
 * Agregar texto
 
@@ -539,13 +561,13 @@ Puedes seleccionar una o varias imágenes.
 </p>
 
 <input type="file"
-    id="newImages"
-    accept="image/jpeg,image/png,image/webp,image/gif"
-    multiple>
+ id="newImages"
+ accept="image/jpeg,image/png,image/webp,image/gif"
+ multiple>
 
 <button class="primary"
-     id="uploadButton"
-     onclick="subirNuevasImagenes()">
+  id="uploadButton"
+  onclick="subirNuevasImagenes()">
 
 * Subir imágenes
 
@@ -560,15 +582,15 @@ Puedes seleccionar una o varias imágenes.
 <div class="actions">
 
 <button class="success"
-     id="saveButton"
-     onclick="guardarCambios()">
+  id="saveButton"
+  onclick="guardarCambios()">
 
 💾 Guardar cambios
 
 </button>
 
 <button class="secondary"
-     onclick="cancelarEdicion()">
+  onclick="cancelarEdicion()">
 
 Cancelar
 
@@ -668,12 +690,6 @@ function obtenerParametros() {
         );
 
 
-    /*
-     * También aceptamos:
-     *
-     * leer-historieta.html?id=11&capitulo=5
-     */
-
     if (!chapterId) {
 
         chapterId =
@@ -737,6 +753,132 @@ async function comprobarSesion() {
 
 
 // ========================================================
+// REGISTRAR VISITA
+// ========================================================
+
+async function registrarVisita() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/view",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            response.ok &&
+            data.success
+        ) {
+
+            actualizarContador(
+                data.views
+            );
+
+        } else {
+
+            /*
+             * Si el backend todavía no tiene
+             * el contador configurado, no
+             * mostramos un error al lector.
+             */
+
+            if (
+                storyData &&
+                storyData.views !== undefined
+            ) {
+
+                actualizarContador(
+                    storyData.views
+                );
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error registrando visita:",
+            error
+        );
+
+
+        /*
+         * El contador no debe impedir
+         * que se lea la historieta.
+         */
+
+        if (
+            storyData &&
+            storyData.views !== undefined
+        ) {
+
+            actualizarContador(
+                storyData.views
+            );
+
+        }
+
+    }
+
+}
+
+
+// ========================================================
+// ACTUALIZAR CONTADOR
+// ========================================================
+
+function actualizarContador(
+    views
+) {
+
+    const element =
+        document.getElementById(
+            "views"
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    const cantidad =
+        Number(
+            views || 0
+        );
+
+
+    element.textContent =
+        cantidad === 1
+            ? "👁 1 visita"
+            : "👁 " +
+              cantidad +
+              " visitas";
+
+}
+
+
+// ========================================================
 // CARGAR HISTORIETA
 // ========================================================
 
@@ -784,6 +926,33 @@ async function cargarHistorieta() {
             "storyTitle"
         ).textContent =
             storyData.title;
+
+
+        /*
+         * Mostramos el contador que viene
+         * actualmente desde la base de datos.
+         */
+
+        if (
+            storyData.views !== undefined
+        ) {
+
+            actualizarContador(
+                storyData.views
+            );
+
+        }
+
+
+        /*
+         * Registramos la apertura de la
+         * historieta.
+         *
+         * Se hace después de obtener
+         * correctamente la publicación.
+         */
+
+        registrarVisita();
 
 
         comprobarPropietario();
@@ -974,15 +1143,6 @@ function cargarBloques(content) {
 
 
     try {
-
-        /*
-         * Formato nuevo:
-         *
-         * {
-         *   version: 1,
-         *   blocks: [...]
-         * }
-         */
 
         if (
             content &&
@@ -1231,11 +1391,6 @@ function cancelarEdicion() {
         "uploadMessage"
     );
 
-
-    /*
-     * Volvemos a cargar desde el servidor
-     * para descartar cambios locales.
-     */
 
     cargarCapitulo();
 
@@ -1493,11 +1648,6 @@ function agregarTexto() {
     renderEditor();
 
 
-    /*
-     * Desplazamos el editor hacia el
-     * nuevo bloque.
-     */
-
     setTimeout(
         function() {
 
@@ -1507,10 +1657,16 @@ function agregarTexto() {
                 );
 
 
-            container.lastElementChild
-                ?.scrollIntoView({
-                    behavior: "smooth"
-                });
+            if (
+                container.lastElementChild
+            ) {
+
+                container.lastElementChild
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }
 
         },
         100
@@ -1667,11 +1823,6 @@ async function subirNuevasImagenes() {
 
             }
 
-
-            /*
-             * Agregamos inmediatamente el bloque
-             * al final del capítulo.
-             */
 
             blocks.push({
 
