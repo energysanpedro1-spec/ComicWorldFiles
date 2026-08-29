@@ -957,16 +957,14 @@ export default {
 
             }
         }
-
-
-        // =========================================================
-// API: CAPÍTULOS INDIVIDUALES
+    }
+}
 // =========================================================
-
-// Detectar:
+// API: CAPÍTULOS INDIVIDUALES
 // GET    /api/chapters/10
 // PUT    /api/chapters/10
 // DELETE /api/chapters/10
+// =========================================================
 
 const chapterMatch =
     url.pathname.match(
@@ -1302,161 +1300,6 @@ if (
             error: error.message
         }, 500);
 
-    }
-}
-
-        // =========================================================
-        // API: EDITAR CAPÍTULO
-        // PUT /api/chapters/10
-        // =========================================================
-
-        if (
-            chapterMatch &&
-            request.method === "PUT"
-        ) {
-
-            try {
-
-                const chapterId =
-                    Number(
-                        chapterMatch[1]
-                    );
-
-                const session =
-                    await getSession(
-                        request,
-                        env
-                    );
-
-                if (!session) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "Debes iniciar sesión."
-                    }, 401);
-
-                }
-
-                const chapter =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                chapters.id,
-                                chapters.story_id,
-                                stories.user_id
-                             FROM chapters
-                             INNER JOIN stories
-                             ON stories.id =
-                                chapters.story_id
-                             WHERE chapters.id = ?
-                             LIMIT 1`
-                        )
-                        .bind(chapterId)
-                        .first();
-
-                if (!chapter) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "El capítulo no existe."
-                    }, 404);
-
-                }
-
-                if (
-                    Number(chapter.user_id) !==
-                    Number(session.id)
-                ) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "No tienes permiso para editar este capítulo."
-                    }, 403);
-
-                }
-
-                const data =
-                    await request.json();
-
-                const title =
-                    String(
-                        data.title || ""
-                    ).trim();
-
-                const content =
-                    String(
-                        data.content || ""
-                    );
-
-                if (!title) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "El título del capítulo es obligatorio."
-                    }, 400);
-
-                }
-
-                if (!content.trim()) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "El contenido del capítulo es obligatorio."
-                    }, 400);
-
-                }
-
-                const result =
-                    await env.DB
-                        .prepare(
-                            `UPDATE chapters
-                             SET title = ?,
-                                 content = ?
-                             WHERE id = ?`
-                        )
-                        .bind(
-                            title,
-                            content,
-                            chapterId
-                        )
-                        .run();
-
-                if (!result.success) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "No se pudo actualizar el capítulo."
-                    }, 500);
-
-                }
-
-                return json({
-                    success: true,
-                    message:
-                        "Capítulo actualizado correctamente."
-                });
-
-            } catch (error) {
-
-                console.error(
-                    "Error editando capítulo:",
-                    error
-                );
-
-                return json({
-                    success: false,
-                    error: error.message
-                }, 500);
-
-            }
-        }
-
 
         // =========================================================
         // ARCHIVOS HTML / ESTÁTICOS
@@ -1464,8 +1307,7 @@ if (
 
         return env.ASSETS.fetch(request);
     }
-};
-
+}
 
 // =========================================================
 // OBTENER SESIÓN
