@@ -630,37 +630,190 @@ async function logout() {
 
 
 /* ==========================================
-   FORMULARIO
+FORMULARIO
 ========================================== */
 
 document
 .getElementById("storyForm")
 .addEventListener(
-    "submit",
-    function(event) {
+"submit",
+async function(event) {
 
-        event.preventDefault();
+    event.preventDefault();
 
 
-        const message =
-            document.getElementById(
-                "message"
-            );
+    const message =
+        document.getElementById(
+            "message"
+        );
 
+
+    const button =
+        document.querySelector(
+            ".create-button"
+        );
+
+
+    const title =
+        document.getElementById(
+            "title"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "description"
+        ).value.trim();
+
+
+    const genre =
+        document.getElementById(
+            "genre"
+        ).value;
+
+
+    /* Validación básica */
+
+    if (!title || !description || !genre) {
 
         message.className =
-            "success";
-
+            "error";
 
         message.textContent =
-            "La interfaz está lista. En el siguiente paso conectaremos la historia con la base de datos.";
-
+            "Completa todos los campos obligatorios.";
 
         message.style.display =
             "block";
 
+        return;
     }
-);
+
+
+    /* Desactivar botón */
+
+    button.disabled = true;
+
+    button.textContent =
+        "Creando historia...";
+
+
+    message.className = "";
+
+    message.textContent = "";
+
+    message.style.display =
+        "none";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    credentials: "include",
+
+                    body: JSON.stringify({
+
+                        title:
+                            title,
+
+                        description:
+                            description,
+
+                        genre:
+                            genre
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        /* Error */
+
+        if (!data.success) {
+
+            message.className =
+                "error";
+
+            message.textContent =
+                data.error ||
+                "No se pudo crear la historia.";
+
+            message.style.display =
+                "block";
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Crear historia";
+
+            return;
+        }
+
+
+        /* Historia creada */
+
+        message.className =
+            "success";
+
+        message.textContent =
+            "Historia creada correctamente.";
+
+        message.style.display =
+            "block";
+
+
+        /*
+         * Dejamos unos segundos el mensaje
+         * antes de continuar.
+         */
+
+        setTimeout(
+            function() {
+
+                window.location.href =
+                    "index.html";
+
+            },
+            1200
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        message.className =
+            "error";
+
+        message.textContent =
+            "Error de conexión con el servidor.";
+
+        message.style.display =
+            "block";
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Crear historia";
+
+    }
 
 
 /* ==========================================
