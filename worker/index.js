@@ -960,79 +960,350 @@ export default {
 
 
         // =========================================================
-        // RUTAS DE CAPÍTULOS INDIVIDUALES
-        // =========================================================
+// API: CAPÍTULOS INDIVIDUALES
+// =========================================================
 
-        const chapterMatch =
-            url.pathname.match(
-                /^\/api\/chapters\/(\d+)$/
+// Detectar:
+// GET    /api/chapters/10
+// PUT    /api/chapters/10
+// DELETE /api/chapters/10
+
+const chapterMatch =
+    url.pathname.match(
+        /^\/api\/chapters\/(\d+)$/
+    );
+
+
+// =========================================================
+// API: OBTENER CAPÍTULO
+// GET /api/chapters/10
+// =========================================================
+
+if (
+    chapterMatch &&
+    request.method === "GET"
+) {
+
+    try {
+
+        const chapterId =
+            Number(
+                chapterMatch[1]
             );
 
+        const chapter =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        chapters.id,
+                        chapters.story_id,
+                        chapters.chapter_number,
+                        chapters.title,
+                        chapters.content,
+                        chapters.created_at
+                     FROM chapters
+                     WHERE chapters.id = ?
+                     LIMIT 1`
+                )
+                .bind(chapterId)
+                .first();
 
-        // =========================================================
-        // API: OBTENER CAPÍTULO
-        // GET /api/chapters/10
-        // =========================================================
+        if (!chapter) {
 
-        if (
-            chapterMatch &&
-            request.method === "GET"
-        ) {
+            return json({
+                success: false,
+                error:
+                    "El capítulo no existe."
+            }, 404);
 
-            try {
-
-                const chapterId =
-                    Number(
-                        chapterMatch[1]
-                    );
-
-                const chapter =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                id,
-                                story_id,
-                                chapter_number,
-                                title,
-                                content,
-                                created_at
-                             FROM chapters
-                             WHERE id = ?
-                             LIMIT 1`
-                        )
-                        .bind(chapterId)
-                        .first();
-
-                if (!chapter) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "El capítulo no existe."
-                    }, 404);
-
-                }
-
-                return json({
-                    success: true,
-                    chapter: chapter
-                });
-
-            } catch (error) {
-
-                console.error(
-                    "Error obteniendo capítulo:",
-                    error
-                );
-
-                return json({
-                    success: false,
-                    error: error.message
-                }, 500);
-
-            }
         }
 
+        return json({
+            success: true,
+            chapter: chapter
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo capítulo:",
+            error
+        );
+
+        return json({
+            success: false,
+            error: error.message
+        }, 500);
+
+    }
+}
+
+
+// =========================================================
+// API: EDITAR CAPÍTULO
+// PUT /api/chapters/10
+// =========================================================
+
+if (
+    chapterMatch &&
+    request.method === "PUT"
+) {
+
+    try {
+
+        const chapterId =
+            Number(
+                chapterMatch[1]
+            );
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+        if (!session) {
+
+            return json({
+                success: false,
+                error:
+                    "Debes iniciar sesión."
+            }, 401);
+
+        }
+
+        const chapter =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        chapters.id,
+                        chapters.story_id,
+                        stories.user_id
+                     FROM chapters
+                     INNER JOIN stories
+                     ON stories.id =
+                        chapters.story_id
+                     WHERE chapters.id = ?
+                     LIMIT 1`
+                )
+                .bind(chapterId)
+                .first();
+
+        if (!chapter) {
+
+            return json({
+                success: false,
+                error:
+                    "El capítulo no existe."
+            }, 404);
+
+        }
+
+        if (
+            Number(chapter.user_id) !==
+            Number(session.id)
+        ) {
+
+            return json({
+                success: false,
+                error:
+                    "No tienes permiso para editar este capítulo."
+            }, 403);
+
+        }
+
+        const data =
+            await request.json();
+
+        const title =
+            String(
+                data.title || ""
+            ).trim();
+
+        const content =
+            String(
+                data.content || ""
+            );
+
+        if (!title) {
+
+            return json({
+                success: false,
+                error:
+                    "El título del capítulo es obligatorio."
+            }, 400);
+
+        }
+
+        if (!content.trim()) {
+
+            return json({
+                success: false,
+                error:
+                    "El contenido del capítulo es obligatorio."
+            }, 400);
+
+        }
+
+        const result =
+            await env.DB
+                .prepare(
+                    `UPDATE chapters
+                     SET title = ?,
+                         content = ?
+                     WHERE id = ?`
+                )
+                .bind(
+                    title,
+                    content,
+                    chapterId
+                )
+                .run();
+
+        if (!result.success) {
+
+            return json({
+                success: false,
+                error:
+                    "No se pudo actualizar el capítulo."
+            }, 500);
+
+        }
+
+        return json({
+            success: true,
+            message:
+                "Capítulo actualizado correctamente."
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error editando capítulo:",
+            error
+        );
+
+        return json({
+            success: false,
+            error: error.message
+        }, 500);
+
+    }
+}
+
+
+// =========================================================
+// API: ELIMINAR CAPÍTULO
+// DELETE /api/chapters/10
+// =========================================================
+
+if (
+    chapterMatch &&
+    request.method === "DELETE"
+) {
+
+    try {
+
+        const chapterId =
+            Number(
+                chapterMatch[1]
+            );
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+        if (!session) {
+
+            return json({
+                success: false,
+                error:
+                    "Debes iniciar sesión."
+            }, 401);
+
+        }
+
+        const chapter =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        chapters.id,
+                        chapters.story_id,
+                        stories.user_id
+                     FROM chapters
+                     INNER JOIN stories
+                     ON stories.id =
+                        chapters.story_id
+                     WHERE chapters.id = ?
+                     LIMIT 1`
+                )
+                .bind(chapterId)
+                .first();
+
+        if (!chapter) {
+
+            return json({
+                success: false,
+                error:
+                    "El capítulo no existe."
+            }, 404);
+
+        }
+
+        if (
+            Number(chapter.user_id) !==
+            Number(session.id)
+        ) {
+
+            return json({
+                success: false,
+                error:
+                    "No tienes permiso para eliminar este capítulo."
+            }, 403);
+
+        }
+
+        const result =
+            await env.DB
+                .prepare(
+                    `DELETE FROM chapters
+                     WHERE id = ?`
+                )
+                .bind(chapterId)
+                .run();
+
+        if (!result.success) {
+
+            return json({
+                success: false,
+                error:
+                    "No se pudo eliminar el capítulo."
+            }, 500);
+
+        }
+
+        return json({
+            success: true,
+            message:
+                "Capítulo eliminado correctamente."
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error eliminando capítulo:",
+            error
+        );
+
+        return json({
+            success: false,
+            error: error.message
+        }, 500);
+
+    }
+}
 
         // =========================================================
         // API: EDITAR CAPÍTULO
@@ -1175,120 +1446,6 @@ export default {
 
                 console.error(
                     "Error editando capítulo:",
-                    error
-                );
-
-                return json({
-                    success: false,
-                    error: error.message
-                }, 500);
-
-            }
-        }
-
-
-        // =========================================================
-        // API: ELIMINAR CAPÍTULO
-        // DELETE /api/chapters/10
-        // =========================================================
-
-        if (
-            chapterMatch &&
-            request.method === "DELETE"
-        ) {
-
-            try {
-
-                const chapterId =
-                    Number(
-                        chapterMatch[1]
-                    );
-
-                const session =
-                    await getSession(
-                        request,
-                        env
-                    );
-
-                if (!session) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "Debes iniciar sesión."
-                    }, 401);
-
-                }
-
-                const chapter =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                chapters.id,
-                                chapters.story_id,
-                                stories.user_id
-                             FROM chapters
-                             INNER JOIN stories
-                             ON stories.id =
-                                chapters.story_id
-                             WHERE chapters.id = ?
-                             LIMIT 1`
-                        )
-                        .bind(chapterId)
-                        .first();
-
-                if (!chapter) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "El capítulo no existe."
-                    }, 404);
-
-                }
-
-                if (
-                    Number(chapter.user_id) !==
-                    Number(session.id)
-                ) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "No tienes permiso para eliminar este capítulo."
-                    }, 403);
-
-                }
-
-                const result =
-                    await env.DB
-                        .prepare(
-                            `DELETE FROM chapters
-                             WHERE id = ?`
-                        )
-                        .bind(chapterId)
-                        .run();
-
-                if (!result.success) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "No se pudo eliminar el capítulo."
-                    }, 500);
-
-                }
-
-                return json({
-                    success: true,
-                    message:
-                        "Capítulo eliminado correctamente."
-                });
-
-            } catch (error) {
-
-                console.error(
-                    "Error eliminando capítulo:",
                     error
                 );
 
