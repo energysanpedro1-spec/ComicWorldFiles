@@ -1,4 +1,178 @@
-<script>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Iniciar sesión - ComicWorldFiles</title><style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+header {
+    background: #20242b;
+    color: white;
+    padding: 15px 20px;
+}
+
+.header-content {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #ff6b35;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #e85b2b;
+}
+
+.message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    display: none;
+    text-align: center;
+    font-size: 14px;
+}
+
+.error {
+    display: block;
+    background: #ffe5e5;
+    color: #a00000;
+}
+
+.success {
+    display: block;
+    background: #e3f7e8;
+    color: #176b2c;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #ff6b35;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+    padding: 30px;
+}
+
+</style></head><body><header><div class="header-content"><div class="logo">
+📚 ComicWorldFiles
+</div><nav><a href="index.html">
+Inicio
+</a><a href="registro.html">
+Registrarse
+</a></nav></div></header><main class="container"><div class="box"><h1>Iniciar sesión</h1><p class="subtitle">
+Accede a tu cuenta de ComicWorldFiles.
+</p><form id="loginForm"><label for="login">
+Usuario o correo electrónico
+</label><input
+type="text"
+id="login"
+name="login"
+placeholder="Usuario o correo"
+required
+
+«»
+
+<label for="password">
+Contraseña
+</label><input
+type="password"
+id="password"
+name="password"
+placeholder="Tu contraseña"
+required
+
+«»
+
+<button type="submit">
+Iniciar sesión
+</button></form><div id="message" class="message"></div><div class="register-link">¿Todavía no tienes una cuenta?
+
+<a href="registro.html">
+Crear cuenta
+</a></div></div></main><footer>ComicWorldFiles © 2026
+
+</footer><script>
 
 const form =
     document.getElementById("loginForm");
@@ -7,108 +181,135 @@ const message =
     document.getElementById("message");
 
 
-form.addEventListener("submit", async function(event) {
+form.addEventListener(
+    "submit",
+    async function(event) {
 
-    event.preventDefault();
-
-    message.className = "message";
-    message.textContent = "";
-
-
-    const login =
-        document.getElementById("login").value.trim();
-
-    const password =
-        document.getElementById("password").value;
+        event.preventDefault();
 
 
-    try {
+        message.className =
+            "message";
 
-        const response = await fetch(
-            "/api/login",
-            {
-                method: "POST",
+        message.textContent =
+            "";
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
 
-                body: JSON.stringify({
-                    login: login,
-                    password: password
-                })
+        const login =
+            document
+            .getElementById("login")
+            .value
+            .trim();
+
+
+        const password =
+            document
+            .getElementById("password")
+            .value;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/login",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                login: login,
+                                password: password
+                            })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                message.textContent =
+                    data.error ||
+                    "Usuario o contraseña incorrectos.";
+
+
+                message.className =
+                    "message error";
+
+
+                return;
             }
-        );
 
 
-        const data =
-            await response.json();
+            /*
+            Guardamos el nombre de usuario
+            devuelto por el servidor.
+            */
 
+            if (data.username) {
 
-        if (!data.success) {
+                localStorage.setItem(
+                    "comicworld_user",
+                    data.username
+                );
+
+            } else {
+
+                /*
+                Si el servidor todavía no devuelve
+                username, usamos temporalmente
+                el texto introducido.
+                */
+
+                localStorage.setItem(
+                    "comicworld_user",
+                    login
+                );
+
+            }
+
 
             message.textContent =
-                data.error ||
-                "Usuario o contraseña incorrectos.";
+                "Inicio de sesión correcto. Redirigiendo...";
+
+
+            message.className =
+                "message success";
+
+
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "index.html";
+
+                },
+                800
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            message.textContent =
+                "Error de conexión con el servidor.";
+
 
             message.className =
                 "message error";
-
-            return;
         }
 
-
-        /*
-        La API debe devolver el nombre de usuario.
-        Si no lo devuelve, mostramos un error
-        para evitar guardar "undefined".
-        */
-
-        if (!data.username) {
-
-            message.textContent =
-                "La sesión se inició, pero el servidor no devolvió el nombre de usuario.";
-
-            message.className =
-                "message error";
-
-            return;
-        }
-
-
-        /* GUARDAR EL NOMBRE DE USUARIO */
-
-        localStorage.setItem(
-            "comicworld_user",
-            data.username
-        );
-
-
-        message.textContent =
-            "Inicio de sesión correcto. Redirigiendo...";
-
-        message.className =
-            "message success";
-
-
-        setTimeout(function() {
-
-            window.location.href =
-                "index.html";
-
-        }, 800);
-
-
-    } catch (error) {
-
-        message.textContent =
-            "Error de conexión con el servidor.";
-
-        message.className =
-            "message error";
     }
+);
 
-});
-
-</script>
+</script></body></html>
