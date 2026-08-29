@@ -574,10 +574,6 @@ export default {
                     ).trim();
 
 
-                // -------------------------------------------------
-                // TIPO DE PUBLICACIÓN
-                // -------------------------------------------------
-
                 let type =
                     String(
                         data.type || "historia"
@@ -1243,10 +1239,6 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // R2 CORRECTO
-                // -------------------------------------------------
-
                 const objectKey =
                     "covers/" +
                     session.id +
@@ -1423,7 +1415,8 @@ export default {
                     object.body,
                     {
                         status: 200,
-                        headers: headers
+                        headers:
+                            headers
                     }
                 );
 
@@ -1452,6 +1445,7 @@ export default {
         // =========================================================
         // API: CAPÍTULOS DE UNA PUBLICACIÓN
         // GET /api/stories/5/chapters
+        // POST /api/stories/5/chapters
         // =========================================================
 
         const chaptersMatch =
@@ -1459,6 +1453,10 @@ export default {
                 /^\/api\/stories\/(\d+)\/chapters$/
             );
 
+
+        // ---------------------------------------------------------
+        // LISTAR CAPÍTULOS
+        // ---------------------------------------------------------
 
         if (
             chaptersMatch &&
@@ -1546,10 +1544,9 @@ export default {
 
 
 
-        // =========================================================
-        // API: CREAR CAPÍTULO
-        // POST /api/stories/5/chapters
-        // =========================================================
+        // ---------------------------------------------------------
+        // CREAR CAPÍTULO
+        // ---------------------------------------------------------
 
         if (
             chaptersMatch &&
@@ -1633,13 +1630,60 @@ export default {
                     ).trim();
 
 
-                const content =
-                    String(
-                        data.content || ""
-                    );
+                /*
+                 * El contenido inicial puede ser:
+                 *
+                 * []
+                 *
+                 * porque las imágenes y textos
+                 * se agregan después.
+                 */
+
+                let content =
+                    data.content;
 
 
-                if (!title) {
+                if (
+                    content === undefined ||
+                    content === null
+                ) {
+
+                    content =
+                        [];
+
+                }
+
+
+                if (
+                    typeof content === "string"
+                ) {
+
+                    content =
+                        content.trim();
+
+                }
+
+
+                /*
+                 * Si llega un array lo convertimos
+                 * a JSON para guardarlo en D1.
+                 */
+
+                if (
+                    Array.isArray(content)
+                ) {
+
+                    content =
+                        JSON.stringify(
+                            content
+                        );
+
+                }
+
+
+                if (
+                    !title
+                ) {
 
                     return json({
                         success: false,
@@ -1651,14 +1695,11 @@ export default {
 
 
                 if (
-                    !content.trim()
+                    !content
                 ) {
 
-                    return json({
-                        success: false,
-                        error:
-                            "El contenido del capítulo es obligatorio."
-                    }, 400);
+                    content =
+                        "[]";
 
                 }
 
@@ -1945,10 +1986,30 @@ export default {
                     ).trim();
 
 
-                const content =
-                    String(
-                        data.content || ""
-                    );
+                let content =
+                    data.content;
+
+
+                if (
+                    Array.isArray(content)
+                ) {
+
+                    content =
+                        JSON.stringify(
+                            content
+                        );
+
+                }
+
+
+                if (
+                    typeof content !== "string"
+                ) {
+
+                    content =
+                        "[]";
+
+                }
 
 
                 if (!title) {
@@ -1966,11 +2027,8 @@ export default {
                     !content.trim()
                 ) {
 
-                    return json({
-                        success: false,
-                        error:
-                            "El contenido del capítulo es obligatorio."
-                    }, 400);
+                    content =
+                        "[]";
 
                 }
 
@@ -2032,9 +2090,10 @@ export default {
 
 
 
-        // ---------------------------------------------------------
+        // =========================================================
         // ELIMINAR CAPÍTULO
-        // ---------------------------------------------------------
+        // DELETE /api/chapters/10
+        // =========================================================
 
         if (
             chapterMatch &&
@@ -2213,9 +2272,318 @@ export default {
 
 
         // =========================================================
+        // API: GUARDAR CONTENIDO ORDENADO DEL CAPÍTULO
+        //
+        // PUT /api/chapters/10/content
+        //
+        // Ejemplo:
+        //
+        // [
+        //     {
+        //         "type": "image",
+        //         "image_id": 15
+        //     },
+        //     {
+        //         "type": "text",
+        //         "content": "Texto entre imágenes."
+        //     }
+        // ]
+        //
+        // =========================================================
+
+        const chapterContentMatch =
+            url.pathname.match(
+                /^\/api\/chapters\/(\d+)\/content$/
+            );
+
+
+        if (
+            chapterContentMatch &&
+            request.method === "PUT"
+        ) {
+
+            try {
+
+                const chapterId =
+                    Number(
+                        chapterContentMatch[1]
+                    );
+
+
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+
+                }
+
+
+                const chapter =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                chapters.id,
+                                chapters.story_id,
+                                stories.user_id
+                             FROM chapters
+                             INNER JOIN stories
+                             ON stories.id =
+                                chapters.story_id
+                             WHERE chapters.id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            chapterId
+                        )
+                        .first();
+
+
+                if (!chapter) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El capítulo no existe."
+                    }, 404);
+
+                }
+
+
+                if (
+                    Number(chapter.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para modificar este capítulo."
+                    }, 403);
+
+                }
+
+
+                const data =
+                    await request.json();
+
+
+                const content =
+                    data.content;
+
+
+                if (
+                    !Array.isArray(content)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El contenido debe ser una lista de elementos."
+                    }, 400);
+
+                }
+
+
+                const cleanContent = [];
+
+
+                for (
+                    const item of content
+                ) {
+
+                    if (
+                        !item ||
+                        !item.type
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    // -------------------------------------------------
+                    // TEXTO
+                    // -------------------------------------------------
+
+                    if (
+                        item.type === "text"
+                    ) {
+
+                        const text =
+                            String(
+                                item.content || ""
+                            ).trim();
+
+
+                        if (text) {
+
+                            cleanContent.push({
+
+                                type:
+                                    "text",
+
+                                content:
+                                    text
+
+                            });
+
+                        }
+
+                    }
+
+
+                    // -------------------------------------------------
+                    // IMAGEN
+                    // -------------------------------------------------
+
+                    else if (
+                        item.type === "image"
+                    ) {
+
+                        const imageId =
+                            Number(
+                                item.image_id
+                            );
+
+
+                        if (
+                            !imageId
+                        ) {
+
+                            continue;
+
+                        }
+
+
+                        /*
+                         * Verificamos que la imagen
+                         * realmente pertenezca a este
+                         * capítulo.
+                         */
+
+                        const image =
+                            await env.DB
+                                .prepare(
+                                    `SELECT
+                                        id
+                                     FROM chapter_images
+                                     WHERE id = ?
+                                       AND chapter_id = ?
+                                     LIMIT 1`
+                                )
+                                .bind(
+                                    imageId,
+                                    chapterId
+                                )
+                                .first();
+
+
+                        if (image) {
+
+                            cleanContent.push({
+
+                                type:
+                                    "image",
+
+                                image_id:
+                                    imageId
+
+                            });
+
+                        }
+
+                    }
+
+                }
+
+
+                const contentJSON =
+                    JSON.stringify(
+                        cleanContent
+                    );
+
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `UPDATE chapters
+                             SET content = ?
+                             WHERE id = ?`
+                        )
+                        .bind(
+                            contentJSON,
+                            chapterId
+                        )
+                        .run();
+
+
+                if (
+                    !result.success
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se pudo guardar el contenido."
+                    }, 500);
+
+                }
+
+
+                return json({
+
+                    success:
+                        true,
+
+                    message:
+                        "Contenido guardado correctamente.",
+
+                    content:
+                        cleanContent
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error guardando contenido del capítulo:",
+                    error
+                );
+
+
+                return json({
+
+                    success:
+                        false,
+
+                    error:
+                        error.message
+
+                }, 500);
+
+            }
+
+        }
+
+
+
+        // =========================================================
         // API: IMÁGENES DE CAPÍTULO
-        // GET /api/chapters/10/images
+        //
+        // GET  /api/chapters/10/images
         // POST /api/chapters/10/images
+        //
         // =========================================================
 
         const chapterImagesMatch =
@@ -2511,10 +2879,6 @@ export default {
                     extension;
 
 
-                // -------------------------------------------------
-                // R2 IMAGES
-                // -------------------------------------------------
-
                 await env.Images.put(
                     objectKey,
                     file.stream(),
@@ -2648,8 +3012,10 @@ export default {
 
         // =========================================================
         // API: IMAGEN INDIVIDUAL
-        // GET /api/chapter-images/123
+        //
+        // GET    /api/chapter-images/123
         // DELETE /api/chapter-images/123
+        //
         // =========================================================
 
         const chapterImageMatch =
@@ -2746,7 +3112,8 @@ export default {
                     object.body,
                     {
                         status: 200,
-                        headers: headers
+                        headers:
+                            headers
                     }
                 );
 
@@ -2882,6 +3249,107 @@ export default {
                         error:
                             "No se pudo eliminar el registro de la imagen."
                     }, 500);
+
+                }
+
+
+                /*
+                 * También eliminamos la imagen
+                 * del contenido del capítulo.
+                 */
+
+                try {
+
+                    const currentChapter =
+                        await env.DB
+                            .prepare(
+                                `SELECT
+                                    content
+                                 FROM chapters
+                                 WHERE id = ?
+                                 LIMIT 1`
+                            )
+                            .bind(
+                                image.chapter_id
+                            )
+                            .first();
+
+
+                    if (
+                        currentChapter &&
+                        currentChapter.content
+                    ) {
+
+                        let blocks = [];
+
+
+                        try {
+
+                            blocks =
+                                JSON.parse(
+                                    currentChapter.content
+                                );
+
+                        } catch (
+                            parseError
+                        ) {
+
+                            blocks =
+                                [];
+
+                        }
+
+
+                        if (
+                            Array.isArray(
+                                blocks
+                            )
+                        ) {
+
+                            blocks =
+                                blocks.filter(
+                                    function(block) {
+
+                                        return !(
+                                            block &&
+                                            block.type ===
+                                                "image" &&
+                                            Number(
+                                                block.image_id
+                                            ) ===
+                                                imageId
+                                        );
+
+                                    }
+                                );
+
+
+                            await env.DB
+                                .prepare(
+                                    `UPDATE chapters
+                                     SET content = ?
+                                     WHERE id = ?`
+                                )
+                                .bind(
+                                    JSON.stringify(
+                                        blocks
+                                    ),
+                                    image.chapter_id
+                                )
+                                .run();
+
+                        }
+
+                    }
+
+                } catch (
+                    cleanupError
+                ) {
+
+                    console.error(
+                        "Error limpiando imagen del contenido:",
+                        cleanupError
+                    );
 
                 }
 
