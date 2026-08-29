@@ -41,7 +41,7 @@ header {
 }
 
 .back {
-    color: white !important;
+    color: white;
     text-decoration: none;
     font-size: 14px;
 }
@@ -81,8 +81,6 @@ header {
     margin-bottom: 20px;
 
     font-size: 30px;
-
-    color: #222;
 }
 
 .profile-info {
@@ -267,6 +265,8 @@ button,
     color: white;
 
     font-size: 40px;
+
+    overflow: hidden;
 }
 
 .cover img {
@@ -280,8 +280,6 @@ button,
 
 .story-content {
     padding: 15px;
-
-    color: #222;
 }
 
 .story-content h3 {
@@ -327,22 +325,6 @@ button,
 }
 
 /* ==============================
-   ENLACES DENTRO DEL CONTENIDO
-============================== */
-
-.empty a {
-    color: #ff6b35 !important;
-
-    text-decoration: none;
-
-    font-weight: bold;
-}
-
-.empty a:hover {
-    text-decoration: underline;
-}
-
-/* ==============================
    MENSAJES
 ============================== */
 
@@ -364,6 +346,14 @@ button,
     color: #666;
 
     text-align: center;
+}
+
+.empty a {
+    color: #ff6b35;
+
+    text-decoration: none;
+
+    font-weight: bold;
 }
 
 /* ==============================
@@ -584,7 +574,8 @@ async function cargarPerfil() {
                 "/api/me",
                 {
                     method: "GET",
-                    credentials: "include"
+                    credentials: "include",
+                    cache: "no-store"
                 }
             );
 
@@ -666,6 +657,74 @@ async function cargarPerfil() {
 
 
 /* ==========================================
+   CONSTRUIR URL DE PORTADA
+========================================== */
+
+function obtenerUrlPortada(
+    coverUrl
+) {
+
+    if (!coverUrl) {
+
+        return null;
+
+    }
+
+
+    let url =
+        String(
+            coverUrl
+        ).trim();
+
+
+    if (!url) {
+
+        return null;
+
+    }
+
+
+    /*
+     * Si ya es una URL absoluta,
+     * la utilizamos directamente.
+     */
+
+    if (
+        url.startsWith("http://") ||
+        url.startsWith("https://") ||
+        url.startsWith("data:")
+    ) {
+
+        return url;
+
+    }
+
+
+    /*
+     * Si comienza con / ya es una
+     * ruta absoluta dentro del dominio.
+     */
+
+    if (
+        url.startsWith("/")
+    ) {
+
+        return url;
+
+    }
+
+
+    /*
+     * Si la API devuelve solamente
+     * "uploads/..." agregamos "/".
+     */
+
+    return "/" + url;
+
+}
+
+
+/* ==========================================
    CARGAR HISTORIAS DEL USUARIO
 ========================================== */
 
@@ -680,7 +739,8 @@ async function cargarHistorias(
                 "/api/stories",
                 {
                     method: "GET",
-                    credentials: "include"
+                    credentials: "include",
+                    cache: "no-store"
                 }
             );
 
@@ -700,13 +760,23 @@ async function cargarHistorias(
             !data.success
         ) {
 
+            storiesSection.style.display =
+                "block";
+
+            storiesContainer.innerHTML =
+                '<div class="empty">' +
+                'No se pudieron cargar tus historias.' +
+                '</div>';
+
             return;
 
         }
 
 
         const allStories =
-            Array.isArray(data.stories)
+            Array.isArray(
+                data.stories
+            )
                 ? data.stories
                 : [];
 
@@ -719,9 +789,21 @@ async function cargarHistorias(
             allStories.filter(
                 function(story) {
 
-                    return Number(
-                        story.user_id
-                    ) === Number(
+                    /*
+                     * Admitimos tanto user_id
+                     * como author_id por si la
+                     * API utiliza otro nombre.
+                     */
+
+                    const storyUserId =
+                        story.user_id !== undefined
+                            ? story.user_id
+                            : story.author_id;
+
+
+                    return String(
+                        storyUserId
+                    ) === String(
                         userId
                     );
 
@@ -746,13 +828,14 @@ async function cargarHistorias(
             function(story) {
 
                 if (
-                    story.chapter_count
+                    story.chapter_count !== undefined &&
+                    story.chapter_count !== null
                 ) {
 
                     totalChapters +=
                         Number(
                             story.chapter_count
-                        );
+                        ) || 0;
 
                 }
 
@@ -767,6 +850,14 @@ async function cargarHistorias(
 
 
         /* ==============================
+           MOSTRAR SECCIÓN
+        ============================== */
+
+        storiesSection.style.display =
+            "block";
+
+
+        /* ==============================
            SIN HISTORIAS
         ============================== */
 
@@ -774,25 +865,24 @@ async function cargarHistorias(
             userStories.length === 0
         ) {
 
-            storiesSection.style.display =
-                "block";
-
             storiesContainer.innerHTML =
                 '<div class="empty">' +
+
                 'Todavía no has publicado ninguna historia.' +
+
                 '<br><br>' +
+
                 '<a href="crear-historia.html">' +
+
                 'Crear mi primera historia' +
+
                 '</a>' +
+
                 '</div>';
 
             return;
 
         }
-
-
-        storiesSection.style.display =
-            "block";
 
 
         storiesContainer.innerHTML =
@@ -815,84 +905,156 @@ async function cargarHistorias(
                     "story-card";
 
 
-                /* ==============================
+                /* ==========================
                    PORTADA
-                ============================== */
+                ========================== */
 
-                let coverHTML;
+                const portada =
+                    obtenerUrlPortada(
+                        story.cover_url
+                    );
 
 
-                /*
-                 * Aceptamos cover_url como
-                 * viene actualmente desde
-                 * /api/stories.
-                 */
+                const cover =
+                    document.createElement(
+                        "div"
+                    );
+
+                cover.className =
+                    "cover";
+
 
                 if (
-                    story.cover_url &&
-                    String(
-                        story.cover_url
-                    ).trim() !== ""
+                    portada
                 ) {
 
-                    coverHTML =
-                        '<div class="cover">' +
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
 
-                        '<img src="' +
-                        escapeHtml(
-                            story.cover_url
-                        ) +
-                        '" alt="Portada de ' +
-                        escapeHtml(
-                            story.title || "Historia"
-                        ) +
-                        '" ' +
 
-                        'onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'📖\';">' +
+                    img.src =
+                        portada;
 
-                        '</div>';
+
+                    img.alt =
+                        "Portada de " +
+                        (
+                            story.title ||
+                            "historia"
+                        );
+
+
+                    /*
+                     * Si la imagen falla,
+                     * volvemos al icono.
+                     */
+
+                    img.onerror =
+                        function() {
+
+                            console.error(
+                                "No se pudo cargar portada:",
+                                portada
+                            );
+
+
+                            img.remove();
+
+
+                            cover.textContent =
+                                "📖";
+
+                        };
+
+
+                    cover.appendChild(
+                        img
+                    );
 
                 } else {
 
-                    coverHTML =
-                        '<div class="cover">' +
-                        '📖' +
-                        '</div>';
+                    cover.textContent =
+                        "📖";
 
                 }
 
 
-                /* ==============================
+                /* ==========================
                    CONTENIDO
-                ============================== */
+                ========================== */
 
-                card.innerHTML =
+                const content =
+                    document.createElement(
+                        "div"
+                    );
 
-                    coverHTML +
+                content.className =
+                    "story-content";
 
-                    '<div class="story-content">' +
 
-                    '<h3>' +
-                    escapeHtml(
-                        story.title || "Sin título"
-                    ) +
-                    '</h3>' +
+                const title =
+                    document.createElement(
+                        "h3"
+                    );
 
-                    '<p class="story-description">' +
-                    escapeHtml(
-                        story.description || ""
-                    ) +
-                    '</p>' +
+                title.textContent =
+                    story.title ||
+                    "Sin título";
 
-                    '<a class="read-button" href="leer-historia.html?id=' +
+
+                const description =
+                    document.createElement(
+                        "p"
+                    );
+
+                description.className =
+                    "story-description";
+
+                description.textContent =
+                    story.description ||
+                    "";
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+                link.className =
+                    "read-button";
+
+                link.href =
+                    "leer-historia.html?id=" +
                     encodeURIComponent(
                         story.id
-                    ) +
-                    '">' +
-                    'Ver historia' +
-                    '</a>' +
+                    );
 
-                    '</div>';
+                link.textContent =
+                    "Ver historia";
+
+
+                content.appendChild(
+                    title
+                );
+
+                content.appendChild(
+                    description
+                );
+
+                content.appendChild(
+                    link
+                );
+
+
+                card.appendChild(
+                    cover
+                );
+
+                card.appendChild(
+                    content
+                );
 
 
                 storiesContainer.appendChild(
@@ -909,6 +1071,18 @@ async function cargarHistorias(
             "Error cargando historias:",
             error
         );
+
+
+        storiesSection.style.display =
+            "block";
+
+
+        storiesContainer.innerHTML =
+            '<div class="empty">' +
+
+            'Error al cargar tus historias.' +
+
+            '</div>';
 
     }
 
@@ -948,25 +1122,6 @@ async function logout() {
 
     window.location.href =
         "index.html";
-
-}
-
-
-/* ==========================================
-   SEGURIDAD HTML
-========================================== */
-
-function escapeHtml(text) {
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-    div.textContent =
-        text;
-
-    return div.innerHTML;
 
 }
 
