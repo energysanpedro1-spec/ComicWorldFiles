@@ -1,15 +1,9 @@
 export default {
-
     async fetch(request, env) {
 
         const url = new URL(request.url);
 
-        /*
-         * ==========================================
-         * RESPUESTA PRINCIPAL
-         * ==========================================
-         */
-
+        // Prueba de conexión con D1
         if (url.pathname === "/api/test") {
 
             try {
@@ -45,22 +39,11 @@ export default {
                         }
                     }
                 );
-
             }
         }
 
-
-        /*
-         * ==========================================
-         * RUTA NO ENCONTRADA
-         * ==========================================
-         */
-
-        return new Response(
-            "ComicWorldFiles API",
-            {
-                status: 404
-            }
-        );
+        // Para cualquier otra dirección,
+        // dejamos que Cloudflare sirva los archivos HTML.
+        return env.ASSETS.fetch(request);
     }
 };
