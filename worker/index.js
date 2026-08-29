@@ -693,8 +693,7 @@ export default {
 
 
         // =========================================================
-        // API: LISTAR CAPÍTULOS
-        // GET /api/stories/5/chapters
+        // API: CAPÍTULOS DE UNA HISTORIA
         // =========================================================
 
         const chaptersMatch =
@@ -959,80 +958,86 @@ export default {
             }
         }
 
-        // =========================================================
-// API: OBTENER CAPÍTULO
-// GET /api/chapters/10
-// =========================================================
-
-if (
-    chapterMatch &&
-    request.method === "GET"
-) {
-
-    try {
-
-        const chapterId =
-            Number(
-                chapterMatch[1]
-            );
-
-        const chapter =
-            await env.DB
-                .prepare(
-                    `SELECT
-                        chapters.id,
-                        chapters.story_id,
-                        chapters.chapter_number,
-                        chapters.title,
-                        chapters.content,
-                        chapters.created_at
-                     FROM chapters
-                     WHERE chapters.id = ?
-                     LIMIT 1`
-                )
-                .bind(chapterId)
-                .first();
-
-        if (!chapter) {
-
-            return json({
-                success: false,
-                error:
-                    "El capítulo no existe."
-            }, 404);
-
-        }
-
-        return json({
-            success: true,
-            chapter: chapter
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Error obteniendo capítulo:",
-            error
-        );
-
-        return json({
-            success: false,
-            error: error.message
-        }, 500);
-
-    }
-}
-
 
         // =========================================================
-        // API: EDITAR CAPÍTULO
-        // PUT /api/chapters/10
+        // RUTAS DE CAPÍTULOS INDIVIDUALES
         // =========================================================
 
         const chapterMatch =
             url.pathname.match(
                 /^\/api\/chapters\/(\d+)$/
             );
+
+
+        // =========================================================
+        // API: OBTENER CAPÍTULO
+        // GET /api/chapters/10
+        // =========================================================
+
+        if (
+            chapterMatch &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const chapterId =
+                    Number(
+                        chapterMatch[1]
+                    );
+
+                const chapter =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                story_id,
+                                chapter_number,
+                                title,
+                                content,
+                                created_at
+                             FROM chapters
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(chapterId)
+                        .first();
+
+                if (!chapter) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El capítulo no existe."
+                    }, 404);
+
+                }
+
+                return json({
+                    success: true,
+                    chapter: chapter
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Error obteniendo capítulo:",
+                    error
+                );
+
+                return json({
+                    success: false,
+                    error: error.message
+                }, 500);
+
+            }
+        }
+
+
+        // =========================================================
+        // API: EDITAR CAPÍTULO
+        // PUT /api/chapters/10
+        // =========================================================
 
         if (
             chapterMatch &&
