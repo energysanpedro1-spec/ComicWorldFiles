@@ -401,7 +401,7 @@ ComicWorldFiles
 
 <nav>
 
-<a href="#">
+<a href="index.html">
 Inicio
 </a>
 
@@ -658,9 +658,22 @@ async function checkSession() {
                 "/api/me",
                 {
                     method: "GET",
-                    credentials: "include"
+                    credentials: "include",
+                    cache: "no-store"
                 }
             );
+
+        if (!response.ok) {
+
+            console.log(
+                "No hay sesión activa. Código:",
+                response.status
+            );
+
+            return;
+
+        }
+
 
         const data =
             await response.json();
@@ -671,32 +684,114 @@ async function checkSession() {
         );
 
 
+        /*
+         * Comprobamos explícitamente que
+         * exista una sesión válida.
+         */
+
         if (
-            response.ok &&
-            data.success &&
-            data.loggedIn &&
+            data &&
+            data.success === true &&
+            data.loggedIn === true &&
             data.user
         ) {
 
             const username =
-                data.user.username;
+                data.user.username || "Usuario";
 
-            userArea.innerHTML =
-    '<span style="color:white; font-size:14px;">' +
-    'Hola ' +
-    username +
-    '</span> ' +
 
-    '<a href="perfil.html" ' +
-    'style="color:white; margin-left:10px;">' +
-    'Mi perfil' +
-    '</a> ' +
+            /*
+             * Construimos el área del usuario
+             * directamente desde JavaScript.
+             */
 
-    '<a href="#" ' +
-    'onclick="logout(); return false;" ' +
-    'style="color:white; margin-left:10px;">' +
-    'Cerrar sesión' +
-    '</a>';
+            userArea.innerHTML = "";
+
+
+            /* SALUDO */
+
+            const greeting =
+                document.createElement("span");
+
+            greeting.style.color =
+                "white";
+
+            greeting.style.fontSize =
+                "14px";
+
+            greeting.textContent =
+                "Hola " + username;
+
+
+            /* MI PERFIL */
+
+            const profileLink =
+                document.createElement("a");
+
+            profileLink.href =
+                "perfil.html";
+
+            profileLink.textContent =
+                "Mi perfil";
+
+            profileLink.style.color =
+                "white";
+
+            profileLink.style.marginLeft =
+                "10px";
+
+
+            /* CERRAR SESIÓN */
+
+            const logoutLink =
+                document.createElement("a");
+
+            logoutLink.href =
+                "#";
+
+            logoutLink.textContent =
+                "Cerrar sesión";
+
+            logoutLink.style.color =
+                "white";
+
+            logoutLink.style.marginLeft =
+                "10px";
+
+            logoutLink.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+
+                    logout();
+
+                }
+            );
+
+
+            userArea.appendChild(
+                greeting
+            );
+
+            userArea.appendChild(
+                profileLink
+            );
+
+            userArea.appendChild(
+                logoutLink
+            );
+
+
+            console.log(
+                "Área de usuario cargada correctamente."
+            );
+
+        } else {
+
+            console.log(
+                "La respuesta indica que no hay usuario conectado."
+            );
 
         }
 
@@ -720,12 +815,18 @@ async function logout() {
 
     try {
 
-        await fetch(
-            "/api/logout",
-            {
-                method: "POST",
-                credentials: "include"
-            }
+        const response =
+            await fetch(
+                "/api/logout",
+                {
+                    method: "POST",
+                    credentials: "include"
+                }
+            );
+
+        console.log(
+            "Logout:",
+            response.status
         );
 
     } catch (error) {
@@ -737,11 +838,14 @@ async function logout() {
 
     }
 
+
     localStorage.removeItem(
         "comicworld_user"
     );
 
-    window.location.reload();
+
+    window.location.href =
+        "index.html";
 
 }
 
@@ -750,11 +854,16 @@ async function logout() {
    COMPROBAR LOGIN PARA PUBLICAR
 ========================================== */
 
-function requiereLogin(event, pagina) {
+function requiereLogin(
+    event,
+    pagina
+) {
 
     event.preventDefault();
 
-    checkLoginAndRedirect(pagina);
+    checkLoginAndRedirect(
+        pagina
+    );
 
 }
 
@@ -763,7 +872,9 @@ function requiereLogin(event, pagina) {
    COMPROBAR SESIÓN ANTES DE PUBLICAR
 ========================================== */
 
-async function checkLoginAndRedirect(pagina) {
+async function checkLoginAndRedirect(
+    pagina
+) {
 
     try {
 
@@ -772,7 +883,8 @@ async function checkLoginAndRedirect(pagina) {
                 "/api/me",
                 {
                     method: "GET",
-                    credentials: "include"
+                    credentials: "include",
+                    cache: "no-store"
                 }
             );
 
@@ -799,13 +911,17 @@ async function checkLoginAndRedirect(pagina) {
             "Debes iniciar sesión para publicar."
         );
 
+
         window.location.href =
             "login.html";
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         alert(
             "No se pudo comprobar la sesión."
@@ -865,6 +981,7 @@ async function loadStories() {
                 'No se pudieron cargar las historias.' +
                 '</p>';
 
+
             popularContainer.innerHTML =
                 '<p style="color:#666;">' +
                 'No se pudieron cargar las historias.' +
@@ -876,7 +993,9 @@ async function loadStories() {
 
 
         todasLasHistorias =
-            Array.isArray(data.stories)
+            Array.isArray(
+                data.stories
+            )
                 ? data.stories
                 : [];
 
@@ -889,6 +1008,7 @@ async function loadStories() {
                 '<p style="color:#666;">' +
                 'Todavía no hay historias publicadas.' +
                 '</p>';
+
 
             popularContainer.innerHTML =
                 '<p style="color:#666;">' +
@@ -909,10 +1029,6 @@ async function loadStories() {
         /*
          * Por ahora utilizamos las mismas
          * historias para "Más populares".
-         *
-         * Más adelante podemos agregar
-         * visitas, likes o lecturas y ordenar
-         * esta sección realmente por popularidad.
          */
 
         mostrarHistorias(
@@ -933,6 +1049,7 @@ async function loadStories() {
             '<p style="color:#666;">' +
             'Error cargando historias.' +
             '</p>';
+
 
         popularContainer.innerHTML =
             '<p style="color:#666;">' +
@@ -969,11 +1086,6 @@ function mostrarHistorias(
 
     }
 
-
-    /*
-     * Mostramos como máximo 4 tarjetas
-     * para conservar exactamente la interfaz.
-     */
 
     const limite =
         Math.min(
@@ -1049,20 +1161,23 @@ function mostrarHistorias(
 
             '<h3>' +
             escapeHtml(
-                story.title || "Sin título"
+                story.title ||
+                "Sin título"
             ) +
             '</h3>' +
 
             '<div class="author">' +
             'Por ' +
             escapeHtml(
-                story.author || "Autor"
+                story.author ||
+                "Autor"
             ) +
             '</div>' +
 
             '<p class="description">' +
             escapeHtml(
-                story.description || ""
+                story.description ||
+                ""
             ) +
             '</p>' +
 
@@ -1113,12 +1228,14 @@ function buscarHistorias() {
             )
         );
 
+
         mostrarHistorias(
             todasLasHistorias,
             document.getElementById(
                 "popular-section"
             )
         );
+
 
         return;
 
@@ -1134,15 +1251,18 @@ function buscarHistorias() {
                         story.title || ""
                     ).toLowerCase();
 
+
                 const autor =
                     String(
                         story.author || ""
                     ).toLowerCase();
 
+
                 const genero =
                     String(
                         story.genre || ""
                     ).toLowerCase();
+
 
                 const descripcion =
                     String(
@@ -1226,8 +1346,10 @@ function escapeHtml(text) {
             "div"
         );
 
+
     div.textContent =
         text;
+
 
     return div.innerHTML;
 
