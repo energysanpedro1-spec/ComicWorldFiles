@@ -643,6 +643,207 @@ export default {
 
 
         // =========================================================
+        // API: EDITAR INFORMACIÓN DE HISTORIA
+        // PUT /api/stories/5
+        // =========================================================
+
+        const editStoryMatch =
+            url.pathname.match(
+                /^\/api\/stories\/(\d+)$/
+            );
+
+
+        if (
+            editStoryMatch &&
+            request.method === "PUT"
+        ) {
+
+            try {
+
+                const storyId =
+                    Number(
+                        editStoryMatch[1]
+                    );
+
+
+                // -------------------------------------------------
+                // COMPROBAR SESIÓN
+                // -------------------------------------------------
+
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "Debes iniciar sesión."
+                    }, 401);
+                }
+
+
+                // -------------------------------------------------
+                // COMPROBAR HISTORIA
+                // -------------------------------------------------
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                user_id
+                             FROM stories
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            storyId
+                        )
+                        .first();
+
+
+                if (!story) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La historia no existe."
+                    }, 404);
+                }
+
+
+                // -------------------------------------------------
+                // COMPROBAR PROPIETARIO
+                // -------------------------------------------------
+
+                if (
+                    Number(story.user_id) !==
+                    Number(session.id)
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No tienes permiso para modificar esta historia."
+                    }, 403);
+                }
+
+
+                // -------------------------------------------------
+                // OBTENER DATOS
+                // -------------------------------------------------
+
+                const data =
+                    await request.json();
+
+
+                const title =
+                    String(
+                        data.title || ""
+                    ).trim();
+
+
+                const genre =
+                    String(
+                        data.genre || ""
+                    ).trim();
+
+
+                // -------------------------------------------------
+                // VALIDAR
+                // -------------------------------------------------
+
+                if (
+                    !title ||
+                    !genre
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El título y el género son obligatorios."
+                    }, 400);
+                }
+
+
+                if (
+                    title.length < 2
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "El título debe tener al menos 2 caracteres."
+                    }, 400);
+                }
+
+
+                // -------------------------------------------------
+                // ACTUALIZAR
+                // -------------------------------------------------
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `UPDATE stories
+                             SET title = ?,
+                                 genre = ?
+                             WHERE id = ?`
+                        )
+                        .bind(
+                            title,
+                            genre,
+                            storyId
+                        )
+                        .run();
+
+
+                if (!result.success) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "No se pudo actualizar la historia."
+                    }, 500);
+                }
+
+
+                // -------------------------------------------------
+                // RESPUESTA
+                // -------------------------------------------------
+
+                return json({
+                    success: true,
+
+                    message:
+                        "Información de la historia actualizada correctamente."
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error editando historia:",
+                    error
+                );
+
+
+                return json({
+                    success: false,
+                    error:
+                        error.message
+                }, 500);
+            }
+        }
+
+
+
+        // =========================================================
         // API: LISTAR HISTORIAS
         // GET /api/stories
         // =========================================================
@@ -787,7 +988,11 @@ export default {
 
         // =========================================================
         // API: SUBIR / REEMPLAZAR PORTADA
+        //
         // POST /api/stories/5/cover
+        //
+        // FormData:
+        // cover = archivo
         // =========================================================
 
         const coverMatch =
@@ -809,6 +1014,10 @@ export default {
                     );
 
 
+                // -------------------------------------------------
+                // COMPROBAR SESIÓN
+                // -------------------------------------------------
+
                 const session =
                     await getSession(
                         request,
@@ -825,6 +1034,10 @@ export default {
                     }, 401);
                 }
 
+
+                // -------------------------------------------------
+                // COMPROBAR HISTORIA
+                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -853,6 +1066,10 @@ export default {
                 }
 
 
+                // -------------------------------------------------
+                // COMPROBAR PROPIETARIO
+                // -------------------------------------------------
+
                 if (
                     Number(story.user_id) !==
                     Number(session.id)
@@ -865,6 +1082,10 @@ export default {
                     }, 403);
                 }
 
+
+                // -------------------------------------------------
+                // OBTENER FORM DATA
+                // -------------------------------------------------
 
                 const formData =
                     await request.formData();
@@ -887,6 +1108,11 @@ export default {
                 }
 
 
+                // -------------------------------------------------
+                // COMPROBAR TAMAÑO
+                // Máximo: 5 MB
+                // -------------------------------------------------
+
                 const maxSize =
                     5 * 1024 * 1024;
 
@@ -902,6 +1128,10 @@ export default {
                     }, 400);
                 }
 
+
+                // -------------------------------------------------
+                // COMPROBAR TIPO
+                // -------------------------------------------------
 
                 const allowedTypes = [
                     "image/jpeg",
@@ -925,12 +1155,20 @@ export default {
                 }
 
 
+                // -------------------------------------------------
+                // CLAVE R2
+                // -------------------------------------------------
+
                 const objectKey =
                     "covers/" +
                     session.id +
                     "/" +
                     storyId;
 
+
+                // -------------------------------------------------
+                // GUARDAR EN R2
+                // -------------------------------------------------
 
                 await env.Cover.put(
                     objectKey,
@@ -955,11 +1193,19 @@ export default {
                 );
 
 
+                // -------------------------------------------------
+                // URL PÚBLICA DE SERVICIO
+                // -------------------------------------------------
+
                 const coverUrl =
                     "/api/stories/" +
                     storyId +
                     "/cover";
 
+
+                // -------------------------------------------------
+                // GUARDAR URL EN D1
+                // -------------------------------------------------
 
                 await env.DB
                     .prepare(
@@ -973,6 +1219,10 @@ export default {
                     )
                     .run();
 
+
+                // -------------------------------------------------
+                // RESPUESTA
+                // -------------------------------------------------
 
                 return json({
                     success: true,
@@ -1005,6 +1255,7 @@ export default {
 
         // =========================================================
         // API: SERVIR PORTADA DESDE R2
+        //
         // GET /api/stories/5/cover
         // =========================================================
 
@@ -1020,6 +1271,10 @@ export default {
                         coverMatch[1]
                     );
 
+
+                // -------------------------------------------------
+                // COMPROBAR QUE LA HISTORIA EXISTE
+                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -1048,12 +1303,20 @@ export default {
                 }
 
 
+                // -------------------------------------------------
+                // CLAVE R2
+                // -------------------------------------------------
+
                 const objectKey =
                     "covers/" +
                     story.user_id +
                     "/" +
                     storyId;
 
+
+                // -------------------------------------------------
+                // OBTENER IMAGEN
+                // -------------------------------------------------
 
                 const object =
                     await env.Cover.get(
@@ -1071,6 +1334,10 @@ export default {
                     );
                 }
 
+
+                // -------------------------------------------------
+                // CABECERAS
+                // -------------------------------------------------
 
                 const headers =
                     new Headers();
@@ -1092,6 +1359,10 @@ export default {
                     "public, max-age=3600"
                 );
 
+
+                // -------------------------------------------------
+                // RESPUESTA
+                // -------------------------------------------------
 
                 return new Response(
                     object.body,
