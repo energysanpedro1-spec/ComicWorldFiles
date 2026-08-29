@@ -633,9 +633,10 @@ export default {
                                 title,
                                 description,
                                 genre,
-                                type
+                                type,
+                                views
                              )
-                             VALUES (?, ?, ?, ?, ?)`
+                             VALUES (?, ?, ?, ?, ?, 0)`
                         )
                         .bind(
                             session.id,
@@ -688,6 +689,9 @@ export default {
                         type:
                             type,
 
+                        views:
+                            0,
+
                         cover_url:
                             null,
 
@@ -704,6 +708,130 @@ export default {
 
                 console.error(
                     "Error creando publicación:",
+                    error
+                );
+
+
+                return json({
+                    success: false,
+                    error:
+                        error.message
+                }, 500);
+
+            }
+
+        }
+
+
+
+        // =========================================================
+        // API: REGISTRAR VISITA
+        //
+        // POST /api/stories/5/view
+        //
+        // Cada llamada aumenta el contador en 1.
+        // =========================================================
+
+        const storyViewMatch =
+            url.pathname.match(
+                /^\/api\/stories\/(\d+)\/view$/
+            );
+
+
+        if (
+            storyViewMatch &&
+            request.method === "POST"
+        ) {
+
+            try {
+
+                const storyId =
+                    Number(
+                        storyViewMatch[1]
+                    );
+
+
+                if (
+                    !storyId
+                ) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "ID de publicación inválido."
+                    }, 400);
+
+                }
+
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                views
+                             FROM stories
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            storyId
+                        )
+                        .first();
+
+
+                if (!story) {
+
+                    return json({
+                        success: false,
+                        error:
+                            "La publicación no existe."
+                    }, 404);
+
+                }
+
+
+                await env.DB
+                    .prepare(
+                        `UPDATE stories
+                         SET views = COALESCE(views, 0) + 1
+                         WHERE id = ?`
+                    )
+                    .bind(
+                        storyId
+                    )
+                    .run();
+
+
+                const updated =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                views
+                             FROM stories
+                             WHERE id = ?
+                             LIMIT 1`
+                        )
+                        .bind(
+                            storyId
+                        )
+                        .first();
+
+
+                return json({
+                    success: true,
+
+                    views:
+                        Number(
+                            updated.views || 0
+                        )
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error registrando visita:",
                     error
                 );
 
@@ -962,6 +1090,7 @@ export default {
                                 stories.genre,
                                 stories.type,
                                 stories.cover_url,
+                                stories.views,
                                 stories.created_at,
                                 users.username AS author
                              FROM stories
@@ -1036,6 +1165,7 @@ export default {
                                 stories.genre,
                                 stories.type,
                                 stories.cover_url,
+                                stories.views,
                                 stories.created_at,
                                 users.username AS author
                              FROM stories
@@ -1630,15 +1760,6 @@ export default {
                     ).trim();
 
 
-                /*
-                 * El contenido inicial puede ser:
-                 *
-                 * []
-                 *
-                 * porque las imágenes y textos
-                 * se agregan después.
-                 */
-
                 let content =
                     data.content;
 
@@ -1663,11 +1784,6 @@ export default {
 
                 }
 
-
-                /*
-                 * Si llega un array lo convertimos
-                 * a JSON para guardarlo en D1.
-                 */
 
                 if (
                     Array.isArray(content)
@@ -2090,10 +2206,9 @@ export default {
 
 
 
-        // =========================================================
+        // ---------------------------------------------------------
         // ELIMINAR CAPÍTULO
-        // DELETE /api/chapters/10
-        // =========================================================
+        // ---------------------------------------------------------
 
         if (
             chapterMatch &&
@@ -2273,22 +2388,7 @@ export default {
 
         // =========================================================
         // API: GUARDAR CONTENIDO ORDENADO DEL CAPÍTULO
-        //
         // PUT /api/chapters/10/content
-        //
-        // Ejemplo:
-        //
-        // [
-        //     {
-        //         "type": "image",
-        //         "image_id": 15
-        //     },
-        //     {
-        //         "type": "text",
-        //         "content": "Texto entre imágenes."
-        //     }
-        // ]
-        //
         // =========================================================
 
         const chapterContentMatch =
@@ -2464,12 +2564,6 @@ export default {
 
                         }
 
-
-                        /*
-                         * Verificamos que la imagen
-                         * realmente pertenezca a este
-                         * capítulo.
-                         */
 
                         const image =
                             await env.DB
