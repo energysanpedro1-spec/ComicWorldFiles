@@ -1,7 +1,4 @@
-<!DOCTYPE html><html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ComicWorldFiles</title><style>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ComicWorldFiles</title><style>
 
 * {
     box-sizing: border-box;
@@ -245,8 +242,6 @@ nav a:hover {
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-
-    /* Hace que ambas columnas tengan la misma estructura */
     display: flex;
     flex-direction: column;
 }
@@ -262,7 +257,6 @@ nav a:hover {
     margin-bottom: 10px;
 }
 
-/* El botón queda al final de ambas tarjetas */
 .type-box .read-button {
     align-self: flex-start;
     margin-top: auto;
@@ -307,8 +301,6 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* IMPORTANTE:
-       Historias y Historietas siguen en 2 columnas */
     .types {
         grid-template-columns: 1fr 1fr;
         gap: 12px;
@@ -333,7 +325,6 @@ footer {
         gap: 12px;
     }
 
-    /* Se mantienen las dos columnas */
     .types {
         grid-template-columns: 1fr 1fr;
         gap: 12px;
@@ -363,7 +354,6 @@ footer {
         font-size: 24px;
     }
 
-    /* Botones de publicación adaptados al ancho */
     .type-box .read-button {
         width: 100%;
         padding: 10px 5px;
@@ -375,27 +365,22 @@ footer {
 
 </style></head><body><header><div class="header-content"><div class="logo">
 ComicWorldFiles
-</div><nav>
-
-<a href="#">Inicio</a>
+</div><nav><a href="index.html">Inicio</a>
 
 <a href="#">Historias</a>
 
 <a href="#">Autores</a>
 
-<span id="user-area">
-
-<a href="login.html">Iniciar sesión</a>
-
-</span>
-</nav></div></header><main class="container"><!-- BUSCADOR --><div class="search"><input
+<span id="user-area"><a href="login.html">
+Iniciar sesión
+</a></span></nav></div></header><main class="container"><!-- BUSCADOR --><div class="search"><input
 type="text"
 placeholder="Buscar historias, historietas o autores..."
 id="search-input"
 
 «»
 
-<button>
+<button type="button">
 Buscar
 </button></div><!-- DESTACADA --><section class="hero"><div class="hero-image">
 📖
@@ -411,9 +396,9 @@ destruir las fronteras entre ellos.
 
 <br><a class="read-button" href="#">
 Leer historia
-</a></div></section><!-- HISTORIAS RECIENTES --><div class="section-title"><h2>Historias recientes</h2><a href="#">Ver todas →</a>
-
-</div><section class="stories"><div class="card"><div class="cover">
+</a></div></section><!-- HISTORIAS RECIENTES --><div class="section-title"><h2>Historias recientes</h2><a href="#">
+Ver todas →
+</a></div><section class="stories"><div class="card"><div class="cover">
 🌌
 </div><div class="card-content"><h3>Almas del Cosmos</h3><div class="author">
 Por Freeman
@@ -452,16 +437,30 @@ Leer
 </a></div></div></section><!-- TIPOS DE PUBLICACIÓN --><div class="section-title" style="margin-top:40px;"><h2>¿Qué quieres publicar?</h2></div><section class="types"><div class="type-box"><h3>📖 Historias</h3><p>
 Publica novelas, cuentos, relatos y cualquier
 historia escrita por capítulos.
-</p><a class="read-button" href="crear-historia.html">
+</p><a
+class="read-button"
+href="crear-historia.html"
+
+«»
+
 Crear historia
-</a></div><div class="type-box"><h3>🖼️ Historietas</h3><p>
+</a>
+
+</div><div class="type-box"><h3>🖼️ Historietas</h3><p>
 Publica tus cómics página por página y permite
 que otros usuarios los lean desde el celular.
-</p><a class="read-button" href="crear-historieta.html">
-Crear historieta
-</a></div></section><!-- MÁS HISTORIAS --><div class="section-title"><h2>Más populares</h2><a href="#">Ver todas →</a>
+</p><a
+class="read-button"
+href="crear-historieta.html"
 
-</div><section class="stories"><div class="card"><div class="cover">
+«»
+
+Crear historieta
+</a>
+
+</div></section><!-- MÁS POPULARES --><div class="section-title"><h2>Más populares</h2><a href="#">
+Ver todas →
+</a></div><section class="stories"><div class="card"><div class="cover">
 🐉
 </div><div class="card-content"><h3>El despertar del dragón</h3><div class="author">
 Por Alex
@@ -489,9 +488,10 @@ Leer
 
 <br><br>
 
-Una plataforma para publicar y descubrir historias independientes.
+Una plataforma para publicar y descubrir
+historias independientes.
 
-    <script>
+</footer><script>
 
 const user =
     localStorage.getItem("comicworld_user");
@@ -500,7 +500,7 @@ const userArea =
     document.getElementById("user-area");
 
 
-if (user) {
+if (user && userArea) {
 
     userArea.innerHTML =
         '<span style="color:white; font-size:14px;">' +
@@ -515,13 +515,13 @@ if (user) {
 
 function logout() {
 
-    localStorage.removeItem("comicworld_user");
+    localStorage.removeItem(
+        "comicworld_user"
+    );
 
-    window.location.reload();
+    window.location.href =
+        "index.html";
 
 }
 
-</script>
-
-</footer></body>
-</html>
+</script></body></html>
