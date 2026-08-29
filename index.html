@@ -682,16 +682,21 @@ async function checkSession() {
                 data.user.username;
 
             userArea.innerHTML =
-                '<span style="color:white; font-size:14px;">' +
-                'Hola ' +
-                escapeHtml(username) +
-                '</span> ' +
+    '<span style="color:white; font-size:14px;">' +
+    'Hola ' +
+    username +
+    '</span> ' +
 
-                '<a href="#" ' +
-                'onclick="logout(); return false;" ' +
-                'style="color:white; margin-left:10px;">' +
-                'Cerrar sesión' +
-                '</a>';
+    '<a href="perfil.html" ' +
+    'style="color:white; margin-left:10px;">' +
+    'Mi perfil' +
+    '</a> ' +
+
+    '<a href="#" ' +
+    'onclick="logout(); return false;" ' +
+    'style="color:white; margin-left:10px;">' +
+    'Cerrar sesión' +
+    '</a>';
 
         }
 
