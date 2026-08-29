@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -6,14 +7,14 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+   content="width=device-width, initial-scale=1.0">
 
 <!-- ==================================================
      GOOGLE SEARCH CONSOLE
 ================================================== -->
 
 <meta name="google-site-verification"
-      content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
+   content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
 
 <title>ComicWorldFiles</title>
 
@@ -179,7 +180,7 @@ nav a:hover {
 
 
 /* ==================================================
-   DESTACADA
+   BLOQUE PRINCIPAL / LOGO
 ================================================== */
 
 .hero {
@@ -201,18 +202,18 @@ nav a:hover {
         0 2px 8px rgba(0,0,0,0.08);
 }
 
+
+/* ==================================================
+   LOGO DESTACADO
+================================================== */
+
 .hero-image {
     width: 220px;
     height: 280px;
 
     flex-shrink: 0;
 
-    background:
-        linear-gradient(
-            135deg,
-            #343a40,
-            #ff6b35
-        );
+    background: #ffffff;
 
     border-radius: 10px;
 
@@ -220,77 +221,54 @@ nav a:hover {
     align-items: center;
     justify-content: center;
 
-    color: white;
-
-    font-size: 55px;
+    overflow: hidden;
 }
 
-.hero-info {
-    flex: 1;
-}
+.hero-image img {
+    width: 100%;
+    height: 100%;
 
-.hero-info h1 {
-    margin: 0 0 10px;
-    font-size: 30px;
-}
+    object-fit: contain;
 
-.hero-info p {
-    color: #666;
-    line-height: 1.6;
+    display: block;
 }
 
 
 /* ==================================================
-   ETIQUETAS
+   TEXTO DEBAJO DEL LOGO
 ================================================== */
 
-.tag {
-    display: inline-block;
+.hero-message {
+    width: 100%;
 
-    background: #eeeeee;
+    margin-top: 10px;
 
-    padding: 6px 10px;
-
-    border-radius: 20px;
-
-    font-size: 12px;
-
-    margin-right: 5px;
-}
-
-
-/* ==================================================
-   BOTÓN DESTACADO
-================================================== */
-
-.action-button {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    margin-top: 15px;
-
-    min-height: 42px;
-
-    padding: 12px 20px;
+    padding: 14px 12px;
 
     background: #ff6b35;
-    color: #ffffff !important;
 
-    border-radius: 7px;
+    color: #ffffff;
+
+    border-radius: 8px;
+
+    text-align: center;
 
     font-size: 14px;
+
     font-weight: bold;
 
-    cursor: pointer;
-
-    opacity: 1;
-    visibility: visible;
+    line-height: 1.4;
 }
 
-.action-button:hover {
-    background: #e85a2a;
+
+/* ==================================================
+   CONTENEDOR DEL LOGO + MENSAJE
+================================================== */
+
+.hero-logo-box {
+    width: 220px;
+
+    flex-shrink: 0;
 }
 
 
@@ -606,7 +584,12 @@ footer {
     .hero {
         flex-direction: column;
 
-        align-items: stretch;
+        align-items: center;
+    }
+
+    .hero-logo-box {
+        width: 100%;
+        max-width: 300px;
     }
 
     .hero-image {
@@ -647,12 +630,17 @@ footer {
         padding: 20px;
     }
 
+    .hero-logo-box {
+        width: 100%;
+    }
+
     .hero-image {
         height: 230px;
     }
 
-    .hero-info h1 {
-        font-size: 24px;
+    .hero-message {
+        font-size: 13px;
+        padding: 12px 10px;
     }
 
     .stories {
@@ -705,10 +693,6 @@ footer {
         text-align: center;
     }
 
-    .action-button {
-        width: 100%;
-    }
-
     .search button {
         padding: 0 15px;
     }
@@ -719,9 +703,7 @@ footer {
 
 </head>
 
-
 <body>
-
 
 <!-- ==================================================
      CABECERA
@@ -731,19 +713,19 @@ footer {
 
 <div class="header-content">
 
-
 <div class="logo-area">
 
-    <div class="logo">
-        ComicWorldFiles
-    </div>
-
-    <div class="subtitle">
-        Crea tus historias o cómics y sube tus archivos
-    </div>
-
+```
+<div class="logo">
+    ComicWorldFiles
 </div>
 
+<div class="subtitle">
+    Crea tus historias o cómics y sube tus archivos
+</div>
+```
+
+</div>
 
 <nav>
 
@@ -773,10 +755,7 @@ Iniciar sesión
 
 </header>
 
-
-
 <main class="container">
-
 
 <!-- ==================================================
      BUSCADOR
@@ -785,76 +764,54 @@ Iniciar sesión
 <div class="search">
 
 <input
-    type="text"
-    id="search-input"
-    placeholder="Buscar historias, historietas o autores..."
+type="text"
+id="search-input"
+placeholder="Buscar historias, historietas o autores..."
+
 >
 
 <button
-    type="button"
-    onclick="buscarHistorias()"
+type="button"
+onclick="buscarHistorias()"
+
 >
-    Buscar
+
+```
+Buscar
+```
+
 </button>
 
 </div>
 
-
-
 <!-- ==================================================
-     DESTACADA
+     LOGO DESTACADO
 ================================================== -->
 
 <section class="hero">
 
+<div class="hero-logo-box">
+
+```
 <div class="hero-image">
-📖
+
+    <img
+        src="logo.png"
+        alt="ComicWorldFiles"
+    >
+
 </div>
 
+<div class="hero-message">
 
-<div class="hero-info">
+    Explora, sube y edita historias o comics
 
-<h1>
-El último viajero
-</h1>
-
-<p class="author">
-Por <strong>AutorDemo</strong>
-</p>
-
-<p>
-Un joven descubre que puede viajar entre mundos
-y deberá descubrir por qué alguien está intentando
-destruir las fronteras entre ellos.
-</p>
-
-<span class="tag">
-Fantasía
-</span>
-
-<span class="tag">
-Aventura
-</span>
-
-<span class="tag">
-Acción
-</span>
-
-<br>
-
-
-<a
-    class="action-button"
-    href="#"
->
-    Leer publicación
-</a>
+</div>
+```
 
 </div>
 
 </section>
-
-
 
 <!-- ==================================================
      PUBLICACIONES RECIENTES
@@ -875,7 +832,6 @@ Ver todas →
 
 </div>
 
-
 <section
     class="stories"
     id="recent-stories"
@@ -886,8 +842,6 @@ Cargando publicaciones...
 </div>
 
 </section>
-
-
 
 <!-- ==================================================
      TIPOS DE PUBLICACIÓN
@@ -904,9 +858,7 @@ Cargando publicaciones...
 
 </div>
 
-
 <section class="types">
-
 
 <!-- HISTORIAS -->
 
@@ -922,15 +874,19 @@ historia escrita por capítulos.
 </p>
 
 <a
-    class="type-button"
-    href="crear-historia.html"
-    onclick="requiereLogin(event, 'crear-historia.html')"
+class="type-button"
+href="crear-historia.html"
+onclick="requiereLogin(event, 'crear-historia.html')"
+
 >
-    Crear historia
+
+```
+Crear historia
+```
+
 </a>
 
 </div>
-
 
 <!-- HISTORIETAS -->
 
@@ -946,19 +902,21 @@ que otros usuarios los lean desde el celular.
 </p>
 
 <a
-    class="type-button"
-    href="crear-historieta.html"
-    onclick="requiereLogin(event, 'crear-historieta.html')"
+class="type-button"
+href="crear-historieta.html"
+onclick="requiereLogin(event, 'crear-historieta.html')"
+
 >
-    Crear historieta
+
+```
+Crear historieta
+```
+
 </a>
 
 </div>
 
-
 </section>
-
-
 
 <!-- ==================================================
      MÁS POPULARES
@@ -976,7 +934,6 @@ Ver todas →
 
 </div>
 
-
 <section
     class="stories"
     id="popular-section"
@@ -988,10 +945,7 @@ Cargando publicaciones...
 
 </section>
 
-
 </main>
-
-
 
 <!-- ==================================================
      FOOTER
@@ -1007,8 +961,6 @@ Una plataforma para publicar y descubrir
 historias independientes.
 
 </footer>
-
-
 
 <script>
 
@@ -1753,7 +1705,6 @@ checkSession();
 loadStories();
 
 </script>
-
 
 </body>
 
