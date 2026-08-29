@@ -959,6 +959,70 @@ export default {
             }
         }
 
+        // =========================================================
+// API: OBTENER CAPÍTULO
+// GET /api/chapters/10
+// =========================================================
+
+if (
+    chapterMatch &&
+    request.method === "GET"
+) {
+
+    try {
+
+        const chapterId =
+            Number(
+                chapterMatch[1]
+            );
+
+        const chapter =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        chapters.id,
+                        chapters.story_id,
+                        chapters.chapter_number,
+                        chapters.title,
+                        chapters.content,
+                        chapters.created_at
+                     FROM chapters
+                     WHERE chapters.id = ?
+                     LIMIT 1`
+                )
+                .bind(chapterId)
+                .first();
+
+        if (!chapter) {
+
+            return json({
+                success: false,
+                error:
+                    "El capítulo no existe."
+            }, 404);
+
+        }
+
+        return json({
+            success: true,
+            chapter: chapter
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo capítulo:",
+            error
+        );
+
+        return json({
+            success: false,
+            error: error.message
+        }, 500);
+
+    }
+}
+
 
         // =========================================================
         // API: EDITAR CAPÍTULO
