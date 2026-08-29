@@ -5,6 +5,181 @@ export default {
 
 
         // =========================================================
+        // SITEMAP.XML DINÁMICO
+        //
+        // GET /sitemap.xml
+        //
+        // Genera automáticamente el sitemap usando las
+        // publicaciones existentes en la base de datos.
+        // =========================================================
+
+        if (
+            url.pathname === "/sitemap.xml" &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                created_at
+                             FROM stories
+                             ORDER BY id ASC`
+                        )
+                        .all();
+
+
+                const baseUrl =
+                    url.origin;
+
+
+                const urls = [];
+
+
+                // -------------------------------------------------
+                // PÁGINA PRINCIPAL
+                // -------------------------------------------------
+
+                urls.push(
+                    `
+    <url>
+        <loc>${escapeXml(baseUrl + "/")}</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>`
+                );
+
+
+                // -------------------------------------------------
+                // CREAR HISTORIETA / HISTORIA
+                // -------------------------------------------------
+
+                urls.push(
+                    `
+    <url>
+        <loc>${escapeXml(
+            baseUrl + "/crear-historieta.html"
+        )}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>`
+                );
+
+
+                // -------------------------------------------------
+                // PUBLICACIONES
+                // -------------------------------------------------
+
+                for (
+                    const story of result.results
+                ) {
+
+                    const storyUrl =
+                        baseUrl +
+                        "/leer-historieta.html?id=" +
+                        encodeURIComponent(
+                            story.id
+                        );
+
+
+                    let lastmod = "";
+
+
+                    if (
+                        story.created_at
+                    ) {
+
+                        const date =
+                            new Date(
+                                story.created_at
+                            );
+
+
+                        if (
+                            !Number.isNaN(
+                                date.getTime()
+                            )
+                        ) {
+
+                            lastmod =
+                                `
+        <lastmod>${date.toISOString()}</lastmod>`;
+
+                        }
+
+                    }
+
+
+                    urls.push(
+                        `
+    <url>
+        <loc>${escapeXml(
+            storyUrl
+        )}</loc>${lastmod}
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>`
+                    );
+
+                }
+
+
+                const sitemap =
+                    `<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join("")}
+</urlset>`;
+
+
+                return new Response(
+                    sitemap,
+                    {
+                        status: 200,
+
+                        headers: {
+                            "Content-Type":
+                                "application/xml; charset=UTF-8",
+
+                            "Cache-Control":
+                                "public, max-age=3600"
+                        }
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error generando sitemap:",
+                    error
+                );
+
+
+                return new Response(
+                    `<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+</urlset>`,
+                    {
+                        status: 500,
+
+                        headers: {
+                            "Content-Type":
+                                "application/xml; charset=UTF-8"
+                        }
+                    }
+                );
+
+            }
+
+        }
+
+
+
+        // =========================================================
         // API: REGISTRO
         // =========================================================
 
@@ -726,10 +901,7 @@ export default {
 
         // =========================================================
         // API: REGISTRAR VISITA
-        //
         // POST /api/stories/5/view
-        //
-        // Cada llamada aumenta el contador en 1.
         // =========================================================
 
         const storyViewMatch =
@@ -3486,6 +3658,40 @@ export default {
 
     }
 };
+
+
+
+// =========================================================
+// ESCAPAR XML
+// =========================================================
+
+function escapeXml(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&apos;"
+        );
+
+}
 
 
 
