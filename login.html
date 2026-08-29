@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Iniciar sesión - ComicWorldFiles</title>
 
@@ -13,176 +17,211 @@
 }
 
 body {
+
     margin: 0;
+
     font-family: Arial, sans-serif;
+
     background: #f4f4f4;
+
     color: #222;
 }
 
-/* CABECERA */
-
 header {
+
     background: #20242b;
+
     color: white;
+
     padding: 15px 20px;
 }
 
 .header-content {
+
     max-width: 1100px;
+
     margin: auto;
+
     display: flex;
-    align-items: center;
+
     justify-content: space-between;
+
+    align-items: center;
 }
 
 .logo {
-    color: white;
-    text-decoration: none;
-    font-size: 24px;
-    font-weight: bold;
-}
 
-nav {
-    display: flex;
-    gap: 15px;
+    font-size: 24px;
+
+    font-weight: bold;
 }
 
 nav a {
+
     color: white;
+
     text-decoration: none;
+
+    margin-left: 15px;
+
     font-size: 14px;
 }
 
-nav a:hover {
-    text-decoration: underline;
+.container {
+
+    max-width: 500px;
+
+    margin: 50px auto;
+
+    padding: 20px;
 }
 
-/* CONTENEDOR */
+.box {
 
-.login-container {
-    min-height: calc(100vh - 150px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-}
-
-/* CAJA LOGIN */
-
-.login-box {
-    width: 100%;
-    max-width: 420px;
     background: white;
-    padding: 35px;
+
+    padding: 30px;
+
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.10);
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
 }
 
-.login-box h1 {
+h1 {
+
     margin-top: 0;
+
     text-align: center;
-    font-size: 28px;
 }
 
-.login-box .subtitle {
+.subtitle {
+
     text-align: center;
-    color: #666;
-    margin-bottom: 30px;
+
+    color: #777;
+
+    margin-bottom: 25px;
 }
 
-/* FORMULARIO */
+label {
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
     display: block;
-    margin-bottom: 7px;
-    font-size: 14px;
+
+    margin-top: 15px;
+
+    margin-bottom: 6px;
+
     font-weight: bold;
+
+    font-size: 14px;
 }
 
-.form-group input {
+input {
+
     width: 100%;
+
     padding: 13px;
+
     border: 1px solid #ccc;
+
     border-radius: 7px;
+
     font-size: 15px;
 }
 
-.form-group input:focus {
-    outline: none;
-    border-color: #ff6b35;
-}
+button {
 
-/* BOTON */
-
-.login-button {
     width: 100%;
+
+    margin-top: 25px;
+
     padding: 13px;
+
     border: none;
+
     border-radius: 7px;
+
     background: #ff6b35;
+
     color: white;
+
     font-size: 16px;
+
     cursor: pointer;
 }
 
-.login-button:hover {
-    background: #e85a28;
+button:hover {
+
+    background: #e85b2b;
 }
 
-/* LINKS */
+.message {
 
-.login-links {
-    margin-top: 25px;
+    margin-top: 15px;
+
+    padding: 10px;
+
+    border-radius: 6px;
+
+    display: none;
+
     text-align: center;
+
     font-size: 14px;
+}
+
+.error {
+
+    display: block;
+
+    background: #ffe5e5;
+
+    color: #a00000;
+}
+
+.success {
+
+    display: block;
+
+    background: #e3f7e8;
+
+    color: #176b2c;
+}
+
+.register-link {
+
+    text-align: center;
+
+    margin-top: 20px;
+
     color: #666;
+
+    font-size: 14px;
 }
 
-.login-links a {
+.register-link a {
+
     color: #ff6b35;
+
     text-decoration: none;
-}
 
-.login-links a:hover {
-    text-decoration: underline;
+    font-weight: bold;
 }
-
-/* FOOTER */
 
 footer {
-    background: #20242b;
-    color: #aaa;
+
     text-align: center;
-    padding: 25px;
+
+    color: #888;
+
     font-size: 13px;
-}
 
-/* MOVIL */
-
-@media (max-width: 500px) {
-
-    .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    nav {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .login-box {
-        padding: 25px 20px;
-    }
-
+    padding: 30px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -191,15 +230,20 @@ footer {
 
 <div class="header-content">
 
-<a href="index.html" class="logo">
-ComicWorldFiles
-</a>
+<div class="logo">
+📚 ComicWorldFiles
+</div>
 
 <nav>
-<a href="index.html">Inicio</a>
-<a href="#">Historias</a>
-<a href="#">Autores</a>
-<a href="login.html">Iniciar sesión</a>
+
+<a href="index.html">
+Inicio
+</a>
+
+<a href="registro.html">
+Registrarse
+</a>
+
 </nav>
 
 </div>
@@ -207,9 +251,9 @@ ComicWorldFiles
 </header>
 
 
-<main class="login-container">
+<main class="container">
 
-<div class="login-box">
+<div class="box">
 
 <h1>Iniciar sesión</h1>
 
@@ -217,26 +261,21 @@ ComicWorldFiles
 Accede a tu cuenta de ComicWorldFiles.
 </p>
 
+
 <form id="loginForm">
 
-<div class="form-group">
-
-<label for="username">
-Usuario o email
+<label for="login">
+Usuario o correo electrónico
 </label>
 
 <input
 type="text"
-id="username"
-name="username"
-placeholder="Tu usuario o email"
+id="login"
+name="login"
+placeholder="Usuario o correo"
 required
 >
 
-</div>
-
-
-<div class="form-group">
 
 <label for="password">
 Contraseña
@@ -250,34 +289,24 @@ placeholder="Tu contraseña"
 required
 >
 
-</div>
 
-
-<button
-type="submit"
-class="login-button"
->
+<button type="submit">
 Iniciar sesión
 </button>
 
 </form>
 
 
-<div class="login-links">
+<div id="message" class="message"></div>
 
-<p>
-¿No tienes una cuenta?
-<br>
+
+<div class="register-link">
+
+¿Todavía no tienes una cuenta?
+
 <a href="registro.html">
-Crear una cuenta
+Crear cuenta
 </a>
-</p>
-
-<p>
-<a href="#">
-¿Olvidaste tu contraseña?
-</a>
-</p>
 
 </div>
 
@@ -290,29 +319,99 @@ Crear una cuenta
 
 ComicWorldFiles © 2026
 
-<br><br>
-
-Una plataforma para publicar y descubrir
-historias e historietas independientes.
-
 </footer>
 
 
 <script>
 
-document
-.getElementById("loginForm")
-.addEventListener("submit", function(event) {
+const form =
+    document.getElementById("loginForm");
+
+const message =
+    document.getElementById("message");
+
+
+form.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
-    alert(
-        "El sistema de login todavía no está conectado al servidor."
-    );
+    message.className = "message";
+
+    message.textContent = "";
+
+
+    const login =
+        document.getElementById("login").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+
+    try {
+
+        const response = await fetch(
+            "/api/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    login,
+                    password
+                })
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            message.textContent =
+                data.error ||
+                "Usuario o contraseña incorrectos.";
+
+            message.className =
+                "message error";
+
+            return;
+        }
+
+
+        message.textContent =
+            "Inicio de sesión correcto. Redirigiendo...";
+
+        message.className =
+            "message success";
+
+
+        setTimeout(function() {
+
+            window.location.href =
+                "index.html";
+
+        }, 800);
+
+
+    } catch (error) {
+
+        message.textContent =
+            "Error de conexión con el servidor.";
+
+        message.className =
+            "message error";
+    }
 
 });
 
 </script>
 
 </body>
+
 </html>
