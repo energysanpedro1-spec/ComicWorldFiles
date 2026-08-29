@@ -405,7 +405,11 @@ destruir las fronteras entre ellos.
 Leer historia
 </a></div></section><!-- HISTORIAS RECIENTES --><div class="section-title"><h2>Historias recientes</h2><a href="#">Ver todas →</a>
 
-</div><section class="stories"><div class="card"><div class="cover">  
+</div><section class="stories" id="recent-stories">
+    
+    <p>Cargando historias...</p>
+
+</section><div class="card"><div class="cover">  
 🌌  
 </div><div class="card-content"><h3>Almas del Cosmos</h3><div class="author">  
 Por Freeman  
@@ -480,6 +484,121 @@ Leer
 Una plataforma para publicar y descubrir historias independientes.
 
 <script>
+
+async function cargarHistorias() {
+
+    const container =
+        document.getElementById("recent-stories");
+
+    try {
+
+        const response =
+            await fetch("/api/stories");
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            container.innerHTML =
+                "<p>No se pudieron cargar las historias.</p>";
+
+            return;
+        }
+
+        if (
+            !data.stories ||
+            data.stories.length === 0
+        ) {
+
+            container.innerHTML =
+                "<p>Todavía no hay historias publicadas.</p>";
+
+            return;
+        }
+
+        container.innerHTML = "";
+
+        data.stories.forEach(function(story) {
+
+            const card =
+                document.createElement("div");
+
+            card.className = "card";
+
+            card.innerHTML =
+
+                '<div class="cover">' +
+                    '📖' +
+                '</div>' +
+
+                '<div class="card-content">' +
+
+                    '<h3>' +
+                        escapeHTML(story.title) +
+                    '</h3>' +
+
+                    '<div class="author">' +
+                        'Por ' +
+                        escapeHTML(story.username) +
+                    '</div>' +
+
+                    '<p class="description">' +
+                        escapeHTML(story.description) +
+                    '</p>' +
+
+                    '<span class="tag">' +
+                        escapeHTML(story.genre) +
+                    '</span>' +
+
+                    '<a class="card-button" href="#">' +
+                        'Leer' +
+                    '</a>' +
+
+                '</div>';
+
+            container.appendChild(card);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando historias:",
+            error
+        );
+
+        container.innerHTML =
+            "<p>Error de conexión con el servidor.</p>";
+    }
+}
+
+
+/* ==========================================
+   PROTEGER TEXTO HTML
+========================================== */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text || "";
+
+    return div.innerHTML;
+}
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+cargarHistorias();
+
 
 const user =
 localStorage.getItem("comicworld_user");
