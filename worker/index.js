@@ -787,11 +787,7 @@ export default {
 
         // =========================================================
         // API: SUBIR / REEMPLAZAR PORTADA
-        //
         // POST /api/stories/5/cover
-        //
-        // FormData:
-        // cover = archivo
         // =========================================================
 
         const coverMatch =
@@ -813,10 +809,6 @@ export default {
                     );
 
 
-                // -------------------------------------------------
-                // COMPROBAR SESIÓN
-                // -------------------------------------------------
-
                 const session =
                     await getSession(
                         request,
@@ -833,10 +825,6 @@ export default {
                     }, 401);
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR HISTORIA
-                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -865,10 +853,6 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // COMPROBAR PROPIETARIO
-                // -------------------------------------------------
-
                 if (
                     Number(story.user_id) !==
                     Number(session.id)
@@ -881,10 +865,6 @@ export default {
                     }, 403);
                 }
 
-
-                // -------------------------------------------------
-                // OBTENER FORM DATA
-                // -------------------------------------------------
 
                 const formData =
                     await request.formData();
@@ -907,11 +887,6 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // COMPROBAR TAMAÑO
-                // Máximo: 5 MB
-                // -------------------------------------------------
-
                 const maxSize =
                     5 * 1024 * 1024;
 
@@ -927,10 +902,6 @@ export default {
                     }, 400);
                 }
 
-
-                // -------------------------------------------------
-                // COMPROBAR TIPO
-                // -------------------------------------------------
 
                 const allowedTypes = [
                     "image/jpeg",
@@ -954,26 +925,12 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // CLAVE R2
-                //
-                // La misma clave se utiliza siempre.
-                //
-                // Por eso una nueva portada
-                // reemplaza automáticamente
-                // la anterior.
-                // -------------------------------------------------
-
                 const objectKey =
                     "covers/" +
                     session.id +
                     "/" +
                     storyId;
 
-
-                // -------------------------------------------------
-                // GUARDAR EN R2
-                // -------------------------------------------------
 
                 await env.Cover.put(
                     objectKey,
@@ -998,19 +955,11 @@ export default {
                 );
 
 
-                // -------------------------------------------------
-                // URL PÚBLICA DE SERVICIO
-                // -------------------------------------------------
-
                 const coverUrl =
                     "/api/stories/" +
                     storyId +
                     "/cover";
 
-
-                // -------------------------------------------------
-                // GUARDAR URL EN D1
-                // -------------------------------------------------
 
                 await env.DB
                     .prepare(
@@ -1024,10 +973,6 @@ export default {
                     )
                     .run();
 
-
-                // -------------------------------------------------
-                // RESPUESTA
-                // -------------------------------------------------
 
                 return json({
                     success: true,
@@ -1060,7 +1005,6 @@ export default {
 
         // =========================================================
         // API: SERVIR PORTADA DESDE R2
-        //
         // GET /api/stories/5/cover
         // =========================================================
 
@@ -1076,10 +1020,6 @@ export default {
                         coverMatch[1]
                     );
 
-
-                // -------------------------------------------------
-                // COMPROBAR QUE LA HISTORIA EXISTE
-                // -------------------------------------------------
 
                 const story =
                     await env.DB
@@ -1108,20 +1048,12 @@ export default {
                 }
 
 
-                // -------------------------------------------------
-                // CLAVE R2
-                // -------------------------------------------------
-
                 const objectKey =
                     "covers/" +
                     story.user_id +
                     "/" +
                     storyId;
 
-
-                // -------------------------------------------------
-                // OBTENER IMAGEN
-                // -------------------------------------------------
 
                 const object =
                     await env.Cover.get(
@@ -1139,10 +1071,6 @@ export default {
                     );
                 }
 
-
-                // -------------------------------------------------
-                // CABECERAS
-                // -------------------------------------------------
 
                 const headers =
                     new Headers();
@@ -1164,10 +1092,6 @@ export default {
                     "public, max-age=3600"
                 );
 
-
-                // -------------------------------------------------
-                // RESPUESTA
-                // -------------------------------------------------
 
                 return new Response(
                     object.body,
