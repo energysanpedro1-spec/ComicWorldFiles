@@ -1688,7 +1688,7 @@ if (
 
         await env.DB
             .prepare(
-                `DELETE FROM likes
+                `DELETE FROM story_likes
                  WHERE story_id = ?`
             )
             .bind(id)
