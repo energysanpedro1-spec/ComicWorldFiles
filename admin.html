@@ -3,26 +3,26 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Administración - ComicWorldFiles</title><style>
 
+/* ==================================================
+   GENERAL
+================================================== */
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
+
     font-family: Arial, sans-serif;
+
     background: #f4f4f4;
+
     color: #222;
 }
 
 a {
     text-decoration: none;
-}
-
-button,
-input,
-select,
-textarea {
-    font-family: Arial, sans-serif;
 }
 
 
@@ -32,74 +32,88 @@ textarea {
 
 header {
     background: #20242b;
+
     color: white;
+
     padding: 15px 20px;
+
     position: sticky;
+
     top: 0;
+
     z-index: 100;
 }
 
 .header-content {
     max-width: 1100px;
+
     margin: auto;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 20px;
 }
 
+
+/* ==================================================
+   LOGO
+================================================== */
+
 .logo-area {
     display: flex;
+
     flex-direction: column;
+
     gap: 5px;
 }
 
 .logo {
     font-size: 26px;
+
     font-weight: bold;
+
     line-height: 1;
 }
 
 .subtitle {
     color: #ff9a75;
+
     font-size: 14px;
+
     font-weight: 600;
+
+    line-height: 1.3;
 }
+
+
+/* ==================================================
+   NAVEGACIÓN
+================================================== */
 
 nav {
     display: flex;
+
     align-items: center;
+
     gap: 15px;
+
     flex-wrap: wrap;
 }
 
 nav a {
     color: #fff;
+
     font-size: 14px;
+
+    white-space: nowrap;
 }
 
 nav a:hover {
     text-decoration: underline;
-}
-
-#user-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-#user-area a {
-    color: white;
-}
-
-.donate-button {
-    background: #0070ba;
-    color: white !important;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-weight: bold;
 }
 
 
@@ -109,129 +123,187 @@ nav a:hover {
 
 .container {
     max-width: 1100px;
+
     margin: auto;
+
     padding: 25px 20px;
 }
 
 
 /* ==================================================
-   PANEL
+   VOLVER
 ================================================== */
 
-.admin-header {
-    background: #20242b;
-    color: white;
+.back {
+    display: inline-block;
 
-    border-radius: 12px;
+    color: #20242b;
 
-    padding: 30px;
+    font-size: 14px;
+
+    font-weight: bold;
 
     margin-bottom: 20px;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,0.08);
 }
 
-.admin-header h1 {
+.back:hover {
+    text-decoration: underline;
+}
+
+
+/* ==================================================
+   TITULO
+================================================== */
+
+.page-title {
+    margin-bottom: 25px;
+}
+
+.page-title h1 {
     margin: 0 0 8px;
-    font-size: 28px;
+
+    font-size: 30px;
 }
 
-.admin-header p {
+.page-title p {
     margin: 0;
-    color: #ccc;
+
+    color: #777;
+
     font-size: 14px;
 }
 
 
 /* ==================================================
-   ESTADO DE SESIÓN
+   ESTADO DE ACCESO
 ================================================== */
 
-.session-card {
-    background: white;
+.access-card {
+    background: #ffffff;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
-    padding: 18px 20px;
+    padding: 25px;
 
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 
     box-shadow:
-        0 2px 6px rgba(0,0,0,0.07);
+        0 2px 8px rgba(0,0,0,0.08);
 }
 
-.session-card strong {
-    color: #20242b;
+.access-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
 }
 
-.admin-badge {
-    display: inline-block;
+.access-icon {
+    width: 55px;
 
-    margin-left: 8px;
+    height: 55px;
 
-    padding: 4px 8px;
+    border-radius: 50%;
 
-    border-radius: 5px;
+    display: flex;
 
-    background: #198754;
+    align-items: center;
 
-    color: white;
+    justify-content: center;
+
+    font-size: 26px;
+
+    background: #eee;
+}
+
+.access-title h2 {
+    margin: 0 0 5px;
+
+    font-size: 20px;
+}
+
+.access-title p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   ACCESO ADMIN
+================================================== */
+
+.admin-access {
+    border-left: 5px solid #28a745;
+}
+
+.admin-access .access-icon {
+    background: #e6f7eb;
+}
+
+.not-admin-access {
+    border-left: 5px solid #dc3545;
+}
+
+.not-admin-access .access-icon {
+    background: #fde8ea;
+}
+
+
+/* ==================================================
+   DATOS
+================================================== */
+
+.user-data {
+    margin-top: 20px;
+
+    border-top: 1px solid #eee;
+
+    padding-top: 18px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+.data-item {
+    background: #f7f7f7;
+
+    border-radius: 8px;
+
+    padding: 12px;
+}
+
+.data-label {
+    color: #777;
 
     font-size: 11px;
 
     font-weight: bold;
+
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+.data-value {
+    font-size: 14px;
+
+    word-break: break-word;
 }
 
 
 /* ==================================================
-   MENSAJES
+   HERRAMIENTAS
 ================================================== */
 
-.message {
-    background: white;
-
-    border-radius: 10px;
-
-    padding: 30px;
-
-    text-align: center;
-
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.07);
-}
-
-.message h2 {
-    margin-top: 0;
-}
-
-.error {
-    color: #a52828;
-
-    background: #fff4f4;
-
-    border: 1px solid #e2aaaa;
-}
-
-.warning {
-    color: #8a6200;
-
-    background: #fff9e8;
-
-    border: 1px solid #ead18b;
-}
-
-
-/* ==================================================
-   PANEL ADMIN
-================================================== */
-
-#admin-panel {
+#admin-tools {
     display: none;
-}
-
-.section {
-    margin-bottom: 30px;
 }
 
 .section-title {
@@ -252,43 +324,25 @@ nav a:hover {
     font-size: 22px;
 }
 
+.section-title span {
+    color: #777;
+
+    font-size: 13px;
+}
+
 
 /* ==================================================
-   BÚSQUEDA
+   BOTONES
 ================================================== */
 
-.search-box {
-    display: flex;
-
-    gap: 10px;
-
-    margin-bottom: 15px;
-}
-
-.search-box input {
-    flex: 1;
-
-    min-width: 0;
-
-    padding: 11px;
-
-    border: 1px solid #ccc;
-
-    border-radius: 6px;
-
-    font-size: 14px;
-}
-
 .button {
-    border: 0;
+    border: none;
 
     border-radius: 6px;
 
-    padding: 10px 14px;
+    padding: 9px 14px;
 
-    background: #20242b;
-
-    color: white;
+    font-size: 13px;
 
     font-weight: bold;
 
@@ -296,19 +350,31 @@ nav a:hover {
 }
 
 .button:hover {
-    background: #343a40;
+    opacity: 0.9;
 }
 
-.button-danger {
-    background: #b52b2b;
+.button-dark {
+    background: #20242b;
+
+    color: #fff;
 }
 
-.button-danger:hover {
-    background: #8f2020;
+.button-edit {
+    background: #e0a800;
+
+    color: #fff;
 }
 
-.button-secondary {
-    background: #6c757d;
+.button-delete {
+    background: #dc3545;
+
+    color: #fff;
+}
+
+.button-cancel {
+    background: #777;
+
+    color: #fff;
 }
 
 
@@ -316,39 +382,42 @@ nav a:hover {
    PUBLICACIONES
 ================================================== */
 
-.stories-list {
-    display: flex;
+.publications {
+    display: grid;
 
-    flex-direction: column;
-
-    gap: 12px;
+    gap: 15px;
 }
 
-.story-item {
-    background: white;
+.publication {
+    background: #ffffff;
 
     border-radius: 10px;
 
-    padding: 15px;
+    padding: 18px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.08);
 
     display: grid;
 
-    grid-template-columns:
-        80px 1fr auto;
+    grid-template-columns: 90px 1fr auto;
 
-    gap: 15px;
+    gap: 18px;
 
     align-items: center;
-
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.07);
 }
 
-.story-cover {
-    width: 80px;
-    height: 100px;
 
-    border-radius: 6px;
+/* ==================================================
+   MINI PORTADA
+================================================== */
+
+.publication-cover {
+    width: 90px;
+
+    height: 120px;
+
+    border-radius: 7px;
 
     overflow: hidden;
 
@@ -365,50 +434,137 @@ nav a:hover {
 
     justify-content: center;
 
-    color: white;
+    color: #fff;
 
-    font-size: 28px;
+    font-size: 30px;
 }
 
-.story-cover img {
+.publication-cover img {
     width: 100%;
+
     height: 100%;
 
     object-fit: cover;
 }
 
-.story-info h3 {
+
+/* ==================================================
+   INFORMACIÓN
+================================================== */
+
+.publication-info {
+    min-width: 0;
+}
+
+.publication-type {
+    display: inline-block;
+
+    background: #20242b;
+
+    color: #fff;
+
+    border-radius: 5px;
+
+    padding: 4px 7px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    margin-bottom: 7px;
+}
+
+.publication-info h3 {
     margin: 0 0 6px;
 
-    font-size: 17px;
+    font-size: 18px;
+
+    word-break: break-word;
 }
 
-.story-meta {
+.publication-author {
     color: #777;
 
-    font-size: 12px;
+    font-size: 13px;
 
-    line-height: 1.6;
+    margin-bottom: 7px;
 }
 
-.story-description {
-    margin-top: 8px;
-
+.publication-description {
     color: #666;
 
     font-size: 13px;
+
+    line-height: 1.4;
+
+    margin: 0 0 8px;
 }
 
-.story-actions {
+.publication-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    color: #888;
+
+    font-size: 11px;
+}
+
+
+/* ==================================================
+   ACCIONES
+================================================== */
+
+.publication-actions {
     display: flex;
 
     flex-direction: column;
 
-    gap: 7px;
+    gap: 8px;
+
+    min-width: 100px;
 }
 
-.story-actions .button {
-    min-width: 105px;
+.publication-actions a {
+    text-align: center;
+}
+
+
+/* ==================================================
+   MENSAJES
+================================================== */
+
+.message {
+    background: #fff;
+
+    border-radius: 10px;
+
+    padding: 25px;
+
+    text-align: center;
+
+    color: #666;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06);
+}
+
+.error-message {
+    color: #b52b2b;
+
+    background: #fff4f4;
+
+    border: 1px solid #e3aaaa;
+}
+
+.success-message {
+    color: #216e39;
+
+    background: #effaf2;
+
+    border: 1px solid #a9dfb5;
 }
 
 
@@ -416,41 +572,41 @@ nav a:hover {
    EDITOR
 ================================================== */
 
-.editor {
-    background: white;
+#edit-panel {
+    display: none;
 
-    border-radius: 10px;
+    background: #ffffff;
 
-    padding: 20px;
+    border-radius: 12px;
 
-    margin-top: 15px;
+    padding: 25px;
+
+    margin-bottom: 25px;
 
     box-shadow:
-        0 2px 6px rgba(0,0,0,0.07);
-
-    display: none;
+        0 2px 8px rgba(0,0,0,0.08);
 }
 
-.editor h3 {
-    margin-top: 0;
+#edit-panel h2 {
+    margin: 0 0 20px;
+
+    font-size: 22px;
 }
 
 .form-group {
-    margin-bottom: 14px;
+    margin-bottom: 15px;
 }
 
 .form-group label {
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 
-    font-size: 12px;
+    color: #555;
+
+    font-size: 13px;
 
     font-weight: bold;
-
-    color: #666;
-
-    text-transform: uppercase;
 }
 
 .form-group input,
@@ -458,91 +614,48 @@ nav a:hover {
 .form-group select {
     width: 100%;
 
-    padding: 10px;
+    padding: 10px 11px;
 
     border: 1px solid #ccc;
 
     border-radius: 6px;
 
+    font-family: Arial, sans-serif;
+
     font-size: 14px;
+
+    background: #fff;
 }
 
 .form-group textarea {
-    min-height: 100px;
+    min-height: 120px;
 
     resize: vertical;
 }
 
-.editor-actions {
+.form-actions {
     display: flex;
 
     gap: 10px;
 
-    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 
 /* ==================================================
-   HERRAMIENTAS
+   CARGANDO
 ================================================== */
 
-.tools-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 15px;
-}
-
-.tool-card {
-    background: white;
+.loading {
+    background: #fff;
 
     border-radius: 10px;
 
-    padding: 20px;
+    padding: 25px;
 
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.07);
-}
-
-.tool-icon {
-    font-size: 32px;
-
-    margin-bottom: 10px;
-}
-
-.tool-card h3 {
-    margin: 0 0 7px;
-
-    font-size: 17px;
-}
-
-.tool-card p {
-    margin: 0;
+    text-align: center;
 
     color: #777;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-
-/* ==================================================
-   RESULTADOS
-================================================== */
-
-#status-message {
-    display: none;
-
-    margin-bottom: 15px;
-
-    padding: 12px 15px;
-
-    border-radius: 6px;
-
-    font-size: 13px;
 }
 
 
@@ -577,22 +690,24 @@ footer {
         align-items: flex-start;
     }
 
-    .tools-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
+    nav {
+        width: 100%;
     }
 
-    .story-item {
-        grid-template-columns:
-            70px 1fr;
+    .publication {
+        grid-template-columns: 75px 1fr;
     }
 
-    .story-actions {
+    .publication-cover {
+        width: 75px;
+
+        height: 105px;
+    }
+
+    .publication-actions {
         grid-column: 1 / -1;
 
         flex-direction: row;
-
-        flex-wrap: wrap;
     }
 
 }
@@ -616,21 +731,60 @@ footer {
         font-size: 12px;
     }
 
-    .tools-grid {
+    nav {
+        gap: 10px;
+    }
+
+    .page-title h1 {
+        font-size: 25px;
+    }
+
+    .user-data {
         grid-template-columns: 1fr;
     }
 
-    .search-box {
+    .publication {
+        grid-template-columns: 1fr;
+    }
+
+    .publication-cover {
+        width: 100%;
+
+        height: 180px;
+    }
+
+    .publication-actions {
+        grid-column: auto;
+
+        flex-direction: row;
+
+        width: 100%;
+    }
+
+    .publication-actions .button,
+    .publication-actions a {
+        flex: 1;
+    }
+
+    .form-actions {
         flex-direction: column;
     }
 
-    .story-item {
-        grid-template-columns: 60px 1fr;
+    .form-actions .button {
+        width: 100%;
     }
 
-    .story-cover {
-        width: 60px;
-        height: 80px;
+}
+
+
+/* ==================================================
+   MUY PEQUEÑO
+================================================== */
+
+@media (max-width: 350px) {
+
+    .publication-actions {
+        flex-direction: column;
     }
 
 }
@@ -640,137 +794,138 @@ footer {
 ================================================== --><header><div class="header-content"><div class="logo-area"><div class="logo">
 ComicWorldFiles
 </div><div class="subtitle">
-Crea tus historias o cómics y sube tus archivos
+Panel de administración
 </div></div><nav><a href="index.html">
 Inicio
-</a><a href="index.html#recent-section">
-Historias
+</a><a href="perfil.html">
+Mi perfil
 </a><a href="autores.html">
 Autores
-</a><a
-href="https://www.paypal.com/paypalme/josesanpedropl"
-target="_blank"
-rel="noopener noreferrer"
-class="donate-button"
+</a><a href="login.html">
+Iniciar sesión
+</a></nav></div></header><!-- ==================================================
+     CONTENIDO
+================================================== --><main class="container"><a
+href="index.html"
+class="back"
 
 «»
 
-💙 Donate
+← Volver al inicio
 </a>
 
-<span id="user-area"></span>
-
-</nav></div></header><!-- ==================================================
-     CONTENIDO
-================================================== --><main class="container"><div
-id="initial-message"
-class="message"
-><h2>
-⚙️ Panel de administración
-</h2><p>
-Comprobando sesión...
-</p></div><!-- ==================================================
-     PANEL ADMIN
-================================================== --><div id="admin-panel"><section class="admin-header"><h1>
+<div class="page-title"><h1>
 ⚙️ Administración
 </h1><p>
-Herramientas de administración de ComicWorldFiles.
-</p></section><section class="session-card"><strong>
-Administrador:
-</strong><span id="admin-name">
--
-</span><span class="admin-badge">
-ADMINISTRADOR
-</span><br><small
-id="admin-details"
-style="color:#777;"
-
-«»
-
-- 
-
-</small></section><div
-id="status-message"
->
-</div><!-- ==================================================
-     PUBLICACIONES
-================================================== --><section class="section"><div class="section-title"><h2>
-📚 Historias e historietas
-</h2><button
-class="button"
-type="button"
-onclick="cargarPublicaciones()"
-
-«»
-
-↻ Actualizar
-</button>
-
-</div><div class="search-box"><input
-type="text"
-id="search-input"
-placeholder="Buscar por título, autor o género..."
-
-«»
-
-<button
-class="button"
-type="button"
-onclick="filtrarPublicaciones()"
-
-«»
-
-Buscar
-</button>
-
-</div><div
-id="stories-list"
-class="stories-list"
-><div class="message">
-Cargando publicaciones...
-</div></div></section><!-- ==================================================
-     EDITOR
+Panel de gestión de ComicWorldFiles.
+</p></div><!-- ==================================================
+     ESTADO DE ACCESO
 ================================================== --><section
-class="editor"
-id="editor"
-><h3>
+id="access-card"
+class="access-card"
+><div class="access-header"><div
+id="access-icon"
+class="access-icon"
+>
+🔐
+</div><div class="access-title"><h2 id="access-title">
+Comprobando acceso...
+</h2><p id="access-description">
+Verificando la sesión actual.
+</p></div></div><div
+id="user-data"
+class="user-data"
+style="display:none;"
+><div class="data-item"><div class="data-label">
+Usuario
+</div><div
+id="user-username"
+class="data-value"
+>
+-
+</div></div><div class="data-item"><div class="data-label">
+Email
+</div><div
+id="user-email"
+class="data-value"
+>
+-
+</div></div><div class="data-item"><div class="data-label">
+User ID
+</div><div
+id="user-id"
+class="data-value"
+>
+-
+</div></div><div class="data-item"><div class="data-label">
+Permisos
+</div><div
+id="user-permission"
+class="data-value"
+>
+-
+</div></div></div></section><!-- ==================================================
+     HERRAMIENTAS ADMINISTRATIVAS
+================================================== --><section id="admin-tools"><div class="section-title"><h2>
+📚 Publicaciones
+</h2><span id="publication-count">
+0 publicaciones
+</span></div><!-- ==================================================
+     EDITOR
+================================================== --><section id="edit-panel"><h2>
 ✏️ Editar publicación
-</h3><input
+</h2><input
 type="hidden"
 id="edit-id"
 
 «»
 
-<div class="form-group"><label>
+<div class="form-group"><label for="edit-title">
 Título
 </label><input
 type="text"
 id="edit-title"
+maxlength="200"
 
 «»
 
-</div><div class="form-group"><label>
+</div><div class="form-group"><label for="edit-author">
+Autor
+</label><input
+type="text"
+id="edit-author"
+maxlength="150"
+
+«»
+
+</div><div class="form-group"><label for="edit-type">
+Tipo
+</label><select id="edit-type"><option value="historia">
+📖 Historia
+</option><option value="historieta">
+🖼️ Historieta
+</option></select></div><div class="form-group"><label for="edit-description">
 Descripción
 </label><textarea
 id="edit-description"
-></textarea></div><div class="form-group"><label>
+maxlength="2000"
+></textarea></div><div class="form-group"><label for="edit-genre">
 Género
 </label><input
 type="text"
 id="edit-genre"
+maxlength="100"
 
 «»
 
-</div><div class="form-group"><label>
-Tipo
-</label><select id="edit-type"><option value="historia">
-Historia
-</option><option value="historieta">
-Historieta
-</option></select></div><div class="editor-actions"><button
-class="button"
+</div><div
+id="edit-message"
+style="display:none;margin-top:15px;"
+>
+</div><div class="form-actions"><button
 type="button"
-onclick="guardarEdicion()"
+class="button button-dark"
+id="save-edit-button"
 
 «»
 
@@ -778,9 +933,9 @@ onclick="guardarEdicion()"
 </button>
 
 <button
-class="button button-secondary"
 type="button"
-onclick="cerrarEditor()"
+class="button button-cancel"
+id="cancel-edit-button"
 
 «»
 
@@ -788,69 +943,15 @@ Cancelar
 </button>
 
 </div></section><!-- ==================================================
-     HERRAMIENTAS
-================================================== --><section class="section"><div class="section-title"><h2>
-🛠️ Herramientas
-</h2></div><div class="tools-grid"><div class="tool-card"><div class="tool-icon">
-📖
-</div><h3>
-Historias
-</h3><p>
-Administrar información, capítulos y publicaciones.
-</p></div><div class="tool-card"><div class="tool-icon">
-🖼️
-</div><h3>
-Historietas
-</h3><p>
-Administrar páginas e imágenes de las historietas.
-</p></div><div class="tool-card"><div class="tool-icon">
-🗄️
-</div><h3>
-Base de datos
-</h3><p>
-Consultar y administrar los registros relacionados con las publicaciones.
-</p></div></div></section></div><!-- ==================================================
-     ACCESO NORMAL
-================================================== --><div
-id="normal-message"
-class="message warning"
-style="display:none;"
-><h2>
-🔒 Acceso administrativo
-</h2><p>
-Has iniciado sesión correctamente, pero esta cuenta
-no tiene permisos de administrador.
-</p><a
-href="index.html"
-class="button"
-style="display:inline-flex;margin-top:10px;"
-
-«»
-
-Volver al inicio
-</a>
-
-</div><!-- ==================================================
-     SIN SESIÓN
-================================================== --><div
-id="login-message"
-class="message"
-style="display:none;"
-><h2>
-🔐 Inicia sesión
-</h2><p>
-Debes iniciar sesión para acceder a esta página.
-</p><a
-href="login.html"
-class="button"
-style="display:inline-flex;margin-top:10px;"
-
-«»
-
-Iniciar sesión
-</a>
-
-</div></main><footer>ComicWorldFiles © 2026
+     LISTA
+================================================== --><section
+class="publications"
+id="publications-container"
+><div class="loading">
+Cargando publicaciones...
+</div></section></section><!-- ==================================================
+     FOOTER
+================================================== --><footer>ComicWorldFiles © 2026
 
 <br><br>
 
@@ -860,7 +961,7 @@ historias independientes.
 </footer><script>
 
 /* ==================================================
-   CONFIGURACIÓN DEL ADMINISTRADOR
+   CONFIGURACIÓN ADMINISTRADOR
 ================================================== */
 
 const ADMIN_USER_ID = 1;
@@ -873,46 +974,37 @@ const ADMIN_EMAIL =
    VARIABLES
 ================================================== */
 
+let loggedUser = null;
+
 let publicaciones = [];
 
-let usuarioActual = null;
-
 
 /* ==================================================
-   ELEMENTOS
-================================================== */
-
-const initialMessage =
-    document.getElementById(
-        "initial-message"
-    );
-
-const adminPanel =
-    document.getElementById(
-        "admin-panel"
-    );
-
-const normalMessage =
-    document.getElementById(
-        "normal-message"
-    );
-
-const loginMessage =
-    document.getElementById(
-        "login-message"
-    );
-
-const userArea =
-    document.getElementById(
-        "user-area"
-    );
-
-
-/* ==================================================
-   SESIÓN
+   COMPROBAR SESIÓN
 ================================================== */
 
 async function comprobarSesion() {
+
+    const accessCard =
+        document.getElementById(
+            "access-card"
+        );
+
+    const accessIcon =
+        document.getElementById(
+            "access-icon"
+        );
+
+    const accessTitle =
+        document.getElementById(
+            "access-title"
+        );
+
+    const accessDescription =
+        document.getElementById(
+            "access-description"
+        );
+
 
     try {
 
@@ -933,10 +1025,6 @@ async function comprobarSesion() {
             await response.json();
 
 
-        initialMessage.style.display =
-            "none";
-
-
         if (
             !response.ok ||
             !data.success ||
@@ -944,59 +1032,129 @@ async function comprobarSesion() {
             !data.user
         ) {
 
-            loginMessage.style.display =
-                "block";
+            accessCard.className =
+                "access-card not-admin-access";
 
-            mostrarUsuarioNoAutenticado();
+            accessIcon.textContent =
+                "🔒";
 
-            return;
+            accessTitle.textContent =
+                "No has iniciado sesión";
+
+            accessDescription.textContent =
+                "Debes iniciar sesión para acceder a esta sección.";
+
+
+            document.getElementById(
+                "user-data"
+            ).style.display =
+                "none";
+
+
+            mostrarNoAdmin(
+                "Inicia sesión para comprobar si tienes permisos administrativos."
+            );
+
+
+            return false;
 
         }
 
 
-        usuarioActual =
+        loggedUser =
             data.user;
 
 
-        mostrarUsuario(
-            usuarioActual
-        );
+        mostrarDatosUsuario();
 
 
-        const idCorrecto =
+        /* ==========================================
+           COMPROBACIÓN ADMIN
+        ========================================== */
+
+        const userId =
             Number(
-                usuarioActual.id
-            ) ===
-            ADMIN_USER_ID;
+                loggedUser.id
+            );
 
 
-        const emailCorrecto =
+        const userEmail =
             String(
-                usuarioActual.email || ""
-            )
-            .trim()
-            .toLowerCase() ===
-            ADMIN_EMAIL.toLowerCase();
+                loggedUser.email ||
+                ""
+            ).toLowerCase().trim();
 
 
-        /*
-         * LAS DOS CONDICIONES
-         * DEBEN SER VERDADERAS.
-         */
+        const esAdministrador =
+            userId === ADMIN_USER_ID &&
+            userEmail ===
+                ADMIN_EMAIL.toLowerCase();
+
 
         if (
-            idCorrecto &&
-            emailCorrecto
+            !esAdministrador
         ) {
 
-            mostrarPanelAdmin();
+            accessCard.className =
+                "access-card not-admin-access";
 
-        } else {
+            accessIcon.textContent =
+                "🚫";
 
-            normalMessage.style.display =
-                "block";
+            accessTitle.textContent =
+                "Acceso administrativo denegado";
+
+            accessDescription.textContent =
+                "Tu cuenta está conectada, pero no tiene permisos de administrador.";
+
+            document.getElementById(
+                "user-permission"
+            ).textContent =
+                "Usuario normal";
+
+
+            mostrarNoAdmin(
+                "Esta página está disponible, pero las herramientas administrativas están restringidas."
+            );
+
+
+            return false;
 
         }
+
+
+        /* ==========================================
+           ADMINISTRADOR
+        ========================================== */
+
+        accessCard.className =
+            "access-card admin-access";
+
+        accessIcon.textContent =
+            "👑";
+
+        accessTitle.textContent =
+            "Administrador";
+
+        accessDescription.textContent =
+            "Tienes acceso a las herramientas administrativas de ComicWorldFiles.";
+
+        document.getElementById(
+            "user-permission"
+        ).textContent =
+            "Administrador";
+
+
+        document.getElementById(
+            "admin-tools"
+        ).style.display =
+            "block";
+
+
+        await cargarPublicaciones();
+
+
+        return true;
 
 
     } catch (error) {
@@ -1007,11 +1165,25 @@ async function comprobarSesion() {
         );
 
 
-        initialMessage.style.display =
-            "none";
+        accessCard.className =
+            "access-card not-admin-access";
 
-        loginMessage.style.display =
-            "block";
+        accessIcon.textContent =
+            "⚠️";
+
+        accessTitle.textContent =
+            "Error";
+
+        accessDescription.textContent =
+            "No se pudo comprobar el acceso administrativo.";
+
+
+        mostrarNoAdmin(
+            "Comprueba tu conexión e inténtalo nuevamente."
+        );
+
+
+        return false;
 
     }
 
@@ -1019,121 +1191,74 @@ async function comprobarSesion() {
 
 
 /* ==================================================
-   MOSTRAR USUARIO
+   MOSTRAR DATOS
 ================================================== */
 
-function mostrarUsuario(
-    user
+function mostrarDatosUsuario() {
+
+    document.getElementById(
+        "user-data"
+    ).style.display =
+        "grid";
+
+
+    document.getElementById(
+        "user-username"
+    ).textContent =
+        loggedUser.username ||
+        "Sin usuario";
+
+
+    document.getElementById(
+        "user-email"
+    ).textContent =
+        loggedUser.email ||
+        "Sin email";
+
+
+    document.getElementById(
+        "user-id"
+    ).textContent =
+        loggedUser.id != null
+            ? loggedUser.id
+            : "-";
+
+}
+
+
+/* ==================================================
+   NO ADMIN
+================================================== */
+
+function mostrarNoAdmin(
+    mensaje
 ) {
 
-    userArea.innerHTML =
-        "";
-
-
-    const profile =
-        document.createElement(
-            "a"
-        );
-
-    profile.href =
-        "perfil.html";
-
-    profile.textContent =
-        "Hola " +
-        (
-            user.username ||
-            "Usuario"
+    const tools =
+        document.getElementById(
+            "admin-tools"
         );
 
 
-    const logout =
-        document.createElement(
-            "a"
-        );
-
-    logout.href =
-        "#";
-
-    logout.textContent =
-        "Cerrar sesión";
-
-
-    logout.onclick =
-        function(event) {
-
-            event.preventDefault();
-
-            cerrarSesion();
-
-        };
-
-
-    userArea.appendChild(
-        profile
-    );
-
-    userArea.appendChild(
-        logout
-    );
-
-}
-
-
-/* ==================================================
-   USUARIO NO AUTENTICADO
-================================================== */
-
-function mostrarUsuarioNoAutenticado() {
-
-    userArea.innerHTML =
-        "";
-
-
-    const login =
-        document.createElement(
-            "a"
-        );
-
-    login.href =
-        "login.html";
-
-    login.textContent =
-        "Iniciar sesión";
-
-
-    userArea.appendChild(
-        login
-    );
-
-}
-
-
-/* ==================================================
-   PANEL ADMIN
-================================================== */
-
-function mostrarPanelAdmin() {
-
-    adminPanel.style.display =
+    tools.style.display =
         "block";
 
 
-    document.getElementById(
-        "admin-name"
-    ).textContent =
-        usuarioActual.username;
+    tools.innerHTML =
 
+        '<div class="message">' +
 
-    document.getElementById(
-        "admin-details"
-    ).textContent =
-        "ID: " +
-        usuarioActual.id +
-        " · Email: " +
-        usuarioActual.email;
+        '<div style="font-size:40px;margin-bottom:10px;">🔒</div>' +
 
+        '<strong>Herramientas no disponibles</strong>' +
 
-    cargarPublicaciones();
+        '<br><br>' +
+
+        escapeHtml(
+            mensaje
+        ) +
+
+        '</div>';
 
 }
 
@@ -1146,21 +1271,27 @@ async function cargarPublicaciones() {
 
     const container =
         document.getElementById(
-            "stories-list"
+            "publications-container"
         );
 
 
     container.innerHTML =
-        '<div class="message">' +
+        '<div class="loading">' +
         'Cargando publicaciones...' +
         '</div>';
 
 
     try {
 
+        /*
+         * Endpoint administrativo.
+         *
+         * Debe ser implementado en worker/index.js.
+         */
+
         const response =
             await fetch(
-                "/api/stories",
+                "/api/admin/publications",
                 {
                     method: "GET",
 
@@ -1190,10 +1321,20 @@ async function cargarPublicaciones() {
 
         publicaciones =
             Array.isArray(
-                data.stories
+                data.publications
             )
-                ? data.stories
+                ? data.publications
                 : [];
+
+
+        document.getElementById(
+            "publication-count"
+        ).textContent =
+
+            publicaciones.length === 1
+                ? "1 publicación"
+                : publicaciones.length +
+                  " publicaciones";
 
 
         mostrarPublicaciones(
@@ -1210,10 +1351,27 @@ async function cargarPublicaciones() {
 
 
         container.innerHTML =
-            '<div class="message error">' +
+
+            '<div class="message error-message">' +
+
+            '<strong>No se pudieron cargar las publicaciones.</strong>' +
+
+            '<br><br>' +
+
             escapeHtml(
                 error.message
             ) +
+
+            '<br><br>' +
+
+            '<button ' +
+            'class="button button-dark" ' +
+            'onclick="cargarPublicaciones()">' +
+
+            '🔄 Reintentar' +
+
+            '</button>' +
+
             '</div>';
 
     }
@@ -1231,7 +1389,7 @@ function mostrarPublicaciones(
 
     const container =
         document.getElementById(
-            "stories-list"
+            "publications-container"
         );
 
 
@@ -1240,12 +1398,16 @@ function mostrarPublicaciones(
 
 
     if (
-        !lista.length
+        !lista ||
+        lista.length === 0
     ) {
 
         container.innerHTML =
+
             '<div class="message">' +
-            'No se encontraron publicaciones.' +
+
+            'No hay publicaciones.' +
+
             '</div>';
 
         return;
@@ -1254,140 +1416,210 @@ function mostrarPublicaciones(
 
 
     lista.forEach(
-        function(story) {
+        function(publicacion) {
 
-            const item =
+            const card =
                 document.createElement(
                     "article"
                 );
 
 
-            item.className =
-                "story-item";
+            card.className =
+                "publication";
 
 
             const tipo =
-                story.type ===
-                "historieta"
+                String(
+                    publicacion.type ||
+                    "historia"
+                ).toLowerCase();
+
+
+            const esHistorieta =
+                tipo === "historieta";
+
+
+            const tipoTexto =
+                esHistorieta
                     ? "🖼️ Historieta"
                     : "📖 Historia";
 
 
-            const cover =
-                story.cover_url
-                    ? '<div class="story-cover">' +
-                      '<img src="' +
-                      escapeHtml(
-                          story.cover_url
-                      ) +
-                      '" alt="Portada">' +
-                      '</div>'
-                    : '<div class="story-cover">' +
-                      (
-                          story.type ===
-                          "historieta"
-                              ? "🖼️"
-                              : "📖"
-                      ) +
-                      '</div>';
+            const portada =
+                publicacion.cover_url;
+
+
+            let coverHTML;
+
+
+            if (
+                portada
+            ) {
+
+                coverHTML =
+
+                    '<div class="publication-cover">' +
+
+                    '<img src="' +
+                    escapeHtml(
+                        portada
+                    ) +
+                    '" alt="Portada" loading="lazy">' +
+
+                    '</div>';
+
+            } else {
+
+                coverHTML =
+
+                    '<div class="publication-cover">' +
+
+                    (
+                        esHistorieta
+                            ? "🖼️"
+                            : "📖"
+                    ) +
+
+                    '</div>';
+
+            }
+
+
+            const titulo =
+                publicacion.title ||
+                "Sin título";
+
+
+            const autor =
+                publicacion.author ||
+                "Autor";
 
 
             const descripcion =
-                story.description ||
+                publicacion.description ||
                 "Sin descripción.";
 
 
-            item.innerHTML =
+            const views =
+                Number(
+                    publicacion.views || 0
+                );
 
-                cover +
 
-                '<div class="story-info">' +
+            const likes =
+                Number(
+                    publicacion.likes || 0
+                );
+
+
+            const id =
+                publicacion.id;
+
+
+            const paginaLectura =
+                esHistorieta
+                    ? "leer-historieta.html"
+                    : "leer-historia.html";
+
+
+            card.innerHTML =
+
+                coverHTML +
+
+                '<div class="publication-info">' +
+
+                '<span class="publication-type">' +
+                tipoTexto +
+                '</span>' +
 
                 '<h3>' +
                 escapeHtml(
-                    story.title ||
-                    "Sin título"
+                    titulo
                 ) +
                 '</h3>' +
 
-                '<div class="story-meta">' +
-
-                'ID: ' +
-                Number(
-                    story.id
-                ) +
-
-                ' · ' +
-
+                '<div class="publication-author">' +
+                'Por ' +
                 escapeHtml(
-                    tipo
+                    autor
                 ) +
-
-                '<br>' +
-
-                'Autor: ' +
-                escapeHtml(
-                    story.author ||
-                    "Desconocido"
-                ) +
-
-                '<br>' +
-
-                'Usuario ID: ' +
-                Number(
-                    story.user_id ||
-                    0
-                ) +
-
-                '<br>' +
-
-                'Género: ' +
-                escapeHtml(
-                    story.genre ||
-                    "Sin género"
-                ) +
-
-                '<br>' +
-
-                '👁 ' +
-                Number(
-                    story.views ||
-                    0
-                ) +
-
                 '</div>' +
 
-                '<div class="story-description">' +
+                '<p class="publication-description">' +
                 escapeHtml(
                     descripcion
                 ) +
-                '</div>' +
+                '</p>' +
+
+                '<div class="publication-meta">' +
+
+                '<span>🆔 ' +
+                escapeHtml(
+                    String(id)
+                ) +
+                '</span>' +
+
+                '<span>👁 ' +
+                views +
+                '</span>' +
+
+                '<span>❤️ ' +
+                likes +
+                '</span>' +
 
                 '</div>' +
 
-                '<div class="story-actions">' +
+                '</div>' +
+
+                '<div class="publication-actions">' +
+
+                '<a ' +
+                'class="button button-dark" ' +
+                'href="' +
+                paginaLectura +
+                '?id=' +
+                encodeURIComponent(
+                    id
+                ) +
+                '" ' +
+                'target="_blank">' +
+
+                '👁 Ver' +
+
+                '</a>' +
 
                 '<button ' +
-                'class="button" ' +
-                'onclick="abrirEditor(' +
-                Number(story.id) +
+                'class="button button-edit" ' +
+                'onclick="editarPublicacion(' +
+                JSON.stringify(
+                    publicacion
+                ).replace(
+                    /'/g,
+                    "\\'"
+                ) +
                 ')">' +
+
                 '✏️ Editar' +
+
                 '</button>' +
 
                 '<button ' +
-                'class="button button-danger" ' +
+                'class="button button-delete" ' +
                 'onclick="eliminarPublicacion(' +
-                Number(story.id) +
+                JSON.stringify(
+                    id
+                ) +
                 ')">' +
+
                 '🗑️ Eliminar' +
+
                 '</button>' +
 
                 '</div>';
 
 
             container.appendChild(
-                item
+                card
             );
 
         }
@@ -1397,214 +1629,324 @@ function mostrarPublicaciones(
 
 
 /* ==================================================
-   FILTRAR
+   EDITAR
 ================================================== */
 
-function filtrarPublicaciones() {
-
-    const texto =
-        document.getElementById(
-            "search-input"
-        )
-        .value
-        .trim()
-        .toLowerCase();
-
-
-    if (!texto) {
-
-        mostrarPublicaciones(
-            publicaciones
-        );
-
-        return;
-
-    }
-
-
-    const resultado =
-        publicaciones.filter(
-            function(story) {
-
-                return (
-
-                    String(
-                        story.title || ""
-                    )
-                    .toLowerCase()
-                    .includes(texto)
-
-                    ||
-
-                    String(
-                        story.author || ""
-                    )
-                    .toLowerCase()
-                    .includes(texto)
-
-                    ||
-
-                    String(
-                        story.genre || ""
-                    )
-                    .toLowerCase()
-                    .includes(texto)
-
-                );
-
-            }
-        );
-
-
-    mostrarPublicaciones(
-        resultado
-    );
-
-}
-
-
-/* ==================================================
-   EDITOR
-================================================== */
-
-function abrirEditor(
-    storyId
+function editarPublicacion(
+    publicacion
 ) {
 
-    const story =
-        publicaciones.find(
-            function(item) {
-
-                return Number(
-                    item.id
-                ) ===
-                Number(
-                    storyId
-                );
-
-            }
-        );
-
-
-    if (!story) {
-
-        mostrarEstado(
-            "No se encontró la publicación.",
-            true
-        );
-
-        return;
-
-    }
+    document.getElementById(
+        "edit-panel"
+    ).style.display =
+        "block";
 
 
     document.getElementById(
         "edit-id"
     ).value =
-        story.id;
+        publicacion.id || "";
 
 
     document.getElementById(
         "edit-title"
     ).value =
-        story.title || "";
+        publicacion.title || "";
 
 
     document.getElementById(
-        "edit-description"
+        "edit-author"
     ).value =
-        story.description || "";
-
-
-    document.getElementById(
-        "edit-genre"
-    ).value =
-        story.genre || "";
+        publicacion.author || "";
 
 
     document.getElementById(
         "edit-type"
     ).value =
-        story.type || "historia";
+        String(
+            publicacion.type ||
+            "historia"
+        ).toLowerCase();
 
 
-    const editor =
-        document.getElementById(
-            "editor"
-        );
+    document.getElementById(
+        "edit-description"
+    ).value =
+        publicacion.description || "";
 
 
-    editor.style.display =
-        "block";
+    document.getElementById(
+        "edit-genre"
+    ).value =
+        publicacion.genre || "";
 
 
-    editor.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+    limpiarMensajeEdicion();
+
+
+    window.scrollTo({
+        top:
+            document.getElementById(
+                "edit-panel"
+            ).offsetTop - 20,
+
+        behavior: "smooth"
     });
 
 }
 
 
-function cerrarEditor() {
+/* ==================================================
+   CANCELAR EDICIÓN
+================================================== */
 
-    document.getElementById(
-        "editor"
-    ).style.display =
-        "none";
+document.getElementById(
+    "cancel-edit-button"
+).addEventListener(
+    "click",
+    function() {
 
-}
+        document.getElementById(
+            "edit-panel"
+        ).style.display =
+            "none";
+
+        limpiarMensajeEdicion();
+
+    }
+);
 
 
 /* ==================================================
    GUARDAR EDICIÓN
 ================================================== */
 
-async function guardarEdicion() {
+document.getElementById(
+    "save-edit-button"
+).addEventListener(
+    "click",
+    async function() {
 
-    const id =
-        Number(
+        const id =
             document.getElementById(
                 "edit-id"
-            ).value
+            ).value;
+
+
+        if (
+            !id
+        ) {
+
+            mostrarMensajeEdicion(
+                "Falta el ID de la publicación.",
+                true
+            );
+
+            return;
+
+        }
+
+
+        const datos = {
+
+            id: id,
+
+            title:
+                document.getElementById(
+                    "edit-title"
+                ).value.trim(),
+
+            author:
+                document.getElementById(
+                    "edit-author"
+                ).value.trim(),
+
+            type:
+                document.getElementById(
+                    "edit-type"
+                ).value,
+
+            description:
+                document.getElementById(
+                    "edit-description"
+                ).value.trim(),
+
+            genre:
+                document.getElementById(
+                    "edit-genre"
+                ).value.trim()
+
+        };
+
+
+        if (
+            datos.title.length === 0
+        ) {
+
+            mostrarMensajeEdicion(
+                "El título no puede estar vacío.",
+                true
+            );
+
+            return;
+
+        }
+
+
+        const button =
+            document.getElementById(
+                "save-edit-button"
+            );
+
+
+        button.disabled =
+            true;
+
+
+        button.textContent =
+            "Guardando...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/admin/publications/update",
+                    {
+                        method: "POST",
+
+                        credentials: "include",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                datos
+                            )
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    "No se pudieron guardar los cambios."
+                );
+
+            }
+
+
+            mostrarMensajeEdicion(
+                "Los cambios se guardaron correctamente.",
+                false
+            );
+
+
+            await cargarPublicaciones();
+
+
+            setTimeout(
+                function() {
+
+                    document.getElementById(
+                        "edit-panel"
+                    ).style.display =
+                        "none";
+
+                    limpiarMensajeEdicion();
+
+                },
+                1000
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Error actualizando publicación:",
+                error
+            );
+
+
+            mostrarMensajeEdicion(
+                error.message ||
+                "No se pudieron guardar los cambios.",
+                true
+            );
+
+        }
+
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "💾 Guardar cambios";
+
+    }
+);
+
+
+/* ==================================================
+   ELIMINAR PUBLICACIÓN
+================================================== */
+
+async function eliminarPublicacion(
+    id
+) {
+
+    const publicacion =
+        publicaciones.find(
+            function(item) {
+
+                return String(
+                    item.id
+                ) === String(
+                    id
+                );
+
+            }
         );
 
 
-    const title =
-        document.getElementById(
-            "edit-title"
-        ).value.trim();
+    const titulo =
+        publicacion &&
+        publicacion.title
+            ? publicacion.title
+            : "esta publicación";
 
 
-    const description =
-        document.getElementById(
-            "edit-description"
-        ).value.trim();
+    const confirmar =
+        window.confirm(
 
+            "¿Estás seguro de que quieres eliminar \"" +
+            titulo +
+            "\"?\n\n" +
 
-    const genre =
-        document.getElementById(
-            "edit-genre"
-        ).value.trim();
+            "Esta acción puede eliminar la publicación " +
+            "y sus archivos asociados.\n\n" +
 
+            "Esta operación no debería realizarse " +
+            "sin confirmar que realmente deseas borrarla."
 
-    const type =
-        document.getElementById(
-            "edit-type"
-        ).value;
+        );
 
 
     if (
-        !id ||
-        !title ||
-        !description ||
-        !genre
+        !confirmar
     ) {
-
-        mostrarEstado(
-            "Completa todos los campos.",
-            true
-        );
 
         return;
 
@@ -1615,10 +1957,9 @@ async function guardarEdicion() {
 
         const response =
             await fetch(
-                "/api/stories/" +
-                encodeURIComponent(id),
+                "/api/admin/publications/delete",
                 {
-                    method: "PUT",
+                    method: "POST",
 
                     credentials: "include",
 
@@ -1629,17 +1970,7 @@ async function guardarEdicion() {
 
                     body:
                         JSON.stringify({
-                            title:
-                                title,
-
-                            description:
-                                description,
-
-                            genre:
-                                genre,
-
-                            type:
-                                type
+                            id: id
                         })
                 }
             );
@@ -1656,19 +1987,16 @@ async function guardarEdicion() {
 
             throw new Error(
                 data.error ||
-                "No se pudo actualizar la publicación."
+                "No se pudo eliminar la publicación."
             );
 
         }
 
 
-        mostrarEstado(
-            "Publicación actualizada correctamente.",
-            false
+        alert(
+            "La publicación fue eliminada correctamente."
         );
 
-
-        cerrarEditor();
 
         await cargarPublicaciones();
 
@@ -1676,14 +2004,14 @@ async function guardarEdicion() {
     } catch (error) {
 
         console.error(
-            "Error actualizando publicación:",
+            "Error eliminando publicación:",
             error
         );
 
 
-        mostrarEstado(
-            error.message,
-            true
+        alert(
+            "No se pudo eliminar la publicación.\n\n" +
+            error.message
         );
 
     }
@@ -1692,163 +2020,54 @@ async function guardarEdicion() {
 
 
 /* ==================================================
-   ELIMINAR PUBLICACIÓN
+   MENSAJES EDITOR
 ================================================== */
 
-async function eliminarPublicacion(
-    storyId
-) {
-
-    const story =
-        publicaciones.find(
-            function(item) {
-
-                return Number(
-                    item.id
-                ) ===
-                Number(
-                    storyId
-                );
-
-            }
-        );
-
-
-    if (!story) {
-
-        return;
-
-    }
-
-
-    const confirmado =
-        confirm(
-            "¿Seguro que quieres eliminar esta publicación?\n\n" +
-            "ID: " +
-            story.id +
-            "\n" +
-            "Título: " +
-            story.title +
-            "\n\n" +
-            "Esta acción no se puede deshacer."
-        );
-
-
-    if (!confirmado) {
-
-        return;
-
-    }
-
-
-    /*
-     * El endpoint DELETE de administración
-     * se agregará al Worker.
-     */
-
-    mostrarEstado(
-        "La eliminación administrativa todavía debe habilitarse en worker/index.js.",
-        true
-    );
-
-}
-
-
-/* ==================================================
-   MENSAJE DE ESTADO
-================================================== */
-
-function mostrarEstado(
+function mostrarMensajeEdicion(
     mensaje,
-    esError
+    error
 ) {
 
     const element =
         document.getElementById(
-            "status-message"
+            "edit-message"
         );
-
-
-    element.textContent =
-        mensaje;
 
 
     element.style.display =
         "block";
 
 
-    if (esError) {
-
-        element.style.background =
-            "#fff4f4";
-
-        element.style.color =
-            "#a52828";
-
-        element.style.border =
-            "1px solid #e3aaaa";
-
-    } else {
-
-        element.style.background =
-            "#eef9f1";
-
-        element.style.color =
-            "#176b35";
-
-        element.style.border =
-            "1px solid #a8d5b5";
-
-    }
+    element.className =
+        error
+            ? "message error-message"
+            : "message success-message";
 
 
-    setTimeout(
-        function() {
-
-            element.style.display =
-                "none";
-
-        },
-        5000
-    );
+    element.textContent =
+        mensaje;
 
 }
 
 
-/* ==================================================
-   CERRAR SESIÓN
-================================================== */
+function limpiarMensajeEdicion() {
 
-async function cerrarSesion() {
-
-    try {
-
-        await fetch(
-            "/api/logout",
-            {
-                method: "POST",
-
-                credentials: "include"
-            }
+    const element =
+        document.getElementById(
+            "edit-message"
         );
 
-    } catch (error) {
 
-        console.error(
-            "Error cerrando sesión:",
-            error
-        );
-
-    }
+    element.style.display =
+        "none";
 
 
-    localStorage.removeItem(
-        "comicworld_user"
-    );
+    element.textContent =
+        "";
 
 
-    window.location.href =
-        "index.html";
+    element.className =
+        "";
 
 }
 
@@ -1876,29 +2095,6 @@ function escapeHtml(
     return div.innerHTML;
 
 }
-
-
-/* ==================================================
-   TECLA ENTER EN BÚSQUEDA
-================================================== */
-
-document.getElementById(
-    "search-input"
-).addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key ===
-            "Enter"
-        ) {
-
-            filtrarPublicaciones();
-
-        }
-
-    }
-);
 
 
 /* ==================================================
