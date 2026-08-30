@@ -1262,6 +1262,71 @@ async function checkSession() {
 }
 
 /* ==================================================
+   COMPROBAR ADMINISTRADOR
+================================================== */
+
+async function checkAdmin() {
+
+    const adminSection =
+        document.getElementById(
+            "admin-section"
+        );
+
+    if (!adminSection) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/check",
+                {
+                    method: "GET",
+                    credentials: "include",
+                    cache: "no-store"
+                }
+            );
+
+        if (!response.ok) {
+            adminSection.style.display =
+                "none";
+            return;
+        }
+
+        const data =
+            await response.json();
+
+        if (
+            data &&
+            data.success === true &&
+            data.isAdmin === true
+        ) {
+
+            adminSection.style.display =
+                "block";
+
+        } else {
+
+            adminSection.style.display =
+                "none";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando administrador:",
+            error
+        );
+
+        adminSection.style.display =
+            "none";
+    }
+
+}
+
+/* ==================================================
    LOGOUT
 ================================================== */
 
