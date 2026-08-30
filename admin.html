@@ -1,0 +1,1917 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Administración - ComicWorldFiles</title><style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: Arial, sans-serif;
+}
+
+
+/* ==================================================
+   CABECERA
+================================================== */
+
+header {
+    background: #20242b;
+    color: white;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1100px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.logo-area {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.subtitle {
+    color: #ff9a75;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: #fff;
+    font-size: 14px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+#user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#user-area a {
+    color: white;
+}
+
+.donate-button {
+    background: #0070ba;
+    color: white !important;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   CONTENEDOR
+================================================== */
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 20px;
+}
+
+
+/* ==================================================
+   PANEL
+================================================== */
+
+.admin-header {
+    background: #20242b;
+    color: white;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+.admin-header h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.admin-header p {
+    margin: 0;
+    color: #ccc;
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   ESTADO DE SESIÓN
+================================================== */
+
+.session-card {
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 18px 20px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.07);
+}
+
+.session-card strong {
+    color: #20242b;
+}
+
+.admin-badge {
+    display: inline-block;
+
+    margin-left: 8px;
+
+    padding: 4px 8px;
+
+    border-radius: 5px;
+
+    background: #198754;
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   MENSAJES
+================================================== */
+
+.message {
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.07);
+}
+
+.message h2 {
+    margin-top: 0;
+}
+
+.error {
+    color: #a52828;
+
+    background: #fff4f4;
+
+    border: 1px solid #e2aaaa;
+}
+
+.warning {
+    color: #8a6200;
+
+    background: #fff9e8;
+
+    border: 1px solid #ead18b;
+}
+
+
+/* ==================================================
+   PANEL ADMIN
+================================================== */
+
+#admin-panel {
+    display: none;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    font-size: 22px;
+}
+
+
+/* ==================================================
+   BÚSQUEDA
+================================================== */
+
+.search-box {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 11px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+}
+
+.button {
+    border: 0;
+
+    border-radius: 6px;
+
+    padding: 10px 14px;
+
+    background: #20242b;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.button:hover {
+    background: #343a40;
+}
+
+.button-danger {
+    background: #b52b2b;
+}
+
+.button-danger:hover {
+    background: #8f2020;
+}
+
+.button-secondary {
+    background: #6c757d;
+}
+
+
+/* ==================================================
+   PUBLICACIONES
+================================================== */
+
+.stories-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.story-item {
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    display: grid;
+
+    grid-template-columns:
+        80px 1fr auto;
+
+    gap: 15px;
+
+    align-items: center;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.07);
+}
+
+.story-cover {
+    width: 80px;
+    height: 100px;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5c677d,
+            #222831
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 28px;
+}
+
+.story-cover img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.story-info h3 {
+    margin: 0 0 6px;
+
+    font-size: 17px;
+}
+
+.story-meta {
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.story-description {
+    margin-top: 8px;
+
+    color: #666;
+
+    font-size: 13px;
+}
+
+.story-actions {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.story-actions .button {
+    min-width: 105px;
+}
+
+
+/* ==================================================
+   EDITOR
+================================================== */
+
+.editor {
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    margin-top: 15px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.07);
+
+    display: none;
+}
+
+.editor h3 {
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    color: #666;
+
+    text-transform: uppercase;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+}
+
+.form-group textarea {
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+.editor-actions {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ==================================================
+   HERRAMIENTAS
+================================================== */
+
+.tools-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+}
+
+.tool-card {
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.07);
+}
+
+.tool-icon {
+    font-size: 32px;
+
+    margin-bottom: 10px;
+}
+
+.tool-card h3 {
+    margin: 0 0 7px;
+
+    font-size: 17px;
+}
+
+.tool-card p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* ==================================================
+   RESULTADOS
+================================================== */
+
+#status-message {
+    display: none;
+
+    margin-bottom: 15px;
+
+    padding: 12px 15px;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+footer {
+    background: #20242b;
+
+    color: #aaa;
+
+    text-align: center;
+
+    padding: 30px;
+
+    margin-top: 40px;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 800px) {
+
+    .header-content {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .tools-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .story-item {
+        grid-template-columns:
+            70px 1fr;
+    }
+
+    .story-actions {
+        grid-column: 1 / -1;
+
+        flex-direction: row;
+
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* ==================================================
+   CELULAR
+================================================== */
+
+@media (max-width: 500px) {
+
+    .container {
+        padding: 20px 12px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .story-item {
+        grid-template-columns: 60px 1fr;
+    }
+
+    .story-cover {
+        width: 60px;
+        height: 80px;
+    }
+
+}
+
+</style></head><body><!-- ==================================================
+     CABECERA
+================================================== --><header><div class="header-content"><div class="logo-area"><div class="logo">
+ComicWorldFiles
+</div><div class="subtitle">
+Crea tus historias o cómics y sube tus archivos
+</div></div><nav><a href="index.html">
+Inicio
+</a><a href="index.html#recent-section">
+Historias
+</a><a href="autores.html">
+Autores
+</a><a
+href="https://www.paypal.com/paypalme/josesanpedropl"
+target="_blank"
+rel="noopener noreferrer"
+class="donate-button"
+
+«»
+
+💙 Donate
+</a>
+
+<span id="user-area"></span>
+
+</nav></div></header><!-- ==================================================
+     CONTENIDO
+================================================== --><main class="container"><div
+id="initial-message"
+class="message"
+><h2>
+⚙️ Panel de administración
+</h2><p>
+Comprobando sesión...
+</p></div><!-- ==================================================
+     PANEL ADMIN
+================================================== --><div id="admin-panel"><section class="admin-header"><h1>
+⚙️ Administración
+</h1><p>
+Herramientas de administración de ComicWorldFiles.
+</p></section><section class="session-card"><strong>
+Administrador:
+</strong><span id="admin-name">
+-
+</span><span class="admin-badge">
+ADMINISTRADOR
+</span><br><small
+id="admin-details"
+style="color:#777;"
+
+«»
+
+- 
+
+</small></section><div
+id="status-message"
+>
+</div><!-- ==================================================
+     PUBLICACIONES
+================================================== --><section class="section"><div class="section-title"><h2>
+📚 Historias e historietas
+</h2><button
+class="button"
+type="button"
+onclick="cargarPublicaciones()"
+
+«»
+
+↻ Actualizar
+</button>
+
+</div><div class="search-box"><input
+type="text"
+id="search-input"
+placeholder="Buscar por título, autor o género..."
+
+«»
+
+<button
+class="button"
+type="button"
+onclick="filtrarPublicaciones()"
+
+«»
+
+Buscar
+</button>
+
+</div><div
+id="stories-list"
+class="stories-list"
+><div class="message">
+Cargando publicaciones...
+</div></div></section><!-- ==================================================
+     EDITOR
+================================================== --><section
+class="editor"
+id="editor"
+><h3>
+✏️ Editar publicación
+</h3><input
+type="hidden"
+id="edit-id"
+
+«»
+
+<div class="form-group"><label>
+Título
+</label><input
+type="text"
+id="edit-title"
+
+«»
+
+</div><div class="form-group"><label>
+Descripción
+</label><textarea
+id="edit-description"
+></textarea></div><div class="form-group"><label>
+Género
+</label><input
+type="text"
+id="edit-genre"
+
+«»
+
+</div><div class="form-group"><label>
+Tipo
+</label><select id="edit-type"><option value="historia">
+Historia
+</option><option value="historieta">
+Historieta
+</option></select></div><div class="editor-actions"><button
+class="button"
+type="button"
+onclick="guardarEdicion()"
+
+«»
+
+💾 Guardar cambios
+</button>
+
+<button
+class="button button-secondary"
+type="button"
+onclick="cerrarEditor()"
+
+«»
+
+Cancelar
+</button>
+
+</div></section><!-- ==================================================
+     HERRAMIENTAS
+================================================== --><section class="section"><div class="section-title"><h2>
+🛠️ Herramientas
+</h2></div><div class="tools-grid"><div class="tool-card"><div class="tool-icon">
+📖
+</div><h3>
+Historias
+</h3><p>
+Administrar información, capítulos y publicaciones.
+</p></div><div class="tool-card"><div class="tool-icon">
+🖼️
+</div><h3>
+Historietas
+</h3><p>
+Administrar páginas e imágenes de las historietas.
+</p></div><div class="tool-card"><div class="tool-icon">
+🗄️
+</div><h3>
+Base de datos
+</h3><p>
+Consultar y administrar los registros relacionados con las publicaciones.
+</p></div></div></section></div><!-- ==================================================
+     ACCESO NORMAL
+================================================== --><div
+id="normal-message"
+class="message warning"
+style="display:none;"
+><h2>
+🔒 Acceso administrativo
+</h2><p>
+Has iniciado sesión correctamente, pero esta cuenta
+no tiene permisos de administrador.
+</p><a
+href="index.html"
+class="button"
+style="display:inline-flex;margin-top:10px;"
+
+«»
+
+Volver al inicio
+</a>
+
+</div><!-- ==================================================
+     SIN SESIÓN
+================================================== --><div
+id="login-message"
+class="message"
+style="display:none;"
+><h2>
+🔐 Inicia sesión
+</h2><p>
+Debes iniciar sesión para acceder a esta página.
+</p><a
+href="login.html"
+class="button"
+style="display:inline-flex;margin-top:10px;"
+
+«»
+
+Iniciar sesión
+</a>
+
+</div></main><footer>ComicWorldFiles © 2026
+
+<br><br>
+
+Una plataforma para publicar y descubrir
+historias independientes.
+
+</footer><script>
+
+/* ==================================================
+   CONFIGURACIÓN DEL ADMINISTRADOR
+================================================== */
+
+const ADMIN_USER_ID = 1;
+
+const ADMIN_EMAIL =
+    "josepunkrock.1@gmail.com";
+
+
+/* ==================================================
+   VARIABLES
+================================================== */
+
+let publicaciones = [];
+
+let usuarioActual = null;
+
+
+/* ==================================================
+   ELEMENTOS
+================================================== */
+
+const initialMessage =
+    document.getElementById(
+        "initial-message"
+    );
+
+const adminPanel =
+    document.getElementById(
+        "admin-panel"
+    );
+
+const normalMessage =
+    document.getElementById(
+        "normal-message"
+    );
+
+const loginMessage =
+    document.getElementById(
+        "login-message"
+    );
+
+const userArea =
+    document.getElementById(
+        "user-area"
+    );
+
+
+/* ==================================================
+   SESIÓN
+================================================== */
+
+async function comprobarSesion() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+
+                    credentials: "include",
+
+                    cache: "no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        initialMessage.style.display =
+            "none";
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.loggedIn ||
+            !data.user
+        ) {
+
+            loginMessage.style.display =
+                "block";
+
+            mostrarUsuarioNoAutenticado();
+
+            return;
+
+        }
+
+
+        usuarioActual =
+            data.user;
+
+
+        mostrarUsuario(
+            usuarioActual
+        );
+
+
+        const idCorrecto =
+            Number(
+                usuarioActual.id
+            ) ===
+            ADMIN_USER_ID;
+
+
+        const emailCorrecto =
+            String(
+                usuarioActual.email || ""
+            )
+            .trim()
+            .toLowerCase() ===
+            ADMIN_EMAIL.toLowerCase();
+
+
+        /*
+         * LAS DOS CONDICIONES
+         * DEBEN SER VERDADERAS.
+         */
+
+        if (
+            idCorrecto &&
+            emailCorrecto
+        ) {
+
+            mostrarPanelAdmin();
+
+        } else {
+
+            normalMessage.style.display =
+                "block";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando sesión:",
+            error
+        );
+
+
+        initialMessage.style.display =
+            "none";
+
+        loginMessage.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* ==================================================
+   MOSTRAR USUARIO
+================================================== */
+
+function mostrarUsuario(
+    user
+) {
+
+    userArea.innerHTML =
+        "";
+
+
+    const profile =
+        document.createElement(
+            "a"
+        );
+
+    profile.href =
+        "perfil.html";
+
+    profile.textContent =
+        "Hola " +
+        (
+            user.username ||
+            "Usuario"
+        );
+
+
+    const logout =
+        document.createElement(
+            "a"
+        );
+
+    logout.href =
+        "#";
+
+    logout.textContent =
+        "Cerrar sesión";
+
+
+    logout.onclick =
+        function(event) {
+
+            event.preventDefault();
+
+            cerrarSesion();
+
+        };
+
+
+    userArea.appendChild(
+        profile
+    );
+
+    userArea.appendChild(
+        logout
+    );
+
+}
+
+
+/* ==================================================
+   USUARIO NO AUTENTICADO
+================================================== */
+
+function mostrarUsuarioNoAutenticado() {
+
+    userArea.innerHTML =
+        "";
+
+
+    const login =
+        document.createElement(
+            "a"
+        );
+
+    login.href =
+        "login.html";
+
+    login.textContent =
+        "Iniciar sesión";
+
+
+    userArea.appendChild(
+        login
+    );
+
+}
+
+
+/* ==================================================
+   PANEL ADMIN
+================================================== */
+
+function mostrarPanelAdmin() {
+
+    adminPanel.style.display =
+        "block";
+
+
+    document.getElementById(
+        "admin-name"
+    ).textContent =
+        usuarioActual.username;
+
+
+    document.getElementById(
+        "admin-details"
+    ).textContent =
+        "ID: " +
+        usuarioActual.id +
+        " · Email: " +
+        usuarioActual.email;
+
+
+    cargarPublicaciones();
+
+}
+
+
+/* ==================================================
+   CARGAR PUBLICACIONES
+================================================== */
+
+async function cargarPublicaciones() {
+
+    const container =
+        document.getElementById(
+            "stories-list"
+        );
+
+
+    container.innerHTML =
+        '<div class="message">' +
+        'Cargando publicaciones...' +
+        '</div>';
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories",
+                {
+                    method: "GET",
+
+                    credentials: "include",
+
+                    cache: "no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar las publicaciones."
+            );
+
+        }
+
+
+        publicaciones =
+            Array.isArray(
+                data.stories
+            )
+                ? data.stories
+                : [];
+
+
+        mostrarPublicaciones(
+            publicaciones
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando publicaciones:",
+            error
+        );
+
+
+        container.innerHTML =
+            '<div class="message error">' +
+            escapeHtml(
+                error.message
+            ) +
+            '</div>';
+
+    }
+
+}
+
+
+/* ==================================================
+   MOSTRAR PUBLICACIONES
+================================================== */
+
+function mostrarPublicaciones(
+    lista
+) {
+
+    const container =
+        document.getElementById(
+            "stories-list"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        !lista.length
+    ) {
+
+        container.innerHTML =
+            '<div class="message">' +
+            'No se encontraron publicaciones.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    lista.forEach(
+        function(story) {
+
+            const item =
+                document.createElement(
+                    "article"
+                );
+
+
+            item.className =
+                "story-item";
+
+
+            const tipo =
+                story.type ===
+                "historieta"
+                    ? "🖼️ Historieta"
+                    : "📖 Historia";
+
+
+            const cover =
+                story.cover_url
+                    ? '<div class="story-cover">' +
+                      '<img src="' +
+                      escapeHtml(
+                          story.cover_url
+                      ) +
+                      '" alt="Portada">' +
+                      '</div>'
+                    : '<div class="story-cover">' +
+                      (
+                          story.type ===
+                          "historieta"
+                              ? "🖼️"
+                              : "📖"
+                      ) +
+                      '</div>';
+
+
+            const descripcion =
+                story.description ||
+                "Sin descripción.";
+
+
+            item.innerHTML =
+
+                cover +
+
+                '<div class="story-info">' +
+
+                '<h3>' +
+                escapeHtml(
+                    story.title ||
+                    "Sin título"
+                ) +
+                '</h3>' +
+
+                '<div class="story-meta">' +
+
+                'ID: ' +
+                Number(
+                    story.id
+                ) +
+
+                ' · ' +
+
+                escapeHtml(
+                    tipo
+                ) +
+
+                '<br>' +
+
+                'Autor: ' +
+                escapeHtml(
+                    story.author ||
+                    "Desconocido"
+                ) +
+
+                '<br>' +
+
+                'Usuario ID: ' +
+                Number(
+                    story.user_id ||
+                    0
+                ) +
+
+                '<br>' +
+
+                'Género: ' +
+                escapeHtml(
+                    story.genre ||
+                    "Sin género"
+                ) +
+
+                '<br>' +
+
+                '👁 ' +
+                Number(
+                    story.views ||
+                    0
+                ) +
+
+                '</div>' +
+
+                '<div class="story-description">' +
+                escapeHtml(
+                    descripcion
+                ) +
+                '</div>' +
+
+                '</div>' +
+
+                '<div class="story-actions">' +
+
+                '<button ' +
+                'class="button" ' +
+                'onclick="abrirEditor(' +
+                Number(story.id) +
+                ')">' +
+                '✏️ Editar' +
+                '</button>' +
+
+                '<button ' +
+                'class="button button-danger" ' +
+                'onclick="eliminarPublicacion(' +
+                Number(story.id) +
+                ')">' +
+                '🗑️ Eliminar' +
+                '</button>' +
+
+                '</div>';
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   FILTRAR
+================================================== */
+
+function filtrarPublicaciones() {
+
+    const texto =
+        document.getElementById(
+            "search-input"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    if (!texto) {
+
+        mostrarPublicaciones(
+            publicaciones
+        );
+
+        return;
+
+    }
+
+
+    const resultado =
+        publicaciones.filter(
+            function(story) {
+
+                return (
+
+                    String(
+                        story.title || ""
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                    ||
+
+                    String(
+                        story.author || ""
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                    ||
+
+                    String(
+                        story.genre || ""
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                );
+
+            }
+        );
+
+
+    mostrarPublicaciones(
+        resultado
+    );
+
+}
+
+
+/* ==================================================
+   EDITOR
+================================================== */
+
+function abrirEditor(
+    storyId
+) {
+
+    const story =
+        publicaciones.find(
+            function(item) {
+
+                return Number(
+                    item.id
+                ) ===
+                Number(
+                    storyId
+                );
+
+            }
+        );
+
+
+    if (!story) {
+
+        mostrarEstado(
+            "No se encontró la publicación.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "edit-id"
+    ).value =
+        story.id;
+
+
+    document.getElementById(
+        "edit-title"
+    ).value =
+        story.title || "";
+
+
+    document.getElementById(
+        "edit-description"
+    ).value =
+        story.description || "";
+
+
+    document.getElementById(
+        "edit-genre"
+    ).value =
+        story.genre || "";
+
+
+    document.getElementById(
+        "edit-type"
+    ).value =
+        story.type || "historia";
+
+
+    const editor =
+        document.getElementById(
+            "editor"
+        );
+
+
+    editor.style.display =
+        "block";
+
+
+    editor.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+}
+
+
+function cerrarEditor() {
+
+    document.getElementById(
+        "editor"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ==================================================
+   GUARDAR EDICIÓN
+================================================== */
+
+async function guardarEdicion() {
+
+    const id =
+        Number(
+            document.getElementById(
+                "edit-id"
+            ).value
+        );
+
+
+    const title =
+        document.getElementById(
+            "edit-title"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "edit-description"
+        ).value.trim();
+
+
+    const genre =
+        document.getElementById(
+            "edit-genre"
+        ).value.trim();
+
+
+    const type =
+        document.getElementById(
+            "edit-type"
+        ).value;
+
+
+    if (
+        !id ||
+        !title ||
+        !description ||
+        !genre
+    ) {
+
+        mostrarEstado(
+            "Completa todos los campos.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(id),
+                {
+                    method: "PUT",
+
+                    credentials: "include",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            title:
+                                title,
+
+                            description:
+                                description,
+
+                            genre:
+                                genre,
+
+                            type:
+                                type
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo actualizar la publicación."
+            );
+
+        }
+
+
+        mostrarEstado(
+            "Publicación actualizada correctamente.",
+            false
+        );
+
+
+        cerrarEditor();
+
+        await cargarPublicaciones();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error actualizando publicación:",
+            error
+        );
+
+
+        mostrarEstado(
+            error.message,
+            true
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   ELIMINAR PUBLICACIÓN
+================================================== */
+
+async function eliminarPublicacion(
+    storyId
+) {
+
+    const story =
+        publicaciones.find(
+            function(item) {
+
+                return Number(
+                    item.id
+                ) ===
+                Number(
+                    storyId
+                );
+
+            }
+        );
+
+
+    if (!story) {
+
+        return;
+
+    }
+
+
+    const confirmado =
+        confirm(
+            "¿Seguro que quieres eliminar esta publicación?\n\n" +
+            "ID: " +
+            story.id +
+            "\n" +
+            "Título: " +
+            story.title +
+            "\n\n" +
+            "Esta acción no se puede deshacer."
+        );
+
+
+    if (!confirmado) {
+
+        return;
+
+    }
+
+
+    /*
+     * El endpoint DELETE de administración
+     * se agregará al Worker.
+     */
+
+    mostrarEstado(
+        "La eliminación administrativa todavía debe habilitarse en worker/index.js.",
+        true
+    );
+
+}
+
+
+/* ==================================================
+   MENSAJE DE ESTADO
+================================================== */
+
+function mostrarEstado(
+    mensaje,
+    esError
+) {
+
+    const element =
+        document.getElementById(
+            "status-message"
+        );
+
+
+    element.textContent =
+        mensaje;
+
+
+    element.style.display =
+        "block";
+
+
+    if (esError) {
+
+        element.style.background =
+            "#fff4f4";
+
+        element.style.color =
+            "#a52828";
+
+        element.style.border =
+            "1px solid #e3aaaa";
+
+    } else {
+
+        element.style.background =
+            "#eef9f1";
+
+        element.style.color =
+            "#176b35";
+
+        element.style.border =
+            "1px solid #a8d5b5";
+
+    }
+
+
+    setTimeout(
+        function() {
+
+            element.style.display =
+                "none";
+
+        },
+        5000
+    );
+
+}
+
+
+/* ==================================================
+   CERRAR SESIÓN
+================================================== */
+
+async function cerrarSesion() {
+
+    try {
+
+        await fetch(
+            "/api/logout",
+            {
+                method: "POST",
+
+                credentials: "include"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error cerrando sesión:",
+            error
+        );
+
+    }
+
+
+    localStorage.removeItem(
+        "comicworld_user"
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* ==================================================
+   SEGURIDAD HTML
+================================================== */
+
+function escapeHtml(
+    text
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text == null
+            ? ""
+            : String(text);
+
+
+    return div.innerHTML;
+
+}
+
+
+/* ==================================================
+   TECLA ENTER EN BÚSQUEDA
+================================================== */
+
+document.getElementById(
+    "search-input"
+).addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            filtrarPublicaciones();
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   INICIO
+================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        comprobarSesion();
+
+    }
+);
+
+</script></body></html>
