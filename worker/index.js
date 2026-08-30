@@ -402,6 +402,109 @@ export default {
 
         }
 
+        // =========================================================
+// ADMIN - COMPROBAR ACCESO
+// =========================================================
+//
+// GET /api/admin/check
+//
+// Comprueba en el Worker si el usuario actualmente
+// conectado es el administrador.
+//
+// NO confiar solamente en admin.html.
+// =========================================================
+
+if (
+    request.method === "GET" &&
+    url.pathname === "/api/admin/check"
+) {
+
+    const admin =
+        await verificarAdministrador(
+            request,
+            env
+        );
+
+
+    /*
+     * Usuario no autenticado.
+     */
+
+    if (
+        !admin.autorizado &&
+        admin.status === 401
+    ) {
+
+        return jsonResponse(
+            {
+                success: true,
+
+                isAdmin: false,
+
+                loggedIn: false,
+
+                error:
+                    admin.error
+            },
+            200
+        );
+    }
+
+
+    /*
+     * Usuario autenticado pero
+     * no administrador.
+     */
+
+    if (
+        !admin.autorizado
+    ) {
+
+        return jsonResponse(
+            {
+                success: true,
+
+                isAdmin: false,
+
+                loggedIn: true,
+
+                error:
+                    admin.error
+            },
+            200
+        );
+    }
+
+
+    /*
+     * Administrador confirmado.
+     */
+
+    return jsonResponse(
+        {
+            success: true,
+
+            isAdmin: true,
+
+            loggedIn: true,
+
+            user: {
+
+                id:
+                    admin.user.id,
+
+                username:
+                    admin.user.username,
+
+                email:
+                    admin.user.email
+
+            }
+        },
+        200
+    );
+}
+
 
 
         // =========================================================
@@ -5064,7 +5167,106 @@ async function getSession(
 
 }
 
+// =========================================================
+// COMPROBAR ADMINISTRADOR
+// =========================================================
+//
+// Administrador principal de ComicWorldFiles:
+//
+// ID de usuario: 1
+// Email: josepunkrock.1@gmail.com
+//
+// La comprobación se realiza en el Worker.
+// Nunca se confía únicamente en admin.html.
+// =========================================================
 
+const ADMIN_USER_ID =
+    1;
+
+const ADMIN_EMAIL =
+    "josepunkrock.1@gmail.com";
+
+
+async function verificarAdministrador(
+    request,
+    env
+) {
+
+    const session =
+        await getSession(
+            request,
+            env
+        );
+
+
+    /*
+     * No hay sesión.
+     */
+
+    if (!session) {
+
+        return {
+            autorizado: false,
+
+            status: 401,
+
+            error:
+                "Debes iniciar sesión."
+        };
+    }
+
+
+    /*
+     * Comprobar ID y email.
+     *
+     * Deben coincidir ambos.
+     */
+
+    const esAdministrador =
+        Number(session.id) ===
+            ADMIN_USER_ID
+        &&
+        String(
+            session.email || ""
+        )
+        .toLowerCase()
+        ===
+        ADMIN_EMAIL.toLowerCase();
+
+
+    /*
+     * Usuario autenticado pero
+     * no es administrador.
+     */
+
+    if (!esAdministrador) {
+
+        return {
+            autorizado: false,
+
+            status: 403,
+
+            error:
+                "No tienes permisos de administrador."
+        };
+    }
+
+
+    /*
+     * Administrador confirmado.
+     */
+
+    return {
+
+        autorizado: true,
+
+        status: 200,
+
+        user: session
+
+    };
+
+}
 
 // =========================================================
 // RESPUESTA JSON
