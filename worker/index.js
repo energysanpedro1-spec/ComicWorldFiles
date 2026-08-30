@@ -1383,6 +1383,398 @@ if (
 
 }
 
+    // =========================================================
+// API ADMIN: ELIMINAR PUBLICACIÓN COMPLETA
+//
+// DELETE /api/admin/stories/:id
+//
+// Elimina:
+// - La publicación
+// - Sus capítulos
+// - Las imágenes de los capítulos en R2
+// - La portada en R2
+// - Los registros relacionados
+//
+// Solo disponible para el administrador.
+// =========================================================
+
+if (
+    url.pathname.startsWith("/api/admin/stories/") &&
+    request.method === "DELETE"
+) {
+
+    try {
+
+        // =====================================================
+        // COMPROBAR SESIÓN
+        // =====================================================
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        if (!session) {
+
+            return json({
+
+                success: false,
+
+                loggedIn: false,
+
+                isAdmin: false,
+
+                error:
+                    "Debes iniciar sesión."
+
+            }, 401);
+
+        }
+
+
+        // =====================================================
+        // COMPROBAR ADMINISTRADOR
+        // =====================================================
+
+        const isAdmin =
+            Number(session.id) === 1 &&
+            String(
+                session.email || ""
+            ).toLowerCase() ===
+            "josepunkrock.1@gmail.com";
+
+
+        if (!isAdmin) {
+
+            return json({
+
+                success: false,
+
+                loggedIn: true,
+
+                isAdmin: false,
+
+                error:
+                    "No tienes permisos de administrador."
+
+            }, 403);
+
+        }
+
+
+        // =====================================================
+        // OBTENER ID
+        // =====================================================
+
+        const storyId =
+            url.pathname
+                .split("/")
+                .pop();
+
+
+        if (
+            !storyId ||
+            !/^\d+$/.test(storyId)
+        ) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "ID de publicación inválido."
+
+            }, 400);
+
+        }
+
+
+        const id =
+            Number(storyId);
+
+
+        // =====================================================
+        // COMPROBAR QUE EXISTE
+        // =====================================================
+
+        const story =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        id,
+                        user_id,
+                        title,
+                        type
+                     FROM stories
+                     WHERE id = ?`
+                )
+                .bind(id)
+                .first();
+
+
+        if (!story) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "La publicación no existe."
+
+            }, 404);
+
+        }
+
+
+        // =====================================================
+        // OBTENER CAPÍTULOS
+        // =====================================================
+
+        const chaptersResult =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        id
+                     FROM chapters
+                     WHERE story_id = ?`
+                )
+                .bind(id)
+                .all();
+
+
+        const chapters =
+            chaptersResult.results || [];
+
+
+        // =====================================================
+        // ELIMINAR IMÁGENES DE LOS CAPÍTULOS
+        // =====================================================
+
+        let deletedImages = 0;
+
+
+        for (
+            const chapter of chapters
+        ) {
+
+            const imagesResult =
+                await env.DB
+                    .prepare(
+                        `SELECT
+                            id,
+                            object_key
+                         FROM chapter_images
+                         WHERE chapter_id = ?`
+                    )
+                    .bind(
+                        chapter.id
+                    )
+                    .all();
+
+
+            const images =
+                imagesResult.results || [];
+
+
+            for (
+                const image of images
+            ) {
+
+                if (
+                    image.object_key &&
+                    env.Images
+                ) {
+
+                    try {
+
+                        await env.Images.delete(
+                            image.object_key
+                        );
+
+                        deletedImages++;
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error eliminando imagen de R2:",
+                            image.object_key,
+                            error
+                        );
+
+                    }
+
+                }
+
+            }
+
+
+            // =================================================
+            // ELIMINAR REGISTROS DE IMÁGENES
+            // =================================================
+
+            await env.DB
+                .prepare(
+                    `DELETE FROM chapter_images
+                     WHERE chapter_id = ?`
+                )
+                .bind(
+                    chapter.id
+                )
+                .run();
+
+        }
+
+
+        // =====================================================
+        // ELIMINAR CAPÍTULOS
+        // =====================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM chapters
+                 WHERE story_id = ?`
+            )
+            .bind(id)
+            .run();
+
+
+        // =====================================================
+        // ELIMINAR PORTADA
+        // =====================================================
+
+        if (
+            env.Cover
+        ) {
+
+            const coverKey =
+                `covers/${story.user_id}/${id}`;
+
+
+            try {
+
+                await env.Cover.delete(
+                    coverKey
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Error eliminando portada:",
+                    coverKey,
+                    error
+                );
+
+            }
+
+        }
+
+
+        // =====================================================
+        // ELIMINAR FAVORITOS
+        // =====================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM favorites
+                 WHERE story_id = ?`
+            )
+            .bind(id)
+            .run();
+
+
+        // =====================================================
+        // ELIMINAR LIKES
+        // =====================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM likes
+                 WHERE story_id = ?`
+            )
+            .bind(id)
+            .run();
+
+
+        // =====================================================
+        // ELIMINAR COMENTARIOS
+        // =====================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM comments
+                 WHERE story_id = ?`
+            )
+            .bind(id)
+            .run();
+
+
+        // =====================================================
+        // ELIMINAR PUBLICACIÓN
+        // =====================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM stories
+                 WHERE id = ?`
+            )
+            .bind(id)
+            .run();
+
+
+        // =====================================================
+        // RESPUESTA
+        // =====================================================
+
+        return json({
+
+            success: true,
+
+            loggedIn: true,
+
+            isAdmin: true,
+
+            message:
+                "Publicación eliminada correctamente.",
+
+            deleted: {
+
+                story_id: id,
+
+                chapters:
+                    chapters.length,
+
+                images:
+                    deletedImages
+
+            }
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error eliminando publicación como administrador:",
+            error
+        );
+
+
+        return json({
+
+            success: false,
+
+            error:
+                error.message ||
+                "No se pudo eliminar la publicación."
+
+        }, 500);
+
+    }
+
+}    
+
 // =========================================================
 // API: ADMIN - ELIMINAR PUBLICACIÓN
 //
