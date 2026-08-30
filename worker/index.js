@@ -770,6 +770,315 @@ if (
 }
 
 // =========================================================
+// API: ADMIN - EDITAR PUBLICACIÓN
+//
+// PUT /api/admin/stories/update
+//
+// Permite al administrador modificar:
+//
+// - título
+// - descripción
+// - género
+// - tipo
+//
+// =========================================================
+
+if (
+    url.pathname === "/api/admin/stories/update" &&
+    request.method === "PUT"
+) {
+
+    try {
+
+        /*
+         * Comprobar sesión.
+         */
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        if (!session) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "Debes iniciar sesión."
+
+            }, 401);
+        }
+
+
+        /*
+         * Comprobar administrador.
+         */
+
+        const isAdmin =
+            Number(session.id) === 1 &&
+            String(
+                session.email || ""
+            ).toLowerCase() ===
+            "josepunkrock.1@gmail.com";
+
+
+        if (!isAdmin) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "No tienes permisos de administrador."
+
+            }, 403);
+        }
+
+
+        /*
+         * Obtener datos enviados.
+         */
+
+        const body =
+            await request.json();
+
+
+        const storyId =
+            Number(body.id);
+
+
+        /*
+         * Comprobar ID.
+         */
+
+        if (
+            !storyId ||
+            !Number.isInteger(storyId)
+        ) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "ID de publicación inválido."
+
+            }, 400);
+        }
+
+
+        /*
+         * Obtener valores.
+         */
+
+        const title =
+            String(
+                body.title || ""
+            ).trim();
+
+
+        const description =
+            String(
+                body.description || ""
+            ).trim();
+
+
+        const genre =
+            String(
+                body.genre || ""
+            ).trim();
+
+
+        const type =
+            String(
+                body.type || ""
+            ).trim().toLowerCase();
+
+
+        /*
+         * Validar título.
+         */
+
+        if (
+            title.length === 0
+        ) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "El título no puede estar vacío."
+
+            }, 400);
+        }
+
+
+        /*
+         * Validar tipo.
+         */
+
+        if (
+            type !== "historia" &&
+            type !== "historieta"
+        ) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "El tipo debe ser historia o historieta."
+
+            }, 400);
+        }
+
+
+        /*
+         * Comprobar que la publicación existe.
+         */
+
+        const existing =
+            await env.DB
+                .prepare(
+                    `SELECT id
+                     FROM stories
+                     WHERE id = ?`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        if (!existing) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "La publicación no existe."
+
+            }, 404);
+        }
+
+
+        /*
+         * Actualizar publicación.
+         */
+
+        await env.DB
+            .prepare(
+                `UPDATE stories
+                 SET
+                    title = ?,
+                    description = ?,
+                    genre = ?,
+                    type = ?
+                 WHERE id = ?`
+            )
+            .bind(
+                title,
+                description,
+                genre,
+                type,
+                storyId
+            )
+            .run();
+
+
+        /*
+         * Obtener publicación
+         * actualizada.
+         */
+
+        const updated =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        stories.id,
+                        stories.user_id,
+                        stories.title,
+                        stories.description,
+                        stories.genre,
+                        stories.type,
+                        stories.cover_url,
+                        stories.views,
+                        stories.created_at,
+                        users.username AS author,
+
+                        (
+                            SELECT COUNT(*)
+                            FROM story_likes
+                            WHERE story_likes.story_id =
+                                  stories.id
+                        ) AS likes_count,
+
+                        (
+                            SELECT COUNT(*)
+                            FROM story_comments
+                            WHERE story_comments.story_id =
+                                  stories.id
+                        ) AS comments_count
+
+                     FROM stories
+
+                     INNER JOIN users
+                     ON users.id = stories.user_id
+
+                     WHERE stories.id = ?`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        /*
+         * Respuesta.
+         */
+
+        return json({
+
+            success: true,
+
+            message:
+                "Publicación actualizada correctamente.",
+
+            story:
+                updated
+
+        }, 200);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error editando publicación:",
+            error
+        );
+
+
+        return json({
+
+            success: false,
+
+            error:
+                error.message ||
+                "No se pudo actualizar la publicación."
+
+        }, 500);
+
+    }
+
+}
+
+// =========================================================
 // API: LISTAR AUTORES
 //
 // GET /api/authors
