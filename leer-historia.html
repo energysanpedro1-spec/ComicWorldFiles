@@ -1633,7 +1633,7 @@ async function alternarFavorito() {
                 encodeURIComponent(
                     storyId
                 ) +
-                "/favorited",
+                "/favorite",
                 {
                     method: "POST",
 
@@ -1710,7 +1710,7 @@ async function alternarFavorito() {
 
 
         actualizarFavorito(
-            data.favorite
+            data.favorited
         );
 
 
@@ -1755,7 +1755,7 @@ function actualizarFavorito(
     ) {
 
         favoriteButton.classList.add(
-            "favorited"
+            "favorite"
         );
 
 
@@ -1766,7 +1766,7 @@ function actualizarFavorito(
     } else {
 
         favoriteButton.classList.remove(
-            "favorited"
+            "favorite"
         );
 
 
