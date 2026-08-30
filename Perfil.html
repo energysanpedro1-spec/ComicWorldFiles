@@ -1,0 +1,1723 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Mi perfil - ComicWorldFiles</title><style>
+
+/* ==========================================
+   GENERAL
+========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f4f4;
+
+    color: #222;
+}
+
+
+/* ==========================================
+   CABECERA
+========================================== */
+
+header {
+
+    background: #20242b;
+
+    color: white;
+
+    padding: 15px 20px;
+}
+
+.header-content {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.logo {
+
+    font-size: 24px;
+
+    font-weight: bold;
+}
+
+nav {
+
+    display: flex;
+
+    gap: 15px;
+}
+
+nav a {
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+}
+
+nav a:hover {
+
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   CONTENEDOR
+========================================== */
+
+.container {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    padding: 30px 20px;
+}
+
+
+/* ==========================================
+   TARJETAS
+========================================== */
+
+.card {
+
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+
+/* ==========================================
+   PERFIL
+========================================== */
+
+.profile-header {
+
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+.avatar {
+
+    width: 90px;
+
+    height: 90px;
+
+    border-radius: 50%;
+
+    background: #20242b;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 15px auto;
+
+    font-size: 36px;
+
+    font-weight: bold;
+}
+
+.profile-header h1 {
+
+    margin: 0;
+
+    font-size: 28px;
+}
+
+.profile-subtitle {
+
+    color: #777;
+
+    margin-top: 8px;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   INFORMACIÓN
+========================================== */
+
+.info-list {
+
+    border-top: 1px solid #eee;
+}
+
+.info-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.info-label {
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+.info-value {
+
+    font-weight: bold;
+
+    text-align: right;
+
+    word-break: break-word;
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS
+========================================== */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+.stat {
+
+    background: #f7f7f7;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+.stat-number {
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    color: #20242b;
+}
+
+.stat-label {
+
+    margin-top: 5px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+.buttons {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.button,
+.logout-button {
+
+    display: inline-block;
+
+    border: none;
+
+    padding: 11px 18px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    text-decoration: none;
+}
+
+.home-button {
+
+    background: #20242b;
+
+    color: white;
+}
+
+.home-button:hover {
+
+    background: #343a40;
+}
+
+.logout-button {
+
+    background: #c0392b;
+
+    color: white;
+}
+
+.logout-button:hover {
+
+    background: #a93226;
+}
+
+
+/* ==========================================
+   SECCIONES
+========================================== */
+
+.section-title {
+
+    margin-bottom: 15px;
+}
+
+.section-title h2 {
+
+    margin: 0;
+
+    font-size: 23px;
+}
+
+
+/* ==========================================
+   PUBLICACIONES
+========================================== */
+
+.stories {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.story-card {
+
+    display: flex;
+
+    gap: 18px;
+
+    background: #f8f8f8;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 10px;
+
+    padding: 15px;
+}
+
+.story-cover {
+
+    width: 90px;
+
+    min-width: 90px;
+
+    height: 125px;
+
+    border-radius: 7px;
+
+    overflow: hidden;
+
+    background: #ddd;
+}
+
+.story-cover img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.story-no-cover {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: #888;
+
+    font-size: 12px;
+
+    padding: 8px;
+}
+
+.story-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.story-info h3 {
+
+    margin: 0 0 7px 0;
+
+    font-size: 19px;
+}
+
+.story-info h3 a {
+
+    color: #222;
+
+    text-decoration: none;
+}
+
+.story-info h3 a:hover {
+
+    color: #ff6b35;
+}
+
+.story-type {
+
+    display: inline-block;
+
+    background: #eee;
+
+    color: #666;
+
+    padding: 4px 8px;
+
+    border-radius: 12px;
+
+    font-size: 11px;
+
+    margin-bottom: 8px;
+}
+
+.story-description {
+
+    color: #666;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    margin-bottom: 8px;
+}
+
+.story-meta {
+
+    color: #888;
+
+    font-size: 12px;
+}
+
+
+/* ==========================================
+   FAVORITOS
+========================================== */
+
+.favorite-card {
+
+    position: relative;
+}
+
+.favorite-label {
+
+    color: #b8860b;
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.loading {
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: #777;
+}
+
+.empty {
+
+    background: #f8f8f8;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 10px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #777;
+}
+
+.error {
+
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #c0392b;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+footer {
+
+    background: #20242b;
+
+    color: #aaa;
+
+    text-align: center;
+
+    padding: 30px;
+
+    margin-top: 40px;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   CELULAR
+========================================== */
+
+@media (max-width: 600px) {
+
+    .header-content {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    nav {
+
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+    .container {
+
+        padding: 20px 12px;
+    }
+
+    .card {
+
+        padding: 20px;
+    }
+
+    .info-row {
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .info-value {
+
+        text-align: left;
+    }
+
+    .stats {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .story-card {
+
+        gap: 12px;
+    }
+
+    .story-cover {
+
+        width: 75px;
+
+        min-width: 75px;
+
+        height: 105px;
+    }
+
+    .story-info h3 {
+
+        font-size: 17px;
+    }
+
+    .story-description {
+
+        font-size: 13px;
+    }
+
+}
+
+</style></head><body><!-- ==========================================
+     CABECERA
+========================================== --><header><div class="header-content"><div class="logo">
+ComicWorldFiles
+</div><nav><a href="index.html">
+Inicio
+</a><a href="crear-historia.html">
+Publicar
+</a></nav></div></header><!-- ==========================================
+     CONTENIDO
+========================================== --><main class="container"><div id="loading"
+     class="loading">Cargando perfil...
+
+</div><div id="error"
+     class="error"
+     style="display:none;"><h2>
+No se pudo cargar el perfil
+</h2><p id="error-message">
+Ha ocurrido un error.
+</p><a href="login.html"
+class="button home-button">
+
+Iniciar sesión
+
+</a></div><!-- ==========================================
+     PERFIL
+========================================== --><section id="profile"
+         style="display:none;"><div class="card"><div class="profile-header"><div id="avatar"
+     class="avatar">?
+
+</div><h1 id="profile-username">
+Usuario
+</h1><div class="profile-subtitle">
+Perfil de ComicWorldFiles
+</div></div><div class="info-list"><div class="info-row"><span class="info-label">
+Nombre de usuario
+</span><span id="username"
+class="info-value">
+
+- 
+
+</span></div><div class="info-row"><span class="info-label">
+Correo electrónico
+</span><span id="email"
+class="info-value">
+
+- 
+
+</span></div><div class="info-row"><span class="info-label">
+ID de usuario
+</span><span id="user-id"
+class="info-value">
+
+- 
+
+</span></div></div><div class="stats"><div class="stat"><div id="stories-count"
+     class="stat-number">0
+
+</div><div class="stat-label">
+Publicaciones
+</div></div><div class="stat"><div id="favorites-count"
+     class="stat-number">0
+
+</div><div class="stat-label">
+Favoritos
+</div></div></div><div class="buttons"><a href="index.html"
+class="button home-button">
+
+← Volver al inicio
+
+</a><button class="logout-button"
+onclick="logout()">
+
+Cerrar sesión
+
+</button></div></div><!-- ==========================================
+     MIS PUBLICACIONES
+========================================== --><div class="card"><div class="section-title"><h2>
+Mis publicaciones
+</h2></div><section id="stories"
+         class="stories"></section></div><!-- ==========================================
+     FAVORITOS
+========================================== --><div class="card"><div class="section-title"><h2>
+⭐ Mis favoritos
+</h2></div><section id="favorites"
+         class="stories"></section></div></section></main><!-- ==========================================
+     FOOTER
+========================================== --><footer>ComicWorldFiles © 2026
+
+<br>
+<br>Una plataforma para publicar y descubrir
+historias independientes.
+
+</footer><script>
+
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+let currentUser = null;
+
+
+const loading =
+    document.getElementById(
+        "loading"
+    );
+
+
+const profile =
+    document.getElementById(
+        "profile"
+    );
+
+
+const error =
+    document.getElementById(
+        "error"
+    );
+
+
+const errorMessage =
+    document.getElementById(
+        "error-message"
+    );
+
+
+const storiesContainer =
+    document.getElementById(
+        "stories"
+    );
+
+
+const favoritesContainer =
+    document.getElementById(
+        "favorites"
+    );
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    cargarPerfil
+);
+
+
+/* ==========================================
+   CARGAR PERFIL
+========================================== */
+
+async function cargarPerfil() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta /api/me:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió JSON válido."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.loggedIn ||
+            !data.user
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        currentUser =
+            data.user;
+
+
+        mostrarInformacionUsuario(
+            currentUser
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        profile.style.display =
+            "block";
+
+
+        await cargarPublicaciones(
+            currentUser.id
+        );
+
+
+        await cargarFavoritos();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando perfil:",
+            error
+        );
+
+
+        mostrarError(
+            error.message ||
+            "No se pudo cargar el perfil."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   MOSTRAR INFORMACIÓN
+========================================== */
+
+function mostrarInformacionUsuario(
+    user
+) {
+
+    const username =
+        user.username ||
+        "Usuario";
+
+
+    document.getElementById(
+        "profile-username"
+    ).textContent =
+        username;
+
+
+    document.getElementById(
+        "username"
+    ).textContent =
+        username;
+
+
+    document.getElementById(
+        "email"
+    ).textContent =
+        user.email ||
+        "-";
+
+
+    document.getElementById(
+        "user-id"
+    ).textContent =
+        user.id ||
+        "-";
+
+
+    /*
+     * Primera letra del nombre
+     * como avatar.
+     */
+
+    const avatar =
+        document.getElementById(
+            "avatar"
+        );
+
+
+    avatar.textContent =
+        username
+            .charAt(0)
+            .toUpperCase();
+
+}
+
+
+/* ==========================================
+   CONSTRUIR URL DE PORTADA
+========================================== */
+
+function obtenerUrlPortada(
+    coverUrl
+) {
+
+    if (!coverUrl) {
+
+        return null;
+
+    }
+
+
+    const url =
+        String(
+            coverUrl
+        ).trim();
+
+
+    if (!url) {
+
+        return null;
+
+    }
+
+
+    if (
+        url.startsWith(
+            "http://"
+        ) ||
+        url.startsWith(
+            "https://"
+        ) ||
+        url.startsWith(
+            "data:"
+        )
+    ) {
+
+        return url;
+
+    }
+
+
+    if (
+        url.startsWith("/")
+    ) {
+
+        return url;
+
+    }
+
+
+    return "/" + url;
+
+}
+
+
+/* ==========================================
+   CREAR TARJETA
+========================================== */
+
+function crearTarjetaPublicacion(
+    item,
+    favorito
+) {
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+
+    card.className =
+        "story-card";
+
+
+    if (favorito) {
+
+        card.classList.add(
+            "favorite-card"
+        );
+
+    }
+
+
+    /* ==============================
+       PORTADA
+    ============================== */
+
+    const cover =
+        document.createElement(
+            "div"
+        );
+
+
+    cover.className =
+        "story-cover";
+
+
+    const coverUrl =
+        obtenerUrlPortada(
+            item.cover_url
+        );
+
+
+    if (coverUrl) {
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.src =
+            coverUrl;
+
+
+        image.alt =
+            item.title ||
+            "Portada";
+
+
+        image.loading =
+            "lazy";
+
+
+        image.onerror =
+            function() {
+
+                cover.innerHTML =
+                    "";
+
+                const noCover =
+                    document.createElement(
+                        "div"
+                    );
+
+                noCover.className =
+                    "story-no-cover";
+
+                noCover.textContent =
+                    "Sin portada";
+
+                cover.appendChild(
+                    noCover
+                );
+
+            };
+
+
+        cover.appendChild(
+            image
+        );
+
+
+    } else {
+
+        const noCover =
+            document.createElement(
+                "div"
+            );
+
+
+        noCover.className =
+            "story-no-cover";
+
+
+        noCover.textContent =
+            "Sin portada";
+
+
+        cover.appendChild(
+            noCover
+        );
+
+    }
+
+
+    card.appendChild(
+        cover
+    );
+
+
+    /* ==============================
+       INFORMACIÓN
+    ============================== */
+
+    const info =
+        document.createElement(
+            "div"
+        );
+
+
+    info.className =
+        "story-info";
+
+
+    if (favorito) {
+
+        const favoriteLabel =
+            document.createElement(
+                "div"
+            );
+
+
+        favoriteLabel.className =
+            "favorite-label";
+
+
+        favoriteLabel.textContent =
+            "⭐ Guardado en favoritos";
+
+
+        info.appendChild(
+            favoriteLabel
+        );
+
+    }
+
+
+    const title =
+        document.createElement(
+            "h3"
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    link.href =
+        (
+            item.type ===
+            "historieta"
+        )
+            ? "leer-historieta.html?id=" +
+              encodeURIComponent(
+                  item.id
+              )
+            : "leer-historia.html?id=" +
+              encodeURIComponent(
+                  item.id
+              );
+
+
+    link.textContent =
+        item.title ||
+        "Sin título";
+
+
+    title.appendChild(
+        link
+    );
+
+
+    info.appendChild(
+        title
+    );
+
+
+    /* ==============================
+       TIPO
+    ============================== */
+
+    const type =
+        document.createElement(
+            "span"
+        );
+
+
+    type.className =
+        "story-type";
+
+
+    type.textContent =
+        item.type ===
+        "historieta"
+            ? "Historieta"
+            : "Historia";
+
+
+    info.appendChild(
+        type
+    );
+
+
+    /* ==============================
+       DESCRIPCIÓN
+    ============================== */
+
+    const description =
+        document.createElement(
+            "div"
+        );
+
+
+    description.className =
+        "story-description";
+
+
+    description.textContent =
+        item.description ||
+        "Sin descripción.";
+
+
+    info.appendChild(
+        description
+    );
+
+
+    /* ==============================
+       META
+    ============================== */
+
+    const meta =
+        document.createElement(
+            "div"
+        );
+
+
+    meta.className =
+        "story-meta";
+
+
+    const views =
+        Number(
+            item.views || 0
+        );
+
+
+    const likes =
+        Number(
+            item.likes_count || 0
+        );
+
+
+    meta.textContent =
+        "👁 " +
+        views +
+        " visitas";
+
+
+    if (
+        item.likes_count !==
+        undefined
+    ) {
+
+        meta.textContent +=
+            " · ❤️ " +
+            likes +
+            " Me gusta";
+
+    }
+
+
+    info.appendChild(
+        meta
+    );
+
+
+    card.appendChild(
+        info
+    );
+
+
+    return card;
+
+}
+
+
+/* ==========================================
+   CARGAR PUBLICACIONES
+========================================== */
+
+async function cargarPublicaciones(
+    userId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (error) {
+
+            throw new Error(
+                "La API de publicaciones no devolvió JSON válido."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar las publicaciones."
+            );
+
+        }
+
+
+        const allStories =
+            Array.isArray(
+                data.stories
+            )
+                ? data.stories
+                : [];
+
+
+        const userStories =
+            allStories.filter(
+                function(item) {
+
+                    return String(
+                        item.user_id
+                    ) === String(
+                        userId
+                    );
+
+                }
+            );
+
+
+        document.getElementById(
+            "stories-count"
+        ).textContent =
+            userStories.length;
+
+
+        storiesContainer.innerHTML =
+            "";
+
+
+        if (
+            userStories.length === 0
+        ) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+
+            empty.className =
+                "empty";
+
+
+            empty.innerHTML =
+                "Todavía no has publicado ninguna historia." +
+                "<br><br>" +
+                "<a href='crear-historia.html'>" +
+                "Crear mi primera publicación" +
+                "</a>";
+
+
+            storiesContainer.appendChild(
+                empty
+            );
+
+
+            return;
+
+        }
+
+
+        userStories.forEach(
+            function(item) {
+
+                storiesContainer.appendChild(
+                    crearTarjetaPublicacion(
+                        item,
+                        false
+                    )
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando publicaciones:",
+            error
+        );
+
+
+        storiesContainer.innerHTML =
+            "";
+
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.className =
+            "empty";
+
+
+        empty.textContent =
+            "No se pudieron cargar tus publicaciones.";
+
+
+        storiesContainer.appendChild(
+            empty
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   CARGAR FAVORITOS
+========================================== */
+
+async function cargarFavoritos() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/favorites",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (error) {
+
+            throw new Error(
+                "La API de favoritos no devolvió JSON válido."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar los favoritos."
+            );
+
+        }
+
+
+        const favorites =
+            Array.isArray(
+                data.favorites
+            )
+                ? data.favorites
+                : [];
+
+
+        document.getElementById(
+            "favorites-count"
+        ).textContent =
+            favorites.length;
+
+
+        favoritesContainer.innerHTML =
+            "";
+
+
+        if (
+            favorites.length === 0
+        ) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+
+            empty.className =
+                "empty";
+
+
+            empty.textContent =
+                "Todavía no tienes publicaciones favoritas.";
+
+
+            favoritesContainer.appendChild(
+                empty
+            );
+
+
+            return;
+
+        }
+
+
+        favorites.forEach(
+            function(item) {
+
+                favoritesContainer.appendChild(
+                    crearTarjetaPublicacion(
+                        item,
+                        true
+                    )
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando favoritos:",
+            error
+        );
+
+
+        favoritesContainer.innerHTML =
+            "";
+
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.className =
+            "empty";
+
+
+        empty.textContent =
+            "No se pudieron cargar tus favoritos.";
+
+
+        favoritesContainer.appendChild(
+            empty
+        );
+
+
+        /*
+         * Si el endpoint no está disponible,
+         * no rompemos el resto del perfil.
+         */
+
+        document.getElementById(
+            "favorites-count"
+        ).textContent =
+            "0";
+
+    }
+
+}
+
+
+/* ==========================================
+   CERRAR SESIÓN
+========================================== */
+
+async function logout() {
+
+    try {
+
+        await fetch(
+            "/api/logout",
+            {
+                method: "POST",
+
+                credentials:
+                    "include"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error cerrando sesión:",
+            error
+        );
+
+    }
+
+
+    localStorage.removeItem(
+        "comicworld_user"
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+function mostrarError(
+    mensaje
+) {
+
+    loading.style.display =
+        "none";
+
+
+    profile.style.display =
+        "none";
+
+
+    errorMessage.textContent =
+        mensaje;
+
+
+    error.style.display =
+        "block";
+
+}
+
+</script></body></html>
