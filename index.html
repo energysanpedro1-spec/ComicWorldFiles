@@ -1,24 +1,12 @@
-<!DOCTYPE html>
-
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-   content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <!-- ==================================================
      GOOGLE SEARCH CONSOLE
-================================================== -->
+================================================== --><meta name="google-site-verification"
+content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
 
-<meta name="google-site-verification"
-   content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
-
-<title>ComicWorldFiles</title>
-
-<style>
+<title>ComicWorldFiles</title><style>
 
 /* ==================================================
    GENERAL
@@ -132,6 +120,43 @@ nav a:hover {
     align-items: center;
 
     gap: 10px;
+}
+
+
+/* ==================================================
+   BOTÓN DONATE PAYPAL
+================================================== */
+
+.donate-button {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    background: #0070ba;
+
+    color: #ffffff !important;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+.donate-button:hover {
+    background: #005ea6;
+
+    text-decoration: none;
+}
+
+.paypal-icon {
+    font-size: 16px;
 }
 
 
@@ -750,270 +775,132 @@ footer {
 
 }
 
-</style>
-
-</head>
-
-<body>
-
-<!-- ==================================================
+</style></head><body><!-- ==================================================
      CABECERA
-================================================== -->
-
-<header>
-
-<div class="header-content">
-
-<div class="logo-area">
-
-<div class="logo">
+================================================== --><header><div class="header-content"><div class="logo-area"><div class="logo">
     ComicWorldFiles
-</div>
-
-<div class="subtitle">
+</div><div class="subtitle">
     Crea tus historias o cómics y sube tus archivos
-</div>
-
-</div>
-
-<nav>
-
-<a href="index.html">
+</div></div><nav><a href="index.html">
 Inicio
-</a>
-
-<a href="#recent-section">
+</a><a href="#recent-section">
 Historias
-</a>
-
-<a href="#">
+</a><a href="#">
 Autores
-</a>
+</a><a
+href="https://www.paypal.com/paypalme/josesanpedropl"
+target="_blank"
+rel="noopener noreferrer"
+class="donate-button"
+title="Donar con PayPal"
 
-<span id="user-area">
+«»
 
-<a href="login.html">
+<span class="paypal-icon">💙</span>
+Donate
+
+</a><span id="user-area"><a href="login.html">
 Iniciar sesión
-</a>
-
-</span>
-
-</nav>
-
-</div>
-
-</header>
-
-<main class="container">
-
-<!-- ==================================================
+</a></span></nav></div></header><main class="container"><!-- ==================================================
      BUSCADOR
-================================================== -->
-
-<div class="search">
-
-<input
+================================================== --><div class="search"><input
 type="text"
 id="search-input"
 placeholder="Buscar historias, historietas o autores..."
 
->
+«»
 
 <button
 type="button"
 onclick="buscarHistorias()"
 
->
+«»
 
-```
 Buscar
-```
-
 </button>
 
-</div>
-
-<!-- ==================================================
+</div><!-- ==================================================
      LOGO DESTACADO
-================================================== -->
+================================================== --><section class="hero"><div class="hero-logo-box"><div class="hero-image"><img
+src="logo.jpg"
+alt="ComicWorldFiles"
 
-<section class="hero">
+«»
 
-<div class="hero-logo-box">
-
-<div class="hero-image">
-
-```
-<img
-    src="logo.jpg"
-    alt="ComicWorldFiles"
->
-```
-
-</div>
-
-<div class="hero-message">
-
-```
+</div><div class="hero-message">
 Explora, sube y edita historias o comics
-```
-
-</div>
-
-</div>
-
-</section>
-
-<!-- ==================================================
+</div></div></section><!-- ==================================================
      PUBLICACIONES RECIENTES
-================================================== -->
-
-<div
+================================================== --><div
     class="section-title"
     id="recent-section"
->
-
-<h2>
+><h2>
 Publicaciones recientes
-</h2>
-
-<a href="#recent-section">
+</h2><a href="#recent-section">
 Ver todas →
-</a>
-
-</div>
-
-<section
+</a></div><section
     class="stories"
     id="recent-stories"
->
-
-<div class="empty-message">
+><div class="empty-message">
 Cargando publicaciones...
-</div>
-
-</section>
-
-<!-- ==================================================
+</div></section><!-- ==================================================
      TIPOS DE PUBLICACIÓN
-================================================== -->
-
-<div
+================================================== --><div
     class="section-title"
     style="margin-top:40px;"
->
-
-<h2>
+><h2>
 ¿Qué quieres publicar?
-</h2>
-
-</div>
-
-<section class="types">
-
-<!-- HISTORIAS -->
-
-<div class="type-box">
-
-<h3>
+</h2></div><section class="types"><!-- HISTORIAS --><div class="type-box"><h3>
 📖 Historias
-</h3>
-
-<p>
+</h3><p>
 Publica novelas, cuentos, relatos y cualquier
 historia escrita por capítulos.
-</p>
-
-<a
+</p><a
 class="type-button"
 href="crear-historia.html"
 onclick="requiereLogin(event, 'crear-historia.html')"
 
->
+«»
 
-```
 Crear historia
-```
-
 </a>
 
-</div>
-
-<!-- HISTORIETAS -->
-
-<div class="type-box">
-
-<h3>
+</div><!-- HISTORIETAS --><div class="type-box"><h3>
 🖼️ Historietas
-</h3>
-
-<p>
+</h3><p>
 Publica tus cómics página por página y permite
 que otros usuarios los lean desde el celular.
-</p>
-
-<a
+</p><a
 class="type-button"
 href="crear-historieta.html"
 onclick="requiereLogin(event, 'crear-historieta.html')"
 
->
+«»
 
-```
 Crear historieta
-```
-
 </a>
 
-</div>
-
-</section>
-
-<!-- ==================================================
+</div></section><!-- ==================================================
      MÁS POPULARES
-================================================== -->
-
-<div class="section-title">
-
-<h2>
+================================================== --><div class="section-title"><h2>
 Más populares
-</h2>
-
-<a href="#popular-section">
+</h2><a href="#popular-section">
 Ver todas →
-</a>
-
-</div>
-
-<section
+</a></div><section
     class="stories"
     id="popular-section"
->
-
-<div class="empty-message">
+><div class="empty-message">
 Cargando publicaciones...
-</div>
-
-</section>
-
-</main>
-
-<!-- ==================================================
+</div></section></main><!-- ==================================================
      FOOTER
-================================================== -->
-
-<footer>
-
-ComicWorldFiles © 2026
+================================================== --><footer>ComicWorldFiles © 2026
 
 <br><br>
 
 Una plataforma para publicar y descubrir
 historias independientes.
 
-</footer>
-
-<script>
+</footer><script>
 
 /* ==================================================
    VARIABLES
@@ -1451,10 +1338,6 @@ function mostrarHistorias(
             "card";
 
 
-        /* ==========================================
-           TIPO
-        ========================================== */
-
         const tipo =
             String(
                 story.type || "historia"
@@ -1482,10 +1365,6 @@ function mostrarHistorias(
                 ? "Leer historieta"
                 : "Leer historia";
 
-
-        /* ==========================================
-           PORTADA
-        ========================================== */
 
         let coverHTML;
 
@@ -1530,10 +1409,6 @@ function mostrarHistorias(
 
         }
 
-
-        /* ==========================================
-           TARJETA
-        ========================================== */
 
         card.innerHTML =
 
@@ -1755,8 +1630,4 @@ checkSession();
 
 loadStories();
 
-</script>
-
-</body>
-
-</html>
+</script></body></html>
