@@ -403,111 +403,6 @@ export default {
         }
 
         // =========================================================
-// ADMIN - COMPROBAR ACCESO
-// =========================================================
-//
-// GET /api/admin/check
-//
-// Comprueba en el Worker si el usuario actualmente
-// conectado es el administrador.
-//
-// NO confiar solamente en admin.html.
-// =========================================================
-
-if (
-    request.method === "GET" &&
-    url.pathname === "/api/admin/check"
-) {
-
-    const admin =
-        await verificarAdministrador(
-            request,
-            env
-        );
-
-
-    /*
-     * Usuario no autenticado.
-     */
-
-    if (
-        !admin.autorizado &&
-        admin.status === 401
-    ) {
-
-        return jsonResponse(
-            {
-                success: true,
-
-                isAdmin: false,
-
-                loggedIn: false,
-
-                error:
-                    admin.error
-            },
-            200
-        );
-    }
-
-
-    /*
-     * Usuario autenticado pero
-     * no administrador.
-     */
-
-    if (
-        !admin.autorizado
-    ) {
-
-        return jsonResponse(
-            {
-                success: true,
-
-                isAdmin: false,
-
-                loggedIn: true,
-
-                error:
-                    admin.error
-            },
-            200
-        );
-    }
-
-
-    /*
-     * Administrador confirmado.
-     */
-
-    return jsonResponse(
-        {
-            success: true,
-
-            isAdmin: true,
-
-            loggedIn: true,
-
-            user: {
-
-                id:
-                    admin.user.id,
-
-                username:
-                    admin.user.username,
-
-                email:
-                    admin.user.email
-
-            }
-        },
-        200
-    );
-}
-
-
-
-        // =========================================================
         // API: LOGOUT
         // POST /api/logout
         // =========================================================
@@ -578,6 +473,149 @@ if (
             }
 
         }
+
+        
+// =========================================================
+// API: COMPROBAR ADMINISTRADOR
+//
+// GET /api/admin/check
+//
+// Comprueba si el usuario actualmente conectado
+// es el administrador de ComicWorldFiles.
+// =========================================================
+
+if (
+    url.pathname === "/api/admin/check" &&
+    request.method === "GET"
+) {
+
+    try {
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        /*
+         * No hay sesión iniciada.
+         */
+
+        if (!session) {
+
+            return json({
+
+                success: true,
+
+                loggedIn: false,
+
+                isAdmin: false,
+
+                error:
+                    "Debes iniciar sesión."
+
+            }, 200);
+        }
+
+
+        /*
+         * Comprobar ID y email.
+         *
+         * Ambos deben coincidir.
+         */
+
+        const isAdmin =
+            Number(session.id) === 1 &&
+            String(
+                session.email || ""
+            ).toLowerCase() ===
+            "josepunkrock.1@gmail.com";
+
+
+        /*
+         * Usuario autenticado pero
+         * no administrador.
+         */
+
+        if (!isAdmin) {
+
+            return json({
+
+                success: true,
+
+                loggedIn: true,
+
+                isAdmin: false,
+
+                user: {
+
+                    id:
+                        session.id,
+
+                    username:
+                        session.username,
+
+                    email:
+                        session.email
+
+                },
+
+                error:
+                    "No tienes permisos de administrador."
+
+            }, 200);
+        }
+
+
+        /*
+         * Administrador confirmado.
+         */
+
+        return json({
+
+            success: true,
+
+            loggedIn: true,
+
+            isAdmin: true,
+
+            user: {
+
+                id:
+                    session.id,
+
+                username:
+                    session.username,
+
+                email:
+                    session.email
+
+            }
+
+        }, 200);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando administrador:",
+            error
+        );
+
+
+        return json({
+
+            success: false,
+
+            error:
+                error.message
+
+        }, 500);
+
+    }
+
+}
 
 // =========================================================
 // API: LISTAR AUTORES
