@@ -1,0 +1,1871 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Autores - ComicWorldFiles</title><style>
+
+/* ==================================================
+   GENERAL
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f4f4;
+
+    color: #222;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* ==================================================
+   CABECERA
+================================================== */
+
+header {
+    background: #20242b;
+
+    color: white;
+
+    padding: 15px 20px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1100px;
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+/* ==================================================
+   LOGO
+================================================== */
+
+.logo-area {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.logo {
+    font-size: 26px;
+
+    font-weight: bold;
+
+    line-height: 1;
+}
+
+.subtitle {
+    color: #ff9a75;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+
+    letter-spacing: 0.2px;
+}
+
+
+/* ==================================================
+   NAVEGACIÓN
+================================================== */
+
+nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+nav > a {
+    color: #ffffff;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+}
+
+nav > a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==================================================
+   ÁREA DE USUARIO
+================================================== */
+
+#user-area {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-left: 5px;
+}
+
+#user-area span,
+#user-area a {
+    color: #ffffff;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+}
+
+#user-area a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==================================================
+   DONATE
+================================================== */
+
+.donate-button {
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    background: #0070ba;
+
+    color: #ffffff !important;
+
+    padding: 8px 12px !important;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+.donate-button:hover {
+    background: #005ea6;
+
+    text-decoration: none !important;
+}
+
+.paypal-icon {
+    font-size: 16px;
+}
+
+
+/* ==================================================
+   CONTENEDOR
+================================================== */
+
+.container {
+    max-width: 1100px;
+
+    margin: auto;
+
+    padding: 25px 20px;
+}
+
+
+/* ==================================================
+   VOLVER
+================================================== */
+
+.back {
+    display: inline-block;
+
+    color: #20242b;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    margin-bottom: 20px;
+}
+
+.back:hover {
+    text-decoration: underline;
+}
+
+
+/* ==================================================
+   CABECERA DE AUTORES
+================================================== */
+
+.page-card {
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    margin-bottom: 30px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+.page-card h1 {
+    margin: 0 0 8px;
+
+    font-size: 28px;
+}
+
+.page-card p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* ==================================================
+   BUSCADOR
+================================================== */
+
+.search-box {
+    margin-top: 22px;
+
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    background: #fafafa;
+}
+
+.search-box input:focus {
+    border-color: #ff6b35;
+
+    background: #ffffff;
+}
+
+
+/* ==================================================
+   TÍTULO SECCIÓN
+================================================== */
+
+.section-title {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    font-size: 22px;
+}
+
+.section-title span {
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   AUTORES
+================================================== */
+
+.authors {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* ==================================================
+   TARJETA AUTOR
+================================================== */
+
+.author-card {
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.08);
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.author-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.author-icon {
+    width: 58px;
+
+    height: 58px;
+
+    border-radius: 50%;
+
+    background: #20242b;
+
+    color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 27px;
+
+    flex-shrink: 0;
+}
+
+.author-info {
+    min-width: 0;
+}
+
+.author-name {
+    margin: 0 0 5px;
+
+    font-size: 18px;
+
+    word-break: break-word;
+}
+
+.author-publications {
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   BOTÓN AUTOR
+================================================== */
+
+.author-button {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-height: 38px;
+
+    margin-top: 18px;
+
+    padding: 9px 10px;
+
+    background: #20242b;
+
+    color: #ffffff !important;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.author-button:hover {
+    background: #343a40;
+}
+
+
+/* ==================================================
+   PUBLICACIONES DEL AUTOR
+================================================== */
+
+.author-publications-section {
+    margin-top: 40px;
+
+    display: none;
+}
+
+.author-publications-header {
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.author-publications-header h2 {
+    margin: 0;
+
+    font-size: 21px;
+}
+
+.close-author {
+    border: 0;
+
+    background: #eee;
+
+    color: #333;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.close-author:hover {
+    background: #ddd;
+}
+
+
+/* ==================================================
+   HISTORIAS
+================================================== */
+
+.stories {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* ==================================================
+   TARJETAS
+================================================== */
+
+.card {
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.08);
+}
+
+
+/* ==================================================
+   PORTADA
+================================================== */
+
+.cover {
+    height: 230px;
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5c677d,
+            #222831
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 40px;
+}
+
+.cover img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.publication-type {
+    position: absolute;
+
+    top: 10px;
+
+    left: 10px;
+
+    z-index: 2;
+
+    background:
+        rgba(32,36,43,0.9);
+
+    color: #ffffff;
+
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   CONTENIDO TARJETA
+================================================== */
+
+.card-content {
+    padding: 15px;
+}
+
+.card h3 {
+    margin: 0 0 7px;
+
+    font-size: 17px;
+}
+
+.author {
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 7px;
+}
+
+.description {
+    color: #666;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+
+    min-height: 36px;
+}
+
+.card-stats {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 8px;
+
+    color: #888;
+
+    font-size: 11px;
+}
+
+
+/* ==================================================
+   BOTÓN LEER
+================================================== */
+
+.card-button {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-height: 38px;
+
+    margin-top: 12px;
+
+    padding: 9px 10px;
+
+    background: #20242b;
+
+    color: #ffffff !important;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.card-button:hover {
+    background: #343a40;
+}
+
+
+/* ==================================================
+   MENSAJES
+================================================== */
+
+.message {
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    padding: 25px;
+
+    color: #666;
+
+    text-align: center;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06);
+
+    grid-column: 1 / -1;
+}
+
+.error-message {
+    color: #b52b2b;
+
+    border: 1px solid #e3aaaa;
+
+    background: #fff4f4;
+}
+
+.loading {
+    color: #777;
+
+    background: #ffffff;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    grid-column: 1 / -1;
+}
+
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+footer {
+    background: #20242b;
+
+    color: #aaa;
+
+    text-align: center;
+
+    padding: 30px;
+
+    margin-top: 40px;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 800px) {
+
+    .header-content {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    nav {
+        width: 100%;
+
+        justify-content: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+    .authors {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .stories {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* ==================================================
+   CELULAR
+================================================== */
+
+@media (max-width: 500px) {
+
+    .container {
+        padding: 20px 12px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+    nav {
+        gap: 10px;
+    }
+
+    #user-area {
+        gap: 10px;
+    }
+
+    .page-card {
+        padding: 20px;
+    }
+
+    .page-card h1 {
+        font-size: 23px;
+    }
+
+    .authors {
+        grid-template-columns:
+            1fr;
+    }
+
+    .stories {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 12px;
+    }
+
+    .cover {
+        height: 190px;
+    }
+
+    .card-content {
+        padding: 10px;
+    }
+
+    .card h3 {
+        font-size: 15px;
+    }
+
+    .description {
+        display: none;
+    }
+
+    .author-publications-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+}
+
+
+/* ==================================================
+   PANTALLAS MUY PEQUEÑAS
+================================================== */
+
+@media (max-width: 350px) {
+
+    .stories {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style></head><body><!-- ==================================================
+     CABECERA
+================================================== --><header><div class="header-content"><div class="logo-area"><div class="logo">
+ComicWorldFiles
+</div><div class="subtitle">
+Crea tus historias o cómics y sube tus archivos
+</div></div><nav><a href="index.html">
+Inicio
+</a><a href="index.html#recent-section">
+Historias
+</a><a href="autores.html">
+Autores
+</a><a
+href="https://www.paypal.com/paypalme/josesanpedropl"
+target="_blank"
+rel="noopener noreferrer"
+class="donate-button"
+title="Donar con PayPal"
+
+«»
+
+<span class="paypal-icon">
+💙
+</span>Donate
+
+</a><span id="user-area"><a href="login.html">
+Iniciar sesión
+</a></span></nav></div></header><!-- ==================================================
+     CONTENIDO
+================================================== --><main class="container"><a
+href="index.html"
+class="back"
+
+«»
+
+← Volver al inicio
+
+</a><!-- ==================================================
+     PRESENTACIÓN
+================================================== --><section class="page-card"><h1>
+👥 Autores
+</h1><p>
+Descubre a las personas que publican historias e historietas
+en ComicWorldFiles.
+</p><div class="search-box"><input
+type="search"
+id="author-search"
+placeholder="🔍 Buscar autor..."
+autocomplete="off"
+
+«»
+
+</div></section><!-- ==================================================
+     LISTA DE AUTORES
+================================================== --><div class="section-title"><h2>
+Autores publicados
+</h2><span id="authors-count">
+0 autores
+</span></div><section
+class="authors"
+id="authors-container"
+><div class="loading">
+Cargando autores...
+</div></section><!-- ==================================================
+     PUBLICACIONES DEL AUTOR
+================================================== --><section
+class="author-publications-section"
+id="author-publications-section"
+><div class="author-publications-header"><h2 id="selected-author-title">
+Publicaciones
+</h2><button
+type="button"
+class="close-author"
+id="close-author"
+
+«»
+
+✕ Cerrar
+</button>
+
+</div><section
+class="stories"
+id="author-stories-container"
+></section></section></main><!-- ==================================================
+     FOOTER
+================================================== --><footer>ComicWorldFiles © 2026
+
+<br><br>
+
+Una plataforma para publicar y descubrir
+historias independientes.
+
+</footer><script>
+
+/* ==================================================
+   VARIABLES
+================================================== */
+
+let autores = [];
+
+let publicaciones = [];
+
+
+/* ==================================================
+   SESIÓN / USUARIO
+================================================== */
+
+async function comprobarSesion() {
+
+    const userArea =
+        document.getElementById(
+            "user-area"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+
+                    credentials: "include",
+
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Sesión no disponible"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            data.success &&
+            data.loggedIn &&
+            data.user
+        ) {
+
+            mostrarUsuario(
+                data.user
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.log(
+            "Usuario no autenticado."
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   MOSTRAR USUARIO
+================================================== */
+
+function mostrarUsuario(
+    user
+) {
+
+    const username =
+        user.username ||
+        "Usuario";
+
+
+    const userArea =
+        document.getElementById(
+            "user-area"
+        );
+
+
+    userArea.innerHTML =
+        "";
+
+
+    const profileLink =
+        document.createElement(
+            "a"
+        );
+
+
+    profileLink.href =
+        "perfil.html";
+
+
+    profileLink.textContent =
+        "Hola " + username;
+
+
+    const logoutLink =
+        document.createElement(
+            "a"
+        );
+
+
+    logoutLink.href =
+        "#";
+
+
+    logoutLink.textContent =
+        "Cerrar sesión";
+
+
+    logoutLink.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            logout();
+
+        }
+    );
+
+
+    userArea.appendChild(
+        profileLink
+    );
+
+
+    userArea.appendChild(
+        logoutLink
+    );
+
+}
+
+
+/* ==================================================
+   CERRAR SESIÓN
+================================================== */
+
+async function logout() {
+
+    try {
+
+        await fetch(
+            "/api/logout",
+            {
+                method: "POST",
+
+                credentials: "include"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error cerrando sesión:",
+            error
+        );
+
+    }
+
+
+    localStorage.removeItem(
+        "comicworld_user"
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* ==================================================
+   CARGAR AUTORES
+================================================== */
+
+async function cargarAutores() {
+
+    const container =
+        document.getElementById(
+            "authors-container"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/authors",
+                {
+                    method: "GET",
+
+                    cache: "no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Respuesta /api/authors:",
+            data
+        );
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar los autores."
+            );
+
+        }
+
+
+        autores =
+            Array.isArray(
+                data.authors
+            )
+                ? data.authors
+                : [];
+
+
+        document.getElementById(
+            "authors-count"
+        ).textContent =
+            autores.length === 1
+                ? "1 autor"
+                : autores.length +
+                  " autores";
+
+
+        mostrarAutores(
+            autores
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando autores:",
+            error
+        );
+
+
+        container.innerHTML =
+            '<div class="message error-message">' +
+            escapeHtml(
+                error.message ||
+                "No se pudieron cargar los autores."
+            ) +
+            '</div>';
+
+    }
+
+}
+
+
+/* ==================================================
+   MOSTRAR AUTORES
+================================================== */
+
+function mostrarAutores(
+    lista
+) {
+
+    const container =
+        document.getElementById(
+            "authors-container"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        !lista ||
+        lista.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="message">' +
+
+            'Todavía no hay autores con publicaciones.' +
+
+            '<br><br>' +
+
+            '<a href="index.html" ' +
+            'style="color:#ff6b35;font-weight:bold;">' +
+
+            'Explorar publicaciones →' +
+
+            '</a>' +
+
+            '</div>';
+
+        return;
+
+    }
+
+
+    lista.forEach(
+        function(author) {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                "author-card";
+
+
+            const username =
+                author.username ||
+                "Autor";
+
+
+            const cantidad =
+                Number(
+                    author.publications ||
+                    0
+                );
+
+
+            const textoPublicaciones =
+                cantidad === 1
+                    ? "1 publicación"
+                    : cantidad +
+                      " publicaciones";
+
+
+            card.innerHTML =
+
+                '<div class="author-header">' +
+
+                '<div class="author-icon">' +
+                '👤' +
+                '</div>' +
+
+                '<div class="author-info">' +
+
+                '<h3 class="author-name">' +
+                escapeHtml(
+                    username
+                ) +
+                '</h3>' +
+
+                '<div class="author-publications">' +
+                '📚 ' +
+                textoPublicaciones +
+                '</div>' +
+
+                '</div>' +
+
+                '</div>' +
+
+                '<button ' +
+                'type="button" ' +
+                'class="author-button">' +
+
+                'Ver publicaciones →' +
+
+                '</button>';
+
+
+            const button =
+                card.querySelector(
+                    ".author-button"
+                );
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    cargarPublicacionesAutor(
+                        author
+                    );
+
+                }
+            );
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   BUSCAR AUTORES
+================================================== */
+
+function buscarAutores() {
+
+    const input =
+        document.getElementById(
+            "author-search"
+        );
+
+
+    const texto =
+        input.value
+            .trim()
+            .toLowerCase();
+
+
+    if (
+        texto.length === 0
+    ) {
+
+        mostrarAutores(
+            autores
+        );
+
+        return;
+
+    }
+
+
+    const filtrados =
+        autores.filter(
+            function(author) {
+
+                const username =
+                    String(
+                        author.username ||
+                        ""
+                    ).toLowerCase();
+
+
+                return username.includes(
+                    texto
+                );
+
+            }
+        );
+
+
+    if (
+        filtrados.length === 0
+    ) {
+
+        const container =
+            document.getElementById(
+                "authors-container"
+            );
+
+
+        container.innerHTML =
+            '<div class="message">' +
+
+            'No se encontró ningún autor con ese nombre.' +
+
+            '</div>';
+
+
+        return;
+
+    }
+
+
+    mostrarAutores(
+        filtrados
+    );
+
+}
+
+
+/* ==================================================
+   CARGAR PUBLICACIONES DEL AUTOR
+================================================== */
+
+async function cargarPublicacionesAutor(
+    author
+) {
+
+    const section =
+        document.getElementById(
+            "author-publications-section"
+        );
+
+
+    const title =
+        document.getElementById(
+            "selected-author-title"
+        );
+
+
+    const container =
+        document.getElementById(
+            "author-stories-container"
+        );
+
+
+    title.textContent =
+        "Publicaciones de " +
+        (
+            author.username ||
+            "Autor"
+        );
+
+
+    section.style.display =
+        "block";
+
+
+    container.innerHTML =
+        '<div class="loading">' +
+        'Cargando publicaciones...' +
+        '</div>';
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories",
+                {
+                    method: "GET",
+
+                    cache: "no-store"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Respuesta /api/stories:",
+            data
+        );
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudieron cargar las publicaciones."
+            );
+
+        }
+
+
+        publicaciones =
+            Array.isArray(
+                data.stories
+            )
+                ? data.stories
+                : [];
+
+
+        const autorId =
+            String(
+                author.id
+            );
+
+
+        const autorUsername =
+            String(
+                author.username ||
+                ""
+            ).toLowerCase();
+
+
+        const filtradas =
+            publicaciones.filter(
+                function(story) {
+
+                    const storyUserId =
+                        String(
+                            story.user_id ||
+                            ""
+                        );
+
+
+                    const storyAuthor =
+                        String(
+                            story.author ||
+                            ""
+                        ).toLowerCase();
+
+
+                    return (
+                        storyUserId === autorId
+                        ||
+                        (
+                            autorUsername.length > 0 &&
+                            storyAuthor ===
+                            autorUsername
+                        )
+                    );
+
+                }
+            );
+
+
+        mostrarPublicacionesAutor(
+            filtradas,
+            container
+        );
+
+
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando publicaciones:",
+            error
+        );
+
+
+        container.innerHTML =
+            '<div class="message error-message">' +
+            escapeHtml(
+                error.message ||
+                "No se pudieron cargar las publicaciones."
+            ) +
+            '</div>';
+
+    }
+
+}
+
+
+/* ==================================================
+   MOSTRAR PUBLICACIONES
+================================================== */
+
+function mostrarPublicacionesAutor(
+    stories,
+    container
+) {
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        !stories ||
+        stories.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="message">' +
+
+            'Este autor todavía no tiene publicaciones disponibles.' +
+
+            '</div>';
+
+        return;
+
+    }
+
+
+    stories.forEach(
+        function(story) {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                "card";
+
+
+            const tipo =
+                String(
+                    story.type ||
+                    "historia"
+                ).toLowerCase();
+
+
+            const esHistorieta =
+                tipo === "historieta";
+
+
+            const tipoTexto =
+                esHistorieta
+                    ? "🖼️ Historieta"
+                    : "📖 Historia";
+
+
+            const paginaLectura =
+                esHistorieta
+                    ? "leer-historieta.html"
+                    : "leer-historia.html";
+
+
+            const textoBoton =
+                esHistorieta
+                    ? "Leer historieta"
+                    : "Leer historia";
+
+
+            let coverHTML;
+
+
+            if (
+                story.cover_url
+            ) {
+
+                coverHTML =
+
+                    '<div class="cover">' +
+
+                    '<span class="publication-type">' +
+                    tipoTexto +
+                    '</span>' +
+
+                    '<img src="' +
+                    escapeHtml(
+                        story.cover_url
+                    ) +
+                    '" alt="Portada" loading="lazy">' +
+
+                    '</div>';
+
+            } else {
+
+                coverHTML =
+
+                    '<div class="cover">' +
+
+                    '<span class="publication-type">' +
+                    tipoTexto +
+                    '</span>' +
+
+                    (
+                        esHistorieta
+                            ? "🖼️"
+                            : "📖"
+                    ) +
+
+                    '</div>';
+
+            }
+
+
+            card.innerHTML =
+
+                coverHTML +
+
+                '<div class="card-content">' +
+
+                '<h3>' +
+                escapeHtml(
+                    story.title ||
+                    "Sin título"
+                ) +
+                '</h3>' +
+
+                '<div class="author">' +
+                'Por ' +
+                escapeHtml(
+                    story.author ||
+                    "Autor"
+                ) +
+                '</div>' +
+
+                '<p class="description">' +
+                escapeHtml(
+                    story.description ||
+                    ""
+                ) +
+                '</p>' +
+
+                '<div class="card-stats">' +
+
+                '<span>👁 ' +
+                Number(
+                    story.views || 0
+                ) +
+                '</span>' +
+
+                '<span>❤️ ' +
+                Number(
+                    story.likes || 0
+                ) +
+                '</span>' +
+
+                '</div>' +
+
+                '<a ' +
+                'class="card-button" ' +
+                'href="' +
+                paginaLectura +
+                '?id=' +
+                encodeURIComponent(
+                    story.id
+                ) +
+                '">' +
+
+                textoBoton +
+
+                '</a>' +
+
+                '</div>';
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   CERRAR PUBLICACIONES
+================================================== */
+
+document.getElementById(
+    "close-author"
+).addEventListener(
+    "click",
+    function() {
+
+        const section =
+            document.getElementById(
+                "author-publications-section"
+            );
+
+
+        section.style.display =
+            "none";
+
+
+        document.getElementById(
+            "author-stories-container"
+        ).innerHTML =
+            "";
+
+    }
+);
+
+
+/* ==================================================
+   ESCUCHAR BUSCADOR
+================================================== */
+
+document.getElementById(
+    "author-search"
+).addEventListener(
+    "input",
+    buscarAutores
+);
+
+
+/* ==================================================
+   SEGURIDAD HTML
+================================================== */
+
+function escapeHtml(
+    text
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text == null
+            ? ""
+            : String(text);
+
+
+    return div.innerHTML;
+
+}
+
+
+/* ==================================================
+   INICIO
+================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
+
+        await comprobarSesion();
+
+        await cargarAutores();
+
+    }
+);
+
+</script></body></html>
