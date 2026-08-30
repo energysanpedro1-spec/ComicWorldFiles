@@ -433,6 +433,55 @@ textarea {
     display: none !important;
 }
 
+.story-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.like-button {
+
+    padding: 9px 15px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #eee;
+
+    color: #333;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.like-button:hover {
+
+    background: #ddd;
+}
+
+.like-button.liked {
+
+    background: #ff6b35;
+
+    color: white;
+}
+
+.likes-count {
+
+    color: #777;
+
+    font-size: 14px;
+}
+
 </style>
 
 </head>
@@ -462,6 +511,25 @@ class="back">
 ← Volver
 
 </a>
+
+<div class="story-actions">
+
+    <button id="like-button"
+            class="like-button"
+            type="button">
+
+        ♡ Me gusta
+
+    </button>
+
+    <span id="likes-count"
+          class="likes-count">
+
+        0
+
+    </span>
+
+</div>
 
 <!-- =====================================================
      LECTOR
