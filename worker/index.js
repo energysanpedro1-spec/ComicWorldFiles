@@ -1701,7 +1701,7 @@ if (
 
         await env.DB
             .prepare(
-                `DELETE FROM comments
+                `DELETE FROM story_comments
                  WHERE story_id = ?`
             )
             .bind(id)
