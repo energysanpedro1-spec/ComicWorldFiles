@@ -1154,12 +1154,9 @@ async function checkSession() {
             userArea.innerHTML = "";
 
 
-            const greeting =
-                document.createElement("span");
-
-            greeting.textContent =
-                "Hola " + username;
-
+            /* ==========================================
+               HOLA USUARIO → PERFIL
+            ========================================== */
 
             const profileLink =
                 document.createElement("a");
@@ -1168,8 +1165,12 @@ async function checkSession() {
                 "perfil.html";
 
             profileLink.textContent =
-                "Mi perfil";
+                "Hola " + username;
 
+
+            /* ==========================================
+               CERRAR SESIÓN
+            ========================================== */
 
             const logoutLink =
                 document.createElement("a");
@@ -1194,11 +1195,6 @@ async function checkSession() {
 
 
             userArea.appendChild(
-                greeting
-            );
-
-
-            userArea.appendChild(
                 profileLink
             );
 
@@ -1219,7 +1215,6 @@ async function checkSession() {
     }
 
 }
-
 
 /* ==================================================
    LOGOUT
