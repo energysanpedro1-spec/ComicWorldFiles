@@ -3883,7 +3883,592 @@ export default {
 
         }
 
+// =========================================================
+// API: ME GUSTA
+//
+// POST /api/stories/5/like
+// GET  /api/stories/5/like
+// =========================================================
 
+const storyLikeMatch =
+    url.pathname.match(
+        /^\/api\/stories\/(\d+)\/like$/
+    );
+
+
+// ---------------------------------------------------------
+// DAR / QUITAR ME GUSTA
+// ---------------------------------------------------------
+
+if (
+    storyLikeMatch &&
+    request.method === "POST"
+) {
+
+    try {
+
+        const storyId =
+            Number(
+                storyLikeMatch[1]
+            );
+
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        if (!session) {
+
+            return json({
+                success: false,
+                error:
+                    "Debes iniciar sesión para dar Me gusta."
+            }, 401);
+
+        }
+
+
+        const story =
+            await env.DB
+                .prepare(
+                    `SELECT id
+                     FROM stories
+                     WHERE id = ?
+                     LIMIT 1`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        if (!story) {
+
+            return json({
+                success: false,
+                error:
+                    "La publicación no existe."
+            }, 404);
+
+        }
+
+
+        const existingLike =
+            await env.DB
+                .prepare(
+                    `SELECT id
+                     FROM story_likes
+                     WHERE story_id = ?
+                       AND user_id = ?
+                     LIMIT 1`
+                )
+                .bind(
+                    storyId,
+                    session.id
+                )
+                .first();
+
+
+        let liked;
+
+
+        // -----------------------------------------------------
+        // QUITAR ME GUSTA
+        // -----------------------------------------------------
+
+        if (existingLike) {
+
+            await env.DB
+                .prepare(
+                    `DELETE FROM story_likes
+                     WHERE story_id = ?
+                       AND user_id = ?`
+                )
+                .bind(
+                    storyId,
+                    session.id
+                )
+                .run();
+
+
+            liked = false;
+
+        }
+
+
+        // -----------------------------------------------------
+        // DAR ME GUSTA
+        // -----------------------------------------------------
+
+        else {
+
+            await env.DB
+                .prepare(
+                    `INSERT INTO story_likes
+                     (
+                        story_id,
+                        user_id
+                     )
+                     VALUES (?, ?)`
+                )
+                .bind(
+                    storyId,
+                    session.id
+                )
+                .run();
+
+
+            liked = true;
+
+        }
+
+
+        const count =
+            await env.DB
+                .prepare(
+                    `SELECT COUNT(*) AS total
+                     FROM story_likes
+                     WHERE story_id = ?`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        return json({
+
+            success:
+                true,
+
+            liked:
+                liked,
+
+            likes:
+                Number(
+                    count.total || 0
+                )
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error procesando Me gusta:",
+            error
+        );
+
+
+        return json({
+            success: false,
+            error:
+                error.message
+        }, 500);
+
+    }
+
+}
+
+
+// ---------------------------------------------------------
+// CONSULTAR ME GUSTA
+// ---------------------------------------------------------
+
+if (
+    storyLikeMatch &&
+    request.method === "GET"
+) {
+
+    try {
+
+        const storyId =
+            Number(
+                storyLikeMatch[1]
+            );
+
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        let liked = false;
+
+
+        if (session) {
+
+            const existingLike =
+                await env.DB
+                    .prepare(
+                        `SELECT id
+                         FROM story_likes
+                         WHERE story_id = ?
+                           AND user_id = ?
+                         LIMIT 1`
+                    )
+                    .bind(
+                        storyId,
+                        session.id
+                    )
+                    .first();
+
+
+            liked =
+                !!existingLike;
+
+        }
+
+
+        const count =
+            await env.DB
+                .prepare(
+                    `SELECT COUNT(*) AS total
+                     FROM story_likes
+                     WHERE story_id = ?`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        return json({
+
+            success:
+                true,
+
+            liked:
+                liked,
+
+            likes:
+                Number(
+                    count.total || 0
+                )
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo Me gusta:",
+            error
+        );
+
+
+        return json({
+            success: false,
+            error:
+                error.message
+        }, 500);
+
+    }
+
+}
+
+        // =========================================================
+// API: COMENTARIOS
+//
+// GET  /api/stories/5/comments
+// POST /api/stories/5/comments
+// =========================================================
+
+const storyCommentsMatch =
+    url.pathname.match(
+        /^\/api\/stories\/(\d+)\/comments$/
+    );
+
+
+// ---------------------------------------------------------
+// LISTAR COMENTARIOS
+// ---------------------------------------------------------
+
+if (
+    storyCommentsMatch &&
+    request.method === "GET"
+) {
+
+    try {
+
+        const storyId =
+            Number(
+                storyCommentsMatch[1]
+            );
+
+
+        const story =
+            await env.DB
+                .prepare(
+                    `SELECT id
+                     FROM stories
+                     WHERE id = ?
+                     LIMIT 1`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        if (!story) {
+
+            return json({
+                success: false,
+                error:
+                    "La publicación no existe."
+            }, 404);
+
+        }
+
+
+        const result =
+    await env.DB
+        .prepare(
+            `SELECT
+                stories.id,
+                stories.user_id,
+                stories.title,
+                stories.description,
+                stories.genre,
+                stories.type,
+                stories.cover_url,
+                stories.views,
+                stories.created_at,
+                users.username AS author,
+
+                (
+                    SELECT COUNT(*)
+                    FROM story_likes
+                    WHERE story_likes.story_id = stories.id
+                ) AS likes_count,
+
+                (
+                    SELECT COUNT(*)
+                    FROM story_comments
+                    WHERE story_comments.story_id = stories.id
+                ) AS comments_count
+
+             FROM stories
+
+             INNER JOIN users
+             ON users.id = stories.user_id
+
+             ORDER BY stories.id DESC
+
+             LIMIT 20`
+        )
+        .all();
+
+
+        return json({
+
+            success:
+                true,
+
+            comments:
+                result.results
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo comentarios:",
+            error
+        );
+
+
+        return json({
+            success: false,
+            error:
+                error.message
+        }, 500);
+
+    }
+
+}
+
+
+// ---------------------------------------------------------
+// PUBLICAR COMENTARIO
+// ---------------------------------------------------------
+
+if (
+    storyCommentsMatch &&
+    request.method === "POST"
+) {
+
+    try {
+
+        const storyId =
+            Number(
+                storyCommentsMatch[1]
+            );
+
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        if (!session) {
+
+            return json({
+                success: false,
+                error:
+                    "Debes iniciar sesión para comentar."
+            }, 401);
+
+        }
+
+
+        const story =
+            await env.DB
+                .prepare(
+                    `SELECT id
+                     FROM stories
+                     WHERE id = ?
+                     LIMIT 1`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        if (!story) {
+
+            return json({
+                success: false,
+                error:
+                    "La publicación no existe."
+            }, 404);
+
+        }
+
+
+        const data =
+            await request.json();
+
+
+        const comment =
+            String(
+                data.comment || ""
+            ).trim();
+
+
+        if (!comment) {
+
+            return json({
+                success: false,
+                error:
+                    "El comentario no puede estar vacío."
+            }, 400);
+
+        }
+
+
+        if (
+            comment.length > 1000
+        ) {
+
+            return json({
+                success: false,
+                error:
+                    "El comentario no puede superar los 1000 caracteres."
+            }, 400);
+
+        }
+
+
+        const result =
+            await env.DB
+                .prepare(
+                    `INSERT INTO story_comments
+                     (
+                        story_id,
+                        user_id,
+                        comment
+                     )
+                     VALUES (?, ?, ?)`
+                )
+                .bind(
+                    storyId,
+                    session.id,
+                    comment
+                )
+                .run();
+
+
+        if (
+            !result.success
+        ) {
+
+            return json({
+                success: false,
+                error:
+                    "No se pudo publicar el comentario."
+            }, 500);
+
+        }
+
+
+        return json({
+
+            success:
+                true,
+
+            message:
+                "Comentario publicado correctamente.",
+
+            comment: {
+
+                id:
+                    result.meta.last_row_id,
+
+                story_id:
+                    storyId,
+
+                user_id:
+                    session.id,
+
+                username:
+                    session.username,
+
+                comment:
+                    comment
+
+            }
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error publicando comentario:",
+            error
+        );
+
+
+        return json({
+            success: false,
+            error:
+                error.message
+        }, 500);
+
+    }
+
+}
 
         // =========================================================
         // ARCHIVOS HTML / ESTÁTICOS
