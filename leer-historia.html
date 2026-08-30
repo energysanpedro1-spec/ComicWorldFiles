@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="es">
@@ -155,9 +156,87 @@ nav a:hover {
 
     font-size: 13px;
 
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 
     display: block;
+}
+
+
+/* ==========================================
+   ME GUSTA
+========================================== */
+
+.like-container {
+
+    margin-bottom: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.like-button {
+
+    border: 1px solid #ddd;
+
+    background: #fff;
+
+    color: #555;
+
+    padding: 9px 15px;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        transform 0.1s;
+}
+
+.like-button:hover {
+
+    background: #f5f5f5;
+
+    border-color: #ccc;
+}
+
+.like-button:active {
+
+    transform: scale(0.97);
+}
+
+.like-button.liked {
+
+    background: #ffe8e8;
+
+    border-color: #ffb5b5;
+
+    color: #e53935;
+}
+
+.like-count {
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+.like-message {
+
+    color: #888;
+
+    font-size: 13px;
+
+    display: none;
 }
 
 
@@ -698,6 +777,40 @@ Por
 </div>
 
 
+<!-- ==========================================
+     ME GUSTA
+========================================== -->
+
+<div class="like-container">
+
+<button
+    id="like-button"
+    class="like-button"
+    type="button">
+
+❤️ Me gusta
+
+</button>
+
+
+<span
+    id="like-count"
+    class="like-count">
+
+0 Me gusta
+
+</span>
+
+
+<span
+    id="like-message"
+    class="like-message">
+
+</span>
+
+</div>
+
+
 <span id="story-genre"
 class="tag">
 </span>
@@ -871,6 +984,24 @@ const storyViews =
     );
 
 
+const likeButton =
+    document.getElementById(
+        "like-button"
+    );
+
+
+const likeCount =
+    document.getElementById(
+        "like-count"
+    );
+
+
+const likeMessage =
+    document.getElementById(
+        "like-message"
+    );
+
+
 /* ==========================================
    INICIAR
 ========================================== */
@@ -915,6 +1046,13 @@ async function iniciarPagina(id) {
      */
 
     registrarVisita();
+
+
+    /*
+     * Cargar estado del Me gusta.
+     */
+
+    cargarMeGusta();
 
 
     await cargarCapitulos(
@@ -1147,6 +1285,337 @@ function mostrarHistoria(data) {
         "block";
 
 }
+
+
+/* ==========================================
+   ME GUSTA
+========================================== */
+
+/*
+ * Consultar el estado actual del Me gusta.
+ */
+
+async function cargarMeGusta() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    storyId
+                ) +
+                "/like",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta Me gusta:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            console.error(
+                "La respuesta de Me gusta no es JSON válido."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            console.error(
+                "No se pudo consultar el Me gusta."
+            );
+
+            return;
+
+        }
+
+
+        actualizarMeGusta(
+            data.liked,
+            data.likes
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando Me gusta:",
+            error
+        );
+
+    }
+
+}
+
+
+/*
+ * Dar o quitar Me gusta.
+ */
+
+async function alternarMeGusta() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    /*
+     * Evitamos múltiples peticiones
+     * simultáneas.
+     */
+
+    if (
+        likeButton.disabled
+    ) {
+
+        return;
+
+    }
+
+
+    likeButton.disabled =
+        true;
+
+
+    likeMessage.style.display =
+        "none";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    storyId
+                ) +
+                "/like",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "include",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta alternar Me gusta:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió una respuesta válida."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            /*
+             * Si el usuario no está conectado,
+             * el backend devuelve 401.
+             */
+
+            if (
+                response.status === 401
+            ) {
+
+                likeMessage.textContent =
+                    data.error ||
+                    "Debes iniciar sesión para dar Me gusta.";
+
+                likeMessage.style.display =
+                    "inline";
+
+            } else {
+
+                likeMessage.textContent =
+                    data.error ||
+                    "No se pudo procesar el Me gusta.";
+
+                likeMessage.style.display =
+                    "inline";
+
+            }
+
+
+            return;
+
+        }
+
+
+        actualizarMeGusta(
+            data.liked,
+            data.likes
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error alternando Me gusta:",
+            error
+        );
+
+
+        likeMessage.textContent =
+            error.message ||
+            "No se pudo conectar con el servidor.";
+
+
+        likeMessage.style.display =
+            "inline";
+
+
+    } finally {
+
+        likeButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/*
+ * Actualizar visualmente el botón
+ * y el contador.
+ */
+
+function actualizarMeGusta(
+    liked,
+    likes
+) {
+
+    const cantidad =
+        Number(
+            likes || 0
+        );
+
+
+    if (
+        liked
+    ) {
+
+        likeButton.classList.add(
+            "liked"
+        );
+
+
+        likeButton.textContent =
+            "❤️ Te gusta";
+
+
+    } else {
+
+        likeButton.classList.remove(
+            "liked"
+        );
+
+
+        likeButton.textContent =
+            "🤍 Me gusta";
+
+    }
+
+
+    if (
+        cantidad === 1
+    ) {
+
+        likeCount.textContent =
+            "1 Me gusta";
+
+    } else {
+
+        likeCount.textContent =
+            cantidad +
+            " Me gusta";
+
+    }
+
+}
+
+
+/*
+ * Evento del botón.
+ */
+
+likeButton.addEventListener(
+    "click",
+    alternarMeGusta
+);
 
 
 /* ==========================================
