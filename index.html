@@ -1,133 +1,127 @@
-<!DOCTYPE html>  <html lang="es">  <head>  <meta charset="UTF-8">  <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<!-- ==================================================    
-     GOOGLE SEARCH CONSOLE    
-================================================== -->  <meta name="google-site-verification"    content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
+<!-- ==================================================
+     GOOGLE SEARCH CONSOLE
+================================================== --><meta name="google-site-verification"
+content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
 
-<title>ComicWorldFiles</title>  <style>    /* ==================================================
-GENERAL
+<title>ComicWorldFiles</title><style>
+
+/* ==================================================
+   GENERAL
 ================================================== */
 
-{
-box-sizing: border-box;
+* {
+    box-sizing: border-box;
 }
 
-
 body {
-margin: 0;
-font-family: Arial, sans-serif;
-background: #f4f4f4;
-color: #222;
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f4f4;
+
+    color: #222;
 }
 
 a {
-text-decoration: none;
+    text-decoration: none;
 }
 
+
 /* ==================================================
-CABECERA
+   CABECERA
 ================================================== */
 
 header {
-background: #20242b;
-color: white;
+    background: #20242b;
 
-padding: 15px 20px;    
+    color: white;
 
-position: sticky;    
-top: 0;    
+    padding: 15px 20px;
 
-z-index: 100;
+    position: sticky;
 
+    top: 0;
+
+    z-index: 100;
 }
 
 .header-content {
-max-width: 1100px;
+    max-width: 1100px;
 
-margin: auto;    
+    margin: auto;
 
-display: flex;    
+    display: flex;
 
-align-items: center;    
+    align-items: center;
 
-justify-content: space-between;    
+    justify-content: space-between;
 
-gap: 20px;
-
+    gap: 20px;
 }
 
+
 /* ==================================================
-LOGO + ESLOGAN
+   LOGO + ESLOGAN
 ================================================== */
 
 .logo-area {
-display: flex;
+    display: flex;
 
-flex-direction: column;    
+    flex-direction: column;
 
-gap: 5px;
-
+    gap: 5px;
 }
 
 .logo {
-font-size: 26px;
+    font-size: 26px;
 
-font-weight: bold;    
+    font-weight: bold;
 
-line-height: 1;
-
+    line-height: 1;
 }
 
 .subtitle {
-color: #ff9a75;
+    color: #ff9a75;
 
-font-size: 14px;    
+    font-size: 14px;
 
-font-weight: 600;    
+    font-weight: 600;
 
-line-height: 1.3;    
+    line-height: 1.3;
 
-letter-spacing: 0.2px;
-
+    letter-spacing: 0.2px;
 }
 
+
 /* ==================================================
-NAVEGACIÓN
+   NAVEGACIÓN
 ================================================== */
 
 nav {
-display: flex;
+    display: flex;
 
-align-items: center;    
+    align-items: center;
 
-gap: 15px;
-
+    gap: 15px;
 }
 
-nav a {
-color: #ffffff;
+nav > a {
+    color: #ffffff;
 
-font-size: 14px;
+    font-size: 14px;
 
+    white-space: nowrap;
 }
 
-nav a:hover {
-text-decoration: underline;
+nav > a:hover {
+    text-decoration: underline;
 }
 
-<a
-href="https://www.paypal.com/paypalme/josesanpedropl"
-target="_blank"
-rel="noopener noreferrer"
-class="donate-button"
-title="Donar con PayPal"
 
-> 
-
-<span class="paypal-icon">💙</span>  
-Donate
-
-</a> 
 /* ==================================================
    ÁREA DE USUARIO
 ================================================== */
@@ -137,1544 +131,1561 @@ Donate
 
     align-items: center;
 
-    gap: 10px;
-
-    flex-wrap: wrap;
+    gap: 12px;
 
     margin-left: 5px;
 }
 
 #user-area span {
-    display: inline-block;
+    display: inline;
 
     color: #ffffff;
 
     font-size: 14px;
 
-    white-space: wrap;
+    white-space: nowrap;
 }
 
 #user-area a {
+    display: inline;
+
     color: #ffffff;
 
     font-size: 14px;
 
     white-space: nowrap;
 
-    margin-left: 3px;
+    padding: 0;
+
+    margin: 0;
 }
 
 #user-area a:hover {
     text-decoration: underline;
 }
-/* ==================================================
-CONTENEDOR
-================================================== */
 
-.container {
-max-width: 1100px;
-
-margin: auto;    
-
-padding: 25px 20px;
-
-}
 
 /* ==================================================
-BUSCADOR
-================================================== */
-
-.search {
-display: flex;
-
-width: 100%;    
-
-margin-bottom: 30px;
-
-}
-
-.search input {
-flex: 1;
-
-min-width: 0;    
-
-padding: 14px;    
-
-border: 1px solid #ccc;    
-
-border-right: none;    
-
-border-radius: 8px 0 0 8px;    
-
-font-size: 15px;
-
-}
-
-.search input:focus {
-outline: none;
-
-border-color: #ff6b35;
-
-}
-
-.search button {
-flex-shrink: 0;
-
-border: none;    
-
-background: #ff6b35;    
-
-color: #ffffff;    
-
-padding: 0 22px;    
-
-border-radius: 0 8px 8px 0;    
-
-cursor: pointer;    
-
-font-size: 14px;    
-
-font-weight: bold;
-
-}
-
-.search button:hover {
-background: #e85a2a;
-}
-
-/* ==================================================
-BLOQUE PRINCIPAL
-================================================== */
-
-.hero {
-background: #ffffff;
-
-border-radius: 12px;    
-
-padding: 30px;    
-
-margin-bottom: 35px;    
-
-display: flex;    
-
-align-items: center;    
-
-justify-content: center;    
-
-box-shadow:    
-    0 2px 8px rgba(0,0,0,0.08);
-
-}
-
-/* ==================================================
-CONTENEDOR LOGO + MENSAJE
-================================================== */
-
-.hero-logo-box {
-width: 100%;
-
-max-width: 1000px;    
-
-flex-shrink: 0;
-
-}
-
-/* ==================================================
-LOGO DESTACADO
-================================================== */
-
-.hero-image {
-width: 100%;
-
-min-height: 350px;    
-
-background: #ffffff;    
-
-border-radius: 10px;    
-
-display: flex;    
-
-align-items: center;    
-
-justify-content: center;    
-
-overflow: hidden;
-
-}
-
-.hero-image img {
-width: 100%;
-
-height: 100%;    
-
-max-width: 100%;    
-
-max-height: 650px;    
-
-object-fit: contain;    
-
-display: block;
-
-}
-
-/* ==================================================
-MENSAJE NARANJA
-================================================== */
-
-.hero-message {
-width: 100%;
-
-margin-top: 12px;    
-
-padding: 16px 20px;    
-
-background: #ff6b35;    
-
-color: #ffffff;    
-
-border-radius: 8px;    
-
-text-align: center;    
-
-font-size: 16px;    
-
-font-weight: bold;    
-
-line-height: 1.4;
-
-}
-
-/* ==================================================
-TÍTULOS DE SECCIÓN
-================================================== */
-
-.section-title {
-display: flex;
-
-align-items: center;    
-
-justify-content: space-between;    
-
-margin-bottom: 15px;
-
-}
-
-.section-title h2 {
-margin: 0;
-}
-
-.section-title a {
-color: #ff6b35;
-
-font-size: 14px;
-
-}
-
-/* ==================================================
-TARJETAS
-================================================== */
-
-.stories {
-display: grid;
-
-grid-template-columns:    
-    repeat(4, minmax(0, 1fr));    
-
-gap: 20px;
-
-}
-
-.card {
-background: #ffffff;
-
-border-radius: 10px;    
-
-overflow: hidden;    
-
-box-shadow:    
-    0 2px 6px rgba(0,0,0,0.08);
-
-}
-
-/* ==================================================
-PORTADA
-================================================== */
-
-.cover {
-height: 230px;
-
-position: relative;    
-
-background:    
-    linear-gradient(    
-        135deg,    
-        #5c677d,    
-        #222831    
-    );    
-
-display: flex;    
-
-align-items: center;    
-
-justify-content: center;    
-
-color: white;    
-
-font-size: 40px;
-
-}
-
-.cover img {
-width: 100%;
-
-height: 100%;    
-
-object-fit: cover;    
-
-display: block;
-
-}
-
-.publication-type {
-position: absolute;
-
-top: 10px;    
-
-left: 10px;    
-
-z-index: 2;    
-
-background:    
-    rgba(32,36,43,0.9);    
-
-color: #ffffff;    
-
-padding: 5px 8px;    
-
-border-radius: 5px;    
-
-font-size: 11px;    
-
-font-weight: bold;
-
-}
-
-/* ==================================================
-CONTENIDO TARJETA
-================================================== */
-
-.card-content {
-padding: 15px;
-}
-
-.card h3 {
-margin: 0 0 7px;
-
-font-size: 17px;
-
-}
-
-.author {
-color: #777;
-
-font-size: 13px;
-
-}
-
-.description {
-color: #666;
-
-font-size: 13px;    
-
-line-height: 1.4;
-
-}
-
-/* ==================================================
-BOTÓN LEER
-================================================== */
-
-.card-button {
-display: flex;
-
-align-items: center;    
-
-justify-content: center;    
-
-width: 100%;    
-
-min-height: 38px;    
-
-margin-top: 12px;    
-
-padding: 9px 10px;    
-
-background: #20242b;    
-
-color: #ffffff !important;    
-
-border-radius: 6px;    
-
-font-size: 13px;    
-
-font-weight: bold;    
-
-text-align: center;    
-
-opacity: 1;    
-
-visibility: visible;
-
-}
-
-.card-button:hover {
-background: #343a40;
-}
-
-/* ==================================================
-TIPOS DE PUBLICACIÓN
-================================================== */
-
-.types {
-display: grid;
-
-grid-template-columns: 1fr 1fr;    
-
-gap: 20px;    
-
-margin: 35px 0;
-
-}
-
-.type-box {
-background: #ffffff;
-
-padding: 25px;    
-
-border-radius: 10px;    
-
-box-shadow:    
-    0 2px 6px rgba(0,0,0,0.07);    
-
-display: flex;    
-
-flex-direction: column;
-
-}
-
-.type-box h3 {
-margin: 0 0 10px;
-}
-
-.type-box p {
-color: #666;
-
-line-height: 1.5;    
-
-margin: 0 0 20px;
-
-}
-
-/* ==================================================
-BOTONES CREAR
-================================================== */
-
-.type-button {
-display: flex;
-
-align-items: center;    
-
-justify-content: center;    
-
-align-self: flex-start;    
-
-min-height: 42px;    
-
-padding: 11px 20px;    
-
-background: #ff6b35;    
-
-color: #ffffff !important;    
-
-border-radius: 7px;    
-
-font-size: 14px;    
-
-font-weight: bold;    
-
-cursor: pointer;    
-
-opacity: 1;    
-
-visibility: visible;
-
-}
-
-.type-button:hover {
-background: #e85a2a;
-}
-
-/* ==================================================
-BOTÓN DONATE PAYPAL
+   BOTÓN DONATE PAYPAL
 ================================================== */
 
 .donate-button {
-display: flex;
+    display: flex !important;
 
-align-items: center;  
+    align-items: center;
 
-gap: 6px;  
+    justify-content: center;
 
-background: #0070ba;  
+    gap: 6px;
 
-color: #ffffff !important;  
+    background: #0070ba;
 
-padding: 8px 12px;  
+    color: #ffffff !important;
 
-border-radius: 6px;  
+    padding: 8px 12px !important;
 
-font-size: 14px;  
+    border-radius: 6px;
 
-font-weight: bold;
+    font-size: 14px;
 
+    font-weight: bold;
+
+    white-space: nowrap;
 }
 
 .donate-button:hover {
-background: #005ea6;
+    background: #005ea6;
 
-text-decoration: none;
-
+    text-decoration: none !important;
 }
 
 .paypal-icon {
-font-size: 16px;
+    font-size: 16px;
 }
 
+
 /* ==================================================
-MENSAJES
+   CONTENEDOR
+================================================== */
+
+.container {
+    max-width: 1100px;
+
+    margin: auto;
+
+    padding: 25px 20px;
+}
+
+
+/* ==================================================
+   BUSCADOR
+================================================== */
+
+.search {
+    display: flex;
+
+    width: 100%;
+
+    margin-bottom: 30px;
+}
+
+.search input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 14px;
+
+    border: 1px solid #ccc;
+
+    border-right: none;
+
+    border-radius: 8px 0 0 8px;
+
+    font-size: 15px;
+}
+
+.search input:focus {
+    outline: none;
+
+    border-color: #ff6b35;
+}
+
+.search button {
+    flex-shrink: 0;
+
+    border: none;
+
+    background: #ff6b35;
+
+    color: #ffffff;
+
+    padding: 0 22px;
+
+    border-radius: 0 8px 8px 0;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.search button:hover {
+    background: #e85a2a;
+}
+
+
+/* ==================================================
+   BLOQUE PRINCIPAL
+================================================== */
+
+.hero {
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    margin-bottom: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+
+/* ==================================================
+   CONTENEDOR LOGO + MENSAJE
+================================================== */
+
+.hero-logo-box {
+    width: 100%;
+
+    max-width: 1000px;
+
+    flex-shrink: 0;
+}
+
+
+/* ==================================================
+   LOGO DESTACADO
+================================================== */
+
+.hero-image {
+    width: 100%;
+
+    min-height: 350px;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.hero-image img {
+    width: 100%;
+
+    height: 100%;
+
+    max-width: 100%;
+
+    max-height: 650px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/* ==================================================
+   MENSAJE NARANJA
+================================================== */
+
+.hero-message {
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 16px 20px;
+
+    background: #ff6b35;
+
+    color: #ffffff;
+
+    border-radius: 8px;
+
+    text-align: center;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    line-height: 1.4;
+}
+
+
+/* ==================================================
+   TÍTULOS DE SECCIÓN
+================================================== */
+
+.section-title {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+}
+
+.section-title h2 {
+    margin: 0;
+}
+
+.section-title a {
+    color: #ff6b35;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   TARJETAS
+================================================== */
+
+.stories {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.card {
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.08);
+}
+
+
+/* ==================================================
+   PORTADA
+================================================== */
+
+.cover {
+    height: 230px;
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5c677d,
+            #222831
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 40px;
+}
+
+.cover img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.publication-type {
+    position: absolute;
+
+    top: 10px;
+
+    left: 10px;
+
+    z-index: 2;
+
+    background:
+        rgba(32,36,43,0.9);
+
+    color: #ffffff;
+
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   CONTENIDO TARJETA
+================================================== */
+
+.card-content {
+    padding: 15px;
+}
+
+.card h3 {
+    margin: 0 0 7px;
+
+    font-size: 17px;
+}
+
+.author {
+    color: #777;
+
+    font-size: 13px;
+}
+
+.description {
+    color: #666;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+/* ==================================================
+   BOTÓN LEER
+================================================== */
+
+.card-button {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-height: 38px;
+
+    margin-top: 12px;
+
+    padding: 9px 10px;
+
+    background: #20242b;
+
+    color: #ffffff !important;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+.card-button:hover {
+    background: #343a40;
+}
+
+
+/* ==================================================
+   TIPOS DE PUBLICACIÓN
+================================================== */
+
+.types {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+
+    margin: 35px 0;
+}
+
+.type-box {
+    background: #ffffff;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.07);
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.type-box h3 {
+    margin: 0 0 10px;
+}
+
+.type-box p {
+    color: #666;
+
+    line-height: 1.5;
+
+    margin: 0 0 20px;
+}
+
+
+/* ==================================================
+   BOTONES CREAR
+================================================== */
+
+.type-button {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    align-self: flex-start;
+
+    min-height: 42px;
+
+    padding: 11px 20px;
+
+    background: #ff6b35;
+
+    color: #ffffff !important;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+.type-button:hover {
+    background: #e85a2a;
+}
+
+
+/* ==================================================
+   MENSAJES
 ================================================== */
 
 .empty-message {
-color: #666;
+    color: #666;
 
-background: #ffffff;    
+    background: #ffffff;
 
-padding: 20px;    
+    padding: 20px;
 
-border-radius: 8px;    
+    border-radius: 8px;
 
-grid-column: 1 / -1;
-
+    grid-column: 1 / -1;
 }
 
+
 /* ==================================================
-FOOTER
+   FOOTER
 ================================================== */
 
 footer {
-background: #20242b;
+    background: #20242b;
 
-color: #aaa;    
+    color: #aaa;
 
-text-align: center;    
+    text-align: center;
 
-padding: 30px;    
+    padding: 30px;
 
-margin-top: 40px;    
+    margin-top: 40px;
 
-font-size: 13px;
-
+    font-size: 13px;
 }
 
+
 /* ==================================================
-TABLET
+   TABLET
 ================================================== */
 
 @media (max-width: 800px) {
 
-.header-content {    
-    flex-direction: column;    
+    .header-content {
+        flex-direction: column;
 
-    align-items: flex-start;    
-}    
+        align-items: flex-start;
+    }
 
-nav {    
-    width: 100%;    
+    nav {
+        width: 100%;
 
-    justify-content: flex-start;    
+        justify-content: flex-start;
 
-    flex-wrap: wrap;    
-}    
+        flex-wrap: wrap;
+    }
 
-.hero {    
-    padding: 20px;    
-}    
+    .hero {
+        padding: 20px;
+    }
 
-.hero-logo-box {    
-    width: 100%;    
+    .hero-logo-box {
+        width: 100%;
 
-    max-width: 700px;    
-}    
+        max-width: 700px;
+    }
 
-.hero-image {    
-    min-height: 300px;    
-}    
+    .hero-image {
+        min-height: 300px;
+    }
 
-.hero-message {    
-    font-size: 15px;    
-}    
+    .hero-message {
+        font-size: 15px;
+    }
 
-.stories {    
-    grid-template-columns:    
-        repeat(2, 1fr);    
+    .stories {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
 }
 
-}
 
 /* ==================================================
-CELULAR
+   CELULAR
 ================================================== */
 
 @media (max-width: 500px) {
 
-.container {    
-    padding: 20px 12px;    
-}    
+    .container {
+        padding: 20px 12px;
+    }
 
-.logo {    
-    font-size: 22px;    
-}    
+    .logo {
+        font-size: 22px;
+    }
 
-.subtitle {    
-    font-size: 12px;    
-}    
+    .subtitle {
+        font-size: 12px;
+    }
 
-nav {    
-    gap: 10px;    
-}    
+    nav {
+        gap: 10px;
+    }
 
-.hero {    
-    padding: 15px;    
-}    
+    #user-area {
+        gap: 10px;
+    }
 
-.hero-logo-box {    
-    width: 100%;    
-}    
+    .hero {
+        padding: 15px;
+    }
 
-.hero-image {    
-    min-height: 230px;    
-}    
+    .hero-logo-box {
+        width: 100%;
+    }
 
-.hero-message {    
-    margin-top: 10px;    
+    .hero-image {
+        min-height: 230px;
+    }
 
-    padding: 12px 10px;    
+    .hero-message {
+        margin-top: 10px;
 
-    font-size: 13px;    
-}    
+        padding: 12px 10px;
 
-.stories {    
-    grid-template-columns: 1fr 1fr;    
+        font-size: 13px;
+    }
 
-    gap: 12px;    
-}    
+    .stories {
+        grid-template-columns: 1fr 1fr;
 
-.cover {    
-    height: 190px;    
-}    
+        gap: 12px;
+    }
 
-.card-content {    
-    padding: 10px;    
-}    
+    .cover {
+        height: 190px;
+    }
 
-.card h3 {    
-    font-size: 15px;    
-}    
+    .card-content {
+        padding: 10px;
+    }
 
-.description {    
-    display: none;    
-}    
+    .card h3 {
+        font-size: 15px;
+    }
 
-.types {    
-    grid-template-columns: 1fr 1fr;    
+    .description {
+        display: none;
+    }
 
-    gap: 12px;    
-}    
+    .types {
+        grid-template-columns: 1fr 1fr;
 
-.type-box {    
-    padding: 15px;    
-}    
+        gap: 12px;
+    }
 
-.type-box h3 {    
-    font-size: 16px;    
-}    
+    .type-box {
+        padding: 15px;
+    }
 
-.type-box p {    
-    font-size: 13px;    
-}    
+    .type-box h3 {
+        font-size: 16px;
+    }
 
-.type-button {    
-    width: 100%;    
+    .type-box p {
+        font-size: 13px;
+    }
 
-    padding: 10px 5px;    
+    .type-button {
+        width: 100%;
 
-    font-size: 12px;    
+        padding: 10px 5px;
 
-    text-align: center;    
-}    
+        font-size: 12px;
 
-.search button {    
-    padding: 0 15px;    
+        text-align: center;
+    }
+
+    .search button {
+        padding: 0 15px;
+    }
 }
 
-}
-
-</style>  </head>  <body>  <!-- ==================================================    
-CABECERA    
-================================================== -->  <header>  <div class="header-content">  <div class="logo-area">  <div class="logo">
+</style></head><body><!-- ==================================================
+     CABECERA
+================================================== --><header><div class="header-content"><div class="logo-area"><div class="logo">
 ComicWorldFiles
-
-</div>  <div class="subtitle">    
-    Crea tus historias o cómics y sube tus archivos    
-</div>  </div>   
-<nav>  <a href="index.html">  
-Inicio  
-</a>  <a href="#recent-section">  
-Historias  
-</a>  <a href="#">  
-Autores  
-</a>  <a
+</div><div class="subtitle">
+Crea tus historias o cómics y sube tus archivos
+</div></div><nav><a href="index.html">
+Inicio
+</a><a href="#recent-section">
+Historias
+</a><a href="#">
+Autores
+</a><a
 href="https://www.paypal.com/paypalme/josesanpedropl"
 target="_blank"
 rel="noopener noreferrer"
 class="donate-button"
 title="Donar con PayPal"
 
-> 
+«»
 
-<span class="paypal-icon">💙</span>  
+<span class="paypal-icon">💙</span>
+
 Donate
 
-</a>  <span id="user-area">  <a href="login.html">  
-Iniciar sesión  
-</a>  </span>  </nav>  
-</div>  </header>  <main class="container">  <!-- ==================================================    
-     BUSCADOR    
-================================================== -->  <div class="search">  <input  
-type="text"  
-id="search-input"  
-placeholder="Buscar historias, historietas o autores..."  > 
+</a><span id="user-area"><a href="login.html">
+Iniciar sesión
+</a></span></nav></div></header><main class="container"><!-- ==================================================
+     BUSCADOR
+================================================== --><div class="search"><input
+type="text"
+id="search-input"
+placeholder="Buscar historias, historietas o autores..."
+
+«»
 
 <button
 type="button"
 onclick="buscarHistorias()"
 
-> 
+«»
 
 Buscar
+</button>
 
-</button>  </div>  <!-- ==================================================    
-LOGO DESTACADO    
-================================================== -->  <section class="hero">  <div class="hero-logo-box">  <div class="hero-image">  <img
+</div><!-- ==================================================
+     LOGO DESTACADO
+================================================== --><section class="hero"><div class="hero-logo-box"><div class="hero-image"><img
 src="logo.jpg"
 alt="ComicWorldFiles"
 
-> 
+«»
 
-</div>  <div class="hero-message">  Explora, sube y edita historias o comics  </div>  </div>  </section>  <!-- ==================================================    
-     PUBLICACIONES RECIENTES    
-================================================== -->  <div    
-    class="section-title"    
-    id="recent-section"    
->  <h2>    
-Publicaciones recientes    
-</h2>  <a href="#recent-section">    
-Ver todas →    
-</a>  </div>  <section    
-    class="stories"    
-    id="recent-stories"    
->  <div class="empty-message">    
-Cargando publicaciones...    
-</div>  </section>  <!-- ==================================================    
-     TIPOS DE PUBLICACIÓN    
-================================================== -->  <div    
-    class="section-title"    
-    style="margin-top:40px;"    
->  <h2>    
-¿Qué quieres publicar?    
-</h2>  </div>  <section class="types">  <!-- HISTORIAS -->  <div class="type-box">  <h3>    
-📖 Historias    
-</h3>  <p>    
-Publica novelas, cuentos, relatos y cualquier    
-historia escrita por capítulos.    
-</p>  <a  
-class="type-button"  
-href="crear-historia.html"  
-onclick="requiereLogin(event, 'crear-historia.html')"  > 
+</div><div class="hero-message">Explora, sube y edita historias o comics
+
+</div></div></section><!-- ==================================================
+     PUBLICACIONES RECIENTES
+================================================== --><div
+    class="section-title"
+    id="recent-section"
+><h2>
+Publicaciones recientes
+</h2><a href="#recent-section">
+Ver todas →
+</a></div><section
+    class="stories"
+    id="recent-stories"
+><div class="empty-message">
+Cargando publicaciones...
+</div></section><!-- ==================================================
+     TIPOS DE PUBLICACIÓN
+================================================== --><div
+    class="section-title"
+    style="margin-top:40px;"
+><h2>
+¿Qué quieres publicar?
+</h2></div><section class="types"><!-- HISTORIAS --><div class="type-box"><h3>
+📖 Historias
+</h3><p>
+Publica novelas, cuentos, relatos y cualquier
+historia escrita por capítulos.
+</p><a
+class="type-button"
+href="crear-historia.html"
+onclick="requiereLogin(event, 'crear-historia.html')"
+
+«»
 
 Crear historia
+</a>
 
-</a>  </div>  <!-- HISTORIETAS -->  <div class="type-box">  <h3>
+</div><!-- HISTORIETAS --><div class="type-box"><h3>
 🖼️ Historietas
+</h3><p>
+Publica tus cómics página por página y permite
+que otros usuarios los lean desde el celular.
+</p><a
+class="type-button"
+href="crear-historieta.html"
+onclick="requiereLogin(event, 'crear-historieta.html')"
 
-</h3>  <p>    
-Publica tus cómics página por página y permite    
-que otros usuarios los lean desde el celular.    
-</p>  <a  
-class="type-button"  
-href="crear-historieta.html"  
-onclick="requiereLogin(event, 'crear-historieta.html')"  > 
+«»
 
 Crear historieta
+</a>
 
-</a>  </div>  </section>  <!-- ==================================================    
-MÁS POPULARES    
-================================================== -->  <div class="section-title">  <h2>
+</div></section><!-- ==================================================
+     MÁS POPULARES
+================================================== --><div class="section-title"><h2>
 Más populares
+</h2><a href="#popular-section">
+Ver todas →
+</a></div><section
+    class="stories"
+    id="popular-section"
+><div class="empty-message">
+Cargando publicaciones...
+</div></section></main><!-- ==================================================
+     FOOTER
+================================================== --><footer>ComicWorldFiles © 2026
 
-</h2>  <a href="#popular-section">    
-Ver todas →    
-</a>  </div>  <section    
-    class="stories"    
-    id="popular-section"    
->  <div class="empty-message">    
-Cargando publicaciones...    
-</div>  </section>  </main>  <!-- ==================================================    
-     FOOTER    
-================================================== -->  <footer>  ComicWorldFiles © 2026  <br><br>
+<br><br>
 
 Una plataforma para publicar y descubrir
 historias independientes.
 
-</footer>  <script>    /* ==================================================
-VARIABLES
+</footer><script>
+
+
+/* ==================================================
+   VARIABLES
 ================================================== */
 
 let todasLasHistorias = [];
 
+
 /* ==================================================
-SESIÓN
+   SESIÓN
 ================================================== */
 
 async function checkSession() {
 
-const userArea =    
-    document.getElementById("user-area");    
+    const userArea =
+        document.getElementById("user-area");
 
-try {    
+    try {
 
-    const response =    
-        await fetch(    
-            "/api/me",    
-            {    
-                method: "GET",    
-                credentials: "include",    
-                cache: "no-store"    
-            }    
-        );    
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
 
+                    credentials: "include",
 
-    if (!response.ok) {    
-        return;    
-    }    
+                    cache: "no-store"
+                }
+            );
 
 
-    const data =    
-        await response.json();    
+        if (!response.ok) {
+            return;
+        }
 
 
-    if (    
-        data &&    
-        data.success === true &&    
-        data.loggedIn === true &&    
-        data.user    
-    ) {    
-
-        const username =    
-            data.user.username ||    
-            "Usuario";    
+        const data =
+            await response.json();
 
 
-        userArea.innerHTML = "";    
+        if (
+            data &&
+            data.success === true &&
+            data.loggedIn === true &&
+            data.user
+        ) {
+
+            const username =
+                data.user.username ||
+                "Usuario";
 
 
-        const greeting =    
-            document.createElement("span");    
-
-        greeting.style.color =    
-            "#ffffff";    
-
-        greeting.style.fontSize =    
-            "14px";    
-
-        greeting.textContent =    
-            "Hola " + username;    
+            userArea.innerHTML = "";
 
 
-        const profileLink =    
-            document.createElement("a");    
+            const greeting =
+                document.createElement("span");
 
-        profileLink.href =    
-            "perfil.html";    
-
-        profileLink.textContent =    
-            "Mi perfil";    
-
-        profileLink.style.color =    
-            "#ffffff";    
+            greeting.textContent =
+                "Hola " + username;
 
 
-        const logoutLink =    
-            document.createElement("a");    
+            const profileLink =
+                document.createElement("a");
 
-        logoutLink.href =    
-            "#";    
+            profileLink.href =
+                "perfil.html";
 
-        logoutLink.textContent =    
-            "Cerrar sesión";    
-
-        logoutLink.style.color =    
-            "#ffffff";    
+            profileLink.textContent =
+                "Mi perfil";
 
 
-        logoutLink.addEventListener(    
-            "click",    
-            function(event) {    
+            const logoutLink =
+                document.createElement("a");
 
-                event.preventDefault();    
+            logoutLink.href =
+                "#";
 
-                logout();    
-
-            }    
-        );    
+            logoutLink.textContent =
+                "Cerrar sesión";
 
 
-        userArea.appendChild(    
-            greeting    
-        );    
+            logoutLink.addEventListener(
+                "click",
+                function(event) {
 
-        userArea.appendChild(    
-            profileLink    
-        );    
+                    event.preventDefault();
 
-        userArea.appendChild(    
-            logoutLink    
-        );    
+                    logout();
 
-    }    
+                }
+            );
 
-} catch (error) {    
 
-    console.error(    
-        "Error comprobando sesión:",    
-        error    
-    );    
+            userArea.appendChild(
+                greeting
+            );
+
+
+            userArea.appendChild(
+                profileLink
+            );
+
+
+            userArea.appendChild(
+                logoutLink
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando sesión:",
+            error
+        );
+
+    }
 
 }
 
-}
 
 /* ==================================================
-LOGOUT
+   LOGOUT
 ================================================== */
 
 async function logout() {
 
-try {    
+    try {
 
-    await fetch(    
-        "/api/logout",    
-        {    
-            method: "POST",    
-            credentials: "include"    
-        }    
-    );    
+        await fetch(
+            "/api/logout",
+            {
+                method: "POST",
 
-} catch (error) {    
+                credentials: "include"
+            }
+        );
 
-    console.error(    
-        "Error cerrando sesión:",    
-        error    
-    );    
+    } catch (error) {
 
-}    
+        console.error(
+            "Error cerrando sesión:",
+            error
+        );
 
-
-localStorage.removeItem(    
-    "comicworld_user"    
-);    
+    }
 
 
-window.location.href =    
-    "index.html";
+    localStorage.removeItem(
+        "comicworld_user"
+    );
+
+
+    window.location.href =
+        "index.html";
 
 }
 
+
 /* ==================================================
-REQUIERE LOGIN
+   REQUIERE LOGIN
 ================================================== */
 
 function requiereLogin(
-event,
-pagina
+    event,
+    pagina
 ) {
 
-event.preventDefault();    
+    event.preventDefault();
 
-checkLoginAndRedirect(    
-    pagina    
-);
+    checkLoginAndRedirect(
+        pagina
+    );
 
 }
+
 
 async function checkLoginAndRedirect(
-pagina
+    pagina
 ) {
 
-try {    
+    try {
 
-    const response =    
-        await fetch(    
-            "/api/me",    
-            {    
-                method: "GET",    
-                credentials: "include",    
-                cache: "no-store"    
-            }    
-        );    
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
 
+                    credentials: "include",
 
-    const data =    
-        await response.json();    
+                    cache: "no-store"
+                }
+            );
 
 
-    if (    
-        response.ok &&    
-        data.success &&    
-        data.loggedIn &&    
-        data.user    
-    ) {    
-
-        window.location.href =    
-            pagina;    
-
-        return;    
-
-    }    
+        const data =
+            await response.json();
 
 
-    alert(    
-        "Debes iniciar sesión para publicar."    
-    );    
+        if (
+            response.ok &&
+            data.success &&
+            data.loggedIn &&
+            data.user
+        ) {
+
+            window.location.href =
+                pagina;
+
+            return;
+
+        }
 
 
-    window.location.href =    
-        "login.html";    
-
-} catch (error) {    
-
-    console.error(    
-        "Error comprobando login:",    
-        error    
-    );    
+        alert(
+            "Debes iniciar sesión para publicar."
+        );
 
 
-    alert(    
-        "No se pudo comprobar la sesión."    
-    );    
+        window.location.href =
+            "login.html";
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando login:",
+            error
+        );
+
+
+        alert(
+            "No se pudo comprobar la sesión."
+        );
+
+    }
 
 }
 
-}
 
 /* ==================================================
-CARGAR PUBLICACIONES
+   CARGAR PUBLICACIONES
 ================================================== */
 
 async function loadStories() {
 
-const recentContainer =    
-    document.getElementById(    
-        "recent-stories"    
-    );    
+    const recentContainer =
+        document.getElementById(
+            "recent-stories"
+        );
 
 
-const popularContainer =    
-    document.getElementById(    
-        "popular-section"    
-    );    
+    const popularContainer =
+        document.getElementById(
+            "popular-section"
+        );
 
 
-try {    
+    try {
 
-    const response =    
-        await fetch(    
-            "/api/stories",    
-            {    
-                method: "GET",    
-                credentials: "include"    
-            }    
-        );    
+        const response =
+            await fetch(
+                "/api/stories",
+                {
+                    method: "GET",
 
-
-    const data =    
-        await response.json();    
+                    credentials: "include"
+                }
+            );
 
 
-    console.log(    
-        "Respuesta /api/stories:",    
-        data    
-    );    
+        const data =
+            await response.json();
 
 
-    if (    
-        !response.ok ||    
-        !data.success    
-    ) {    
-
-        mostrarMensaje(    
-            recentContainer,    
-            "No se pudieron cargar las publicaciones."    
-        );    
+        console.log(
+            "Respuesta /api/stories:",
+            data
+        );
 
 
-        mostrarMensaje(    
-            popularContainer,    
-            "No se pudieron cargar las publicaciones."    
-        );    
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
-        return;    
-
-    }    
-
-
-    todasLasHistorias =    
-        Array.isArray(data.stories)    
-            ? data.stories    
-            : [];    
+            mostrarMensaje(
+                recentContainer,
+                "No se pudieron cargar las publicaciones."
+            );
 
 
-    if (    
-        todasLasHistorias.length === 0    
-    ) {    
+            mostrarMensaje(
+                popularContainer,
+                "No se pudieron cargar las publicaciones."
+            );
 
-        mostrarMensaje(    
-            recentContainer,    
-            "Todavía no hay publicaciones."    
-        );    
+            return;
 
-
-        mostrarMensaje(    
-            popularContainer,    
-            "Todavía no hay publicaciones."    
-        );    
-
-        return;    
-
-    }    
+        }
 
 
-    mostrarHistorias(    
-        todasLasHistorias,    
-        recentContainer    
-    );    
+        todasLasHistorias =
+            Array.isArray(data.stories)
+                ? data.stories
+                : [];
 
 
-    mostrarHistorias(    
-        todasLasHistorias,    
-        popularContainer    
-    );    
+        if (
+            todasLasHistorias.length === 0
+        ) {
 
-} catch (error) {    
-
-    console.error(    
-        "Error cargando publicaciones:",    
-        error    
-    );    
+            mostrarMensaje(
+                recentContainer,
+                "Todavía no hay publicaciones."
+            );
 
 
-    mostrarMensaje(    
-        recentContainer,    
-        "Error cargando publicaciones."    
-    );    
+            mostrarMensaje(
+                popularContainer,
+                "Todavía no hay publicaciones."
+            );
+
+            return;
+
+        }
 
 
-    mostrarMensaje(    
-        popularContainer,    
-        "Error cargando publicaciones."    
-    );    
+        mostrarHistorias(
+            todasLasHistorias,
+            recentContainer
+        );
+
+
+        mostrarHistorias(
+            todasLasHistorias,
+            popularContainer
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando publicaciones:",
+            error
+        );
+
+
+        mostrarMensaje(
+            recentContainer,
+            "Error cargando publicaciones."
+        );
+
+
+        mostrarMensaje(
+            popularContainer,
+            "Error cargando publicaciones."
+        );
+
+    }
 
 }
 
-}
 
 /* ==================================================
-MOSTRAR MENSAJE
+   MOSTRAR MENSAJE
 ================================================== */
 
 function mostrarMensaje(
-container,
-mensaje
+    container,
+    mensaje
 ) {
 
-container.innerHTML =    
-    '<div class="empty-message">' +    
-    escapeHtml(mensaje) +    
-    '</div>';
+    container.innerHTML =
+        '<div class="empty-message">' +
+        escapeHtml(mensaje) +
+        '</div>';
 
 }
 
+
 /* ==================================================
-MOSTRAR HISTORIAS
+   MOSTRAR HISTORIAS
 ================================================== */
 
 function mostrarHistorias(
-historias,
-container
+    historias,
+    container
 ) {
 
-container.innerHTML = "";    
+    container.innerHTML = "";
 
 
-if (    
-    !historias ||    
-    historias.length === 0    
-) {    
+    if (
+        !historias ||
+        historias.length === 0
+    ) {
 
-    mostrarMensaje(    
-        container,    
-        "No se encontraron publicaciones."    
-    );    
+        mostrarMensaje(
+            container,
+            "No se encontraron publicaciones."
+        );
 
-    return;    
+        return;
 
-}    
-
-
-const limite =    
-    Math.min(    
-        historias.length,    
-        4    
-    );    
+    }
 
 
-for (    
-    let i = 0;    
-    i < limite;    
-    i++    
-) {    
-
-    const story =    
-        historias[i];    
+    const limite =
+        Math.min(
+            historias.length,
+            4
+        );
 
 
-    const card =    
-        document.createElement("div");    
+    for (
+        let i = 0;
+        i < limite;
+        i++
+    ) {
 
-    card.className =    
-        "card";    
-
-
-    /* ==========================================    
-       TIPO    
-    ========================================== */    
-
-    const tipo =    
-        String(    
-            story.type || "historia"    
-        ).toLowerCase();    
+        const story =
+            historias[i];
 
 
-    const esHistorieta =    
-        tipo === "historieta";    
+        const card =
+            document.createElement("div");
 
 
-    const tipoTexto =    
-        esHistorieta    
-            ? "🖼️ Historieta"    
-            : "📖 Historia";    
+        card.className =
+            "card";
 
 
-    const paginaLectura =    
-        esHistorieta    
-            ? "leer-historieta.html"    
-            : "leer-historia.html";    
+        /* ==========================================
+           TIPO
+        ========================================== */
+
+        const tipo =
+            String(
+                story.type || "historia"
+            ).toLowerCase();
 
 
-    const textoBoton =    
-        esHistorieta    
-            ? "Leer historieta"    
-            : "Leer historia";    
+        const esHistorieta =
+            tipo === "historieta";
 
 
-    /* ==========================================    
-       PORTADA    
-    ========================================== */    
-
-    let coverHTML;    
-
-
-    if (    
-        story.cover_url    
-    ) {    
-
-        coverHTML =    
-
-            '<div class="cover">' +    
-
-            '<span class="publication-type">' +    
-            tipoTexto +    
-            '</span>' +    
-
-            '<img src="' +    
-            escapeHtml(    
-                story.cover_url    
-            ) +    
-            '" alt="Portada">' +    
-
-            '</div>';    
-
-    } else {    
-
-        coverHTML =    
-
-            '<div class="cover">' +    
-
-            '<span class="publication-type">' +    
-            tipoTexto +    
-            '</span>' +    
-
-            (    
-                esHistorieta    
-                    ? "🖼️"    
-                    : "📖"    
-            ) +    
-
-            '</div>';    
-
-    }    
+        const tipoTexto =
+            esHistorieta
+                ? "🖼️ Historieta"
+                : "📖 Historia";
 
 
-    /* ==========================================    
-       TARJETA    
-    ========================================== */    
-
-    card.innerHTML =    
-
-        coverHTML +    
-
-        '<div class="card-content">' +    
-
-        '<h3>' +    
-        escapeHtml(    
-            story.title ||    
-            "Sin título"    
-        ) +    
-        '</h3>' +    
-
-        '<div class="author">' +    
-        'Por ' +    
-        escapeHtml(    
-            story.author ||    
-            "Autor"    
-        ) +    
-        '</div>' +    
-
-        '<p class="description">' +    
-        escapeHtml(    
-            story.description ||    
-            ""    
-        ) +    
-        '</p>' +    
-
-        '<a ' +    
-        'class="card-button" ' +    
-        'href="' +    
-        paginaLectura +    
-        '?id=' +    
-        encodeURIComponent(    
-            story.id    
-        ) +    
-        '">' +    
-
-        textoBoton +    
-
-        '</a>' +    
-
-        '</div>';    
+        const paginaLectura =
+            esHistorieta
+                ? "leer-historieta.html"
+                : "leer-historia.html";
 
 
-    container.appendChild(    
-        card    
-    );    
+        const textoBoton =
+            esHistorieta
+                ? "Leer historieta"
+                : "Leer historia";
+
+
+        /* ==========================================
+           PORTADA
+        ========================================== */
+
+        let coverHTML;
+
+
+        if (
+            story.cover_url
+        ) {
+
+            coverHTML =
+
+                '<div class="cover">' +
+
+                '<span class="publication-type">' +
+                tipoTexto +
+                '</span>' +
+
+                '<img src="' +
+                escapeHtml(
+                    story.cover_url
+                ) +
+                '" alt="Portada">' +
+
+                '</div>';
+
+        } else {
+
+            coverHTML =
+
+                '<div class="cover">' +
+
+                '<span class="publication-type">' +
+                tipoTexto +
+                '</span>' +
+
+                (
+                    esHistorieta
+                        ? "🖼️"
+                        : "📖"
+                ) +
+
+                '</div>';
+
+        }
+
+
+        /* ==========================================
+           TARJETA
+        ========================================== */
+
+        card.innerHTML =
+
+            coverHTML +
+
+            '<div class="card-content">' +
+
+            '<h3>' +
+            escapeHtml(
+                story.title ||
+                "Sin título"
+            ) +
+            '</h3>' +
+
+            '<div class="author">' +
+            'Por ' +
+            escapeHtml(
+                story.author ||
+                "Autor"
+            ) +
+            '</div>' +
+
+            '<p class="description">' +
+            escapeHtml(
+                story.description ||
+                ""
+            ) +
+            '</p>' +
+
+            '<a ' +
+            'class="card-button" ' +
+            'href="' +
+            paginaLectura +
+            '?id=' +
+            encodeURIComponent(
+                story.id
+            ) +
+            '">' +
+
+            textoBoton +
+
+            '</a>' +
+
+            '</div>';
+
+
+        container.appendChild(
+            card
+        );
+
+    }
 
 }
 
-}
 
 /* ==================================================
-BUSCADOR
+   BUSCADOR
 ================================================== */
 
 function buscarHistorias() {
 
-const input =    
-    document.getElementById(    
-        "search-input"    
-    );    
+    const input =
+        document.getElementById(
+            "search-input"
+        );
 
 
-const texto =    
-    input.value    
-        .trim()    
-        .toLowerCase();    
+    const texto =
+        input.value
+            .trim()
+            .toLowerCase();
 
 
-const recentContainer =    
-    document.getElementById(    
-        "recent-stories"    
-    );    
+    const recentContainer =
+        document.getElementById(
+            "recent-stories"
+        );
 
 
-const popularContainer =    
-    document.getElementById(    
-        "popular-section"    
-    );    
+    const popularContainer =
+        document.getElementById(
+            "popular-section"
+        );
 
 
-if (!texto) {    
+    if (!texto) {
 
-    mostrarHistorias(    
-        todasLasHistorias,    
-        recentContainer    
-    );    
-
-
-    mostrarHistorias(    
-        todasLasHistorias,    
-        popularContainer    
-    );    
+        mostrarHistorias(
+            todasLasHistorias,
+            recentContainer
+        );
 
 
-    return;    
-
-}    
-
-
-const resultados =    
-    todasLasHistorias.filter(    
-        function(story) {    
-
-            const titulo =    
-                String(    
-                    story.title || ""    
-                ).toLowerCase();    
+        mostrarHistorias(
+            todasLasHistorias,
+            popularContainer
+        );
 
 
-            const autor =    
-                String(    
-                    story.author || ""    
-                ).toLowerCase();    
+        return;
+
+    }
 
 
-            const genero =    
-                String(    
-                    story.genre || ""    
-                ).toLowerCase();    
+    const resultados =
+        todasLasHistorias.filter(
+            function(story) {
+
+                const titulo =
+                    String(
+                        story.title || ""
+                    ).toLowerCase();
 
 
-            const descripcion =    
-                String(    
-                    story.description || ""    
-                ).toLowerCase();    
+                const autor =
+                    String(
+                        story.author || ""
+                    ).toLowerCase();
 
 
-            const tipo =    
-                String(    
-                    story.type || ""    
-                ).toLowerCase();    
+                const genero =
+                    String(
+                        story.genre || ""
+                    ).toLowerCase();
 
 
-            return (    
-                titulo.includes(texto) ||    
-                autor.includes(texto) ||    
-                genero.includes(texto) ||    
-                descripcion.includes(texto) ||    
-                tipo.includes(texto)    
-            );    
-
-        }    
-    );    
+                const descripcion =
+                    String(
+                        story.description || ""
+                    ).toLowerCase();
 
 
-mostrarHistorias(    
-    resultados,    
-    recentContainer    
-);    
+                const tipo =
+                    String(
+                        story.type || ""
+                    ).toLowerCase();
 
 
-popularContainer.innerHTML =    
-    '<div class="empty-message">' +    
-    'Resultados de búsqueda mostrados arriba.' +    
-    '</div>';    
+                return (
+                    titulo.includes(texto) ||
+                    autor.includes(texto) ||
+                    genero.includes(texto) ||
+                    descripcion.includes(texto) ||
+                    tipo.includes(texto)
+                );
+
+            }
+        );
 
 
-recentContainer.scrollIntoView({    
-    behavior: "smooth",    
-    block: "start"    
-});
+    mostrarHistorias(
+        resultados,
+        recentContainer
+    );
+
+
+    popularContainer.innerHTML =
+        '<div class="empty-message">' +
+        'Resultados de búsqueda mostrados arriba.' +
+        '</div>';
+
+
+    recentContainer.scrollIntoView({
+        behavior: "smooth",
+
+        block: "start"
+    });
 
 }
 
+
 /* ==================================================
-ENTER EN BUSCADOR
+   ENTER EN BUSCADOR
 ================================================== */
 
 document
-.getElementById("search-input")
-.addEventListener(
-"keydown",
-function(event) {
+    .getElementById("search-input")
+    .addEventListener(
+        "keydown",
+        function(event) {
 
-if (    
-            event.key === "Enter"    
-        ) {    
+            if (
+                event.key === "Enter"
+            ) {
 
-            buscarHistorias();    
+                buscarHistorias();
 
-        }    
+            }
 
-    }    
-);
+        }
+    );
+
 
 /* ==================================================
-SEGURIDAD HTML
+   SEGURIDAD HTML
 ================================================== */
 
 function escapeHtml(text) {
 
-const div =    
-    document.createElement("div");    
+    const div =
+        document.createElement("div");
 
 
-div.textContent =    
-    text == null    
-        ? ""    
-        : String(text);    
+    div.textContent =
+        text == null
+            ? ""
+            : String(text);
 
 
-return div.innerHTML;
+    return div.innerHTML;
 
 }
 
+
 /* ==================================================
-INICIAR
+   INICIAR
 ================================================== */
 
 checkSession();
 
 loadStories();
 
-</script>  </body>  </html>
-
-Mi perfil y cerrar sesion siguen pegados
+</script></body></html>
