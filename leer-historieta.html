@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Leer historieta - ComicWorldFiles</title>
-
-<style>
+<title>Leer historieta - ComicWorldFiles</title><style>
 
 * {
     box-sizing: border-box;
@@ -115,7 +105,7 @@ header h1 {
 
 
 /* ==========================================
-   ME GUSTA
+   ME GUSTA + FAVORITOS
 ========================================== */
 
 .story-actions {
@@ -131,7 +121,8 @@ header h1 {
     flex-wrap: wrap;
 }
 
-.like-button {
+.like-button,
+.favorite-button {
 
     border: 1px solid #ddd;
 
@@ -156,14 +147,16 @@ header h1 {
         transform 0.1s;
 }
 
-.like-button:hover {
+.like-button:hover,
+.favorite-button:hover {
 
     background: #f5f5f5;
 
     border-color: #ccc;
 }
 
-.like-button:active {
+.like-button:active,
+.favorite-button:active {
 
     transform: scale(0.97);
 }
@@ -177,7 +170,17 @@ header h1 {
     color: #e53935;
 }
 
-.like-button:disabled {
+.favorite-button.favorited {
+
+    background: #fff5d6;
+
+    border-color: #f0cf75;
+
+    color: #b8860b;
+}
+
+.like-button:disabled,
+.favorite-button:disabled {
 
     opacity: 0.6;
 
@@ -191,7 +194,8 @@ header h1 {
     font-size: 14px;
 }
 
-.like-message {
+.like-message,
+.favorite-message {
 
     color: #aaa;
 
@@ -603,221 +607,118 @@ textarea {
 
 }
 
-</style>
-
-</head>
-
-<body>
-
-<!-- ==========================================
+</style></head><body><!-- ==========================================
      CABECERA
-========================================== -->
-
-<header>
-
-<h1 id="storyTitle">
+========================================== --><header><h1 id="storyTitle">
 Cargando historieta...
-</h1>
+</h1><div id="views"
+     class="views">👁 Cargando visitas...
 
-<div id="views"
-     class="views">
-
-👁 Cargando visitas...
-
-</div>
-
-</header>
-
-<div class="container">
-
-<a href="index.html"
+</div></header><div class="container"><a href="index.html"
 class="back">
 
 ← Volver
 
-</a>
-
-<!-- ==========================================
-     ME GUSTA
-========================================== -->
-
-<div class="story-actions">
-
-<button
- id="like-button"
- class="like-button"
- type="button">
+</a><!-- ==========================================
+     ME GUSTA + FAVORITOS
+========================================== --><div class="story-actions"><button
+id="like-button"
+class="like-button"
+type="button">
 
 🤍 Me gusta
 
-</button>
-
-<span
- id="likes-count"
- class="likes-count">
+</button><span
+id="likes-count"
+class="likes-count">
 
 0 Me gusta
 
-</span>
+</span><span
+id="like-message"
+class="like-message">
 
-<span
- id="like-message"
- class="like-message">
+</span><button
+id="favorite-button"
+class="favorite-button"
+type="button">
 
-</span>
+☆ Agregar a favoritos
 
-</div>
+</button><span
+id="favorite-message"
+class="favorite-message">
 
-<!-- ==========================================
+</span></div><!-- ==========================================
      LECTOR
-========================================== -->
+========================================== --><div class="card"><div class="info"><h2 id="chapterTitle"
+    class="chapter-title">Cargando capítulo...
 
-<div class="card">
-
-<div class="info">
-
-<h2 id="chapterTitle"
-    class="chapter-title">
-
-Cargando capítulo...
-
-</h2>
-
-<div id="chapterNumber"
+</h2><div id="chapterNumber"
      class="story-title">
-</div>
+</div></div><div id="loading"
+     class="loading">Cargando capítulo...
 
-</div>
-
-<div id="loading"
-     class="loading">
-
-Cargando capítulo...
-
-</div>
-
-<div id="blocks"
+</div><div id="blocks"
      class="blocks">
-</div>
-
-<div id="readerError"
+</div><div id="readerError"
      class="message error">
-</div>
-
-<div id="readerSuccess"
+</div><div id="readerSuccess"
      class="message success-message">
-</div>
-
-<div class="actions">
-
-<button id="editButton"
-     class="primary hidden"
-     onclick="activarEdicion()">
+</div><div class="actions"><button id="editButton"
+class="primary hidden"
+onclick="activarEdicion()">
 
 ✏️ Editar capítulo
 
-</button>
-
-</div>
-
-</div>
-
-<!-- ==========================================
+</button></div></div><!-- ==========================================
      EDITOR
-========================================== -->
-
-<div id="editorCard"
-     class="card editor">
-
-<h2>
+========================================== --><div id="editorCard"
+     class="card editor"><h2>
 Editar capítulo
-</h2>
-
-<p class="info">
-
-Puedes agregar imágenes y texto. También puedes modificar
+</h2><p class="info">Puedes agregar imágenes y texto. También puedes modificar
 el texto existente.
 
-</p>
-
-<div id="editorBlocks">
-</div>
-
-<hr class="separator">
-
-<h3>
+</p><div id="editorBlocks">
+</div><hr class="separator"><h3>
 Agregar texto
-</h3>
-
-<textarea id="newText"
-          placeholder="Escribe el texto que quieres agregar..."></textarea>
-
-<button class="primary"
-     onclick="agregarTexto()">
+</h3><textarea id="newText"
+          placeholder="Escribe el texto que quieres agregar..."></textarea><button class="primary"
+onclick="agregarTexto()">
 
 * Agregar texto
 
-</button>
-
-<hr class="separator">
-
-<h3>
+</button><hr class="separator"><h3>
 Agregar imágenes
-</h3>
+</h3><p class="info">Puedes seleccionar una o varias imágenes.
 
-<p class="info">
-
-Puedes seleccionar una o varias imágenes.
-
-</p>
-
-<input type="file"
-    id="newImages"
-    accept="image/jpeg,image/png,image/webp,image/gif"
-    multiple>
+</p><input type="file"
+id="newImages"
+accept="image/jpeg,image/png,image/webp,image/gif"
+multiple>
 
 <button class="primary"
-     id="uploadButton"
-     onclick="subirNuevasImagenes()">
+id="uploadButton"
+onclick="subirNuevasImagenes()">
 
 * Subir imágenes
 
-</button>
-
-<div id="uploadMessage"
+</button><div id="uploadMessage"
      class="message">
-</div>
-
-<hr class="separator">
-
-<div class="actions">
-
-<button class="success"
-     id="saveButton"
-     onclick="guardarCambios()">
+</div><hr class="separator"><div class="actions"><button class="success"
+id="saveButton"
+onclick="guardarCambios()">
 
 💾 Guardar cambios
 
-</button>
-
-<button class="secondary"
-     onclick="cancelarEdicion()">
+</button><button class="secondary"
+onclick="cancelarEdicion()">
 
 Cancelar
 
-</button>
-
-</div>
-
-<div id="saveMessage"
+</button></div><div id="saveMessage"
      class="message">
-</div>
-
-</div>
-
-</div>
-
-<script>
+</div></div></div><script>
 
 
 // ========================================================
@@ -856,6 +757,22 @@ const likesCount =
 const likeMessage =
     document.getElementById(
         "like-message"
+    );
+
+
+// ========================================================
+// ELEMENTOS FAVORITOS
+// ========================================================
+
+const favoriteButton =
+    document.getElementById(
+        "favorite-button"
+    );
+
+
+const favoriteMessage =
+    document.getElementById(
+        "favorite-message"
     );
 
 
@@ -1474,6 +1391,320 @@ likeButton.addEventListener(
 
 
 // ========================================================
+// FAVORITOS
+// ========================================================
+
+/*
+ * Consultar si la historieta está
+ * actualmente en favoritos.
+ */
+
+async function cargarFavorito() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    storyId
+                ) +
+                "/favorite",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta Favorito:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            console.error(
+                "La respuesta de Favorito no es JSON válido."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Si no hay sesión,
+         * el botón queda en estado normal.
+         */
+
+        if (
+            response.status === 401
+        ) {
+
+            actualizarFavorito(
+                false
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            console.error(
+                "No se pudo consultar el Favorito."
+            );
+
+            return;
+
+        }
+
+
+        actualizarFavorito(
+            data.favorited
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando Favorito:",
+            error
+        );
+
+    }
+
+}
+
+
+/*
+ * Agregar o quitar la historieta
+ * de favoritos.
+ */
+
+async function alternarFavorito() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    if (
+        favoriteButton.disabled
+    ) {
+
+        return;
+
+    }
+
+
+    favoriteButton.disabled =
+        true;
+
+
+    favoriteMessage.style.display =
+        "none";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    storyId
+                ) +
+                "/favorite",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "include",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta alternar Favorito:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió una respuesta válida."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            if (
+                response.status === 401
+            ) {
+
+                favoriteMessage.textContent =
+                    data.error ||
+                    "Debes iniciar sesión para guardar favoritos.";
+
+            } else {
+
+                favoriteMessage.textContent =
+                    data.error ||
+                    "No se pudo procesar el favorito.";
+
+            }
+
+
+            favoriteMessage.style.display =
+                "inline";
+
+
+            return;
+
+        }
+
+
+        actualizarFavorito(
+            data.favorited
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error alternando Favorito:",
+            error
+        );
+
+
+        favoriteMessage.textContent =
+            error.message ||
+            "No se pudo conectar con el servidor.";
+
+
+        favoriteMessage.style.display =
+            "inline";
+
+
+    } finally {
+
+        favoriteButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/*
+ * Actualizar visualmente el botón
+ * de Favoritos.
+ */
+
+function actualizarFavorito(
+    favorited
+) {
+
+    if (
+        favorited
+    ) {
+
+        favoriteButton.classList.add(
+            "favorited"
+        );
+
+
+        favoriteButton.textContent =
+            "★ En favoritos";
+
+
+    } else {
+
+        favoriteButton.classList.remove(
+            "favorited"
+        );
+
+
+        favoriteButton.textContent =
+            "☆ Agregar a favoritos";
+
+    }
+
+}
+
+
+// ========================================================
+// EVENTO FAVORITOS
+// ========================================================
+
+favoriteButton.addEventListener(
+    "click",
+    alternarFavorito
+);
+
+
+// ========================================================
 // CARGAR HISTORIETA
 // ========================================================
 
@@ -1571,6 +1802,13 @@ async function cargarHistorieta() {
          */
 
         cargarMeGusta();
+
+
+        /*
+         * Cargar estado de Favoritos.
+         */
+
+        cargarFavorito();
 
 
         /*
@@ -2771,8 +3009,4 @@ document.addEventListener(
     }
 );
 
-</script>
-
-</body>
-
-</html>
+</script></body></html>
