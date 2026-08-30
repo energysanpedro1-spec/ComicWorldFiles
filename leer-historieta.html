@@ -28,6 +28,11 @@ body {
     color: white;
 }
 
+
+/* ==========================================
+   CABECERA
+========================================== */
+
 header {
 
     background: #111318;
@@ -54,6 +59,11 @@ header h1 {
 
     margin: 25px auto;
 }
+
+
+/* ==========================================
+   TARJETAS
+========================================== */
 
 .card {
 
@@ -87,9 +97,10 @@ header h1 {
     font-size: 15px;
 }
 
-/* =====================================================
+
+/* ==========================================
    CONTADOR DE VISITAS
-===================================================== */
+========================================== */
 
 .views {
 
@@ -101,6 +112,98 @@ header h1 {
 
     display: inline-block;
 }
+
+
+/* ==========================================
+   ME GUSTA
+========================================== */
+
+.story-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+    flex-wrap: wrap;
+}
+
+.like-button {
+
+    border: 1px solid #ddd;
+
+    background: #fff;
+
+    color: #555;
+
+    padding: 9px 15px;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        transform 0.1s;
+}
+
+.like-button:hover {
+
+    background: #f5f5f5;
+
+    border-color: #ccc;
+}
+
+.like-button:active {
+
+    transform: scale(0.97);
+}
+
+.like-button.liked {
+
+    background: #ffe8e8;
+
+    border-color: #ffb5b5;
+
+    color: #e53935;
+}
+
+.like-button:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+.likes-count {
+
+    color: #aaa;
+
+    font-size: 14px;
+}
+
+.like-message {
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    display: none;
+}
+
+
+/* ==========================================
+   LECTOR
+========================================== */
 
 .blocks {
 
@@ -159,6 +262,11 @@ header h1 {
 
     word-break: break-word;
 }
+
+
+/* ==========================================
+   BOTONES
+========================================== */
 
 button {
 
@@ -226,6 +334,11 @@ button:disabled {
 
     margin-top: 15px;
 }
+
+
+/* ==========================================
+   EDITOR
+========================================== */
 
 .editor {
 
@@ -301,7 +414,6 @@ button:disabled {
     font-family: Arial, sans-serif;
 
     font-size: 16px;
-
 }
 
 .add-area {
@@ -359,6 +471,11 @@ textarea {
     font-size: 16px;
 }
 
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
 .message {
 
     padding: 12px;
@@ -406,6 +523,11 @@ textarea {
     color: #aaa;
 }
 
+
+/* ==========================================
+   NAVEGACIÓN
+========================================== */
+
 .back {
 
     display: inline-block;
@@ -433,53 +555,52 @@ textarea {
     display: none !important;
 }
 
-.story-actions {
 
-    display: flex;
+/* ==========================================
+   CELULAR
+========================================== */
 
-    align-items: center;
+@media (max-width: 600px) {
 
-    gap: 10px;
+    header {
 
-    margin-bottom: 20px;
-}
+        padding: 15px;
+    }
 
-.like-button {
+    header h1 {
 
-    padding: 9px 15px;
+        font-size: 20px;
+    }
 
-    border: none;
+    .container {
 
-    border-radius: 7px;
+        width: 96%;
 
-    background: #eee;
+        margin: 18px auto;
+    }
 
-    color: #333;
+    .card {
 
-    cursor: pointer;
+        padding: 15px;
+    }
 
-    font-size: 14px;
+    .chapter-title {
 
-    font-weight: bold;
-}
+        font-size: 23px;
+    }
 
-.like-button:hover {
+    .block-text {
 
-    background: #ddd;
-}
+        padding: 15px;
 
-.like-button.liked {
+        font-size: 17px;
+    }
 
-    background: #ff6b35;
+    .story-actions {
 
-    color: white;
-}
+        gap: 6px;
+    }
 
-.likes-count {
-
-    color: #777;
-
-    font-size: 14px;
 }
 
 </style>
@@ -487,6 +608,10 @@ textarea {
 </head>
 
 <body>
+
+<!-- ==========================================
+     CABECERA
+========================================== -->
 
 <header>
 
@@ -512,28 +637,40 @@ class="back">
 
 </a>
 
+<!-- ==========================================
+     ME GUSTA
+========================================== -->
+
 <div class="story-actions">
 
-    <button id="like-button"
-            class="like-button"
-            type="button">
+<button
+ id="like-button"
+ class="like-button"
+ type="button">
 
-        ♡ Me gusta
+🤍 Me gusta
 
-    </button>
+</button>
 
-    <span id="likes-count"
-          class="likes-count">
+<span
+ id="likes-count"
+ class="likes-count">
 
-        0
+0 Me gusta
 
-    </span>
+</span>
+
+<span
+ id="like-message"
+ class="like-message">
+
+</span>
 
 </div>
 
-<!-- =====================================================
+<!-- ==========================================
      LECTOR
-===================================================== -->
+========================================== -->
 
 <div class="card">
 
@@ -574,8 +711,8 @@ Cargando capítulo...
 <div class="actions">
 
 <button id="editButton"
-  class="primary hidden"
-  onclick="activarEdicion()">
+     class="primary hidden"
+     onclick="activarEdicion()">
 
 ✏️ Editar capítulo
 
@@ -585,14 +722,16 @@ Cargando capítulo...
 
 </div>
 
-<!-- =====================================================
+<!-- ==========================================
      EDITOR
-===================================================== -->
+========================================== -->
 
 <div id="editorCard"
      class="card editor">
 
-<h2>Editar capítulo</h2>
+<h2>
+Editar capítulo
+</h2>
 
 <p class="info">
 
@@ -606,13 +745,15 @@ el texto existente.
 
 <hr class="separator">
 
-<h3>Agregar texto</h3>
+<h3>
+Agregar texto
+</h3>
 
 <textarea id="newText"
           placeholder="Escribe el texto que quieres agregar..."></textarea>
 
 <button class="primary"
-  onclick="agregarTexto()">
+     onclick="agregarTexto()">
 
 * Agregar texto
 
@@ -620,7 +761,9 @@ el texto existente.
 
 <hr class="separator">
 
-<h3>Agregar imágenes</h3>
+<h3>
+Agregar imágenes
+</h3>
 
 <p class="info">
 
@@ -629,13 +772,13 @@ Puedes seleccionar una o varias imágenes.
 </p>
 
 <input type="file"
- id="newImages"
- accept="image/jpeg,image/png,image/webp,image/gif"
- multiple>
+    id="newImages"
+    accept="image/jpeg,image/png,image/webp,image/gif"
+    multiple>
 
 <button class="primary"
-  id="uploadButton"
-  onclick="subirNuevasImagenes()">
+     id="uploadButton"
+     onclick="subirNuevasImagenes()">
 
 * Subir imágenes
 
@@ -650,15 +793,15 @@ Puedes seleccionar una o varias imágenes.
 <div class="actions">
 
 <button class="success"
-  id="saveButton"
-  onclick="guardarCambios()">
+     id="saveButton"
+     onclick="guardarCambios()">
 
 💾 Guardar cambios
 
 </button>
 
 <button class="secondary"
-  onclick="cancelarEdicion()">
+     onclick="cancelarEdicion()">
 
 Cancelar
 
@@ -695,6 +838,28 @@ let storyData = null;
 
 
 // ========================================================
+// ELEMENTOS ME GUSTA
+// ========================================================
+
+const likeButton =
+    document.getElementById(
+        "like-button"
+    );
+
+
+const likesCount =
+    document.getElementById(
+        "likes-count"
+    );
+
+
+const likeMessage =
+    document.getElementById(
+        "like-message"
+    );
+
+
+// ========================================================
 // UTILIDADES
 // ========================================================
 
@@ -705,14 +870,19 @@ function mostrarMensaje(
 ) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
+
 
     element.textContent =
         mensaje;
 
+
     element.className =
         "message " +
         tipo;
+
 
     element.style.display =
         "block";
@@ -723,10 +893,14 @@ function mostrarMensaje(
 function ocultarMensaje(id) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
+
 
     element.style.display =
         "none";
+
 
     element.textContent =
         "";
@@ -783,7 +957,12 @@ async function comprobarSesion() {
                 "/api/me",
                 {
                     method: "GET",
-                    credentials: "include"
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
                 }
             );
 
@@ -800,6 +979,7 @@ async function comprobarSesion() {
 
 
         if (
+            !data.success ||
             !data.loggedIn
         ) {
 
@@ -813,6 +993,12 @@ async function comprobarSesion() {
 
     } catch (error) {
 
+        console.error(
+            "Error comprobando sesión:",
+            error
+        );
+
+
         return null;
 
     }
@@ -821,26 +1007,33 @@ async function comprobarSesion() {
 
 
 // ========================================================
-// REGISTRAR VISITA - 1 VISITA CADA 24 HORAS POR NAVEGADOR
+// REGISTRAR VISITA
+// 1 VISITA CADA 24 HORAS POR NAVEGADOR
 // ========================================================
 
 async function registrarVisita() {
 
     if (!storyId) {
+
         return;
+
     }
+
 
     const clave =
         "comicworldfiles_view_" +
         storyId;
 
+
     const ahora =
         Date.now();
+
 
     const ultimaVisita =
         localStorage.getItem(
             clave
         );
+
 
     const periodo =
         24 *
@@ -848,11 +1041,6 @@ async function registrarVisita() {
         60 *
         1000;
 
-    /*
-     * Si ya se registró una visita
-     * durante las últimas 24 horas,
-     * no enviamos otra al servidor.
-     */
 
     if (
         ultimaVisita &&
@@ -865,58 +1053,59 @@ async function registrarVisita() {
         );
 
         return;
+
     }
+
 
     try {
 
         const response =
             await fetch(
                 "/api/stories/" +
-                storyId +
+                encodeURIComponent(
+                    storyId
+                ) +
                 "/view",
                 {
                     method: "POST",
-                    credentials: "include"
+
+                    credentials:
+                        "include"
                 }
             );
 
+
         const data =
             await response.json();
+
 
         if (
             response.ok &&
             data.success
         ) {
 
-            /*
-             * Guardamos la fecha solamente
-             * cuando el servidor confirmó
-             * correctamente la visita.
-             */
-
             localStorage.setItem(
                 clave,
                 String(ahora)
             );
 
+
             actualizarContador(
                 data.views
             );
 
-        } else {
 
-            if (
-                storyData &&
-                storyData.views !== undefined
-            ) {
+        } else if (
+            storyData &&
+            storyData.views !== undefined
+        ) {
 
-                actualizarContador(
-                    storyData.views
-                );
-
-            }
+            actualizarContador(
+                storyData.views
+            );
 
         }
+
 
     } catch (error) {
 
@@ -924,6 +1113,7 @@ async function registrarVisita() {
             "Error registrando visita:",
             error
         );
+
 
         if (
             storyData &&
@@ -939,6 +1129,7 @@ async function registrarVisita() {
     }
 
 }
+
 
 // ========================================================
 // ACTUALIZAR CONTADOR
@@ -978,6 +1169,311 @@ function actualizarContador(
 
 
 // ========================================================
+// CARGAR ME GUSTA
+// ========================================================
+
+async function cargarMeGusta() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    storyId
+                ) +
+                "/like",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta Me gusta:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            console.error(
+                "La respuesta de Me gusta no es JSON válido."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            console.error(
+                "No se pudo consultar el Me gusta."
+            );
+
+            return;
+
+        }
+
+
+        actualizarMeGusta(
+            data.liked,
+            data.likes
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando Me gusta:",
+            error
+        );
+
+    }
+
+}
+
+
+// ========================================================
+// ALTERNAR ME GUSTA
+// ========================================================
+
+async function alternarMeGusta() {
+
+    if (!storyId) {
+
+        return;
+
+    }
+
+
+    if (
+        likeButton.disabled
+    ) {
+
+        return;
+
+    }
+
+
+    likeButton.disabled =
+        true;
+
+
+    likeMessage.style.display =
+        "none";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                encodeURIComponent(
+                    storyId
+                ) +
+                "/like",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "include",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        const texto =
+            await response.text();
+
+
+        console.log(
+            "Respuesta alternar Me gusta:",
+            response.status,
+            texto
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    texto
+                );
+
+        } catch (parseError) {
+
+            throw new Error(
+                "El servidor no devolvió una respuesta válida."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            if (
+                response.status === 401
+            ) {
+
+                likeMessage.textContent =
+                    data.error ||
+                    "Debes iniciar sesión para dar Me gusta.";
+
+            } else {
+
+                likeMessage.textContent =
+                    data.error ||
+                    "No se pudo procesar el Me gusta.";
+
+            }
+
+
+            likeMessage.style.display =
+                "inline";
+
+
+            return;
+
+        }
+
+
+        actualizarMeGusta(
+            data.liked,
+            data.likes
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error alternando Me gusta:",
+            error
+        );
+
+
+        likeMessage.textContent =
+            error.message ||
+            "No se pudo conectar con el servidor.";
+
+
+        likeMessage.style.display =
+            "inline";
+
+
+    } finally {
+
+        likeButton.disabled =
+            false;
+
+    }
+
+}
+
+
+// ========================================================
+// ACTUALIZAR ME GUSTA
+// ========================================================
+
+function actualizarMeGusta(
+    liked,
+    likes
+) {
+
+    const cantidad =
+        Number(
+            likes || 0
+        );
+
+
+    if (
+        liked
+    ) {
+
+        likeButton.classList.add(
+            "liked"
+        );
+
+
+        likeButton.textContent =
+            "❤️ Te gusta";
+
+
+    } else {
+
+        likeButton.classList.remove(
+            "liked"
+        );
+
+
+        likeButton.textContent =
+            "🤍 Me gusta";
+
+    }
+
+
+    likesCount.textContent =
+        cantidad === 1
+            ? "1 Me gusta"
+            : cantidad +
+              " Me gusta";
+
+}
+
+
+// ========================================================
+// EVENTO ME GUSTA
+// ========================================================
+
+likeButton.addEventListener(
+    "click",
+    alternarMeGusta
+);
+
+
+// ========================================================
 // CARGAR HISTORIETA
 // ========================================================
 
@@ -999,7 +1495,18 @@ async function cargarHistorieta() {
         const response =
             await fetch(
                 "/api/stories/" +
-                storyId
+                encodeURIComponent(
+                    storyId
+                ),
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
             );
 
 
@@ -1017,6 +1524,19 @@ async function cargarHistorieta() {
         }
 
 
+        if (
+            !data.success ||
+            !data.story
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo cargar la historieta."
+            );
+
+        }
+
+
         storyData =
             data.story;
 
@@ -1024,13 +1544,9 @@ async function cargarHistorieta() {
         document.getElementById(
             "storyTitle"
         ).textContent =
-            storyData.title;
+            storyData.title ||
+            "Historieta";
 
-
-        /*
-         * Mostramos el contador que viene
-         * actualmente desde la base de datos.
-         */
 
         if (
             storyData.views !== undefined
@@ -1044,15 +1560,22 @@ async function cargarHistorieta() {
 
 
         /*
-         * Registramos la apertura de la
-         * historieta.
-         *
-         * Se hace después de obtener
-         * correctamente la publicación.
+         * Registrar visita.
          */
 
         registrarVisita();
 
+
+        /*
+         * Cargar estado del Me gusta.
+         */
+
+        cargarMeGusta();
+
+
+        /*
+         * Comprobar propietario.
+         */
 
         comprobarPropietario();
 
@@ -1077,7 +1600,8 @@ async function cargarHistorieta() {
     } catch (error) {
 
         mostrarError(
-            error.message
+            error.message ||
+            "No se pudo cargar la historieta."
         );
 
     }
@@ -1096,8 +1620,19 @@ async function buscarPrimerCapitulo() {
         const response =
             await fetch(
                 "/api/stories/" +
-                storyId +
-                "/chapters"
+                encodeURIComponent(
+                    storyId
+                ) +
+                "/chapters",
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
             );
 
 
@@ -1170,7 +1705,18 @@ async function cargarCapitulo() {
         const response =
             await fetch(
                 "/api/chapters/" +
-                chapterId
+                encodeURIComponent(
+                    chapterId
+                ),
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    cache:
+                        "no-store"
+                }
             );
 
 
@@ -1188,6 +1734,19 @@ async function cargarCapitulo() {
         }
 
 
+        if (
+            !data.success ||
+            !data.chapter
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo cargar el capítulo."
+            );
+
+        }
+
+
         chapterData =
             data.chapter;
 
@@ -1195,7 +1754,8 @@ async function cargarCapitulo() {
         document.getElementById(
             "chapterTitle"
         ).textContent =
-            chapterData.title;
+            chapterData.title ||
+            "Sin título";
 
 
         document.getElementById(
@@ -1236,7 +1796,9 @@ async function cargarCapitulo() {
 // CARGAR BLOQUES
 // ========================================================
 
-function cargarBloques(content) {
+function cargarBloques(
+    content
+) {
 
     blocks = [];
 
@@ -1397,6 +1959,26 @@ function mostrarBloques() {
 
 function comprobarPropietario() {
 
+    const editButton =
+        document.getElementById(
+            "editButton"
+        );
+
+
+    if (
+        !editButton
+    ) {
+
+        return;
+
+    }
+
+
+    editButton.classList.add(
+        "hidden"
+    );
+
+
     if (
         !loggedUser ||
         !storyData
@@ -1416,9 +1998,7 @@ function comprobarPropietario() {
         )
     ) {
 
-        document.getElementById(
-            "editButton"
-        ).classList.remove(
+        editButton.classList.remove(
             "hidden"
         );
 
@@ -1462,7 +2042,8 @@ function activarEdicion() {
     document.getElementById(
         "editorCard"
     ).scrollIntoView({
-        behavior: "smooth"
+        behavior:
+            "smooth"
     });
 
 }
@@ -1678,7 +2259,9 @@ function renderEditor() {
 // ELIMINAR BLOQUE
 // ========================================================
 
-function eliminarBloque(index) {
+function eliminarBloque(
+    index
+) {
 
     if (
         !confirm(
@@ -1762,7 +2345,8 @@ function agregarTexto() {
 
                 container.lastElementChild
                     .scrollIntoView({
-                        behavior: "smooth"
+                        behavior:
+                            "smooth"
                     });
 
             }
@@ -1882,12 +2466,15 @@ async function subirNuevasImagenes() {
             const response =
                 await fetch(
                     "/api/chapters/" +
-                    chapterId +
+                    encodeURIComponent(
+                        chapterId
+                    ) +
                     "/images",
                     {
                         method: "POST",
 
-                        credentials: "include",
+                        credentials:
+                            "include",
 
                         body:
                             formData
@@ -2030,11 +2617,14 @@ async function guardarCambios() {
         const response =
             await fetch(
                 "/api/chapters/" +
-                chapterId,
+                encodeURIComponent(
+                    chapterId
+                ),
                 {
                     method: "PUT",
 
-                    credentials: "include",
+                    credentials:
+                        "include",
 
                     headers: {
                         "Content-Type":
@@ -2132,7 +2722,9 @@ async function guardarCambios() {
 // ERROR PRINCIPAL
 // ========================================================
 
-function mostrarError(mensaje) {
+function mostrarError(
+    mensaje
+) {
 
     document.getElementById(
         "loading"
