@@ -1079,6 +1079,399 @@ if (
 }
 
 // =========================================================
+// API: ADMIN - ELIMINAR PUBLICACIÓN
+//
+// DELETE /api/admin/stories/delete
+//
+// Elimina:
+//
+// - imágenes de capítulos de R2 Images
+// - registros de chapter_images
+// - capítulos
+// - likes
+// - favoritos
+// - comentarios
+// - portada de R2 Cover
+// - publicación de stories
+//
+// Solo el administrador puede ejecutar esta operación.
+// =========================================================
+
+if (
+    url.pathname === "/api/admin/stories/delete" &&
+    request.method === "DELETE"
+) {
+
+    try {
+
+        /*
+         * Comprobar sesión.
+         */
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        if (!session) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "Debes iniciar sesión."
+
+            }, 401);
+        }
+
+
+        /*
+         * Comprobar administrador.
+         */
+
+        const isAdmin =
+            Number(session.id) === 1 &&
+            String(
+                session.email || ""
+            ).toLowerCase() ===
+            "josepunkrock.1@gmail.com";
+
+
+        if (!isAdmin) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "No tienes permisos de administrador."
+
+            }, 403);
+        }
+
+
+        /*
+         * Obtener datos enviados.
+         */
+
+        const body =
+            await request.json();
+
+
+        const storyId =
+            Number(body.id);
+
+
+        /*
+         * Validar ID.
+         */
+
+        if (
+            !storyId ||
+            !Number.isInteger(storyId)
+        ) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "ID de publicación inválido."
+
+            }, 400);
+        }
+
+
+        /*
+         * Buscar publicación.
+         */
+
+        const story =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        id,
+                        user_id,
+                        title,
+                        cover_url
+                     FROM stories
+                     WHERE id = ?`
+                )
+                .bind(
+                    storyId
+                )
+                .first();
+
+
+        if (!story) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "La publicación no existe."
+
+            }, 404);
+        }
+
+
+        // =================================================
+        // 1. OBTENER CAPÍTULOS
+        // =================================================
+
+        const chapters =
+            await env.DB
+                .prepare(
+                    `SELECT id
+                     FROM chapters
+                     WHERE story_id = ?`
+                )
+                .bind(
+                    storyId
+                )
+                .all();
+
+
+        const chapterResults =
+            chapters.results || [];
+
+
+        // =================================================
+        // 2. ELIMINAR IMÁGENES DE R2
+        // =================================================
+
+        let deletedImages = 0;
+
+
+        for (
+            const chapter of chapterResults
+        ) {
+
+            const images =
+                await env.DB
+                    .prepare(
+                        `SELECT object_key
+                         FROM chapter_images
+                         WHERE chapter_id = ?`
+                    )
+                    .bind(
+                        chapter.id
+                    )
+                    .all();
+
+
+            const imageResults =
+                images.results || [];
+
+
+            for (
+                const image of imageResults
+            ) {
+
+                if (
+                    image.object_key
+                ) {
+
+                    try {
+
+                        await env.Images.delete(
+                            image.object_key
+                        );
+
+                        deletedImages++;
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error eliminando imagen R2:",
+                            image.object_key,
+                            error
+                        );
+
+                    }
+
+                }
+
+            }
+
+
+            // =============================================
+            // 3. ELIMINAR REGISTROS chapter_images
+            // =============================================
+
+            await env.DB
+                .prepare(
+                    `DELETE FROM chapter_images
+                     WHERE chapter_id = ?`
+                )
+                .bind(
+                    chapter.id
+                )
+                .run();
+
+        }
+
+
+        // =================================================
+        // 4. ELIMINAR CAPÍTULOS
+        // =================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM chapters
+                 WHERE story_id = ?`
+            )
+            .bind(
+                storyId
+            )
+            .run();
+
+
+        // =================================================
+        // 5. ELIMINAR LIKES
+        // =================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM story_likes
+                 WHERE story_id = ?`
+            )
+            .bind(
+                storyId
+            )
+            .run();
+
+
+        // =================================================
+        // 6. ELIMINAR FAVORITOS
+        // =================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM story_favorites
+                 WHERE story_id = ?`
+            )
+            .bind(
+                storyId
+            )
+            .run();
+
+
+        // =================================================
+        // 7. ELIMINAR COMENTARIOS
+        // =================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM story_comments
+                 WHERE story_id = ?`
+            )
+            .bind(
+                storyId
+            )
+            .run();
+
+
+        // =================================================
+        // 8. ELIMINAR PORTADA DE R2
+        // =================================================
+
+        const coverKey =
+            "covers/" +
+            story.user_id +
+            "/" +
+            story.id;
+
+
+        try {
+
+            await env.Cover.delete(
+                coverKey
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error eliminando portada:",
+                coverKey,
+                error
+            );
+
+        }
+
+
+        // =================================================
+        // 9. ELIMINAR PUBLICACIÓN
+        // =================================================
+
+        await env.DB
+            .prepare(
+                `DELETE FROM stories
+                 WHERE id = ?`
+            )
+            .bind(
+                storyId
+            )
+            .run();
+
+
+        // =================================================
+        // RESPUESTA
+        // =================================================
+
+        return json({
+
+            success: true,
+
+            message:
+                "Publicación eliminada correctamente.",
+
+            deleted: {
+
+                story_id:
+                    storyId,
+
+                title:
+                    story.title,
+
+                chapters:
+                    chapterResults.length,
+
+                images:
+                    deletedImages
+
+            }
+
+        }, 200);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error eliminando publicación:",
+            error
+        );
+
+
+        return json({
+
+            success: false,
+
+            error:
+                error.message ||
+                "No se pudo eliminar la publicación."
+
+        }, 500);
+
+    }
+
+}
+
+// =========================================================
 // API: LISTAR AUTORES
 //
 // GET /api/authors
