@@ -1676,13 +1676,11 @@ if (
         // =====================================================
 
         await env.DB
-            .prepare(
-                `DELETE FROM favorites
-                 WHERE story_id = ?`
-            )
-            .bind(id)
-            .run();
-
+    .prepare(
+        "DELETE FROM story_favorites WHERE story_id = ?"
+    )
+    .bind(id)
+    .run();
 
         // =====================================================
         // ELIMINAR LIKES
