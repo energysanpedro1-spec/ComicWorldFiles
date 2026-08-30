@@ -618,6 +618,158 @@ if (
 }
 
 // =========================================================
+// API: ADMIN - LISTAR PUBLICACIONES
+//
+// GET /api/admin/stories
+//
+// Devuelve todas las historias e historietas
+// para el panel de administración.
+// =========================================================
+
+if (
+    url.pathname === "/api/admin/stories" &&
+    request.method === "GET"
+) {
+
+    try {
+
+        /*
+         * Comprobar administrador.
+         */
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        /*
+         * No hay sesión.
+         */
+
+        if (!session) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "Debes iniciar sesión."
+
+            }, 401);
+        }
+
+
+        /*
+         * Comprobar ID y email.
+         */
+
+        const isAdmin =
+            Number(session.id) === 1 &&
+            String(
+                session.email || ""
+            ).toLowerCase() ===
+            "josepunkrock.1@gmail.com";
+
+
+        /*
+         * No es administrador.
+         */
+
+        if (!isAdmin) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "No tienes permisos de administrador."
+
+            }, 403);
+        }
+
+
+        /*
+         * Obtener todas las publicaciones.
+         */
+
+        const result =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        stories.id,
+                        stories.user_id,
+                        stories.title,
+                        stories.description,
+                        stories.genre,
+                        stories.type,
+                        stories.cover_url,
+                        stories.views,
+                        stories.created_at,
+                        users.username AS author,
+
+                        (
+                            SELECT COUNT(*)
+                            FROM story_likes
+                            WHERE story_likes.story_id =
+                                  stories.id
+                        ) AS likes_count,
+
+                        (
+                            SELECT COUNT(*)
+                            FROM story_comments
+                            WHERE story_comments.story_id =
+                                  stories.id
+                        ) AS comments_count
+
+                     FROM stories
+
+                     INNER JOIN users
+                     ON users.id = stories.user_id
+
+                     ORDER BY stories.id DESC`
+                )
+                .all();
+
+
+        /*
+         * Responder.
+         */
+
+        return json({
+
+            success: true,
+
+            stories:
+                result.results || []
+
+        }, 200);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error listando publicaciones para admin:",
+            error
+        );
+
+
+        return json({
+
+            success: false,
+
+            error:
+                error.message ||
+                "No se pudieron cargar las publicaciones."
+
+        }, 500);
+
+    }
+
+}
+
+// =========================================================
 // API: LISTAR AUTORES
 //
 // GET /api/authors
