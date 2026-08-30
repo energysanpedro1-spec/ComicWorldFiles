@@ -476,7 +476,72 @@ export default {
 
         }
 
+// =========================================================
+// API: LISTAR AUTORES
+//
+// GET /api/authors
+//
+// Devuelve únicamente usuarios que tengan
+// al menos una publicación.
+// =========================================================
 
+if (
+    url.pathname === "/api/authors" &&
+    request.method === "GET"
+) {
+
+    try {
+
+        const result =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        users.id,
+                        users.username,
+                        COUNT(stories.id) AS publications
+                     FROM users
+                     INNER JOIN stories
+                     ON stories.user_id = users.id
+                     GROUP BY
+                        users.id,
+                        users.username
+                     ORDER BY
+                        publications DESC,
+                        users.username ASC`
+                )
+                .all();
+
+
+        return json({
+
+            success: true,
+
+            authors:
+                result.results || []
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error listando autores:",
+            error
+        );
+
+
+        return json({
+
+            success: false,
+
+            error:
+                "No se pudieron cargar los autores."
+
+        }, 500);
+
+    }
+
+}
 
         // =========================================================
         // API TEST
