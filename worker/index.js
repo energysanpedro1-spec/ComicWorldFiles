@@ -769,6 +769,311 @@ if (
 
 }
 
+     // =========================================================
+// API ADMIN: EDITAR PUBLICACIÓN
+//
+// PUT /api/admin/stories/:id
+//
+// Solo el administrador puede editar cualquier publicación.
+// =========================================================
+
+if (
+    url.pathname.startsWith("/api/admin/stories/") &&
+    request.method === "PUT"
+) {
+
+    try {
+
+        // =====================================================
+        // COMPROBAR SESIÓN
+        // =====================================================
+
+        const session =
+            await getSession(
+                request,
+                env
+            );
+
+
+        if (!session) {
+
+            return json({
+
+                success: false,
+
+                loggedIn: false,
+
+                isAdmin: false,
+
+                error:
+                    "Debes iniciar sesión."
+
+            }, 401);
+
+        }
+
+
+        // =====================================================
+        // COMPROBAR ADMINISTRADOR
+        // =====================================================
+
+        const isAdmin =
+            Number(session.id) === 1 &&
+            String(
+                session.email || ""
+            ).toLowerCase() ===
+            "josepunkrock.1@gmail.com";
+
+
+        if (!isAdmin) {
+
+            return json({
+
+                success: false,
+
+                loggedIn: true,
+
+                isAdmin: false,
+
+                error:
+                    "No tienes permisos de administrador."
+
+            }, 403);
+
+        }
+
+
+        // =====================================================
+        // OBTENER ID
+        // =====================================================
+
+        const storyId =
+            url.pathname
+                .split("/")
+                .pop();
+
+
+        if (
+            !storyId ||
+            !/^\d+$/.test(storyId)
+        ) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "ID de publicación inválido."
+
+            }, 400);
+
+        }
+
+
+        // =====================================================
+        // COMPROBAR QUE EXISTE
+        // =====================================================
+
+        const story =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        id,
+                        user_id,
+                        title,
+                        description,
+                        genre,
+                        type
+                     FROM stories
+                     WHERE id = ?`
+                )
+                .bind(
+                    Number(storyId)
+                )
+                .first();
+
+
+        if (!story) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "La publicación no existe."
+
+            }, 404);
+
+        }
+
+
+        // =====================================================
+        // LEER DATOS
+        // =====================================================
+
+        const body =
+            await request.json();
+
+
+        const title =
+            body.title !== undefined
+                ? String(body.title).trim()
+                : story.title;
+
+
+        const description =
+            body.description !== undefined
+                ? String(body.description).trim()
+                : story.description;
+
+
+        const genre =
+            body.genre !== undefined
+                ? String(body.genre).trim()
+                : story.genre;
+
+
+        const type =
+            body.type !== undefined
+                ? String(body.type).trim().toLowerCase()
+                : story.type;
+
+
+        // =====================================================
+        // VALIDACIONES
+        // =====================================================
+
+        if (!title) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "El título es obligatorio."
+
+            }, 400);
+
+        }
+
+
+        if (
+            type !== "historia" &&
+            type !== "historieta"
+        ) {
+
+            return json({
+
+                success: false,
+
+                error:
+                    "El tipo de publicación no es válido."
+
+            }, 400);
+
+        }
+
+
+        // =====================================================
+        // ACTUALIZAR
+        // =====================================================
+
+        await env.DB
+            .prepare(
+                `UPDATE stories
+                 SET
+                    title = ?,
+                    description = ?,
+                    genre = ?,
+                    type = ?
+                 WHERE id = ?`
+            )
+            .bind(
+                title,
+                description,
+                genre,
+                type,
+                Number(storyId)
+            )
+            .run();
+
+
+        // =====================================================
+        // OBTENER PUBLICACIÓN ACTUALIZADA
+        // =====================================================
+
+        const updatedStory =
+            await env.DB
+                .prepare(
+                    `SELECT
+                        stories.id,
+                        stories.user_id,
+                        stories.title,
+                        stories.description,
+                        stories.genre,
+                        stories.type,
+                        stories.cover_url,
+                        stories.views,
+                        stories.created_at,
+                        users.username AS author
+
+                     FROM stories
+
+                     LEFT JOIN users
+                     ON users.id =
+                        stories.user_id
+
+                     WHERE stories.id = ?`
+                )
+                .bind(
+                    Number(storyId)
+                )
+                .first();
+
+
+        // =====================================================
+        // RESPUESTA
+        // =====================================================
+
+        return json({
+
+            success: true,
+
+            loggedIn: true,
+
+            isAdmin: true,
+
+            message:
+                "Publicación actualizada correctamente.",
+
+            story:
+                updatedStory
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error editando publicación como administrador:",
+            error
+        );
+
+
+        return json({
+
+            success: false,
+
+            error:
+                error.message ||
+                "No se pudo actualizar la publicación."
+
+        }, 500);
+
+    }
+
+}   
+
 // =========================================================
 // API: ADMIN - EDITAR PUBLICACIÓN
 //
