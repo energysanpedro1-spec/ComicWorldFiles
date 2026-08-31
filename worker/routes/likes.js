@@ -1,18 +1,14 @@
-// =========================================================
-// ROUTE: ME GUSTA
-//
-// POST /api/stories/5/like
-// GET  /api/stories/5/like
-// =========================================================
-
-import {
+ import {
     getSession,
     json
 } from "../utils.js";
 
 
 // =========================================================
-// MANEJAR RUTAS DE ME GUSTA
+// API: ME GUSTA
+//
+// POST /api/stories/:id/like
+// GET  /api/stories/:id/like
 // =========================================================
 
 export async function handleLikes(
@@ -21,19 +17,16 @@ export async function handleLikes(
     url
 ) {
 
-    // =====================================================
-    // COMPROBAR URL
-    // =====================================================
-
     const storyLikeMatch =
         url.pathname.match(
             /^\/api\/stories\/(\d+)\/like$/
         );
 
 
-    // Si no es una ruta de Me gusta,
-    // dejamos que index.js continúe.
-    
+    // ---------------------------------------------------------
+    // NO ES UNA RUTA DE ME GUSTA
+    // ---------------------------------------------------------
+
     if (!storyLikeMatch) {
 
         return null;
@@ -41,27 +34,21 @@ export async function handleLikes(
     }
 
 
-    // =====================================================
+    const storyId =
+        Number(
+            storyLikeMatch[1]
+        );
+
+
+    // =========================================================
     // POST /api/stories/:id/like
-    //
-    // Agregar o quitar Me gusta
-    // =====================================================
+    // =========================================================
 
     if (
         request.method === "POST"
     ) {
 
         try {
-
-            const storyId =
-                Number(
-                    storyLikeMatch[1]
-                );
-
-
-            // -------------------------------------------------
-            // COMPROBAR SESIÓN
-            // -------------------------------------------------
 
             const session =
                 await getSession(
@@ -80,10 +67,6 @@ export async function handleLikes(
 
             }
 
-
-            // -------------------------------------------------
-            // COMPROBAR PUBLICACIÓN
-            // -------------------------------------------------
 
             const story =
                 await env.DB
@@ -110,10 +93,6 @@ export async function handleLikes(
             }
 
 
-            // -------------------------------------------------
-            // COMPROBAR SI YA EXISTE EL LIKE
-            // -------------------------------------------------
-
             const existingLike =
                 await env.DB
                     .prepare(
@@ -133,10 +112,6 @@ export async function handleLikes(
             let liked;
 
 
-            // -------------------------------------------------
-            // QUITAR ME GUSTA
-            // -------------------------------------------------
-
             if (existingLike) {
 
                 await env.DB
@@ -154,14 +129,7 @@ export async function handleLikes(
 
                 liked = false;
 
-            }
-
-
-            // -------------------------------------------------
-            // AGREGAR ME GUSTA
-            // -------------------------------------------------
-
-            else {
+            } else {
 
                 await env.DB
                     .prepare(
@@ -184,10 +152,6 @@ export async function handleLikes(
             }
 
 
-            // -------------------------------------------------
-            // CONTAR ME GUSTAS
-            // -------------------------------------------------
-
             const count =
                 await env.DB
                     .prepare(
@@ -200,10 +164,6 @@ export async function handleLikes(
                     )
                     .first();
 
-
-            // -------------------------------------------------
-            // RESPUESTA
-            // -------------------------------------------------
 
             return json({
 
@@ -240,27 +200,15 @@ export async function handleLikes(
     }
 
 
-    // =====================================================
+    // =========================================================
     // GET /api/stories/:id/like
-    //
-    // Consultar estado del Me gusta
-    // =====================================================
+    // =========================================================
 
     if (
         request.method === "GET"
     ) {
 
         try {
-
-            const storyId =
-                Number(
-                    storyLikeMatch[1]
-                );
-
-
-            // -------------------------------------------------
-            // OBTENER SESIÓN
-            // -------------------------------------------------
 
             const session =
                 await getSession(
@@ -272,10 +220,6 @@ export async function handleLikes(
             let liked =
                 false;
 
-
-            // -------------------------------------------------
-            // COMPROBAR LIKE DEL USUARIO
-            // -------------------------------------------------
 
             if (session) {
 
@@ -301,10 +245,6 @@ export async function handleLikes(
             }
 
 
-            // -------------------------------------------------
-            // CONTAR ME GUSTAS
-            // -------------------------------------------------
-
             const count =
                 await env.DB
                     .prepare(
@@ -317,10 +257,6 @@ export async function handleLikes(
                     )
                     .first();
 
-
-            // -------------------------------------------------
-            // RESPUESTA
-            // -------------------------------------------------
 
             return json({
 
@@ -357,9 +293,9 @@ export async function handleLikes(
     }
 
 
-    // =====================================================
-    // MÉTODO NO SOPORTADO
-    // =====================================================
+    // =========================================================
+    // MÉTODO NO PERMITIDO
+    // =========================================================
 
     return json({
         success: false,
