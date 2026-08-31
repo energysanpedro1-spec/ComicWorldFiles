@@ -2040,11 +2040,43 @@ function cargarBloques(
 
     blocks = [];
 
-
     try {
 
+        /*
+         * El creador de historietas guarda
+         * directamente un ARRAY de bloques.
+         *
+         * Ejemplo:
+         *
+         * [
+         *   {
+         *      type: "image",
+         *      image_id: 1,
+         *      image_url: "..."
+         *   },
+         *   {
+         *      type: "text",
+         *      content: "Texto..."
+         *   }
+         * ]
+         *
+         * También aceptamos el formato antiguo:
+         *
+         * {
+         *      blocks: [...]
+         * }
+         */
+
         if (
-            content &&
+            Array.isArray(content)
+        ) {
+
+            blocks =
+                content;
+
+        }
+
+        else if (
             typeof content === "string"
         ) {
 
@@ -2053,8 +2085,26 @@ function cargarBloques(
                     content
                 );
 
+            /*
+             * Formato actual:
+             * JSON.stringify(array)
+             */
 
             if (
+                Array.isArray(parsed)
+            ) {
+
+                blocks =
+                    parsed;
+
+            }
+
+            /*
+             * Formato anterior:
+             * JSON.stringify({ blocks: [...] })
+             */
+
+            else if (
                 parsed &&
                 Array.isArray(
                     parsed.blocks
@@ -2068,6 +2118,22 @@ function cargarBloques(
 
         }
 
+        /*
+         * Si por alguna razón content
+         * llega como objeto.
+         */
+
+        else if (
+            content &&
+            Array.isArray(
+                content.blocks
+            )
+        ) {
+
+            blocks =
+                content.blocks;
+
+        }
 
     } catch (error) {
 
@@ -2076,13 +2142,13 @@ function cargarBloques(
             error
         );
 
-    }
+        blocks = [];
 
+    }
 
     mostrarBloques();
 
 }
-
 
 // ========================================================
 // MOSTRAR BLOQUES
@@ -2175,8 +2241,9 @@ function mostrarBloques() {
 
 
                 text.textContent =
-                    block.text ||
-                    "";
+    block.content ||
+    block.text ||
+    "";
 
 
                 container.appendChild(
