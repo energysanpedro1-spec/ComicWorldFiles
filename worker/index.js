@@ -629,7 +629,100 @@ export default {
             }
 
         }
+        
+// =====================================================
+// API: COMPROBAR ADMINISTRADOR
+// GET /api/admin/check
+// =====================================================
 
+if (
+    url.pathname === "/api/admin/check" &&
+    request.method === "GET"
+) {
+    try {
+
+        const auth =
+            await verificarAdministrador(
+                request,
+                env
+            );
+
+        // No hay sesión
+        if (
+            auth.status === 401
+        ) {
+            return json({
+                success: true,
+                loggedIn: false,
+                isAdmin: false,
+                error: auth.error
+            }, 200);
+        }
+
+        // Hay sesión pero no es administrador
+        if (
+            auth.status === 403
+        ) {
+            const session =
+                await getSession(
+                    request,
+                    env
+                );
+
+            return json({
+                success: true,
+                loggedIn: true,
+                isAdmin: false,
+                user: session ? {
+                    id: session.id,
+                    username: session.username,
+                    email: session.email
+                } : null,
+                error: auth.error
+            }, 200);
+        }
+
+        // Error de configuración
+        if (
+            !auth.autorizado &&
+            auth.status === 500
+        ) {
+            return json({
+                success: false,
+                loggedIn: true,
+                isAdmin: false,
+                error: auth.error
+            }, 500);
+        }
+
+        // Administrador
+        return json({
+            success: true,
+            loggedIn: true,
+            isAdmin: true,
+            user: {
+                id: auth.user.id,
+                username: auth.user.username,
+                email: auth.user.email
+            }
+        }, 200);
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando administrador:",
+            error
+        );
+
+        return json({
+            success: false,
+            isAdmin: false,
+            error:
+                error.message ||
+                "Error comprobando administrador."
+        }, 500);
+    }
+}
 
         // =====================================================
         // API: ADMIN - LISTAR PUBLICACIONES
