@@ -342,148 +342,160 @@ export async function handleAdmin(
     // GET /api/admin/check
     // =================================================
 
-    if (
-        url.pathname ===
-            "/api/admin/check"
-        &&
-        request.method === "GET"
-    ) {
+    
+                if (
+    url.pathname === "/api/admin/check" &&
+    request.method === "GET"
+) {
 
-        try {
+    try {
 
-            const auth =
-                await verificarAdministrador(
-                    request,
-                    env
-                );
+        const session =
+            await getSession(
+                request,
+                env
+            );
 
-
-            if (
-                auth.status === 401
-            ) {
-
-                return json({
-
-                    success: true,
-
-                    loggedIn: false,
-
-                    isAdmin: false,
-
-                    error:
-                        auth.error
-
-                }, 200);
-
-            }
-
-
-            if (
-                auth.status === 403
-            ) {
-
-                return json({
-
-                    success: true,
-
-                    loggedIn: true,
-
-                    isAdmin: false,
-
-                    user: {
-
-                        id:
-                            auth.user
-                                ? auth.user.id
-                                : null,
-
-                        username:
-                            auth.user
-                                ? auth.user.username
-                                : null,
-
-                        email:
-                            auth.user
-                                ? auth.user.email
-                                : null
-
-                    },
-
-                    error:
-                        auth.error
-
-                }, 200);
-
-            }
-
-
-            if (
-                !auth.autorizado
-            ) {
-
-                return json({
-
-                    success: false,
-
-                    loggedIn: true,
-
-                    isAdmin: false,
-
-                    error:
-                        auth.error
-
-                }, auth.status || 500);
-
-            }
-
+        if (!session) {
 
             return json({
 
                 success: true,
-
-                loggedIn: true,
-
-                isAdmin: true,
-
-                user: {
-
-                    id:
-                        auth.user.id,
-
-                    username:
-                        auth.user.username,
-
-                    email:
-                        auth.user.email
-
-                }
+                loggedIn: false,
+                isAdmin: false,
+                error: "Debes iniciar sesión."
 
             }, 200);
 
+        }
 
-        } catch (error) {
 
-            console.error(
-                "Error comprobando administrador:",
-                error
+        const rawAdminId =
+            env.ADMIN_USER_ID;
+
+        const rawAdminEmail =
+            env.ADMIN_EMAIL;
+
+
+        const adminUserId =
+            Number(
+                rawAdminId || 0
             );
 
-            return json({
+        const adminEmail =
+            String(
+                rawAdminEmail || ""
+            )
+            .trim()
+            .toLowerCase();
 
-                success: false,
 
-                isAdmin: false,
+        const sessionId =
+            Number(
+                session.id
+            );
 
-                error:
-                    error.message ||
-                    "Error comprobando administrador."
+        const sessionEmail =
+            String(
+                session.email || ""
+            )
+            .trim()
+            .toLowerCase();
 
-            }, 500);
 
-        }
+        const idCorrecto =
+            sessionId === adminUserId;
+
+        const emailCorrecto =
+            sessionEmail === adminEmail;
+
+
+        const isAdmin =
+            idCorrecto &&
+            emailCorrecto;
+
+
+        console.log(
+            "ADMIN CHECK:",
+            {
+                sessionId: sessionId,
+                adminUserIdConfigurado:
+                    !!rawAdminId,
+                adminEmailConfigurado:
+                    !!rawAdminEmail,
+                idCorrecto: idCorrecto,
+                emailCorrecto: emailCorrecto
+            }
+        );
+
+
+        return json({
+
+            success: true,
+
+            loggedIn: true,
+
+            isAdmin: isAdmin,
+
+            user: {
+
+                id:
+                    session.id,
+
+                username:
+                    session.username,
+
+                email:
+                    session.email
+
+            },
+
+            debug: {
+
+                sessionId:
+                    sessionId,
+
+                adminUserIdConfigurado:
+                    !!rawAdminId,
+
+                adminEmailConfigurado:
+                    !!rawAdminEmail,
+
+                idCorrecto:
+                    idCorrecto,
+
+                emailCorrecto:
+                    emailCorrecto
+
+            }
+
+        }, 200);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando administrador:",
+            error
+        );
+
+        return json({
+
+            success: false,
+
+            loggedIn: true,
+
+            isAdmin: false,
+
+            error:
+                error.message ||
+                "Error comprobando administrador."
+
+        }, 500);
 
     }
 
+}    
 
     // =================================================
     // LISTAR PUBLICACIONES
