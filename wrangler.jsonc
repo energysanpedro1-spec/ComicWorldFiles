@@ -5,7 +5,8 @@
   "compatibility_date": "2026-08-28",
 
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS"
   },
 
   "d1_databases": [
