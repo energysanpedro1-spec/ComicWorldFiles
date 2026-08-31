@@ -674,6 +674,13 @@ Cargando...
 Capítulos
 </h2>
 
+<button
+    id="resume-button"
+    class="primary hidden"
+    onclick="retomarCapitulo()"
+>
+▶ Retomar capítulo
+</button>
 
 <div
     id="chapters-container"
@@ -1064,7 +1071,78 @@ async function cargarCapitulos() {
 
 }
 
+/* =========================================================
+   ÚLTIMO CAPÍTULO LEÍDO
+========================================================= */
 
+function obtenerClaveProgreso() {
+
+    return "comicworldfiles_last_chapter_" +
+        String(storyId);
+
+}
+
+
+function guardarUltimoCapitulo(
+    chapterNumber
+) {
+
+    if (!storyId || !chapterNumber) {
+        return;
+    }
+
+    localStorage.setItem(
+        obtenerClaveProgreso(),
+        String(chapterNumber)
+    );
+
+}
+
+
+function obtenerUltimoCapitulo() {
+
+    if (!storyId) {
+        return null;
+    }
+
+    return localStorage.getItem(
+        obtenerClaveProgreso()
+    );
+
+}
+
+
+function retomarCapitulo() {
+
+    const lastChapter =
+        obtenerUltimoCapitulo();
+
+    if (!lastChapter) {
+        return;
+    }
+
+    const chapter =
+        chapters.find(
+            function(item) {
+
+                return Number(
+                    item.chapter_number
+                ) === Number(
+                    lastChapter
+                );
+
+            }
+        );
+
+    if (!chapter) {
+        return;
+    }
+
+    abrirCapitulo(
+        chapter.chapter_number
+    );
+
+}
 
 /* =========================================================
    MOSTRAR LISTA
@@ -1127,6 +1205,10 @@ function mostrarListaCapitulos() {
             "chapters-card"
         );
 
+   const resumeButton =
+    document.getElementById(
+        "resume-button"
+    );
 
     const container =
         document.getElementById(
@@ -1136,6 +1218,62 @@ function mostrarListaCapitulos() {
 
     container.innerHTML =
         "";
+
+   /*
+ * Mostrar botón Retomar
+ * si existe un capítulo leído anteriormente.
+ */
+
+const lastChapter =
+    obtenerUltimoCapitulo();
+
+
+if (lastChapter) {
+
+    const chapter =
+        chapters.find(
+            function(item) {
+
+                return Number(
+                    item.chapter_number
+                ) === Number(
+                    lastChapter
+                );
+
+            }
+        );
+
+
+    if (chapter) {
+
+        resumeButton.textContent =
+            "▶ Retomar capítulo " +
+            chapter.chapter_number +
+            ": " +
+            (
+                chapter.title ||
+                "Sin título"
+            );
+
+        resumeButton.classList.remove(
+            "hidden"
+        );
+
+    } else {
+
+        resumeButton.classList.add(
+            "hidden"
+        );
+
+    }
+
+} else {
+
+    resumeButton.classList.add(
+        "hidden"
+    );
+
+}
 
 
     /*
@@ -1311,6 +1449,10 @@ async function cargarCapitulo(
         chapter;
 
 
+guardarUltimoCapitulo(
+    chapter.chapter_number
+);
+   
     /*
      * Ocultar lista.
      */
