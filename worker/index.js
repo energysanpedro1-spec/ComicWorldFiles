@@ -14,70 +14,102 @@ export default {
         const url = new URL(request.url);
 
 
-        // =====================================================
-        // RUTAS SEPARADAS
-        // =====================================================
+// =====================================================
+// RUTAS SEPARADAS
+// =====================================================
 
-        const likesResponse =
-            await handleLikes(
-                request,
-                env,
-                url
-            );
+if (
+    url.pathname.startsWith("/api/likes")
+) {
 
-        if (likesResponse) {
-            return likesResponse;
-        }
+    const response =
+        await handleLikes(
+            request,
+            env,
+            url
+        );
 
+    if (response) {
+        return response;
+    }
 
-        const favoritesResponse =
-            await handleFavorites(
-                request,
-                env,
-                url
-            );
-
-        if (favoritesResponse) {
-            return favoritesResponse;
-        }
+}
 
 
-        const imageResponse =
-            await handleImages(
-                request,
-                env,
-                url
-            );
+if (
+    url.pathname.startsWith("/api/favorites")
+) {
 
-        if (imageResponse) {
-            return imageResponse;
-        }
+    const response =
+        await handleFavorites(
+            request,
+            env,
+            url
+        );
 
+    if (response) {
+        return response;
+    }
 
-        const commentsResponse =
-            await handleComments(
-                request,
-                env,
-                url
-            );
-
-        if (commentsResponse) {
-            return commentsResponse;
-        }
+}
 
 
-        const adminResponse =
-            await handleAdmin(
-                request,
-                env,
-                url
-            );
+if (
+    url.pathname.startsWith("/api/images")
+) {
 
-        if (adminResponse) {
-            return adminResponse;
-        }
+    const response =
+        await handleImages(
+            request,
+            env,
+            url
+        );
+
+    if (response) {
+        return response;
+    }
+
+}
 
 
+if (
+    url.pathname.startsWith("/api/comments")
+) {
+
+    const response =
+        await handleComments(
+            request,
+            env,
+            url
+        );
+
+    if (response) {
+        return response;
+    }
+
+}
+
+
+// =====================================================
+// ADMIN
+// =====================================================
+
+if (
+    url.pathname.startsWith("/api/admin")
+) {
+
+    const response =
+        await handleAdmin(
+            request,
+            env,
+            url
+        );
+
+    if (response) {
+        return response;
+    }
+
+}
         // =====================================================
         // API: REGISTRO
         // POST /api/register
