@@ -226,19 +226,10 @@ async function verificarAdministrador(
     }
 
 
-    const adminUserId =
-        Number(
-            env.ADMIN_USER_ID || 0
-        );
+    const adminUserId = 1;
 
-
-    const adminEmail =
-        String(
-            env.ADMIN_EMAIL || ""
-        )
-        .trim()
-        .toLowerCase();
-
+const adminEmail =
+    "josepunkrock.1@gmail.com";
     if (
     !adminUserId ||
     !adminEmail
