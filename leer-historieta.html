@@ -1,4 +1,6 @@
+```html
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -102,21 +104,44 @@ header h1 {
 
 }
 
+
+/*
+ * TÍTULO GRANDE DE LA HISTORIETA
+ */
+
 .story-title {
 
-    color: #aaa;
+    color: white;
 
-    font-size: 15px;
+    font-size: 30px;
+
+    font-weight: bold;
+
+    line-height: 1.2;
+
+    margin-top: 5px;
+
+    word-break: break-word;
 
 }
+
+
+/*
+ * TÍTULO DEL CAPÍTULO
+ */
 
 .chapter-title {
 
     font-size: 26px;
 
-    margin: 0 0 5px;
+    margin: 0 0 8px;
+
+    color: white;
+
+    line-height: 1.3;
 
 }
+
 
 .views {
 
@@ -135,6 +160,15 @@ header h1 {
    CAPÍTULOS
 ========================================================= */
 
+#chapters-card h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 18px;
+
+}
+
+
 .chapter-list {
 
     display: flex;
@@ -144,6 +178,7 @@ header h1 {
     gap: 10px;
 
 }
+
 
 .chapter-item {
 
@@ -165,21 +200,24 @@ header h1 {
 
 }
 
+
 .chapter-item-info {
 
     min-width: 0;
 
 }
 
+
 .chapter-number {
 
-    color: #aaa;
+    color: #ff6b35;
 
     font-size: 13px;
 
     font-weight: bold;
 
 }
+
 
 .chapter-item-title {
 
@@ -216,11 +254,13 @@ button {
 
 }
 
+
 button:hover {
 
     background: #555;
 
 }
+
 
 button.primary {
 
@@ -228,17 +268,20 @@ button.primary {
 
 }
 
+
 button.primary:hover {
 
     background: #3574ef;
 
 }
 
+
 button.secondary {
 
     background: #666;
 
 }
+
 
 button.secondary:hover {
 
@@ -265,6 +308,7 @@ button.secondary:hover {
 
 }
 
+
 .like-button,
 .favorite-button {
 
@@ -286,6 +330,7 @@ button.secondary:hover {
 
 }
 
+
 .like-button.liked {
 
     background: #ffe8e8;
@@ -296,6 +341,7 @@ button.secondary:hover {
 
 }
 
+
 .favorite-button.favorited {
 
     background: #fff5d6;
@@ -305,6 +351,7 @@ button.secondary:hover {
     color: #b8860b;
 
 }
+
 
 .likes-count {
 
@@ -331,6 +378,7 @@ button.secondary:hover {
 
 }
 
+
 .block-image {
 
     width: 100%;
@@ -340,6 +388,7 @@ button.secondary:hover {
     text-align: center;
 
 }
+
 
 .block-image img {
 
@@ -358,6 +407,7 @@ button.secondary:hover {
     background: white;
 
 }
+
 
 .block-text {
 
@@ -441,11 +491,27 @@ button.secondary:hover {
 
     }
 
+
     .card {
 
         padding: 15px;
 
     }
+
+
+    .story-title {
+
+        font-size: 24px;
+
+    }
+
+
+    .chapter-title {
+
+        font-size: 22px;
+
+    }
+
 
     .chapter-item {
 
@@ -455,6 +521,7 @@ button.secondary:hover {
 
     }
 
+
     .chapter-item button {
 
         width: 100%;
@@ -463,11 +530,6 @@ button.secondary:hover {
 
     }
 
-    .chapter-title {
-
-        font-size: 22px;
-
-    }
 
     .story-actions {
 
@@ -476,6 +538,7 @@ button.secondary:hover {
         align-items: stretch;
 
     }
+
 
     .like-button,
     .favorite-button {
@@ -496,8 +559,8 @@ button.secondary:hover {
 
 <header>
 
-<h1 id="page-title">
-Leer historieta
+<h1>
+ComicWorldFiles
 </h1>
 
 </header>
@@ -517,24 +580,44 @@ Leer historieta
 
 <div class="info">
 
-<h2
-    id="chapter-title"
-    class="chapter-title"
->
-Cargando...
-</h2>
+
+<!--
+    Este elemento mostrará:
+
+    En la lista:
+    Título de la historieta
+
+    En un capítulo:
+    Título de la historieta
+-->
 
 <div
     id="story-title"
     class="story-title"
 >
+Cargando...
 </div>
+
+
+<!--
+    Este elemento se utilizará
+    para mostrar "Capítulos"
+    o el título del capítulo.
+-->
+
+<h2
+    id="chapter-title"
+    class="chapter-title"
+>
+</h2>
+
 
 <span
     id="views"
     class="views"
 >
 </span>
+
 
 </div>
 
@@ -555,6 +638,7 @@ Cargando...
 >
 ♡ Me gusta
 </button>
+
 
 <span
     id="likes-count"
@@ -590,6 +674,7 @@ Cargando...
 <h2>
 Capítulos
 </h2>
+
 
 <div
     id="chapters-container"
@@ -667,8 +752,8 @@ const storyId =
 
 /*
  * Si existe chapter o capitulo,
- * significa que debemos abrir directamente
- * ese capítulo.
+ * significa que debemos abrir
+ * directamente ese capítulo.
  */
 
 const requestedChapter =
@@ -687,6 +772,8 @@ let currentUser = null;
 let isLiked = false;
 
 let isFavorited = false;
+
+let storyTitle = "";
 
 
 
@@ -809,10 +896,23 @@ async function cargarHistorieta() {
         }
 
 
+        /*
+         * Guardar título globalmente.
+         */
+
+        storyTitle =
+            data.story.title ||
+            "Sin título";
+
+
+        /*
+         * Mostrar título.
+         */
+
         document.getElementById(
             "story-title"
         ).textContent =
-            data.story.title || "";
+            storyTitle;
 
 
         await cargarCapitulos();
@@ -882,7 +982,7 @@ async function cargarCapitulos() {
 
 
         /*
-         * Asegurar orden correcto.
+         * Ordenar capítulos.
          */
 
         chapters.sort(
@@ -900,9 +1000,8 @@ async function cargarCapitulos() {
 
 
         /*
-         * SIN chapter:
-         *
-         * Mostrar lista.
+         * Si NO se indicó capítulo,
+         * mostrar la lista.
          */
 
         if (!requestedChapter) {
@@ -915,9 +1014,8 @@ async function cargarCapitulos() {
 
 
         /*
-         * CON chapter:
-         *
-         * Buscar capítulo específico.
+         * Si se indicó capítulo,
+         * buscarlo.
          */
 
         const number =
@@ -955,7 +1053,6 @@ async function cargarCapitulos() {
             chapter
         );
 
-
     } catch (error) {
 
         console.error(error);
@@ -971,10 +1068,14 @@ async function cargarCapitulos() {
 
 
 /* =========================================================
-   MOSTRAR LISTA DE CAPÍTULOS
+   MOSTRAR LISTA
 ========================================================= */
 
 function mostrarListaCapitulos() {
+
+    /*
+     * Ocultar lector.
+     */
 
     document.getElementById(
         "reader-card"
@@ -983,6 +1084,10 @@ function mostrarListaCapitulos() {
     );
 
 
+    /*
+     * Ocultar likes.
+     */
+
     document.getElementById(
         "story-actions"
     ).classList.add(
@@ -990,10 +1095,26 @@ function mostrarListaCapitulos() {
     );
 
 
+    /*
+     * Mostrar título de la historieta
+     * grande.
+     */
+
+    document.getElementById(
+        "story-title"
+    ).textContent =
+        storyTitle;
+
+
+    /*
+     * Debajo del título:
+     * "Capítulos".
+     */
+
     document.getElementById(
         "chapter-title"
     ).textContent =
-        "Capítulos";
+        "";
 
 
     document.getElementById(
@@ -1019,7 +1140,7 @@ function mostrarListaCapitulos() {
 
 
     /*
-     * No hay capítulos.
+     * Sin capítulos.
      */
 
     if (!chapters.length) {
@@ -1041,7 +1162,7 @@ function mostrarListaCapitulos() {
 
 
     /*
-     * Crear cada capítulo.
+     * Crear capítulos.
      */
 
     chapters.forEach(
@@ -1214,7 +1335,7 @@ async function cargarCapitulo(
 
 
     /*
-     * Mostrar botones.
+     * Mostrar likes.
      */
 
     document.getElementById(
@@ -1225,7 +1346,18 @@ async function cargarCapitulo(
 
 
     /*
-     * Título.
+     * Mantener título grande
+     * de la historieta.
+     */
+
+    document.getElementById(
+        "story-title"
+    ).textContent =
+        storyTitle;
+
+
+    /*
+     * Mostrar título del capítulo.
      */
 
     document.getElementById(
@@ -1241,11 +1373,6 @@ async function cargarCapitulo(
 
 
     try {
-
-        /*
-         * Obtener información completa
-         * del capítulo.
-         */
 
         const response =
             await fetch(
@@ -1284,25 +1411,13 @@ async function cargarCapitulo(
             data;
 
 
-        /*
-         * Procesar contenido.
-         */
-
         cargarBloques(
             loaded.content
         );
 
 
-        /*
-         * Navegación entre capítulos.
-         */
-
         actualizarNavegacion();
 
-
-        /*
-         * Likes y favoritos.
-         */
 
         await cargarDatosInteraccion(
             chapter.id
@@ -1337,18 +1452,7 @@ function cargarBloques(
     try {
 
         /*
-         * Formato actual:
-         *
-         * [
-         *   {
-         *      type: "image",
-         *      image_url: "..."
-         *   },
-         *   {
-         *      type: "text",
-         *      content: "..."
-         *   }
-         * ]
+         * Array directo.
          */
 
         if (
@@ -1364,7 +1468,7 @@ function cargarBloques(
 
 
         /*
-         * Si content llega como JSON string.
+         * JSON almacenado como texto.
          */
 
         else if (
@@ -1378,10 +1482,6 @@ function cargarBloques(
                 );
 
 
-            /*
-             * Formato actual.
-             */
-
             if (
                 Array.isArray(
                     parsed
@@ -1393,14 +1493,6 @@ function cargarBloques(
 
             }
 
-
-            /*
-             * Formato antiguo:
-             *
-             * {
-             *    blocks: [...]
-             * }
-             */
 
             else if (
                 parsed &&
@@ -1418,7 +1510,7 @@ function cargarBloques(
 
 
         /*
-         * Compatibilidad con objeto.
+         * Objeto con blocks.
          */
 
         else if (
@@ -1485,9 +1577,9 @@ function mostrarBloques() {
         function(block) {
 
 
-            /* ==========================
-               IMAGEN
-            ========================== */
+            /*
+             * IMAGEN
+             */
 
             if (
                 block.type ===
@@ -1536,9 +1628,9 @@ function mostrarBloques() {
             }
 
 
-            /* ==========================
-               TEXTO
-            ========================== */
+            /*
+             * TEXTO
+             */
 
             else if (
                 block.type ===
@@ -1556,8 +1648,8 @@ function mostrarBloques() {
 
 
                 /*
-                 * crear-historieta.html
-                 * utiliza block.content.
+                 * El sistema de crear-historieta
+                 * guarda el texto en content.
                  *
                  * block.text queda como
                  * compatibilidad.
@@ -1583,7 +1675,7 @@ function mostrarBloques() {
 
 
 /* =========================================================
-   NAVEGACIÓN ENTRE CAPÍTULOS
+   NAVEGACIÓN
 ========================================================= */
 
 function actualizarNavegacion() {
@@ -1621,7 +1713,7 @@ function actualizarNavegacion() {
 
 
     /*
-     * Volver a capítulos.
+     * VOLVER A CAPÍTULOS
      */
 
     const listButton =
@@ -1656,7 +1748,7 @@ function actualizarNavegacion() {
 
 
     /*
-     * Capítulo anterior.
+     * ANTERIOR
      */
 
     if (index > 0) {
@@ -1691,7 +1783,7 @@ function actualizarNavegacion() {
 
 
     /*
-     * Capítulo siguiente.
+     * SIGUIENTE
      */
 
     if (
@@ -1744,7 +1836,7 @@ async function cargarDatosInteraccion(
 ) {
 
     /*
-     * Likes
+     * LIKES
      */
 
     try {
@@ -1800,7 +1892,7 @@ async function cargarDatosInteraccion(
 
 
     /*
-     * Favoritos
+     * FAVORITOS
      */
 
     try {
@@ -1851,7 +1943,7 @@ async function cargarDatosInteraccion(
 
 
 /* =========================================================
-   BOTÓN LIKE
+   ACTUALIZAR LIKE
 ========================================================= */
 
 function actualizarBotonLike() {
@@ -1878,7 +1970,7 @@ function actualizarBotonLike() {
 
 
 /* =========================================================
-   BOTÓN FAVORITO
+   ACTUALIZAR FAVORITO
 ========================================================= */
 
 function actualizarBotonFavorito() {
@@ -2083,7 +2175,7 @@ async function toggleFavorite() {
 
 
 /* =========================================================
-   MOSTRAR MENSAJE
+   MENSAJE
 ========================================================= */
 
 function mostrarMensaje(
@@ -2113,3 +2205,4 @@ function mostrarMensaje(
 </body>
 
 </html>
+```
