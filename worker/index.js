@@ -18,17 +18,13 @@ export default {
 // RUTAS SEPARADAS
 // =====================================================
 
-// =====================================================
-// LIKES
-// Acepta:
-// /api/likes
-// /api/likes/...
+// -----------------------------------------------------
+// ME GUSTA
 // /api/stories/:id/like
-// =====================================================
+// -----------------------------------------------------
 
 if (
-    url.pathname.startsWith("/api/likes") ||
-    /^\/api\/stories\/\d+\/like$/.test(url.pathname)
+    url.pathname.startsWith("/api/stories/")
 ) {
 
     const response =
@@ -45,17 +41,13 @@ if (
 }
 
 
-// =====================================================
+// -----------------------------------------------------
 // FAVORITOS
-// Acepta:
-// /api/favorites
-// /api/favorites/...
 // /api/stories/:id/favorite
-// =====================================================
+// -----------------------------------------------------
 
 if (
-    url.pathname.startsWith("/api/favorites") ||
-    /^\/api\/stories\/\d+\/favorite$/.test(url.pathname)
+    url.pathname.startsWith("/api/stories/")
 ) {
 
     const response =
@@ -72,17 +64,13 @@ if (
 }
 
 
-// =====================================================
+// -----------------------------------------------------
 // IMÁGENES DE CAPÍTULOS
-// Acepta:
-// /api/images
-// /api/images/...
 // /api/chapters/:id/images
-// =====================================================
+// -----------------------------------------------------
 
 if (
-    url.pathname.startsWith("/api/images") ||
-    /^\/api\/chapters\/\d+\/images/.test(url.pathname)
+    url.pathname.startsWith("/api/chapters/")
 ) {
 
     const response =
@@ -99,12 +87,13 @@ if (
 }
 
 
-// =====================================================
+// -----------------------------------------------------
 // COMENTARIOS
-// =====================================================
+// /api/stories/:id/comments
+// -----------------------------------------------------
 
 if (
-    url.pathname.startsWith("/api/comments")
+    url.pathname.startsWith("/api/stories/")
 ) {
 
     const response =
@@ -121,9 +110,9 @@ if (
 }
 
 
-// =====================================================
+// -----------------------------------------------------
 // ADMIN
-// =====================================================
+// -----------------------------------------------------
 
 if (
     url.pathname.startsWith("/api/admin")
