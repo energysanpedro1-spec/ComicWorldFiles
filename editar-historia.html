@@ -935,34 +935,29 @@ if (!storyId) {
    PREVISUALIZAR PORTADA
 ========================================== */
 
+ 
+/* ==========================================
+   PREVISUALIZAR PORTADA
+========================================== */
+
 document.getElementById(
     "cover-file"
 ).addEventListener(
     "change",
     function(event) {
 
-
         const file =
             event.target.files[0];
 
-
         if (!file) {
-
             return;
-
         }
 
-
         const allowedTypes = [
-
             "image/jpeg",
-
             "image/png",
-
             "image/webp"
-
         ];
-
 
         if (
             !allowedTypes.includes(
@@ -974,40 +969,35 @@ document.getElementById(
                 "La portada debe ser JPG, PNG o WEBP."
             );
 
-
-            event.target.value =
-                "";
-
+            event.target.value = "";
 
             return;
-
         }
 
+        /*
+         * Permitimos archivos originales de hasta
+         * 20 MB porque serán optimizados antes
+         * de enviarlos a R2.
+         */
 
         if (
             file.size >
-            5 * 1024 * 1024
+            20 * 1024 * 1024
         ) {
 
             showError(
-                "La imagen no puede superar los 5 MB."
+                "La imagen original no puede superar los 20 MB."
             );
 
-
-            event.target.value =
-                "";
-
+            event.target.value = "";
 
             return;
-
         }
-
 
         const previewUrl =
             URL.createObjectURL(
                 file
             );
-
 
         showCover(
             previewUrl
@@ -1015,7 +1005,6 @@ document.getElementById(
 
     }
 );
-
 
 /* ==========================================
    CARGAR HISTORIA
@@ -1372,6 +1361,194 @@ function showCover(url) {
 
 }
 
+/* ==========================================
+   OPTIMIZAR PORTADA
+========================================== */
+
+function optimizarPortada(file) {
+
+    return new Promise(
+        function(resolve, reject) {
+
+            const image =
+                new Image();
+
+            const objectUrl =
+                URL.createObjectURL(
+                    file
+                );
+
+            image.onload =
+                function() {
+
+                    /*
+                     * Tamaño máximo de la portada.
+                     *
+                     * Se mantiene la proporción
+                     * original.
+                     */
+
+                    const maxWidth =
+                        800;
+
+                    const maxHeight =
+                        1200;
+
+
+                    let width =
+                        image.width;
+
+                    let height =
+                        image.height;
+
+
+                    /*
+                     * Reducir solamente si
+                     * supera alguno de los límites.
+                     */
+
+                    const scale =
+                        Math.min(
+                            maxWidth / width,
+                            maxHeight / height,
+                            1
+                        );
+
+
+                    width =
+                        Math.round(
+                            width * scale
+                        );
+
+
+                    height =
+                        Math.round(
+                            height * scale
+                        );
+
+
+                    const canvas =
+                        document.createElement(
+                            "canvas"
+                        );
+
+
+                    canvas.width =
+                        width;
+
+                    canvas.height =
+                        height;
+
+
+                    const context =
+                        canvas.getContext(
+                            "2d"
+                        );
+
+
+                    /*
+                     * Suavizado de alta calidad.
+                     */
+
+                    context.imageSmoothingEnabled =
+                        true;
+
+                    context.imageSmoothingQuality =
+                        "high";
+
+
+                    context.drawImage(
+                        image,
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+
+
+                    /*
+                     * Convertimos a WebP.
+                     *
+                     * 0.82 = buena calidad
+                     * con una reducción importante
+                     * del tamaño.
+                     */
+
+                    canvas.toBlob(
+                        function(blob) {
+
+                            URL.revokeObjectURL(
+                                objectUrl
+                            );
+
+
+                            if (!blob) {
+
+                                reject(
+                                    new Error(
+                                        "No se pudo optimizar la imagen."
+                                    )
+                                );
+
+                                return;
+
+                            }
+
+
+                            /*
+                             * Creamos un nuevo File
+                             * para enviarlo mediante FormData.
+                             */
+
+                            const optimizedFile =
+                                new File(
+                                    [
+                                        blob
+                                    ],
+                                    "cover.webp",
+                                    {
+                                        type:
+                                            "image/webp"
+                                    }
+                                );
+
+
+                            resolve(
+                                optimizedFile
+                            );
+
+                        },
+                        "image/webp",
+                        0.82
+                    );
+
+                };
+
+
+            image.onerror =
+                function() {
+
+                    URL.revokeObjectURL(
+                        objectUrl
+                    );
+
+                    reject(
+                        new Error(
+                            "No se pudo leer la imagen."
+                        )
+                    );
+
+                };
+
+
+            image.src =
+                objectUrl;
+
+        }
+    );
+
+}
+
 
 /* ==========================================
    SUBIR PORTADA
@@ -1379,16 +1556,13 @@ function showCover(url) {
 
 async function uploadCover() {
 
-
     if (!isAuthor) {
 
         showError(
             "No tienes permiso para modificar esta historia."
         );
 
-
         return;
-
     }
 
 
@@ -1408,20 +1582,14 @@ async function uploadCover() {
             "Selecciona una imagen para la portada."
         );
 
-
         return;
-
     }
 
 
     const allowedTypes = [
-
         "image/jpeg",
-
         "image/png",
-
         "image/webp"
-
     ];
 
 
@@ -1435,24 +1603,26 @@ async function uploadCover() {
             "La portada debe ser JPG, PNG o WEBP."
         );
 
-
         return;
-
     }
 
 
+    /*
+     * El límite se aplica al archivo ORIGINAL.
+     *
+     * Después será reducido y comprimido.
+     */
+
     if (
         file.size >
-        5 * 1024 * 1024
+        20 * 1024 * 1024
     ) {
 
         showError(
-            "La imagen no puede superar los 5 MB."
+            "La imagen original no puede superar los 20 MB."
         );
 
-
         return;
-
     }
 
 
@@ -1462,21 +1632,96 @@ async function uploadCover() {
         );
 
 
-    status.textContent =
-        "Subiendo portada...";
+    const button =
+        document.querySelector(
+            ".cover-button"
+        );
 
 
     try {
 
+        /*
+         * ======================================
+         * OPTIMIZAR
+         * ======================================
+         */
+
+        status.textContent =
+            "Optimizando imagen...";
+
+
+        button.disabled =
+            true;
+
+
+        const optimizedFile =
+            await optimizarPortada(
+                file
+            );
+
+
+        /*
+         * Tamaños para mostrar información
+         * al usuario.
+         */
+
+        const originalMB =
+            (
+                file.size /
+                (1024 * 1024)
+            ).toFixed(2);
+
+
+        const optimizedKB =
+            (
+                optimizedFile.size /
+                1024
+            ).toFixed(0);
+
+
+        console.log(
+            "Portada original:",
+            originalMB + " MB"
+        );
+
+
+        console.log(
+            "Portada optimizada:",
+            optimizedKB + " KB"
+        );
+
+
+        /*
+         * ======================================
+         * CREAR FORMDATA
+         * ======================================
+         */
 
         const formData =
             new FormData();
 
 
+        /*
+         * IMPORTANTE:
+         *
+         * Conservamos exactamente el nombre
+         * "cover" que espera tu Worker.
+         */
+
         formData.append(
             "cover",
-            file
+            optimizedFile
         );
+
+
+        /*
+         * ======================================
+         * SUBIR A R2
+         * ======================================
+         */
+
+        status.textContent =
+            "Subiendo portada optimizada...";
 
 
         const response =
@@ -1502,6 +1747,18 @@ async function uploadCover() {
             await response.json();
 
 
+        console.log(
+            "Respuesta subida portada:",
+            data
+        );
+
+
+        /*
+         * ======================================
+         * ERROR
+         * ======================================
+         */
+
         if (
             !response.ok ||
             !data.success
@@ -1517,19 +1774,21 @@ async function uploadCover() {
                 "";
 
 
-            return;
+            button.disabled =
+                false;
 
+
+            return;
         }
 
 
-        if (data.cover_url) {
+        /*
+         * ======================================
+         * ACTUALIZAR PREVISUALIZACIÓN
+         * ======================================
+         */
 
-            /*
-             * Agregamos un parámetro
-             * para evitar que el navegador
-             * muestre la portada anterior
-             * desde caché.
-             */
+        if (data.cover_url) {
 
             showCover(
                 data.cover_url +
@@ -1540,12 +1799,23 @@ async function uploadCover() {
         }
 
 
+        /*
+         * ======================================
+         * ÉXITO
+         * ======================================
+         */
+
         status.textContent =
-            "Portada subida correctamente.";
+            "Portada optimizada y subida correctamente.";
 
 
         showSuccess(
-            "Portada actualizada correctamente."
+            "Portada actualizada correctamente. " +
+            "Se redujo de " +
+            originalMB +
+            " MB a " +
+            optimizedKB +
+            " KB."
         );
 
 
@@ -1555,7 +1825,10 @@ async function uploadCover() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error optimizando/subiendo portada:",
+            error
+        );
 
 
         status.textContent =
@@ -1563,10 +1836,14 @@ async function uploadCover() {
 
 
         showError(
-            "No se pudo conectar con el servidor."
+            "No se pudo optimizar o subir la portada."
         );
 
     }
+
+
+    button.disabled =
+        false;
 
 }
 
