@@ -1,4 +1,4 @@
- import {
+import {
     getSession,
     json
 } from "../utils.js";
@@ -17,15 +17,15 @@ export async function handleLikes(
     url
 ) {
 
+    // ---------------------------------------------------------
+    // COMPROBAR RUTA
+    // ---------------------------------------------------------
+
     const storyLikeMatch =
         url.pathname.match(
             /^\/api\/stories\/(\d+)\/like$/
         );
 
-
-    // ---------------------------------------------------------
-    // NO ES UNA RUTA DE ME GUSTA
-    // ---------------------------------------------------------
 
     if (!storyLikeMatch) {
 
@@ -40,6 +40,17 @@ export async function handleLikes(
         );
 
 
+    if (!storyId) {
+
+        return json({
+            success: false,
+            error:
+                "ID de publicación inválido."
+        }, 400);
+
+    }
+
+
     // =========================================================
     // POST /api/stories/:id/like
     // =========================================================
@@ -49,6 +60,10 @@ export async function handleLikes(
     ) {
 
         try {
+
+            // -------------------------------------------------
+            // COMPROBAR SESIÓN
+            // -------------------------------------------------
 
             const session =
                 await getSession(
@@ -67,6 +82,10 @@ export async function handleLikes(
 
             }
 
+
+            // -------------------------------------------------
+            // COMPROBAR PUBLICACIÓN
+            // -------------------------------------------------
 
             const story =
                 await env.DB
@@ -93,6 +112,10 @@ export async function handleLikes(
             }
 
 
+            // -------------------------------------------------
+            // COMPROBAR SI YA EXISTE EL LIKE
+            // -------------------------------------------------
+
             const existingLike =
                 await env.DB
                     .prepare(
@@ -112,6 +135,10 @@ export async function handleLikes(
             let liked;
 
 
+            // =================================================
+            // QUITAR LIKE
+            // =================================================
+
             if (existingLike) {
 
                 await env.DB
@@ -127,30 +154,83 @@ export async function handleLikes(
                     .run();
 
 
-                liked = false;
-
-            } else {
-
-                await env.DB
-                    .prepare(
-                        `INSERT INTO story_likes
-                         (
-                            story_id,
-                            user_id
-                         )
-                         VALUES (?, ?)`
-                    )
-                    .bind(
-                        storyId,
-                        session.id
-                    )
-                    .run();
-
-
-                liked = true;
+                liked =
+                    false;
 
             }
 
+
+            // =================================================
+            // AGREGAR LIKE
+            // =================================================
+
+            else {
+
+                try {
+
+                    await env.DB
+                        .prepare(
+                            `INSERT INTO story_likes
+                             (
+                                story_id,
+                                user_id
+                             )
+                             VALUES (?, ?)`
+                        )
+                        .bind(
+                            storyId,
+                            session.id
+                        )
+                        .run();
+
+
+                    liked =
+                        true;
+
+                } catch (insertError) {
+
+                    /*
+                     * Si existe una restricción
+                     * UNIQUE(story_id, user_id) y otra petición
+                     * creó el like simultáneamente, comprobamos
+                     * nuevamente antes de devolver error.
+                     */
+
+                    const likeAfterError =
+                        await env.DB
+                            .prepare(
+                                `SELECT id
+                                 FROM story_likes
+                                 WHERE story_id = ?
+                                   AND user_id = ?
+                                 LIMIT 1`
+                            )
+                            .bind(
+                                storyId,
+                                session.id
+                            )
+                            .first();
+
+
+                    if (likeAfterError) {
+
+                        liked =
+                            true;
+
+                    } else {
+
+                        throw insertError;
+
+                    }
+
+                }
+
+            }
+
+
+            // -------------------------------------------------
+            // OBTENER CANTIDAD TOTAL DE LIKES
+            // -------------------------------------------------
 
             const count =
                 await env.DB
@@ -175,7 +255,7 @@ export async function handleLikes(
 
                 likes:
                     Number(
-                        count.total || 0
+                        count?.total || 0
                     )
 
             });
@@ -210,6 +290,10 @@ export async function handleLikes(
 
         try {
 
+            // -------------------------------------------------
+            // COMPROBAR SESIÓN
+            // -------------------------------------------------
+
             const session =
                 await getSession(
                     request,
@@ -220,6 +304,10 @@ export async function handleLikes(
             let liked =
                 false;
 
+
+            // -------------------------------------------------
+            // COMPROBAR LIKE DEL USUARIO
+            // -------------------------------------------------
 
             if (session) {
 
@@ -245,6 +333,10 @@ export async function handleLikes(
             }
 
 
+            // -------------------------------------------------
+            // OBTENER CANTIDAD TOTAL
+            // -------------------------------------------------
+
             const count =
                 await env.DB
                     .prepare(
@@ -268,7 +360,7 @@ export async function handleLikes(
 
                 likes:
                     Number(
-                        count.total || 0
+                        count?.total || 0
                     )
 
             });
