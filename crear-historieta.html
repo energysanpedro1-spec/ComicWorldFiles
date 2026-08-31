@@ -2044,14 +2044,23 @@ try {
         }    
 
 
-        const formData =    
-            new FormData();    
+        const compressedFile =
+    await comprimirImagen(
+        block.file,
+        1600,
+        1600,
+        0.82
+    );
 
 
-        formData.append(    
-            "image",    
-            block.file    
-        );    
+const formData =
+    new FormData();
+
+
+formData.append(
+    "image",
+    compressedFile
+);
 
 
         const response =    
@@ -2310,6 +2319,144 @@ button.disabled =
 
 button.textContent =    
     "Guardar capítulo";
+
+}
+
+// =========================================================
+// COMPRESIÓN DE IMÁGENES A WEBP
+// =========================================================
+
+function comprimirImagen(
+    file,
+    maxWidth = 1600,
+    maxHeight = 1600,
+    quality = 0.82
+) {
+
+    return new Promise(function(resolve, reject) {
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+
+            const img = new Image();
+
+            img.onload = function() {
+
+                let width = img.width;
+                let height = img.height;
+
+                // Solo reducir si supera los límites
+                if (
+                    width > maxWidth ||
+                    height > maxHeight
+                ) {
+
+                    const scale = Math.min(
+                        maxWidth / width,
+                        maxHeight / height
+                    );
+
+                    width = Math.round(
+                        width * scale
+                    );
+
+                    height = Math.round(
+                        height * scale
+                    );
+                }
+
+                const canvas =
+                    document.createElement(
+                        "canvas"
+                    );
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx =
+                    canvas.getContext("2d");
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+                canvas.toBlob(
+                    function(blob) {
+
+                        if (!blob) {
+
+                            reject(
+                                new Error(
+                                    "No se pudo convertir la imagen a WebP."
+                                )
+                            );
+
+                            return;
+                        }
+
+                        const nombre =
+                            file.name.replace(
+                                /\.[^/.]+$/,
+                                ""
+                            ) + ".webp";
+
+                        const compressedFile =
+                            new File(
+                                [blob],
+                                nombre,
+                                {
+                                    type:
+                                        "image/webp",
+
+                                    lastModified:
+                                        Date.now()
+                                }
+                            );
+
+                        resolve(
+                            compressedFile
+                        );
+
+                    },
+                    "image/webp",
+                    quality
+                );
+
+            };
+
+            img.onerror = function() {
+
+                reject(
+                    new Error(
+                        "No se pudo cargar la imagen."
+                    )
+                );
+
+            };
+
+            img.src =
+                event.target.result;
+
+        };
+
+        reader.onerror = function() {
+
+            reject(
+                new Error(
+                    "No se pudo leer la imagen."
+                )
+            );
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
 
 }
 
