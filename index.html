@@ -1,9 +1,7 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<!-- ==================================================
-     GOOGLE SEARCH CONSOLE
-================================================== --><meta name="google-site-verification"
+<meta name="google-site-verification"
 content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
 
 <title>ComicWorldFiles</title><style>
@@ -14,6 +12,10 @@ content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
 
 * {
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -34,7 +36,7 @@ a {
 
 header {
     background: #20242b;
-    color: white;
+    color: #ffffff;
     padding: 15px 20px;
     position: sticky;
     top: 0;
@@ -44,9 +46,11 @@ header {
 .header-content {
     max-width: 1100px;
     margin: auto;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
 }
 
@@ -108,15 +112,7 @@ nav > a:hover {
     margin-left: 5px;
 }
 
-#user-area span {
-    display: inline;
-    color: #ffffff;
-    font-size: 14px;
-    white-space: nowrap;
-}
-
 #user-area a {
-    display: inline;
     color: #ffffff;
     font-size: 14px;
     white-space: nowrap;
@@ -130,25 +126,32 @@ nav > a:hover {
 
 
 /* ==================================================
-   BOTÓN DONATE PAYPAL
+   BOTÓN DONATE
 ================================================== */
 
 .donate-button {
     display: flex !important;
+
     align-items: center;
     justify-content: center;
+
     gap: 6px;
-    background: #0070ba;
+
+    background: #0070ba !important;
     color: #ffffff !important;
+
     padding: 8px 12px !important;
+
     border-radius: 6px;
+
     font-size: 14px;
     font-weight: bold;
+
     white-space: nowrap;
 }
 
 .donate-button:hover {
-    background: #005ea6;
+    background: #005ea6 !important;
     text-decoration: none !important;
 }
 
@@ -181,10 +184,14 @@ nav > a:hover {
 .search input {
     flex: 1;
     min-width: 0;
+
     padding: 14px;
+
     border: 1px solid #ccc;
     border-right: none;
+
     border-radius: 8px 0 0 8px;
+
     font-size: 15px;
 }
 
@@ -195,12 +202,18 @@ nav > a:hover {
 
 .search button {
     flex-shrink: 0;
+
     border: none;
+
     background: #ff6b35;
     color: #ffffff;
+
     padding: 0 22px;
+
     border-radius: 0 8px 8px 0;
+
     cursor: pointer;
+
     font-size: 14px;
     font-weight: bold;
 }
@@ -215,13 +228,21 @@ nav > a:hover {
 ================================================== */
 
 .hero {
+    width: 100%;
+
     background: #ffffff;
+
     border-radius: 12px;
+
     padding: 30px;
+
     margin-bottom: 35px;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     box-shadow:
         0 2px 8px rgba(0,0,0,0.08);
 }
@@ -234,50 +255,79 @@ nav > a:hover {
 .hero-logo-box {
     width: 100%;
     max-width: 1000px;
-    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
 }
 
 
 /* ==================================================
-   LOGO DESTACADO
+   IMAGEN PRINCIPAL
 ================================================== */
 
 .hero-image {
     width: 100%;
+
     min-height: 350px;
+
     background: #ffffff;
+
     border-radius: 10px;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     overflow: hidden;
 }
 
 .hero-image img {
+    display: block;
+
     width: 100%;
-    height: 100%;
+    height: auto;
+
     max-width: 100%;
     max-height: 650px;
+
     object-fit: contain;
-    display: block;
 }
 
 
 /* ==================================================
-   MENSAJE NARANJA
+   MENSAJE DEBAJO DE LA IMAGEN
 ================================================== */
 
 .hero-message {
+    display: flex !important;
+
+    align-items: center;
+    justify-content: center;
+
     width: 100%;
+
     margin-top: 12px;
+
     padding: 16px 20px;
-    background: #ff6b35;
-    color: #ffffff;
+
+    background: #ff6b35 !important;
+
+    color: #ffffff !important;
+
     border-radius: 8px;
-    text-align: center;
+
+    text-align: center !important;
+
     font-size: 16px;
+
     font-weight: bold;
+
     line-height: 1.4;
+
+    clear: both;
 }
 
 
@@ -287,8 +337,10 @@ nav > a:hover {
 
 .section-title {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
+
     margin-bottom: 15px;
 }
 
@@ -303,20 +355,25 @@ nav > a:hover {
 
 
 /* ==================================================
-   TARJETAS
+   PUBLICACIONES
 ================================================== */
 
 .stories {
     display: grid;
+
     grid-template-columns:
         repeat(4, minmax(0, 1fr));
+
     gap: 20px;
 }
 
 .card {
     background: #ffffff;
+
     border-radius: 10px;
+
     overflow: hidden;
+
     box-shadow:
         0 2px 6px rgba(0,0,0,0.08);
 }
@@ -328,38 +385,54 @@ nav > a:hover {
 
 .cover {
     height: 230px;
+
     position: relative;
+
     background:
         linear-gradient(
             135deg,
             #5c677d,
             #222831
         );
+
     display: flex;
+
     align-items: center;
     justify-content: center;
-    color: white;
+
+    color: #ffffff;
+
     font-size: 40px;
 }
 
 .cover img {
+    display: block;
+
     width: 100%;
     height: 100%;
+
     object-fit: cover;
-    display: block;
 }
 
 .publication-type {
     position: absolute;
+
     top: 10px;
     left: 10px;
+
     z-index: 2;
+
     background:
         rgba(32,36,43,0.9);
+
     color: #ffffff;
+
     padding: 5px 8px;
+
     border-radius: 5px;
+
     font-size: 11px;
+
     font-weight: bold;
 }
 
@@ -374,18 +447,30 @@ nav > a:hover {
 
 .card h3 {
     margin: 0 0 7px;
+
     font-size: 17px;
+
+    color: #222222;
+
+    background: transparent !important;
 }
 
 .author {
-    color: #777;
+    color: #777777;
+
     font-size: 13px;
+
+    background: transparent !important;
 }
 
 .description {
-    color: #666;
+    color: #666666;
+
     font-size: 13px;
+
     line-height: 1.4;
+
+    background: transparent !important;
 }
 
 
@@ -394,25 +479,37 @@ nav > a:hover {
 ================================================== */
 
 .card-button {
-    display: flex;
+    display: flex !important;
+
     align-items: center;
     justify-content: center;
+
     width: 100%;
+
     min-height: 38px;
+
     margin-top: 12px;
+
     padding: 9px 10px;
-    background: #20242b;
+
+    background: #20242b !important;
+
     color: #ffffff !important;
+
     border-radius: 6px;
+
     font-size: 13px;
+
     font-weight: bold;
+
     text-align: center;
-    opacity: 1;
-    visibility: visible;
+
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .card-button:hover {
-    background: #343a40;
+    background: #343a40 !important;
 }
 
 
@@ -422,28 +519,53 @@ nav > a:hover {
 
 .types {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 20px;
+
     margin: 35px 0;
 }
 
+
+/* ==================================================
+   CAJA HISTORIA / HISTORIETA
+================================================== */
+
 .type-box {
-    background: #ffffff;
+    background: #ffffff !important;
+
     padding: 25px;
+
     border-radius: 10px;
+
     box-shadow:
         0 2px 6px rgba(0,0,0,0.07);
+
     display: flex;
+
     flex-direction: column;
+
+    align-items: flex-start;
 }
 
 .type-box h3 {
     margin: 0 0 10px;
+
+    color: #222222 !important;
+
+    background: transparent !important;
+
+    font-size: 18px;
 }
 
 .type-box p {
-    color: #666;
+    color: #666666 !important;
+
+    background: transparent !important;
+
     line-height: 1.5;
+
     margin: 0 0 20px;
 }
 
@@ -453,24 +575,50 @@ nav > a:hover {
 ================================================== */
 
 .type-button {
-    display: flex;
+    display: flex !important;
+
     align-items: center;
     justify-content: center;
+
     align-self: flex-start;
+
+    width: auto;
+
     min-height: 42px;
+
     padding: 11px 20px;
-    background: #ff6b35;
+
+    background: #ff6b35 !important;
+
     color: #ffffff !important;
+
+    border: none !important;
+
     border-radius: 7px;
+
     font-size: 14px;
+
     font-weight: bold;
+
+    line-height: 1.2;
+
+    text-align: center;
+
     cursor: pointer;
-    opacity: 1;
-    visibility: visible;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    white-space: nowrap;
 }
 
 .type-button:hover {
-    background: #e85a2a;
+    background: #e85a2a !important;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
 }
 
 
@@ -479,10 +627,14 @@ nav > a:hover {
 ================================================== */
 
 .empty-message {
-    color: #666;
+    color: #666666;
+
     background: #ffffff;
+
     padding: 20px;
+
     border-radius: 8px;
+
     grid-column: 1 / -1;
 }
 
@@ -493,9 +645,13 @@ nav > a:hover {
 
 #admin-section {
     display: none;
+
     margin: 40px auto 0;
+
     max-width: 1100px;
+
     padding: 0 20px;
+
     text-align: center;
 }
 
@@ -506,10 +662,15 @@ nav > a:hover {
 
 footer {
     background: #20242b;
+
     color: #aaa;
+
     text-align: center;
+
     padding: 30px;
+
     margin-top: 40px;
+
     font-size: 13px;
 }
 
@@ -527,7 +688,9 @@ footer {
 
     nav {
         width: 100%;
+
         justify-content: flex-start;
+
         flex-wrap: wrap;
     }
 
@@ -593,14 +756,25 @@ footer {
         min-height: 230px;
     }
 
+    .hero-image img {
+        max-height: 500px;
+    }
+
     .hero-message {
+        width: 100%;
+
         margin-top: 10px;
+
         padding: 12px 10px;
+
         font-size: 13px;
+
+        text-align: center !important;
     }
 
     .stories {
         grid-template-columns: 1fr 1fr;
+
         gap: 12px;
     }
 
@@ -622,11 +796,14 @@ footer {
 
     .types {
         grid-template-columns: 1fr 1fr;
+
         gap: 12px;
     }
 
     .type-box {
         padding: 15px;
+
+        min-width: 0;
     }
 
     .type-box h3 {
@@ -639,15 +816,66 @@ footer {
 
     .type-button {
         width: 100%;
+
+        min-height: 42px;
+
         padding: 10px 5px;
+
         font-size: 12px;
+
         text-align: center;
+
+        white-space: normal;
     }
 
     .search button {
         padding: 0 15px;
     }
 
+}
+
+
+/* ==================================================
+   CELULAR MUY PEQUEÑO
+================================================== */
+
+@media (max-width: 360px) {
+
+    .types {
+        grid-template-columns: 1fr;
+    }
+
+    .type-button {
+        width: 100%;
+    }
+
+}
+
+
+/* ==================================================
+   FORZAR VISIBILIDAD DE TEXTOS DE BOTONES
+================================================== */
+
+.type-button,
+.type-button:visited,
+.type-button:hover,
+.type-button:active {
+
+    color: #ffffff !important;
+
+    background-color: #ff6b35 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+.type-box h3,
+.type-box p {
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
 }
 
 </style></head><body><!-- ==================================================
@@ -703,8 +931,8 @@ alt="ComicWorldFiles"
 
 «»
 
-</div><div class="hero-message">Explora, sube y edita historias o comics
-
+</div><div class="hero-message">
+Explora, sube y edita historias o comics
 </div></div></section><!-- ==================================================
      PUBLICACIONES RECIENTES
 ================================================== --><div
@@ -726,7 +954,9 @@ Cargando publicaciones...
     style="margin-top:40px;"
 ><h2>
 ¿Qué quieres publicar?
-</h2></div><section class="types"><!-- HISTORIAS --><div class="type-box"><h3>
+</h2></div><section class="types"><!-- ==================================================
+     HISTORIAS
+================================================== --><div class="type-box"><h3>
 📖 Historias
 </h3><p>
 Publica novelas, cuentos, relatos y cualquier
@@ -739,8 +969,11 @@ onclick="requiereLogin(event, 'crear-historia.html')"
 «»
 
 Crear historia
+</a>
 
-</a></div><!-- HISTORIETAS --><div class="type-box"><h3>
+</div><!-- ==================================================
+     HISTORIETAS
+================================================== --><div class="type-box"><h3>
 🖼️ Historietas
 </h3><p>
 Publica tus cómics página por página y permite
@@ -753,8 +986,9 @@ onclick="requiereLogin(event, 'crear-historieta.html')"
 «»
 
 Crear historieta
+</a>
 
-</a></div></section><!-- ==================================================
+</div></section><!-- ==================================================
      MÁS POPULARES
 ================================================== --><div class="section-title"><h2>
 Más populares
@@ -770,23 +1004,23 @@ Cargando publicaciones...
 ================================================== --><div
     id="admin-section"
 ><a
-    href="admin.html"
-    style="
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        gap:8px;
-        background:#20242b;
-        color:#ffffff;
-        padding:12px 20px;
-        border-radius:7px;
-        font-size:14px;
-        font-weight:bold;
-    "
->
+href="admin.html"
+style="
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+background:#20242b;
+color:#ffffff;
+padding:12px 20px;
+border-radius:7px;
+font-size:14px;
+font-weight:bold;
+"
 
-    ⚙️ Panel de administración
+«»
 
+⚙️ Panel de administración
 </a>
 
 </div><!-- ==================================================
@@ -829,12 +1063,15 @@ async function checkSession() {
                 }
             );
 
+
         if (!response.ok) {
             return;
         }
 
+
         const data =
             await response.json();
+
 
         if (
             data &&
@@ -847,12 +1084,9 @@ async function checkSession() {
                 data.user.username ||
                 "Usuario";
 
+
             userArea.innerHTML = "";
 
-
-            /* ==========================================
-               HOLA USUARIO → PERFIL
-            ========================================== */
 
             const profileLink =
                 document.createElement("a");
@@ -864,10 +1098,6 @@ async function checkSession() {
                 "Hola " + username;
 
 
-            /* ==========================================
-               CERRAR SESIÓN
-            ========================================== */
-
             const logoutLink =
                 document.createElement("a");
 
@@ -876,6 +1106,7 @@ async function checkSession() {
 
             logoutLink.textContent =
                 "Cerrar sesión";
+
 
             logoutLink.addEventListener(
                 "click",
@@ -892,6 +1123,7 @@ async function checkSession() {
             userArea.appendChild(
                 profileLink
             );
+
 
             userArea.appendChild(
                 logoutLink
@@ -922,9 +1154,11 @@ async function checkAdmin() {
             "admin-section"
         );
 
+
     if (!adminSection) {
         return;
     }
+
 
     try {
 
@@ -938,16 +1172,20 @@ async function checkAdmin() {
                 }
             );
 
+
         if (!response.ok) {
 
             adminSection.style.display =
                 "none";
 
             return;
+
         }
+
 
         const data =
             await response.json();
+
 
         if (
             data &&
@@ -971,6 +1209,7 @@ async function checkAdmin() {
             "Error comprobando administrador:",
             error
         );
+
 
         adminSection.style.display =
             "none";
@@ -1005,9 +1244,11 @@ async function logout() {
 
     }
 
+
     localStorage.removeItem(
         "comicworld_user"
     );
+
 
     window.location.href =
         "index.html";
@@ -1049,8 +1290,10 @@ async function checkLoginAndRedirect(
                 }
             );
 
+
         const data =
             await response.json();
+
 
         if (
             response.ok &&
@@ -1066,9 +1309,11 @@ async function checkLoginAndRedirect(
 
         }
 
+
         alert(
             "Debes iniciar sesión para publicar."
         );
+
 
         window.location.href =
             "login.html";
@@ -1079,6 +1324,7 @@ async function checkLoginAndRedirect(
             "Error comprobando login:",
             error
         );
+
 
         alert(
             "No se pudo comprobar la sesión."
@@ -1100,10 +1346,12 @@ async function loadStories() {
             "recent-stories"
         );
 
+
     const popularContainer =
         document.getElementById(
             "popular-section"
         );
+
 
     try {
 
@@ -1116,13 +1364,16 @@ async function loadStories() {
                 }
             );
 
+
         const data =
             await response.json();
+
 
         console.log(
             "Respuesta /api/stories:",
             data
         );
+
 
         if (
             !response.ok ||
@@ -1134,6 +1385,7 @@ async function loadStories() {
                 "No se pudieron cargar las publicaciones."
             );
 
+
             mostrarMensaje(
                 popularContainer,
                 "No se pudieron cargar las publicaciones."
@@ -1143,10 +1395,12 @@ async function loadStories() {
 
         }
 
+
         todasLasHistorias =
             Array.isArray(data.stories)
                 ? data.stories
                 : [];
+
 
         if (
             todasLasHistorias.length === 0
@@ -1157,6 +1411,7 @@ async function loadStories() {
                 "Todavía no hay publicaciones."
             );
 
+
             mostrarMensaje(
                 popularContainer,
                 "Todavía no hay publicaciones."
@@ -1166,10 +1421,12 @@ async function loadStories() {
 
         }
 
+
         mostrarHistorias(
             todasLasHistorias,
             recentContainer
         );
+
 
         mostrarHistorias(
             todasLasHistorias,
@@ -1183,10 +1440,12 @@ async function loadStories() {
             error
         );
 
+
         mostrarMensaje(
             recentContainer,
             "Error cargando publicaciones."
         );
+
 
         mostrarMensaje(
             popularContainer,
@@ -1226,6 +1485,7 @@ function mostrarHistorias(
 
     container.innerHTML = "";
 
+
     if (
         !historias ||
         historias.length === 0
@@ -1240,11 +1500,13 @@ function mostrarHistorias(
 
     }
 
+
     const limite =
         Math.min(
             historias.length,
             4
         );
+
 
     for (
         let i = 0;
@@ -1255,34 +1517,36 @@ function mostrarHistorias(
         const story =
             historias[i];
 
+
         const card =
             document.createElement("div");
+
 
         card.className =
             "card";
 
-
-        /* ==========================================
-           TIPO
-        ========================================== */
 
         const tipo =
             String(
                 story.type || "historia"
             ).toLowerCase();
 
+
         const esHistorieta =
             tipo === "historieta";
+
 
         const tipoTexto =
             esHistorieta
                 ? "🖼️ Historieta"
                 : "📖 Historia";
 
+
         const paginaLectura =
             esHistorieta
                 ? "leer-historieta.html"
                 : "leer-historia.html";
+
 
         const textoBoton =
             esHistorieta
@@ -1290,11 +1554,8 @@ function mostrarHistorias(
                 : "Leer historia";
 
 
-        /* ==========================================
-           PORTADA
-        ========================================== */
-
         let coverHTML;
+
 
         if (
             story.cover_url
@@ -1336,10 +1597,6 @@ function mostrarHistorias(
 
         }
 
-
-        /* ==========================================
-           TARJETA
-        ========================================== */
 
         card.innerHTML =
 
@@ -1385,6 +1642,7 @@ function mostrarHistorias(
 
             '</div>';
 
+
         container.appendChild(
             card
         );
@@ -1405,20 +1663,24 @@ function buscarHistorias() {
             "search-input"
         );
 
+
     const texto =
         input.value
             .trim()
             .toLowerCase();
+
 
     const recentContainer =
         document.getElementById(
             "recent-stories"
         );
 
+
     const popularContainer =
         document.getElementById(
             "popular-section"
         );
+
 
     if (!texto) {
 
@@ -1427,14 +1689,17 @@ function buscarHistorias() {
             recentContainer
         );
 
+
         mostrarHistorias(
             todasLasHistorias,
             popularContainer
         );
 
+
         return;
 
     }
+
 
     const resultados =
         todasLasHistorias.filter(
@@ -1445,25 +1710,30 @@ function buscarHistorias() {
                         story.title || ""
                     ).toLowerCase();
 
+
                 const autor =
                     String(
                         story.author || ""
                     ).toLowerCase();
+
 
                 const genero =
                     String(
                         story.genre || ""
                     ).toLowerCase();
 
+
                 const descripcion =
                     String(
                         story.description || ""
                     ).toLowerCase();
 
+
                 const tipo =
                     String(
                         story.type || ""
                     ).toLowerCase();
+
 
                 return (
                     titulo.includes(texto) ||
@@ -1476,15 +1746,18 @@ function buscarHistorias() {
             }
         );
 
+
     mostrarHistorias(
         resultados,
         recentContainer
     );
 
+
     popularContainer.innerHTML =
         '<div class="empty-message">' +
         'Resultados de búsqueda mostrados arriba.' +
         '</div>';
+
 
     recentContainer.scrollIntoView({
         behavior: "smooth",
@@ -1525,10 +1798,12 @@ function escapeHtml(text) {
     const div =
         document.createElement("div");
 
+
     div.textContent =
         text == null
             ? ""
             : String(text);
+
 
     return div.innerHTML;
 
