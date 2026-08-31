@@ -4789,7 +4789,7 @@ if (
 
 
 
-        // =========================================================
+        /* =========================================================
         // API: FAVORITOS
         //
         // POST /api/stories/5/favorite
@@ -4958,11 +4958,11 @@ if (
 
                     } catch (insertError) {
 
-                        /*
+                        
                          * Si la tabla tiene UNIQUE(story_id,user_id)
                          * y otra petición creó el favorito al mismo
                          * tiempo, volvemos a consultar.
-                         */
+                         
 
                         const favoriteAfterError =
                             await env.DB
@@ -5089,11 +5089,11 @@ if (
                     false;
 
 
-                /*
+                
                  * Si el usuario no está conectado,
                  * simplemente indicamos que no tiene
                  * la publicación en favoritos.
-                 */
+                 
 
                 if (
                     session
@@ -5168,7 +5168,7 @@ if (
 
             }
 
-        }
+        }*/
 
 
 
