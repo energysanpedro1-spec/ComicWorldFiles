@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -318,16 +319,13 @@ ComicWorldFiles
 
 <a class="back"
 href="index.html">
-← Volver
-</a>
+← Volver </a>
 
 </div>
 
 </header>
 
-
 <main class="container">
-
 
 <!-- ==============================
      INFORMACIÓN DE LA HISTORIA
@@ -353,11 +351,11 @@ Cargando descripción...
 
 <span class="genre"
 id="story-genre">
--
+-----------------
+
 </span>
 
 </section>
-
 
 <!-- MENSAJES -->
 
@@ -371,7 +369,6 @@ id="success-message"
 class="message success">
 </div>
 
-
 <!-- ==============================
      EDITOR
 ============================== -->
@@ -382,7 +379,6 @@ class="message success">
 Agregar capítulo
 </h2>
 
-
 <label for="chapter-title">
 Título del capítulo
 </label>
@@ -391,8 +387,8 @@ Título del capítulo
 type="text"
 id="chapter-title"
 placeholder="Ejemplo: El despertar"
->
 
+>
 
 <label for="chapter-content">
 Contenido
@@ -403,27 +399,23 @@ id="chapter-content"
 placeholder="Escribe aquí el contenido de tu capítulo..."
 ></textarea>
 
-
 <div class="buttons">
 
 <button
 class="save-button"
 onclick="saveChapter()">
-Guardar capítulo
-</button>
+Guardar capítulo </button>
 
 <button
 class="cancel-button"
 id="cancel-button"
 onclick="cancelEdit()"
 style="display:none;">
-Cancelar edición
-</button>
+Cancelar edición </button>
 
 </div>
 
 </section>
-
 
 <!-- ==============================
      CAPÍTULOS
@@ -437,7 +429,6 @@ Capítulos
 
 </div>
 
-
 <section id="chapters-container">
 
 <p>
@@ -446,9 +437,7 @@ Cargando capítulos...
 
 </section>
 
-
 </main>
-
 
 <script>
 
@@ -466,6 +455,12 @@ const storyId =
 
 let editingChapterId = null;
 
+let currentUser = null;
+
+let isAdmin = false;
+
+let hasPermission = false;
+
 
 /* ==========================================
    COMPROBAR ID
@@ -479,9 +474,142 @@ if (!storyId) {
 
 } else {
 
-    loadStory();
+    initializePage();
 
-    loadChapters();
+}
+
+
+/* ==========================================
+   INICIALIZAR
+========================================== */
+
+async function initializePage() {
+
+    /*
+     * Primero comprobamos la sesión.
+     * Después cargamos la historia.
+     */
+
+    const loggedIn =
+        await checkCurrentUser();
+
+    if (!loggedIn) {
+
+        return;
+
+    }
+
+
+    await loadStory();
+
+}
+
+
+/* ==========================================
+   COMPROBAR USUARIO ACTUAL
+========================================== */
+
+async function checkCurrentUser() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.loggedIn
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return false;
+
+        }
+
+
+        currentUser =
+            data.user;
+
+
+        /*
+         * Comprobar si además es administrador.
+         *
+         * Esta ruta utiliza la comprobación
+         * centralizada de worker/routes/admin.js
+         */
+
+        try {
+
+            const adminResponse =
+                await fetch(
+                    "/api/admin/check",
+                    {
+                        method: "GET",
+                        credentials: "include"
+                    }
+                );
+
+
+            const adminData =
+                await adminResponse.json();
+
+
+            if (
+                adminResponse.ok &&
+                adminData.success &&
+                adminData.loggedIn &&
+                adminData.isAdmin
+            ) {
+
+                isAdmin = true;
+
+            }
+
+        } catch (adminError) {
+
+            /*
+             * Si falla la comprobación del admin,
+             * seguimos funcionando como usuario normal.
+             */
+
+            console.error(
+                "Error comprobando administrador:",
+                adminError
+            );
+
+            isAdmin = false;
+
+        }
+
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "No se pudo comprobar el usuario."
+        );
+
+        return false;
+
+    }
 
 }
 
@@ -553,15 +681,67 @@ async function loadStory() {
 
 
         /*
+         * ADMINISTRADOR
+         *
+         * El administrador puede editar
+         * cualquier publicación.
+         */
 
-        Comprobamos que el usuario
-        sea el propietario.
+        if (isAdmin) {
 
-        */
+            hasPermission = true;
 
-        await checkAuthor(
-            story.user_id
+            loadChapters();
+
+            return;
+
+        }
+
+
+        /*
+         * AUTOR
+         *
+         * Un usuario normal solo puede editar
+         * una historia cuyo user_id coincida
+         * con su propio ID.
+         */
+
+        if (
+            Number(currentUser.id) ===
+            Number(story.user_id)
+        ) {
+
+            hasPermission = true;
+
+            loadChapters();
+
+            return;
+
+        }
+
+
+        /*
+         * SIN PERMISO
+         */
+
+        hasPermission = false;
+
+
+        showError(
+            "No tienes permiso para editar esta historia."
         );
+
+
+        document.querySelector(
+            ".editor"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "chapters-container"
+        ).innerHTML =
+            "<p>No tienes permiso para modificar los capítulos de esta historia.</p>";
 
 
     } catch (error) {
@@ -570,75 +750,6 @@ async function loadStory() {
 
         showError(
             "No se pudo conectar con el servidor."
-        );
-
-    }
-
-}
-
-
-/* ==========================================
-   COMPROBAR AUTOR
-========================================== */
-
-async function checkAuthor(
-    storyUserId
-) {
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/me",
-                {
-                    method: "GET",
-                    credentials: "include"
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            !data.success ||
-            !data.loggedIn
-        ) {
-
-            window.location.href =
-                "login.html";
-
-            return;
-
-        }
-
-
-        if (
-            Number(data.user.id) !==
-            Number(storyUserId)
-        ) {
-
-            showError(
-                "No tienes permiso para editar esta historia."
-            );
-
-
-            document.querySelector(
-                ".editor"
-            ).style.display =
-                "none";
-
-        }
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        showError(
-            "No se pudo comprobar el usuario."
         );
 
     }
@@ -719,12 +830,12 @@ async function loadChapters() {
 
 
                 const preview =
-                    chapter.content.length > 300
+                    (chapter.content || "").length > 300
                         ? chapter.content.substring(
                             0,
                             300
                         ) + "..."
-                        : chapter.content;
+                        : (chapter.content || "");
 
 
                 card.innerHTML =
@@ -736,7 +847,7 @@ async function loadChapters() {
 
                     '<h3>' +
                     escapeHtml(
-                        chapter.title
+                        chapter.title || ""
                     ) +
                     '</h3>' +
 
@@ -792,6 +903,17 @@ async function loadChapters() {
 ========================================== */
 
 async function saveChapter() {
+
+    if (!hasPermission) {
+
+        showError(
+            "No tienes permiso para modificar esta historia."
+        );
+
+        return;
+
+    }
+
 
     const title =
         document.getElementById(
@@ -861,6 +983,7 @@ async function saveChapter() {
                 );
 
         }
+
 
         /* ==============================
            EDITAR
@@ -944,6 +1067,17 @@ async function editChapter(
     chapterId
 ) {
 
+    if (!hasPermission) {
+
+        showError(
+            "No tienes permiso para modificar esta historia."
+        );
+
+        return;
+
+    }
+
+
     try {
 
         const response =
@@ -979,8 +1113,10 @@ async function editChapter(
         const chapter =
             data.chapters.find(
                 function(item) {
+
                     return Number(item.id) ===
                         Number(chapterId);
+
                 }
             );
 
@@ -1010,13 +1146,13 @@ async function editChapter(
         document.getElementById(
             "chapter-title"
         ).value =
-            chapter.title;
+            chapter.title || "";
 
 
         document.getElementById(
             "chapter-content"
         ).value =
-            chapter.content;
+            chapter.content || "";
 
 
         document.getElementById(
@@ -1052,6 +1188,17 @@ async function deleteChapter(
     chapterId
 ) {
 
+    if (!hasPermission) {
+
+        showError(
+            "No tienes permiso para modificar esta historia."
+        );
+
+        return;
+
+    }
+
+
     const confirmed =
         confirm(
             "¿Seguro que quieres eliminar este capítulo?"
@@ -1059,7 +1206,9 @@ async function deleteChapter(
 
 
     if (!confirmed) {
+
         return;
+
     }
 
 
@@ -1101,8 +1250,8 @@ async function deleteChapter(
 
 
         if (
-            editingChapterId ===
-            chapterId
+            Number(editingChapterId) ===
+            Number(chapterId)
         ) {
 
             clearEditor();
