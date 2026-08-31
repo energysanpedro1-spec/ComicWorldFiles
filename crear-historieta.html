@@ -1884,450 +1884,480 @@ actualizarPreview();
 
 async function guardarCapitulo() {
 
-ocultarError("editorError");    
+    ocultarError("editorError");
+    ocultarSuccess("editorSuccess");
 
-ocultarSuccess("editorSuccess");    
+    if (!currentChapterId) {
 
+        mostrarError(
+            "editorError",
+            "No hay ningún capítulo seleccionado."
+        );
 
-if (!currentChapterId) {    
+        return;
+    }
 
-    mostrarError(    
-        "editorError",    
-        "No hay ningún capítulo seleccionado."    
-    );    
+    if (!blocks.length) {
 
-    return;    
-}    
+        mostrarError(
+            "editorError",
+            "Agrega al menos una imagen o un texto."
+        );
 
+        return;
+    }
 
-if (!blocks.length) {    
+    // ---------------------------------------------------------
+    // VALIDAR BLOQUES
+    // ---------------------------------------------------------
 
-    mostrarError(    
-        "editorError",    
-        "Agrega al menos una imagen o un texto."    
-    );    
+    for (
+        let i = 0;
+        i < blocks.length;
+        i++
+    ) {
 
-    return;    
-}    
+        const block = blocks[i];
 
+        if (block.type === "text") {
 
-// ---------------------------------------------------------    
-// VALIDAR    
-// ---------------------------------------------------------    
+            if (
+                !String(
+                    block.content || ""
+                ).trim()
+            ) {
+
+                mostrarError(
+                    "editorError",
+                    "El bloque de texto " +
+                    (i + 1) +
+                    " está vacío."
+                );
+
+                return;
+            }
+        }
+
+        if (block.type === "image") {
+
+            if (
+                !block.file &&
+                !block.image_id
+            ) {
+
+                mostrarError(
+                    "editorError",
+                    "El bloque de imagen " +
+                    (i + 1) +
+                    " no tiene ninguna imagen."
+                );
+
+                return;
+            }
+        }
+    }
 
-for (    
-    let i = 0;    
-    i < blocks.length;    
-    i++    
-) {    
+    const button =
+        document.getElementById(
+            "saveChapterButton"
+        );
 
-    const block =    
-        blocks[i];    
+    button.disabled = true;
 
+    button.textContent =
+        "Guardando...";
 
-    if (    
-        block.type === "text"    
-    ) {    
+    const progress =
+        document.getElementById(
+            "uploadProgress"
+        );
 
-        if (    
-            !String(    
-                block.content || ""    
-            ).trim()    
-        ) {    
+    const progressBar =
+        document.getElementById(
+            "uploadProgressBar"
+        );
 
-            mostrarError(    
-                "editorError",    
-                "El bloque de texto " +    
-                (i + 1) +    
-                " está vacío."    
-            );    
+    progress.style.display =
+        "block";
 
-            return;    
-        }    
+    progressBar.style.width =
+        "0%";
+
+    try {
+
+        // -----------------------------------------------------
+        // CONTAR IMÁGENES NUEVAS
+        // -----------------------------------------------------
+
+        const imageBlocks =
+            blocks.filter(
+                function(block) {
+
+                    return (
+                        block.type === "image" &&
+                        block.file
+                    );
+
+                }
+            );
+
+        let uploaded = 0;
+
+        // -----------------------------------------------------
+        // SUBIR IMÁGENES
+        // -----------------------------------------------------
+
+        for (const block of blocks) {
+
+            if (
+                block.type !== "image" ||
+                !block.file
+            ) {
+                continue;
+            }
+
+            const compressedFile =
+                await comprimirImagen(
+                    block.file,
+                    1600,
+                    1600,
+                    0.82
+                );
+
+            const formData =
+                new FormData();
+
+            formData.append(
+                "image",
+                compressedFile
+            );
+
+            const response =
+                await fetch(
+                    "/api/chapters/" +
+                    currentChapterId +
+                    "/images",
+                    {
+                        method: "POST",
+
+                        credentials: "include",
+
+                        body: formData
+                    }
+                );
+
+            // -------------------------------------------------
+            // LEER RESPUESTA SIN ASUMIR QUE SIEMPRE ES JSON
+            // -------------------------------------------------
+
+            const responseText =
+                await response.text();
 
-    }    
+            let data = null;
+
+            if (responseText.trim()) {
 
+                try {
 
-    if (    
-        block.type === "image"    
-    ) {    
+                    data =
+                        JSON.parse(
+                            responseText
+                        );
 
-        if (    
-            !block.file &&    
-            !block.image_id    
-        ) {    
+                } catch (jsonError) {
+
+                    throw new Error(
+                        "El servidor devolvió una respuesta inválida al subir la imagen. " +
+                        "HTTP " +
+                        response.status +
+                        ": " +
+                        responseText.substring(0, 300)
+                    );
+                }
+            }
 
-            mostrarError(    
-                "editorError",    
-                "El bloque de imagen " +    
-                (i + 1) +    
-                " no tiene ninguna imagen."    
-            );    
+            if (!response.ok) {
 
-            return;    
-        }    
+                throw new Error(
+                    data?.error ||
+                    "No se pudo subir la imagen. HTTP " +
+                    response.status
+                );
+            }
 
-    }    
+            if (
+                !data ||
+                !data.success ||
+                !data.image
+            ) {
 
-}    
+                throw new Error(
+                    data?.error ||
+                    "El servidor no devolvió correctamente la información de la imagen."
+                );
+            }
 
+            block.image_id =
+                Number(
+                    data.image.id
+                );
 
-const button =    
-    document.getElementById(    
-        "saveChapterButton"    
-    );    
+            block.image_url =
+                data.image.image_url;
 
+            block.filename =
+                data.image.filename;
 
-button.disabled =    
-    true;    
+            block.file =
+                null;
 
-button.textContent =    
-    "Guardando...";    
+            block.preview =
+                null;
 
+            uploaded++;
 
-const progress =    
-    document.getElementById(    
-        "uploadProgress"    
-    );    
+            if (imageBlocks.length > 0) {
 
+                progressBar.style.width =
+                    (
+                        uploaded /
+                        imageBlocks.length *
+                        70
+                    ) + "%";
+            }
+        }
 
-const progressBar =    
-    document.getElementById(    
-        "uploadProgressBar"    
-    );    
+        // -----------------------------------------------------
+        // CREAR CONTENIDO JSON
+        // -----------------------------------------------------
+
+        const cleanBlocks =
+            blocks.map(
+                function(block) {
+
+                    if (
+                        block.type === "image"
+                    ) {
+
+                        return {
 
+                            type:
+                                "image",
+
+                            image_id:
+                                block.image_id,
+
+                            image_url:
+                                block.image_url,
+
+                            filename:
+                                block.filename
+                        };
+                    }
+
+                    return {
+
+                        type:
+                            "text",
+
+                        content:
+                            block.content || ""
+                    };
+                }
+            );
+
+        const content =
+            JSON.stringify({
+
+                version:
+                    1,
+
+                blocks:
+                    cleanBlocks
+            });
 
-progress.style.display =    
-    "block";    
+        progressBar.style.width =
+            "85%";
 
+        // -----------------------------------------------------
+        // OBTENER TÍTULO ACTUAL
+        // -----------------------------------------------------
 
-progressBar.style.width =    
-    "0%";    
+        const chapterResponse =
+            await fetch(
+                "/api/chapters/" +
+                currentChapterId,
+                {
+                    method: "GET",
 
+                    credentials: "include"
+                }
+            );
+
+        const chapterText =
+            await chapterResponse.text();
 
-try {    
+        let chapterData = null;
+
+        if (chapterText.trim()) {
 
-    // -----------------------------------------------------    
-    // CONTAR IMÁGENES NUEVAS    
-    // -----------------------------------------------------    
+            try {
 
-    const imageBlocks =    
-        blocks.filter(    
-            function(block) {    
-
-                return (    
-                    block.type === "image" &&    
-                    block.file    
-                );    
-
-            }    
-        );    
-
-
-    let uploaded =    
-        0;    
-
-
-    // -----------------------------------------------------    
-    // SUBIR IMÁGENES    
-    // -----------------------------------------------------    
-
-    for (    
-        const block of blocks    
-    ) {    
-
-        if (    
-            block.type !== "image"    
-        ) {    
-
-            continue;    
-        }    
-
-
-        if (    
-            !block.file    
-        ) {    
-
-            continue;    
-        }    
-
-
-        const compressedFile =
-    await comprimirImagen(
-        block.file,
-        1600,
-        1600,
-        0.82
-    );
-
-
-const formData =
-    new FormData();
-
-
-formData.append(
-    "image",
-    compressedFile
-);
-
-
-        const response =    
-            await fetch(    
-                "/api/chapters/" +    
-                currentChapterId +    
-                "/images",    
-                {    
-                    method: "POST",    
-
-                    credentials: "include",    
-
-                    body:    
-                        formData    
-                }    
-            );    
-
-
-        const data =    
-            await response.json();    
-
-
-        if (!response.ok) {    
-
-            throw new Error(    
-                data.error ||    
-                "No se pudo subir la imagen."    
-            );    
-        }    
-
-
-        if (    
-            !data.success ||    
-            !data.image    
-        ) {    
-
-            throw new Error(    
-                "El servidor no devolvió la imagen."    
-            );    
-        }    
-
-
-        block.image_id =    
-            Number(    
-                data.image.id    
-            );    
-
-
-        block.image_url =    
-            data.image.image_url;    
-
-
-        block.filename =    
-            data.image.filename;    
-
-
-        block.file =    
-            null;    
-
-
-        block.preview =    
-            null;    
-
-
-        uploaded++;    
-
-
-        progressBar.style.width =    
-
-            (    
-                uploaded /    
-                imageBlocks.length *    
-                70    
-            ) +    
-
-            "%";    
-
-    }    
-
-
-    // -----------------------------------------------------    
-    // CREAR CONTENIDO JSON    
-    // -----------------------------------------------------    
-
-    const cleanBlocks =    
-        blocks.map(    
-            function(block) {    
-
-                if (    
-                    block.type === "image"    
-                ) {    
-
-                    return {    
-
-                        type:    
-                            "image",    
-
-                        image_id:    
-                            block.image_id,    
-
-                        image_url:    
-                            block.image_url,    
-
-                        filename:    
-                            block.filename    
-
-                    };    
-
-                }    
-
-
-                return {    
-
-                    type:    
-                        "text",    
-
-                    content:    
-                        block.content || ""    
-
-                };    
-
-            }    
-        );    
-
-
-    const content =    
-        JSON.stringify({    
-
-            version:    
-                1,    
-
-            blocks:    
-                cleanBlocks    
-
-        });    
-
-
-    progressBar.style.width =    
-        "85%";    
-
-
-    // -----------------------------------------------------    
-    // OBTENER TÍTULO ACTUAL    
-    // -----------------------------------------------------    
-
-    const chapterResponse =    
-        await fetch(    
-            "/api/chapters/" +    
-            currentChapterId,    
-            {    
-                method: "GET",    
-
-                credentials: "include"    
-            }    
-        );    
-
-
-    const chapterData =    
-        await chapterResponse.json();    
-
-
-    if (    
-        !chapterResponse.ok ||    
-        !chapterData.chapter    
-    ) {    
-
-        throw new Error(    
-            "No se pudo obtener la información del capítulo."    
-        );    
-    }    
-
-
-    const chapterTitle =    
-        chapterData.chapter.title;    
-
-
-    // -----------------------------------------------------    
-    // GUARDAR CAPÍTULO    
-    // -----------------------------------------------------    
-
-    const response =    
-        await fetch(    
-            "/api/chapters/" +    
-            currentChapterId,    
-            {    
-                method: "PUT",    
-
-                credentials: "include",    
-
-                headers: {    
-                    "Content-Type":    
-                        "application/json"    
-                },    
-
-                body:    
-                    JSON.stringify({    
-
-                        title:    
-                            chapterTitle,    
-
-                        content:    
-                            content    
-
-                    })    
-            }    
-        );    
-
-
-    const data =    
-        await response.json();    
-
-
-    if (!response.ok) {    
-
-        throw new Error(    
-            data.error ||    
-            "No se pudo guardar el capítulo."    
-        );    
-    }    
-
-
-    if (!data.success) {    
-
-        throw new Error(    
-            data.error ||    
-            "No se pudo guardar el capítulo."    
-        );    
-    }    
-
-
-    progressBar.style.width =    
-        "100%";    
-
-
-    mostrarSuccess(    
-        "editorSuccess",    
-        "Capítulo guardado correctamente."    
-    );    
-
-
-    renderBlocks();    
-
-
-} catch (error) {    
-
-    mostrarError(    
-        "editorError",    
-        error.message    
-    );    
-
-}    
-
-
-button.disabled =    
-    false;    
-
-button.textContent =    
-    "Guardar capítulo";
-
+                chapterData =
+                    JSON.parse(
+                        chapterText
+                    );
+
+            } catch (jsonError) {
+
+                throw new Error(
+                    "El servidor devolvió una respuesta inválida al obtener el capítulo. " +
+                    "HTTP " +
+                    chapterResponse.status +
+                    ": " +
+                    chapterText.substring(0, 300)
+                );
+            }
+        }
+
+        if (
+            !chapterResponse.ok ||
+            !chapterData ||
+            !chapterData.chapter
+        ) {
+
+            throw new Error(
+                chapterData?.error ||
+                "No se pudo obtener la información del capítulo. HTTP " +
+                chapterResponse.status
+            );
+        }
+
+        const chapterTitle =
+            chapterData.chapter.title;
+
+        // -----------------------------------------------------
+        // GUARDAR CAPÍTULO
+        // -----------------------------------------------------
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                currentChapterId,
+                {
+                    method: "PUT",
+
+                    credentials: "include",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            title:
+                                chapterTitle,
+
+                            content:
+                                content
+                        })
+                }
+            );
+
+        // -----------------------------------------------------
+        // LEER RESPUESTA DEL PUT
+        // -----------------------------------------------------
+
+        const responseText =
+            await response.text();
+
+        let data = null;
+
+        if (responseText.trim()) {
+
+            try {
+
+                data =
+                    JSON.parse(
+                        responseText
+                    );
+
+            } catch (jsonError) {
+
+                throw new Error(
+                    "El servidor devolvió una respuesta inválida al guardar el capítulo. " +
+                    "HTTP " +
+                    response.status +
+                    ": " +
+                    responseText.substring(0, 300)
+                );
+            }
+        }
+
+        // -----------------------------------------------------
+        // COMPROBAR RESPUESTA
+        // -----------------------------------------------------
+
+        if (!response.ok) {
+
+            throw new Error(
+                data?.error ||
+                "No se pudo guardar el capítulo. HTTP " +
+                response.status
+            );
+        }
+
+        /*
+         * Algunos servidores devuelven 204 No Content
+         * después de guardar correctamente.
+         *
+         * En ese caso responseText está vacío y eso
+         * NO significa que haya ocurrido un error.
+         */
+
+        if (
+            data &&
+            data.success === false
+        ) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo guardar el capítulo."
+            );
+        }
+
+        progressBar.style.width =
+            "100%";
+
+        mostrarSuccess(
+            "editorSuccess",
+            "Capítulo guardado correctamente."
+        );
+
+        renderBlocks();
+
+    } catch (error) {
+
+        console.error(
+            "Error al guardar capítulo:",
+            error
+        );
+
+        mostrarError(
+            "editorError",
+            error.message ||
+            "Ocurrió un error al guardar el capítulo."
+        );
+
+    }
+
+    button.disabled =
+        false;
+
+    button.textContent =
+        "Guardar capítulo";
 }
 
 // =========================================================
