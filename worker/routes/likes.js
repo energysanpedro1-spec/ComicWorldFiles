@@ -1,71 +1,283 @@
- // =========================================================
-        // API: ME GUSTA
-        //
-        // POST /api/stories/5/like
-        // GET  /api/stories/5/like
-        // =========================================================
+// =========================================================
+// ROUTE: ME GUSTA
+//
+// POST /api/stories/5/like
+// GET  /api/stories/5/like
+// =========================================================
 
-        const storyLikeMatch =
-            url.pathname.match(
-                /^\/api\/stories\/(\d+)\/like$/
+import {
+    getSession,
+    json
+} from "../utils.js";
+
+
+// =========================================================
+// MANEJAR RUTAS DE ME GUSTA
+// =========================================================
+
+export async function handleLikes(
+    request,
+    env,
+    url
+) {
+
+    // =====================================================
+    // COMPROBAR URL
+    // =====================================================
+
+    const storyLikeMatch =
+        url.pathname.match(
+            /^\/api\/stories\/(\d+)\/like$/
+        );
+
+
+    // Si no es una ruta de Me gusta,
+    // dejamos que index.js continúe.
+    
+    if (!storyLikeMatch) {
+
+        return null;
+
+    }
+
+
+    // =====================================================
+    // POST /api/stories/:id/like
+    //
+    // Agregar o quitar Me gusta
+    // =====================================================
+
+    if (
+        request.method === "POST"
+    ) {
+
+        try {
+
+            const storyId =
+                Number(
+                    storyLikeMatch[1]
+                );
+
+
+            // -------------------------------------------------
+            // COMPROBAR SESIÓN
+            // -------------------------------------------------
+
+            const session =
+                await getSession(
+                    request,
+                    env
+                );
+
+
+            if (!session) {
+
+                return json({
+                    success: false,
+                    error:
+                        "Debes iniciar sesión para dar Me gusta."
+                }, 401);
+
+            }
+
+
+            // -------------------------------------------------
+            // COMPROBAR PUBLICACIÓN
+            // -------------------------------------------------
+
+            const story =
+                await env.DB
+                    .prepare(
+                        `SELECT id
+                         FROM stories
+                         WHERE id = ?
+                         LIMIT 1`
+                    )
+                    .bind(
+                        storyId
+                    )
+                    .first();
+
+
+            if (!story) {
+
+                return json({
+                    success: false,
+                    error:
+                        "La publicación no existe."
+                }, 404);
+
+            }
+
+
+            // -------------------------------------------------
+            // COMPROBAR SI YA EXISTE EL LIKE
+            // -------------------------------------------------
+
+            const existingLike =
+                await env.DB
+                    .prepare(
+                        `SELECT id
+                         FROM story_likes
+                         WHERE story_id = ?
+                           AND user_id = ?
+                         LIMIT 1`
+                    )
+                    .bind(
+                        storyId,
+                        session.id
+                    )
+                    .first();
+
+
+            let liked;
+
+
+            // -------------------------------------------------
+            // QUITAR ME GUSTA
+            // -------------------------------------------------
+
+            if (existingLike) {
+
+                await env.DB
+                    .prepare(
+                        `DELETE FROM story_likes
+                         WHERE story_id = ?
+                           AND user_id = ?`
+                    )
+                    .bind(
+                        storyId,
+                        session.id
+                    )
+                    .run();
+
+
+                liked = false;
+
+            }
+
+
+            // -------------------------------------------------
+            // AGREGAR ME GUSTA
+            // -------------------------------------------------
+
+            else {
+
+                await env.DB
+                    .prepare(
+                        `INSERT INTO story_likes
+                         (
+                            story_id,
+                            user_id
+                         )
+                         VALUES (?, ?)`
+                    )
+                    .bind(
+                        storyId,
+                        session.id
+                    )
+                    .run();
+
+
+                liked = true;
+
+            }
+
+
+            // -------------------------------------------------
+            // CONTAR ME GUSTAS
+            // -------------------------------------------------
+
+            const count =
+                await env.DB
+                    .prepare(
+                        `SELECT COUNT(*) AS total
+                         FROM story_likes
+                         WHERE story_id = ?`
+                    )
+                    .bind(
+                        storyId
+                    )
+                    .first();
+
+
+            // -------------------------------------------------
+            // RESPUESTA
+            // -------------------------------------------------
+
+            return json({
+
+                success:
+                    true,
+
+                liked:
+                    liked,
+
+                likes:
+                    Number(
+                        count.total || 0
+                    )
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Error procesando Me gusta:",
+                error
             );
 
 
-        if (
-            storyLikeMatch &&
-            request.method === "POST"
-        ) {
+            return json({
+                success: false,
+                error:
+                    error.message
+            }, 500);
 
-            try {
+        }
 
-                const storyId =
-                    Number(
-                        storyLikeMatch[1]
-                    );
+    }
 
 
-                const session =
-                    await getSession(
-                        request,
-                        env
-                    );
+    // =====================================================
+    // GET /api/stories/:id/like
+    //
+    // Consultar estado del Me gusta
+    // =====================================================
+
+    if (
+        request.method === "GET"
+    ) {
+
+        try {
+
+            const storyId =
+                Number(
+                    storyLikeMatch[1]
+                );
 
 
-                if (!session) {
+            // -------------------------------------------------
+            // OBTENER SESIÓN
+            // -------------------------------------------------
 
-                    return json({
-                        success: false,
-                        error:
-                            "Debes iniciar sesión para dar Me gusta."
-                    }, 401);
-
-                }
-
-
-                const story =
-                    await env.DB
-                        .prepare(
-                            `SELECT id
-                             FROM stories
-                             WHERE id = ?
-                             LIMIT 1`
-                        )
-                        .bind(
-                            storyId
-                        )
-                        .first();
+            const session =
+                await getSession(
+                    request,
+                    env
+                );
 
 
-                if (!story) {
+            let liked =
+                false;
 
-                    return json({
-                        success: false,
-                        error:
-                            "La publicación no existe."
-                    }, 404);
 
-                }
+            // -------------------------------------------------
+            // COMPROBAR LIKE DEL USUARIO
+            // -------------------------------------------------
 
+            if (session) {
 
                 const existingLike =
                     await env.DB
@@ -83,187 +295,76 @@
                         .first();
 
 
-                let liked;
-
-
-                if (existingLike) {
-
-                    await env.DB
-                        .prepare(
-                            `DELETE FROM story_likes
-                             WHERE story_id = ?
-                               AND user_id = ?`
-                        )
-                        .bind(
-                            storyId,
-                            session.id
-                        )
-                        .run();
-
-
-                    liked = false;
-
-                } else {
-
-                    await env.DB
-                        .prepare(
-                            `INSERT INTO story_likes
-                             (
-                                story_id,
-                                user_id
-                             )
-                             VALUES (?, ?)`
-                        )
-                        .bind(
-                            storyId,
-                            session.id
-                        )
-                        .run();
-
-
-                    liked = true;
-
-                }
-
-
-                const count =
-                    await env.DB
-                        .prepare(
-                            `SELECT COUNT(*) AS total
-                             FROM story_likes
-                             WHERE story_id = ?`
-                        )
-                        .bind(
-                            storyId
-                        )
-                        .first();
-
-
-                return json({
-
-                    success:
-                        true,
-
-                    liked:
-                        liked,
-
-                    likes:
-                        Number(
-                            count.total || 0
-                        )
-
-                });
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error procesando Me gusta:",
-                    error
-                );
-
-
-                return json({
-                    success: false,
-                    error:
-                        error.message
-                }, 500);
+                liked =
+                    !!existingLike;
 
             }
 
-        }
+
+            // -------------------------------------------------
+            // CONTAR ME GUSTAS
+            // -------------------------------------------------
+
+            const count =
+                await env.DB
+                    .prepare(
+                        `SELECT COUNT(*) AS total
+                         FROM story_likes
+                         WHERE story_id = ?`
+                    )
+                    .bind(
+                        storyId
+                    )
+                    .first();
 
 
-        if (
-            storyLikeMatch &&
-            request.method === "GET"
-        ) {
+            // -------------------------------------------------
+            // RESPUESTA
+            // -------------------------------------------------
 
-            try {
+            return json({
 
-                const storyId =
+                success:
+                    true,
+
+                liked:
+                    liked,
+
+                likes:
                     Number(
-                        storyLikeMatch[1]
-                    );
+                        count.total || 0
+                    )
+
+            });
 
 
-                const session =
-                    await getSession(
-                        request,
-                        env
-                    );
+        } catch (error) {
+
+            console.error(
+                "Error obteniendo Me gusta:",
+                error
+            );
 
 
-                let liked = false;
-
-
-                if (session) {
-
-                    const existingLike =
-                        await env.DB
-                            .prepare(
-                                `SELECT id
-                                 FROM story_likes
-                                 WHERE story_id = ?
-                                   AND user_id = ?
-                                 LIMIT 1`
-                            )
-                            .bind(
-                                storyId,
-                                session.id
-                            )
-                            .first();
-
-
-                    liked =
-                        !!existingLike;
-
-                }
-
-
-                const count =
-                    await env.DB
-                        .prepare(
-                            `SELECT COUNT(*) AS total
-                             FROM story_likes
-                             WHERE story_id = ?`
-                        )
-                        .bind(
-                            storyId
-                        )
-                        .first();
-
-
-                return json({
-
-                    success:
-                        true,
-
-                    liked:
-                        liked,
-
-                    likes:
-                        Number(
-                            count.total || 0
-                        )
-
-                });
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error obteniendo Me gusta:",
-                    error
-                );
-
-
-                return json({
-                    success: false,
-                    error:
-                        error.message
-                }, 500);
-
-            }
+            return json({
+                success: false,
+                error:
+                    error.message
+            }, 500);
 
         }
+
+    }
+
+
+    // =====================================================
+    // MÉTODO NO SOPORTADO
+    // =====================================================
+
+    return json({
+        success: false,
+        error:
+            "Método no permitido."
+    }, 405);
+
+}
