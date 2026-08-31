@@ -226,11 +226,33 @@ async function verificarAdministrador(
     }
 
 
-    const adminUserId = 1;
+    const adminUserId =
+    Number(
+        env.ADMIN_USER_ID || 0
+    );
 
 const adminEmail =
-    "josepunkrock.1@gmail.com";
-    if (
+    String(
+        env.ADMIN_EMAIL || ""
+    )
+    .trim()
+    .toLowerCase();
+
+console.log("DEBUG ADMIN:", {
+    tieneADMIN_USER_ID:
+        env.ADMIN_USER_ID !== undefined,
+
+    tieneADMIN_EMAIL:
+        env.ADMIN_EMAIL !== undefined,
+
+    adminUserId:
+        adminUserId,
+
+    adminEmail:
+        adminEmail
+});
+    
+   /* if (
     !adminUserId ||
     !adminEmail
 ) {
@@ -315,7 +337,7 @@ const adminEmail =
 
     };
 
-}
+}*/
 
 
 // =====================================================
