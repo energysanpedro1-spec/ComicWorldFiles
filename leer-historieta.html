@@ -1,7 +1,20 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Leer historieta - ComicWorldFiles</title><style>
+<title>Leer historieta - ComicWorldFiles</title>
+
+<style>
+
+/* =========================================================
+   GENERAL
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -16,12 +29,13 @@ body {
     background: #181a1f;
 
     color: white;
+
 }
 
 
-/* ==========================================
+/* =========================================================
    CABECERA
-========================================== */
+========================================================= */
 
 header {
 
@@ -29,9 +43,10 @@ header {
 
     padding: 18px;
 
+    border-bottom: 1px solid #333;
+
     text-align: center;
 
-    border-bottom: 1px solid #333;
 }
 
 header h1 {
@@ -39,7 +54,13 @@ header h1 {
     margin: 0;
 
     font-size: 24px;
+
 }
+
+
+/* =========================================================
+   CONTENEDOR
+========================================================= */
 
 .container {
 
@@ -48,12 +69,13 @@ header h1 {
     max-width: 900px;
 
     margin: 25px auto;
+
 }
 
 
-/* ==========================================
+/* =========================================================
    TARJETAS
-========================================== */
+========================================================= */
 
 .card {
 
@@ -64,20 +86,20 @@ header h1 {
     padding: 20px;
 
     margin-bottom: 20px;
+
 }
+
+
+/* =========================================================
+   INFORMACIÓN
+========================================================= */
 
 .info {
 
     color: #bbb;
 
     margin-bottom: 20px;
-}
 
-.chapter-title {
-
-    font-size: 26px;
-
-    margin: 0 0 5px 0;
 }
 
 .story-title {
@@ -85,12 +107,16 @@ header h1 {
     color: #aaa;
 
     font-size: 15px;
+
 }
 
+.chapter-title {
 
-/* ==========================================
-   CONTADOR DE VISITAS
-========================================== */
+    font-size: 26px;
+
+    margin: 0 0 5px;
+
+}
 
 .views {
 
@@ -101,12 +127,129 @@ header h1 {
     margin-top: 8px;
 
     display: inline-block;
+
 }
 
 
-/* ==========================================
-   ME GUSTA + FAVORITOS
-========================================== */
+/* =========================================================
+   CAPÍTULOS
+========================================================= */
+
+.chapter-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+.chapter-item {
+
+    background: #292d34;
+
+    border: 1px solid #3b3f46;
+
+    border-radius: 8px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+}
+
+.chapter-item-info {
+
+    min-width: 0;
+
+}
+
+.chapter-number {
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}
+
+.chapter-item-title {
+
+    font-size: 18px;
+
+    margin-top: 4px;
+
+    word-break: break-word;
+
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+button {
+
+    border: none;
+
+    border-radius: 7px;
+
+    padding: 11px 17px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    background: #444;
+
+    color: white;
+
+    margin: 5px;
+
+}
+
+button:hover {
+
+    background: #555;
+
+}
+
+button.primary {
+
+    background: #2563eb;
+
+}
+
+button.primary:hover {
+
+    background: #3574ef;
+
+}
+
+button.secondary {
+
+    background: #666;
+
+}
+
+button.secondary:hover {
+
+    background: #777;
+
+}
+
+
+/* =========================================================
+   LIKES / FAVORITOS
+========================================================= */
 
 .story-actions {
 
@@ -119,6 +262,7 @@ header h1 {
     margin-bottom: 20px;
 
     flex-wrap: wrap;
+
 }
 
 .like-button,
@@ -140,25 +284,6 @@ header h1 {
 
     cursor: pointer;
 
-    transition:
-        background 0.2s,
-        color 0.2s,
-        border-color 0.2s,
-        transform 0.1s;
-}
-
-.like-button:hover,
-.favorite-button:hover {
-
-    background: #f5f5f5;
-
-    border-color: #ccc;
-}
-
-.like-button:active,
-.favorite-button:active {
-
-    transform: scale(0.97);
 }
 
 .like-button.liked {
@@ -168,6 +293,7 @@ header h1 {
     border-color: #ffb5b5;
 
     color: #e53935;
+
 }
 
 .favorite-button.favorited {
@@ -177,14 +303,7 @@ header h1 {
     border-color: #f0cf75;
 
     color: #b8860b;
-}
 
-.like-button:disabled,
-.favorite-button:disabled {
-
-    opacity: 0.6;
-
-    cursor: not-allowed;
 }
 
 .likes-count {
@@ -192,22 +311,13 @@ header h1 {
     color: #aaa;
 
     font-size: 14px;
-}
 
-.like-message,
-.favorite-message {
-
-    color: #aaa;
-
-    font-size: 13px;
-
-    display: none;
 }
 
 
-/* ==========================================
-   LECTOR
-========================================== */
+/* =========================================================
+   CONTENIDO
+========================================================= */
 
 .blocks {
 
@@ -218,15 +328,17 @@ header h1 {
     align-items: center;
 
     width: 100%;
+
 }
 
 .block-image {
 
     width: 100%;
 
-    margin: 0 0 18px 0;
+    margin: 0 0 18px;
 
     text-align: center;
+
 }
 
 .block-image img {
@@ -244,6 +356,7 @@ header h1 {
     border-radius: 5px;
 
     background: white;
+
 }
 
 .block-text {
@@ -252,7 +365,7 @@ header h1 {
 
     padding: 20px;
 
-    margin: 5px 0 20px 0;
+    margin: 5px 0 20px;
 
     background: #292d34;
 
@@ -265,607 +378,355 @@ header h1 {
     white-space: pre-wrap;
 
     word-break: break-word;
+
 }
 
 
-/* ==========================================
-   BOTONES
-========================================== */
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
 
-button {
-
-    border: none;
-
-    border-radius: 7px;
-
-    padding: 11px 17px;
-
-    font-size: 15px;
-
-    cursor: pointer;
-
-    background: #444;
-
-    color: white;
-
-    margin: 5px;
-}
-
-button:hover {
-
-    background: #555;
-}
-
-button.primary {
-
-    background: #2563eb;
-}
-
-button.primary:hover {
-
-    background: #3574ef;
-}
-
-button.success {
-
-    background: #218838;
-}
-
-button.danger {
-
-    background: #b52b2b;
-}
-
-button.secondary {
-
-    background: #666;
-}
-
-button:disabled {
-
-    background: #777;
-
-    cursor: not-allowed;
-}
-
-.actions {
+.navigation {
 
     display: flex;
 
     flex-wrap: wrap;
+
+    justify-content: center;
 
     gap: 5px;
 
-    margin-top: 15px;
+    margin-top: 20px;
+
 }
 
 
-/* ==========================================
-   EDITOR
-========================================== */
-
-.editor {
-
-    display: none;
-}
-
-.editor.active {
-
-    display: block;
-}
-
-.editor-block {
-
-    background: #2b2f36;
-
-    border: 1px solid #444;
-
-    border-radius: 8px;
-
-    padding: 12px;
-
-    margin-bottom: 12px;
-}
-
-.editor-block-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 10px;
-
-    color: #bbb;
-
-    font-size: 14px;
-}
-
-.editor-image {
-
-    width: 100%;
-
-    max-height: 500px;
-
-    object-fit: contain;
-
-    background: white;
-
-    border-radius: 5px;
-}
-
-.editor-text {
-
-    width: 100%;
-
-    min-height: 100px;
-
-    resize: vertical;
-
-    padding: 12px;
-
-    border-radius: 7px;
-
-    border: 1px solid #555;
-
-    background: #181a1f;
-
-    color: white;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 16px;
-}
-
-.add-area {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-top: 15px;
-
-    padding: 15px;
-
-    background: #191b20;
-
-    border-radius: 8px;
-}
-
-input[type="file"] {
-
-    width: 100%;
-
-    padding: 10px;
-
-    background: #181a1f;
-
-    color: white;
-
-    border: 1px solid #444;
-
-    border-radius: 7px;
-}
-
-textarea {
-
-    width: 100%;
-
-    min-height: 100px;
-
-    resize: vertical;
-
-    padding: 12px;
-
-    border-radius: 7px;
-
-    border: 1px solid #555;
-
-    background: #181a1f;
-
-    color: white;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 16px;
-}
-
-
-/* ==========================================
-   MENSAJES
-========================================== */
-
-.message {
-
-    padding: 12px;
-
-    border-radius: 7px;
-
-    margin-top: 15px;
-
-    display: none;
-}
-
-.error {
-
-    background: #4a2020;
-
-    border: 1px solid #9b4444;
-
-    color: #ffb5b5;
-}
-
-.success-message {
-
-    background: #203f27;
-
-    border: 1px solid #4b8d58;
-
-    color: #b8f0c1;
-}
-
-.loading {
-
-    text-align: center;
-
-    padding: 40px;
-
-    color: #aaa;
-}
+/* =========================================================
+   MENSAJE
+========================================================= */
 
 .empty {
 
+    color: #aaa;
+
     text-align: center;
 
-    padding: 40px;
+    padding: 25px;
 
-    color: #aaa;
 }
 
 
-/* ==========================================
-   NAVEGACIÓN
-========================================== */
-
-.back {
-
-    display: inline-block;
-
-    color: white;
-
-    text-decoration: none;
-
-    margin-bottom: 15px;
-
-    font-weight: bold;
-}
-
-.separator {
-
-    border: 0;
-
-    border-top: 1px solid #444;
-
-    margin: 25px 0;
-}
+/* =========================================================
+   OCULTO
+========================================================= */
 
 .hidden {
 
     display: none !important;
+
 }
 
 
-/* ==========================================
+/* =========================================================
    CELULAR
-========================================== */
+========================================================= */
 
 @media (max-width: 600px) {
-
-    header {
-
-        padding: 15px;
-    }
-
-    header h1 {
-
-        font-size: 20px;
-    }
 
     .container {
 
         width: 96%;
 
-        margin: 18px auto;
+        margin: 15px auto;
+
     }
 
     .card {
 
         padding: 15px;
+
+    }
+
+    .chapter-item {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+    .chapter-item button {
+
+        width: 100%;
+
+        margin: 5px 0;
+
     }
 
     .chapter-title {
 
-        font-size: 23px;
-    }
+        font-size: 22px;
 
-    .block-text {
-
-        padding: 15px;
-
-        font-size: 17px;
     }
 
     .story-actions {
 
-        gap: 6px;
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+    .like-button,
+    .favorite-button {
+
+        width: 100%;
+
     }
 
 }
 
-</style></head><body><!-- ==========================================
-     CABECERA
-========================================== --><header><h1 id="storyTitle">
-Cargando historieta...
-</h1><div id="views"
-     class="views">👁 Cargando visitas...
+</style>
 
-</div></header><div class="container"><a href="index.html"
-class="back">
+</head>
 
-← Volver
 
-</a><!-- ==========================================
-     ME GUSTA + FAVORITOS
-========================================== --><div class="story-actions"><button
-id="like-button"
-class="like-button"
-type="button">
+<body>
 
-🤍 Me gusta
 
-</button><span
-id="likes-count"
-class="likes-count">
+<header>
 
-0 Me gusta
+<h1 id="page-title">
+Leer historieta
+</h1>
 
-</span><span
-id="like-message"
-class="like-message">
+</header>
 
-</span><button
-id="favorite-button"
-class="favorite-button"
-type="button">
 
-☆ Agregar a favoritos
+<main class="container">
 
-</button><span
-id="favorite-message"
-class="favorite-message">
 
-</span></div><!-- ==========================================
+<!-- =====================================================
+     INFORMACIÓN DE LA HISTORIETA
+===================================================== -->
+
+<section
+    id="story-info-card"
+    class="card"
+>
+
+<div class="info">
+
+<h2
+    id="chapter-title"
+    class="chapter-title"
+>
+Cargando...
+</h2>
+
+<div
+    id="story-title"
+    class="story-title"
+>
+</div>
+
+<span
+    id="views"
+    class="views"
+>
+</span>
+
+</div>
+
+
+<!-- =====================================================
+     LIKES Y FAVORITOS
+===================================================== -->
+
+<div
+    id="story-actions"
+    class="story-actions hidden"
+>
+
+<button
+    id="like-button"
+    class="like-button"
+    onclick="toggleLike()"
+>
+♡ Me gusta
+</button>
+
+<span
+    id="likes-count"
+    class="likes-count"
+>
+0
+</span>
+
+
+<button
+    id="favorite-button"
+    class="favorite-button"
+    onclick="toggleFavorite()"
+>
+☆ Favorito
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     LISTA DE CAPÍTULOS
+===================================================== -->
+
+<section
+    id="chapters-card"
+    class="card hidden"
+>
+
+<h2>
+Capítulos
+</h2>
+
+<div
+    id="chapters-container"
+    class="chapter-list"
+>
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
      LECTOR
-========================================== --><div class="card"><div class="info"><h2 id="chapterTitle"
-    class="chapter-title">Cargando capítulo...
+===================================================== -->
 
-</h2><div id="chapterNumber"
-     class="story-title">
-</div></div><div id="loading"
-     class="loading">Cargando capítulo...
+<section
+    id="reader-card"
+    class="card hidden"
+>
 
-</div><div id="blocks"
-     class="blocks">
-</div><div id="readerError"
-     class="message error">
-</div><div id="readerSuccess"
-     class="message success-message">
-</div><div class="actions"><button id="editButton"
-class="primary hidden"
-onclick="activarEdicion()">
-
-✏️ Editar capítulo
-
-</button></div></div><!-- ==========================================
-     EDITOR
-========================================== --><div id="editorCard"
-     class="card editor"><h2>
-Editar capítulo
-</h2><p class="info">Puedes agregar imágenes y texto. También puedes modificar
-el texto existente.
-
-</p><div id="editorBlocks">
-</div><hr class="separator"><h3>
-Agregar texto
-</h3><textarea id="newText"
-          placeholder="Escribe el texto que quieres agregar..."></textarea><button class="primary"
-onclick="agregarTexto()">
-
-* Agregar texto
-
-</button><hr class="separator"><h3>
-Agregar imágenes
-</h3><p class="info">Puedes seleccionar una o varias imágenes.
-
-</p><input type="file"
-id="newImages"
-accept="image/jpeg,image/png,image/webp,image/gif"
-multiple>
-
-<button class="primary"
-id="uploadButton"
-onclick="subirNuevasImagenes()">
-
-* Subir imágenes
-
-</button><div id="uploadMessage"
-     class="message">
-</div><hr class="separator"><div class="actions"><button class="success"
-id="saveButton"
-onclick="guardarCambios()">
-
-💾 Guardar cambios
-
-</button><button class="secondary"
-onclick="cancelarEdicion()">
-
-Cancelar
-
-</button></div><div id="saveMessage"
-     class="message">
-</div></div></div><script>
+<div
+    id="blocks"
+    class="blocks"
+>
+</div>
 
 
-// ========================================================
-// VARIABLES
-// ========================================================
+<div
+    id="navigation"
+    class="navigation"
+>
+</div>
 
-let storyId = null;
+</section>
 
-let chapterId = null;
 
-let chapterData = null;
+
+<!-- =====================================================
+     MENSAJES
+===================================================== -->
+
+<div
+    id="message-card"
+    class="card hidden"
+>
+
+<div
+    id="message"
+>
+</div>
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const storyId =
+    params.get("id");
+
+
+/*
+ * Si existe chapter o capitulo,
+ * significa que debemos abrir directamente
+ * ese capítulo.
+ */
+
+const requestedChapter =
+    params.get("chapter") ||
+    params.get("capitulo");
+
+
+let chapters = [];
+
+let currentChapter = null;
 
 let blocks = [];
 
-let loggedUser = null;
+let currentUser = null;
 
-let storyData = null;
+let isLiked = false;
+
+let isFavorited = false;
 
 
-// ========================================================
-// ELEMENTOS ME GUSTA
-// ========================================================
 
-const likeButton =
-    document.getElementById(
-        "like-button"
+/* =========================================================
+   INICIO
+========================================================= */
+
+if (!storyId) {
+
+    mostrarMensaje(
+        "No se indicó ninguna historieta."
     );
 
+} else {
 
-const likesCount =
-    document.getElementById(
-        "likes-count"
-    );
-
-
-const likeMessage =
-    document.getElementById(
-        "like-message"
-    );
-
-
-// ========================================================
-// ELEMENTOS FAVORITOS
-// ========================================================
-
-const favoriteButton =
-    document.getElementById(
-        "favorite-button"
-    );
-
-
-const favoriteMessage =
-    document.getElementById(
-        "favorite-message"
-    );
-
-
-// ========================================================
-// UTILIDADES
-// ========================================================
-
-function mostrarMensaje(
-    id,
-    mensaje,
-    tipo
-) {
-
-    const element =
-        document.getElementById(
-            id
-        );
-
-
-    element.textContent =
-        mensaje;
-
-
-    element.className =
-        "message " +
-        tipo;
-
-
-    element.style.display =
-        "block";
+    inicializar();
 
 }
 
 
-function ocultarMensaje(id) {
 
-    const element =
-        document.getElementById(
-            id
-        );
+/* =========================================================
+   INICIALIZAR
+========================================================= */
 
+async function inicializar() {
 
-    element.style.display =
-        "none";
+    await cargarUsuario();
 
-
-    element.textContent =
-        "";
+    await cargarHistorieta();
 
 }
 
 
-// ========================================================
-// OBTENER PARÁMETROS
-// ========================================================
 
-function obtenerParametros() {
+/* =========================================================
+   USUARIO
+========================================================= */
 
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    storyId =
-        Number(
-            params.get("id")
-        );
-
-
-    chapterId =
-        Number(
-            params.get("chapter")
-        );
-
-
-    if (!chapterId) {
-
-        chapterId =
-            Number(
-                params.get("capitulo")
-            );
-
-    }
-
-}
-
-
-// ========================================================
-// SESIÓN
-// ========================================================
-
-async function comprobarSesion() {
+async function cargarUsuario() {
 
     try {
 
@@ -873,119 +734,6 @@ async function comprobarSesion() {
             await fetch(
                 "/api/me",
                 {
-                    method: "GET",
-
-                    credentials:
-                        "include",
-
-                    cache:
-                        "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            return null;
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !data.success ||
-            !data.loggedIn
-        ) {
-
-            return null;
-
-        }
-
-
-        return data.user;
-
-
-    } catch (error) {
-
-        console.error(
-            "Error comprobando sesión:",
-            error
-        );
-
-
-        return null;
-
-    }
-
-}
-
-
-// ========================================================
-// REGISTRAR VISITA
-// 1 VISITA CADA 24 HORAS POR NAVEGADOR
-// ========================================================
-
-async function registrarVisita() {
-
-    if (!storyId) {
-
-        return;
-
-    }
-
-
-    const clave =
-        "comicworldfiles_view_" +
-        storyId;
-
-
-    const ahora =
-        Date.now();
-
-
-    const ultimaVisita =
-        localStorage.getItem(
-            clave
-        );
-
-
-    const periodo =
-        24 *
-        60 *
-        60 *
-        1000;
-
-
-    if (
-        ultimaVisita &&
-        (ahora - Number(ultimaVisita)) <
-        periodo
-    ) {
-
-        console.log(
-            "Visita ya registrada durante las últimas 24 horas."
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/stories/" +
-                encodeURIComponent(
-                    storyId
-                ) +
-                "/view",
-                {
-                    method: "POST",
-
                     credentials:
                         "include"
                 }
@@ -998,28 +746,12 @@ async function registrarVisita() {
 
         if (
             response.ok &&
-            data.success
+            data.success &&
+            data.loggedIn
         ) {
 
-            localStorage.setItem(
-                clave,
-                String(ahora)
-            );
-
-
-            actualizarContador(
-                data.views
-            );
-
-
-        } else if (
-            storyData &&
-            storyData.views !== undefined
-        ) {
-
-            actualizarContador(
-                storyData.views
-            );
+            currentUser =
+                data.user;
 
         }
 
@@ -1027,154 +759,7 @@ async function registrarVisita() {
     } catch (error) {
 
         console.error(
-            "Error registrando visita:",
-            error
-        );
-
-
-        if (
-            storyData &&
-            storyData.views !== undefined
-        ) {
-
-            actualizarContador(
-                storyData.views
-            );
-
-        }
-
-    }
-
-}
-
-
-// ========================================================
-// ACTUALIZAR CONTADOR
-// ========================================================
-
-function actualizarContador(
-    views
-) {
-
-    const element =
-        document.getElementById(
-            "views"
-        );
-
-
-    if (!element) {
-
-        return;
-
-    }
-
-
-    const cantidad =
-        Number(
-            views || 0
-        );
-
-
-    element.textContent =
-        cantidad === 1
-            ? "👁 1 visita"
-            : "👁 " +
-              cantidad +
-              " visitas";
-
-}
-
-
-// ========================================================
-// CARGAR ME GUSTA
-// ========================================================
-
-async function cargarMeGusta() {
-
-    if (!storyId) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/stories/" +
-                encodeURIComponent(
-                    storyId
-                ) +
-                "/like",
-                {
-                    method: "GET",
-
-                    credentials:
-                        "include",
-
-                    cache:
-                        "no-store"
-                }
-            );
-
-
-        const texto =
-            await response.text();
-
-
-        console.log(
-            "Respuesta Me gusta:",
-            response.status,
-            texto
-        );
-
-
-        let data;
-
-
-        try {
-
-            data =
-                JSON.parse(
-                    texto
-                );
-
-        } catch (parseError) {
-
-            console.error(
-                "La respuesta de Me gusta no es JSON válido."
-            );
-
-            return;
-
-        }
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            console.error(
-                "No se pudo consultar el Me gusta."
-            );
-
-            return;
-
-        }
-
-
-        actualizarMeGusta(
-            data.liked,
-            data.likes
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Error cargando Me gusta:",
+            "Error comprobando usuario:",
             error
         );
 
@@ -1183,543 +768,12 @@ async function cargarMeGusta() {
 }
 
 
-// ========================================================
-// ALTERNAR ME GUSTA
-// ========================================================
 
-async function alternarMeGusta() {
-
-    if (!storyId) {
-
-        return;
-
-    }
-
-
-    if (
-        likeButton.disabled
-    ) {
-
-        return;
-
-    }
-
-
-    likeButton.disabled =
-        true;
-
-
-    likeMessage.style.display =
-        "none";
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/stories/" +
-                encodeURIComponent(
-                    storyId
-                ) +
-                "/like",
-                {
-                    method: "POST",
-
-                    credentials:
-                        "include",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    }
-                }
-            );
-
-
-        const texto =
-            await response.text();
-
-
-        console.log(
-            "Respuesta alternar Me gusta:",
-            response.status,
-            texto
-        );
-
-
-        let data;
-
-
-        try {
-
-            data =
-                JSON.parse(
-                    texto
-                );
-
-        } catch (parseError) {
-
-            throw new Error(
-                "El servidor no devolvió una respuesta válida."
-            );
-
-        }
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            if (
-                response.status === 401
-            ) {
-
-                likeMessage.textContent =
-                    data.error ||
-                    "Debes iniciar sesión para dar Me gusta.";
-
-            } else {
-
-                likeMessage.textContent =
-                    data.error ||
-                    "No se pudo procesar el Me gusta.";
-
-            }
-
-
-            likeMessage.style.display =
-                "inline";
-
-
-            return;
-
-        }
-
-
-        actualizarMeGusta(
-            data.liked,
-            data.likes
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Error alternando Me gusta:",
-            error
-        );
-
-
-        likeMessage.textContent =
-            error.message ||
-            "No se pudo conectar con el servidor.";
-
-
-        likeMessage.style.display =
-            "inline";
-
-
-    } finally {
-
-        likeButton.disabled =
-            false;
-
-    }
-
-}
-
-
-// ========================================================
-// ACTUALIZAR ME GUSTA
-// ========================================================
-
-function actualizarMeGusta(
-    liked,
-    likes
-) {
-
-    const cantidad =
-        Number(
-            likes || 0
-        );
-
-
-    if (
-        liked
-    ) {
-
-        likeButton.classList.add(
-            "liked"
-        );
-
-
-        likeButton.textContent =
-            "❤️ Te gusta";
-
-
-    } else {
-
-        likeButton.classList.remove(
-            "liked"
-        );
-
-
-        likeButton.textContent =
-            "🤍 Me gusta";
-
-    }
-
-
-    likesCount.textContent =
-        cantidad === 1
-            ? "1 Me gusta"
-            : cantidad +
-              " Me gusta";
-
-}
-
-
-// ========================================================
-// EVENTO ME GUSTA
-// ========================================================
-
-likeButton.addEventListener(
-    "click",
-    alternarMeGusta
-);
-
-
-// ========================================================
-// FAVORITOS
-// ========================================================
-
-/*
- * Consultar si la historieta está
- * actualmente en favoritos.
- */
-
-async function cargarFavorito() {
-
-    if (!storyId) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/stories/" +
-                encodeURIComponent(
-                    storyId
-                ) +
-                "/favorite",
-                {
-                    method: "GET",
-
-                    credentials:
-                        "include",
-
-                    cache:
-                        "no-store"
-                }
-            );
-
-
-        const texto =
-            await response.text();
-
-
-        console.log(
-            "Respuesta Favorito:",
-            response.status,
-            texto
-        );
-
-
-        let data;
-
-
-        try {
-
-            data =
-                JSON.parse(
-                    texto
-                );
-
-        } catch (parseError) {
-
-            console.error(
-                "La respuesta de Favorito no es JSON válido."
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * Si no hay sesión,
-         * el botón queda en estado normal.
-         */
-
-        if (
-            response.status === 401
-        ) {
-
-            actualizarFavorito(
-                false
-            );
-
-            return;
-
-        }
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            console.error(
-                "No se pudo consultar el Favorito."
-            );
-
-            return;
-
-        }
-
-
-        actualizarFavorito(
-            data.favorited
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Error cargando Favorito:",
-            error
-        );
-
-    }
-
-}
-
-
-/*
- * Agregar o quitar la historieta
- * de favoritos.
- */
-
-async function alternarFavorito() {
-
-    if (!storyId) {
-
-        return;
-
-    }
-
-
-    if (
-        favoriteButton.disabled
-    ) {
-
-        return;
-
-    }
-
-
-    favoriteButton.disabled =
-        true;
-
-
-    favoriteMessage.style.display =
-        "none";
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/stories/" +
-                encodeURIComponent(
-                    storyId
-                ) +
-                "/favorite",
-                {
-                    method: "POST",
-
-                    credentials:
-                        "include",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    }
-                }
-            );
-
-
-        const texto =
-            await response.text();
-
-
-        console.log(
-            "Respuesta alternar Favorito:",
-            response.status,
-            texto
-        );
-
-
-        let data;
-
-
-        try {
-
-            data =
-                JSON.parse(
-                    texto
-                );
-
-        } catch (parseError) {
-
-            throw new Error(
-                "El servidor no devolvió una respuesta válida."
-            );
-
-        }
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            if (
-                response.status === 401
-            ) {
-
-                favoriteMessage.textContent =
-                    data.error ||
-                    "Debes iniciar sesión para guardar favoritos.";
-
-            } else {
-
-                favoriteMessage.textContent =
-                    data.error ||
-                    "No se pudo procesar el favorito.";
-
-            }
-
-
-            favoriteMessage.style.display =
-                "inline";
-
-
-            return;
-
-        }
-
-
-        actualizarFavorito(
-            data.favorited
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Error alternando Favorito:",
-            error
-        );
-
-
-        favoriteMessage.textContent =
-            error.message ||
-            "No se pudo conectar con el servidor.";
-
-
-        favoriteMessage.style.display =
-            "inline";
-
-
-    } finally {
-
-        favoriteButton.disabled =
-            false;
-
-    }
-
-}
-
-
-/*
- * Actualizar visualmente el botón
- * de Favoritos.
- */
-
-function actualizarFavorito(
-    favorited
-) {
-
-    if (
-        favorited
-    ) {
-
-        favoriteButton.classList.add(
-            "favorited"
-        );
-
-
-        favoriteButton.textContent =
-            "★ En favoritos";
-
-
-    } else {
-
-        favoriteButton.classList.remove(
-            "favorited"
-        );
-
-
-        favoriteButton.textContent =
-            "☆ Agregar a favoritos";
-
-    }
-
-}
-
-
-// ========================================================
-// EVENTO FAVORITOS
-// ========================================================
-
-favoriteButton.addEventListener(
-    "click",
-    alternarFavorito
-);
-
-
-// ========================================================
-// CARGAR HISTORIETA
-// ========================================================
+/* =========================================================
+   CARGAR HISTORIETA
+========================================================= */
 
 async function cargarHistorieta() {
-
-    if (!storyId) {
-
-        mostrarError(
-            "No se indicó qué historieta quieres leer."
-        );
-
-        return;
-
-    }
-
 
     try {
 
@@ -1730,13 +784,8 @@ async function cargarHistorieta() {
                     storyId
                 ),
                 {
-                    method: "GET",
-
                     credentials:
-                        "include",
-
-                    cache:
-                        "no-store"
+                        "include"
                 }
             );
 
@@ -1745,101 +794,36 @@ async function cargarHistorieta() {
             await response.json();
 
 
-        if (!response.ok) {
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
-            throw new Error(
+            mostrarMensaje(
                 data.error ||
                 "No se pudo cargar la historieta."
             );
-
-        }
-
-
-        if (
-            !data.success ||
-            !data.story
-        ) {
-
-            throw new Error(
-                data.error ||
-                "No se pudo cargar la historieta."
-            );
-
-        }
-
-
-        storyData =
-            data.story;
-
-
-        document.getElementById(
-            "storyTitle"
-        ).textContent =
-            storyData.title ||
-            "Historieta";
-
-
-        if (
-            storyData.views !== undefined
-        ) {
-
-            actualizarContador(
-                storyData.views
-            );
-
-        }
-
-
-        /*
-         * Registrar visita.
-         */
-
-        registrarVisita();
-
-
-        /*
-         * Cargar estado del Me gusta.
-         */
-
-        cargarMeGusta();
-
-
-        /*
-         * Cargar estado de Favoritos.
-         */
-
-        cargarFavorito();
-
-
-        /*
-         * Comprobar propietario.
-         */
-
-        comprobarPropietario();
-
-
-        /*
-         * Si no se indicó capítulo,
-         * buscamos el primero.
-         */
-
-        if (!chapterId) {
-
-            await buscarPrimerCapitulo();
 
             return;
 
         }
 
 
-        await cargarCapitulo();
+        document.getElementById(
+            "story-title"
+        ).textContent =
+            data.story.title || "";
+
+
+        await cargarCapitulos();
 
 
     } catch (error) {
 
-        mostrarError(
-            error.message ||
-            "No se pudo cargar la historieta."
+        console.error(error);
+
+        mostrarMensaje(
+            "No se pudo conectar con el servidor."
         );
 
     }
@@ -1847,11 +831,12 @@ async function cargarHistorieta() {
 }
 
 
-// ========================================================
-// BUSCAR PRIMER CAPÍTULO
-// ========================================================
 
-async function buscarPrimerCapitulo() {
+/* =========================================================
+   CARGAR CAPÍTULOS
+========================================================= */
+
+async function cargarCapitulos() {
 
     try {
 
@@ -1863,13 +848,8 @@ async function buscarPrimerCapitulo() {
                 ) +
                 "/chapters",
                 {
-                    method: "GET",
-
                     credentials:
-                        "include",
-
-                    cache:
-                        "no-store"
+                        "include"
                 }
             );
 
@@ -1878,43 +858,110 @@ async function buscarPrimerCapitulo() {
             await response.json();
 
 
-        if (!response.ok) {
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
-            throw new Error(
+            mostrarMensaje(
                 data.error ||
                 "No se pudieron cargar los capítulos."
             );
 
-        }
-
-
-        const chapters =
-            data.chapters ||
-            [];
-
-
-        if (!chapters.length) {
-
-            throw new Error(
-                "Esta historieta todavía no tiene capítulos."
-            );
+            return;
 
         }
 
 
-        chapterId =
+        chapters =
+            Array.isArray(
+                data.chapters
+            )
+                ? data.chapters
+                : [];
+
+
+        /*
+         * Asegurar orden correcto.
+         */
+
+        chapters.sort(
+            function(a, b) {
+
+                return Number(
+                    a.chapter_number
+                ) -
+                Number(
+                    b.chapter_number
+                );
+
+            }
+        );
+
+
+        /*
+         * SIN chapter:
+         *
+         * Mostrar lista.
+         */
+
+        if (!requestedChapter) {
+
+            mostrarListaCapitulos();
+
+            return;
+
+        }
+
+
+        /*
+         * CON chapter:
+         *
+         * Buscar capítulo específico.
+         */
+
+        const number =
             Number(
-                chapters[0].id
+                requestedChapter
             );
 
 
-        await cargarCapitulo();
+        const chapter =
+            chapters.find(
+                function(item) {
+
+                    return Number(
+                        item.chapter_number
+                    ) === number;
+
+                }
+            );
+
+
+        if (!chapter) {
+
+            mostrarListaCapitulos();
+
+            mostrarMensaje(
+                "El capítulo solicitado no existe."
+            );
+
+            return;
+
+        }
+
+
+        await cargarCapitulo(
+            chapter
+        );
 
 
     } catch (error) {
 
-        mostrarError(
-            error.message
+        console.error(error);
+
+        mostrarMensaje(
+            "No se pudieron cargar los capítulos."
         );
 
     }
@@ -1922,38 +969,293 @@ async function buscarPrimerCapitulo() {
 }
 
 
-// ========================================================
-// CARGAR CAPÍTULO
-// ========================================================
 
-async function cargarCapitulo() {
+/* =========================================================
+   MOSTRAR LISTA DE CAPÍTULOS
+========================================================= */
 
-    const loading =
+function mostrarListaCapitulos() {
+
+    document.getElementById(
+        "reader-card"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "story-actions"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "chapter-title"
+    ).textContent =
+        "Capítulos";
+
+
+    document.getElementById(
+        "views"
+    ).textContent =
+        "";
+
+
+    const card =
         document.getElementById(
-            "loading"
+            "chapters-card"
         );
 
 
-    loading.style.display =
-        "block";
+    const container =
+        document.getElementById(
+            "chapters-container"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    /*
+     * No hay capítulos.
+     */
+
+    if (!chapters.length) {
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'Esta historieta todavía no tiene capítulos.' +
+            '</div>';
+
+
+        card.classList.remove(
+            "hidden"
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+     * Crear cada capítulo.
+     */
+
+    chapters.forEach(
+        function(chapter) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "chapter-item";
+
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+
+            info.className =
+                "chapter-item-info";
+
+
+            const number =
+                document.createElement(
+                    "div"
+                );
+
+
+            number.className =
+                "chapter-number";
+
+
+            number.textContent =
+                "CAPÍTULO " +
+                chapter.chapter_number;
+
+
+            const title =
+                document.createElement(
+                    "div"
+                );
+
+
+            title.className =
+                "chapter-item-title";
+
+
+            title.textContent =
+                chapter.title ||
+                "Sin título";
+
+
+            info.appendChild(
+                number
+            );
+
+
+            info.appendChild(
+                title
+            );
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "primary";
+
+
+            button.textContent =
+                "Leer capítulo";
+
+
+            button.onclick =
+                function() {
+
+                    abrirCapitulo(
+                        chapter.chapter_number
+                    );
+
+                };
+
+
+            item.appendChild(
+                info
+            );
+
+
+            item.appendChild(
+                button
+            );
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    card.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+
+/* =========================================================
+   ABRIR CAPÍTULO
+========================================================= */
+
+function abrirCapitulo(
+    number
+) {
+
+    window.location.href =
+        "leer-historieta.html?id=" +
+        encodeURIComponent(
+            storyId
+        ) +
+        "&chapter=" +
+        encodeURIComponent(
+            number
+        );
+
+}
+
+
+
+/* =========================================================
+   CARGAR CAPÍTULO
+========================================================= */
+
+async function cargarCapitulo(
+    chapter
+) {
+
+    currentChapter =
+        chapter;
+
+
+    /*
+     * Ocultar lista.
+     */
+
+    document.getElementById(
+        "chapters-card"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    /*
+     * Mostrar lector.
+     */
+
+    document.getElementById(
+        "reader-card"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    /*
+     * Mostrar botones.
+     */
+
+    document.getElementById(
+        "story-actions"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    /*
+     * Título.
+     */
+
+    document.getElementById(
+        "chapter-title"
+    ).textContent =
+        "Capítulo " +
+        chapter.chapter_number +
+        ": " +
+        (
+            chapter.title ||
+            "Sin título"
+        );
 
 
     try {
+
+        /*
+         * Obtener información completa
+         * del capítulo.
+         */
 
         const response =
             await fetch(
                 "/api/chapters/" +
                 encodeURIComponent(
-                    chapterId
+                    chapter.id
                 ),
                 {
-                    method: "GET",
-
                     credentials:
-                        "include",
-
-                    cache:
-                        "no-store"
+                        "include"
                 }
             );
 
@@ -1962,67 +1264,57 @@ async function cargarCapitulo() {
             await response.json();
 
 
-        if (!response.ok) {
-
-            throw new Error(
-                data.error ||
-                "No se pudo cargar el capítulo."
-            );
-
-        }
-
-
         if (
-            !data.success ||
-            !data.chapter
+            !response.ok ||
+            !data.success
         ) {
 
-            throw new Error(
+            mostrarMensaje(
                 data.error ||
                 "No se pudo cargar el capítulo."
             );
 
+            return;
+
         }
 
 
-        chapterData =
-            data.chapter;
+        const loaded =
+            data.chapter ||
+            data;
 
 
-        document.getElementById(
-            "chapterTitle"
-        ).textContent =
-            chapterData.title ||
-            "Sin título";
-
-
-        document.getElementById(
-            "chapterNumber"
-        ).textContent =
-            "Capítulo " +
-            chapterData.chapter_number;
-
+        /*
+         * Procesar contenido.
+         */
 
         cargarBloques(
-            chapterData.content
+            loaded.content
         );
 
 
-        loading.style.display =
-            "none";
+        /*
+         * Navegación entre capítulos.
+         */
+
+        actualizarNavegacion();
 
 
-        comprobarPropietario();
+        /*
+         * Likes y favoritos.
+         */
+
+        await cargarDatosInteraccion(
+            chapter.id
+        );
 
 
     } catch (error) {
 
-        loading.style.display =
-            "none";
+        console.error(error);
 
-
-        mostrarError(
-            error.message
+        mostrarMensaje(
+            "No se pudo cargar el contenido del capítulo."
         );
 
     }
@@ -2030,9 +1322,10 @@ async function cargarCapitulo() {
 }
 
 
-// ========================================================
-// CARGAR BLOQUES
-// ========================================================
+
+/* =========================================================
+   CARGAR BLOQUES
+========================================================= */
 
 function cargarBloques(
     content
@@ -2040,35 +1333,28 @@ function cargarBloques(
 
     blocks = [];
 
+
     try {
 
         /*
-         * El creador de historietas guarda
-         * directamente un ARRAY de bloques.
-         *
-         * Ejemplo:
+         * Formato actual:
          *
          * [
          *   {
          *      type: "image",
-         *      image_id: 1,
          *      image_url: "..."
          *   },
          *   {
          *      type: "text",
-         *      content: "Texto..."
+         *      content: "..."
          *   }
          * ]
-         *
-         * También aceptamos el formato antiguo:
-         *
-         * {
-         *      blocks: [...]
-         * }
          */
 
         if (
-            Array.isArray(content)
+            Array.isArray(
+                content
+            )
         ) {
 
             blocks =
@@ -2076,8 +1362,14 @@ function cargarBloques(
 
         }
 
+
+        /*
+         * Si content llega como JSON string.
+         */
+
         else if (
-            typeof content === "string"
+            typeof content ===
+            "string"
         ) {
 
             const parsed =
@@ -2085,13 +1377,15 @@ function cargarBloques(
                     content
                 );
 
+
             /*
-             * Formato actual:
-             * JSON.stringify(array)
+             * Formato actual.
              */
 
             if (
-                Array.isArray(parsed)
+                Array.isArray(
+                    parsed
+                )
             ) {
 
                 blocks =
@@ -2099,9 +1393,13 @@ function cargarBloques(
 
             }
 
+
             /*
-             * Formato anterior:
-             * JSON.stringify({ blocks: [...] })
+             * Formato antiguo:
+             *
+             * {
+             *    blocks: [...]
+             * }
              */
 
             else if (
@@ -2118,9 +1416,9 @@ function cargarBloques(
 
         }
 
+
         /*
-         * Si por alguna razón content
-         * llega como objeto.
+         * Compatibilidad con objeto.
          */
 
         else if (
@@ -2135,6 +1433,7 @@ function cargarBloques(
 
         }
 
+
     } catch (error) {
 
         console.error(
@@ -2146,13 +1445,16 @@ function cargarBloques(
 
     }
 
+
     mostrarBloques();
 
 }
 
-// ========================================================
-// MOSTRAR BLOQUES
-// ========================================================
+
+
+/* =========================================================
+   MOSTRAR BLOQUES
+========================================================= */
 
 function mostrarBloques() {
 
@@ -2169,9 +1471,10 @@ function mostrarBloques() {
     if (!blocks.length) {
 
         container.innerHTML =
-            "<div class='empty'>" +
-            "Este capítulo todavía no tiene contenido." +
-            "</div>";
+            '<div class="empty">' +
+            'Este capítulo todavía no tiene contenido.' +
+            '</div>';
+
 
         return;
 
@@ -2181,8 +1484,14 @@ function mostrarBloques() {
     blocks.forEach(
         function(block) {
 
+
+            /* ==========================
+               IMAGEN
+            ========================== */
+
             if (
-                block.type === "image"
+                block.type ===
+                "image"
             ) {
 
                 const wrapper =
@@ -2202,12 +1511,13 @@ function mostrarBloques() {
 
 
                 img.src =
-                    block.image_url;
+                    block.image_url ||
+                    "";
 
 
                 img.alt =
                     block.filename ||
-                    "Página del cómic";
+                    "Página de la historieta";
 
 
                 img.loading =
@@ -2226,8 +1536,13 @@ function mostrarBloques() {
             }
 
 
+            /* ==========================
+               TEXTO
+            ========================== */
+
             else if (
-                block.type === "text"
+                block.type ===
+                "text"
             ) {
 
                 const text =
@@ -2240,10 +1555,18 @@ function mostrarBloques() {
                     "block-text";
 
 
+                /*
+                 * crear-historieta.html
+                 * utiliza block.content.
+                 *
+                 * block.text queda como
+                 * compatibilidad.
+                 */
+
                 text.textContent =
-    block.content ||
-    block.text ||
-    "";
+                    block.content ||
+                    block.text ||
+                    "";
 
 
                 container.appendChild(
@@ -2258,694 +1581,370 @@ function mostrarBloques() {
 }
 
 
-// ========================================================
-// COMPROBAR PROPIETARIO
-// ========================================================
 
-function comprobarPropietario() {
+/* =========================================================
+   NAVEGACIÓN ENTRE CAPÍTULOS
+========================================================= */
 
-    const editButton =
+function actualizarNavegacion() {
+
+    const nav =
         document.getElementById(
-            "editButton"
+            "navigation"
         );
 
 
-    if (
-        !editButton
-    ) {
-
-        return;
-
-    }
-
-
-    editButton.classList.add(
-        "hidden"
-    );
-
-
-    if (
-        !loggedUser ||
-        !storyData
-    ) {
-
-        return;
-
-    }
-
-
-    if (
-        Number(
-            loggedUser.id
-        ) ===
-        Number(
-            storyData.user_id
-        )
-    ) {
-
-        editButton.classList.remove(
-            "hidden"
-        );
-
-    }
-
-}
-
-
-// ========================================================
-// ACTIVAR EDICIÓN
-// ========================================================
-
-function activarEdicion() {
-
-    if (
-        !loggedUser ||
-        !storyData ||
-        Number(loggedUser.id) !==
-        Number(storyData.user_id)
-    ) {
-
-        alert(
-            "No tienes permiso para editar este capítulo."
-        );
-
-        return;
-
-    }
-
-
-    document.getElementById(
-        "editorCard"
-    ).classList.add(
-        "active"
-    );
-
-
-    renderEditor();
-
-
-    document.getElementById(
-        "editorCard"
-    ).scrollIntoView({
-        behavior:
-            "smooth"
-    });
-
-}
-
-
-// ========================================================
-// CANCELAR EDICIÓN
-// ========================================================
-
-function cancelarEdicion() {
-
-    document.getElementById(
-        "editorCard"
-    ).classList.remove(
-        "active"
-    );
-
-
-    ocultarMensaje(
-        "saveMessage"
-    );
-
-
-    ocultarMensaje(
-        "uploadMessage"
-    );
-
-
-    cargarCapitulo();
-
-}
-
-
-// ========================================================
-// RENDERIZAR EDITOR
-// ========================================================
-
-function renderEditor() {
-
-    const container =
-        document.getElementById(
-            "editorBlocks"
-        );
-
-
-    container.innerHTML =
+    nav.innerHTML =
         "";
 
 
-    if (!blocks.length) {
-
-        container.innerHTML =
-            "<div class='empty'>" +
-            "Todavía no hay bloques." +
-            "</div>";
+    if (!currentChapter) {
 
         return;
 
     }
 
 
-    blocks.forEach(
-        function(block, index) {
+    const index =
+        chapters.findIndex(
+            function(chapter) {
 
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "editor-block";
-
-
-            const header =
-                document.createElement(
-                    "div"
-                );
-
-
-            header.className =
-                "editor-block-header";
-
-
-            const number =
-                document.createElement(
-                    "span"
-                );
-
-
-            number.textContent =
-                "Bloque " +
-                (index + 1) +
-                " — " +
-                block.type;
-
-
-            header.appendChild(
-                number
-            );
-
-
-            const removeButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            removeButton.className =
-                "danger";
-
-
-            removeButton.textContent =
-                "Eliminar";
-
-
-            removeButton.onclick =
-                function() {
-
-                    eliminarBloque(
-                        index
-                    );
-
-                };
-
-
-            header.appendChild(
-                removeButton
-            );
-
-
-            item.appendChild(
-                header
-            );
-
-
-            if (
-                block.type === "image"
-            ) {
-
-                const img =
-                    document.createElement(
-                        "img"
-                    );
-
-
-                img.className =
-                    "editor-image";
-
-
-                img.src =
-                    block.image_url;
-
-
-                img.alt =
-                    block.filename ||
-                    "Imagen";
-
-
-                item.appendChild(
-                    img
+                return Number(
+                    chapter.chapter_number
+                ) ===
+                Number(
+                    currentChapter.chapter_number
                 );
 
             }
-
-
-            else if (
-                block.type === "text"
-            ) {
-
-                const textarea =
-                    document.createElement(
-                        "textarea"
-                    );
-
-
-                textarea.className =
-                    "editor-text";
-
-
-                textarea.value =
-                    block.text ||
-                    "";
-
-
-                textarea.oninput =
-                    function() {
-
-                        blocks[index].text =
-                            textarea.value;
-
-                    };
-
-
-                item.appendChild(
-                    textarea
-                );
-
-            }
-
-
-            container.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
-
-
-// ========================================================
-// ELIMINAR BLOQUE
-// ========================================================
-
-function eliminarBloque(
-    index
-) {
-
-    if (
-        !confirm(
-            "¿Eliminar este bloque?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    blocks.splice(
-        index,
-        1
-    );
-
-
-    renderEditor();
-
-}
-
-
-// ========================================================
-// AGREGAR TEXTO
-// ========================================================
-
-function agregarTexto() {
-
-    const textarea =
-        document.getElementById(
-            "newText"
         );
 
 
-    const text =
-        textarea.value.trim();
+    /*
+     * Volver a capítulos.
+     */
 
-
-    if (!text) {
-
-        alert(
-            "Escribe algún texto."
+    const listButton =
+        document.createElement(
+            "button"
         );
 
-        return;
 
-    }
-
-
-    blocks.push({
-
-        type:
-            "text",
-
-        text:
-            text
-
-    });
+    listButton.className =
+        "secondary";
 
 
-    textarea.value =
-        "";
+    listButton.textContent =
+        "← Capítulos";
 
 
-    renderEditor();
-
-
-    setTimeout(
+    listButton.onclick =
         function() {
 
-            const container =
-                document.getElementById(
-                    "editorBlocks"
+            window.location.href =
+                "leer-historieta.html?id=" +
+                encodeURIComponent(
+                    storyId
                 );
 
+        };
 
-            if (
-                container.lastElementChild
-            ) {
 
-                container.lastElementChild
-                    .scrollIntoView({
-                        behavior:
-                            "smooth"
-                    });
-
-            }
-
-        },
-        100
+    nav.appendChild(
+        listButton
     );
 
-}
+
+    /*
+     * Capítulo anterior.
+     */
+
+    if (index > 0) {
+
+        const previous =
+            document.createElement(
+                "button"
+            );
 
 
-// ========================================================
-// SUBIR NUEVAS IMÁGENES
-// ========================================================
+        previous.textContent =
+            "← Capítulo anterior";
 
-async function subirNuevasImagenes() {
 
-    if (!chapterId) {
+        previous.onclick =
+            function() {
 
-        return;
+                abrirCapitulo(
+                    chapters[
+                        index - 1
+                    ].chapter_number
+                );
+
+            };
+
+
+        nav.appendChild(
+            previous
+        );
 
     }
 
 
-    const input =
-        document.getElementById(
-            "newImages"
-        );
+    /*
+     * Capítulo siguiente.
+     */
 
-
-    const files =
-        Array.from(
-            input.files
-        );
-
-
-    if (!files.length) {
-
-        mostrarMensaje(
-            "uploadMessage",
-            "Selecciona al menos una imagen.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const maxSize =
-        10 *
-        1024 *
-        1024;
-
-
-    for (
-        const file of files
+    if (
+        index <
+        chapters.length - 1
     ) {
 
-        if (
-            file.size > maxSize
-        ) {
-
-            mostrarMensaje(
-                "uploadMessage",
-                file.name +
-                " supera los 10 MB.",
-                "error"
-            );
-
-            return;
-
-        }
-
-    }
-
-
-    const button =
-        document.getElementById(
-            "uploadButton"
-        );
-
-
-    button.disabled =
-        true;
-
-
-    button.textContent =
-        "Subiendo...";
-
-
-    ocultarMensaje(
-        "uploadMessage"
-    );
-
-
-    try {
-
-        let uploaded =
-            0;
-
-
-        for (
-            const file of files
-        ) {
-
-            const formData =
-                new FormData();
-
-
-            formData.append(
-                "image",
-                file
+        const next =
+            document.createElement(
+                "button"
             );
 
 
-            const response =
-                await fetch(
-                    "/api/chapters/" +
-                    encodeURIComponent(
-                        chapterId
-                    ) +
-                    "/images",
-                    {
-                        method: "POST",
+        next.className =
+            "primary";
 
-                        credentials:
-                            "include",
 
-                        body:
-                            formData
-                    }
+        next.textContent =
+            "Siguiente capítulo →";
+
+
+        next.onclick =
+            function() {
+
+                abrirCapitulo(
+                    chapters[
+                        index + 1
+                    ].chapter_number
                 );
 
-
-            const data =
-                await response.json();
+            };
 
 
-            if (!response.ok) {
-
-                throw new Error(
-                    data.error ||
-                    "No se pudo subir " +
-                    file.name
-                );
-
-            }
-
-
-            if (
-                !data.success ||
-                !data.image
-            ) {
-
-                throw new Error(
-                    data.error ||
-                    "Respuesta inválida del servidor."
-                );
-
-            }
-
-
-            blocks.push({
-
-                type:
-                    "image",
-
-                image_id:
-                    data.image.id,
-
-                image_url:
-                    data.image.image_url,
-
-                filename:
-                    data.image.filename
-
-            });
-
-
-            uploaded++;
-
-        }
-
-
-        input.value =
-            "";
-
-
-        renderEditor();
-
-
-        mostrarMensaje(
-            "uploadMessage",
-            uploaded +
-            " imagen(es) agregada(s) al capítulo. Ahora pulsa «Guardar cambios».",
-            "success-message"
-        );
-
-
-    } catch (error) {
-
-        mostrarMensaje(
-            "uploadMessage",
-            error.message,
-            "error"
+        nav.appendChild(
+            next
         );
 
     }
-
-
-    button.disabled =
-        false;
-
-
-    button.textContent =
-        "+ Subir imágenes";
 
 }
 
 
-// ========================================================
-// GUARDAR CAMBIOS
-// ========================================================
 
-async function guardarCambios() {
+/* =========================================================
+   LIKES Y FAVORITOS
+========================================================= */
 
-    if (!chapterId) {
+async function cargarDatosInteraccion(
+    chapterId
+) {
 
-        return;
-
-    }
-
-
-    const button =
-        document.getElementById(
-            "saveButton"
-        );
-
-
-    button.disabled =
-        true;
-
-
-    button.textContent =
-        "Guardando...";
-
-
-    ocultarMensaje(
-        "saveMessage"
-    );
-
+    /*
+     * Likes
+     */
 
     try {
-
-        const content =
-            JSON.stringify({
-
-                version:
-                    1,
-
-                blocks:
-                    blocks
-
-            });
-
 
         const response =
             await fetch(
                 "/api/chapters/" +
                 encodeURIComponent(
                     chapterId
-                ),
+                ) +
+                "/likes",
                 {
-                    method: "PUT",
+                    credentials:
+                        "include"
+                }
+            );
+
+
+        if (response.ok) {
+
+            const data =
+                await response.json();
+
+
+            if (data.success) {
+
+                document.getElementById(
+                    "likes-count"
+                ).textContent =
+                    data.count ??
+                    data.likes ??
+                    0;
+
+
+                isLiked =
+                    !!data.liked;
+
+
+                actualizarBotonLike();
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error likes:",
+            error
+        );
+
+    }
+
+
+    /*
+     * Favoritos
+     */
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                encodeURIComponent(
+                    chapterId
+                ) +
+                "/favorite",
+                {
+                    credentials:
+                        "include"
+                }
+            );
+
+
+        if (response.ok) {
+
+            const data =
+                await response.json();
+
+
+            if (data.success) {
+
+                isFavorited =
+                    !!data.favorited;
+
+
+                actualizarBotonFavorito();
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error favorito:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   BOTÓN LIKE
+========================================================= */
+
+function actualizarBotonLike() {
+
+    const button =
+        document.getElementById(
+            "like-button"
+        );
+
+
+    button.textContent =
+        isLiked
+            ? "♥ Me gusta"
+            : "♡ Me gusta";
+
+
+    button.classList.toggle(
+        "liked",
+        isLiked
+    );
+
+}
+
+
+
+/* =========================================================
+   BOTÓN FAVORITO
+========================================================= */
+
+function actualizarBotonFavorito() {
+
+    const button =
+        document.getElementById(
+            "favorite-button"
+        );
+
+
+    button.textContent =
+        isFavorited
+            ? "★ Favorito"
+            : "☆ Favorito";
+
+
+    button.classList.toggle(
+        "favorited",
+        isFavorited
+    );
+
+}
+
+
+
+/* =========================================================
+   TOGGLE LIKE
+========================================================= */
+
+async function toggleLike() {
+
+    if (!currentUser) {
+
+        mostrarMensaje(
+            "Debes iniciar sesión para dar Me gusta."
+        );
+
+        return;
+
+    }
+
+
+    if (!currentChapter) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                encodeURIComponent(
+                    currentChapter.id
+                ) +
+                "/likes",
+                {
+                    method:
+                        isLiked
+                            ? "DELETE"
+                            : "POST",
 
                     credentials:
-                        "include",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            title:
-                                chapterData.title,
-
-                            content:
-                                content
-
-                        })
+                        "include"
                 }
             );
 
@@ -2954,126 +1953,163 @@ async function guardarCambios() {
             await response.json();
 
 
-        if (!response.ok) {
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
-            throw new Error(
+            mostrarMensaje(
                 data.error ||
-                "No se pudieron guardar los cambios."
+                "No se pudo actualizar el Me gusta."
             );
+
+            return;
 
         }
 
 
-        if (!data.success) {
-
-            throw new Error(
-                data.error ||
-                "No se pudieron guardar los cambios."
-            );
-
-        }
+        isLiked =
+            !!data.liked;
 
 
-        chapterData.content =
-            content;
+        document.getElementById(
+            "likes-count"
+        ).textContent =
+            data.count ??
+            data.likes ??
+            0;
 
 
-        mostrarBloques();
-
-
-        mostrarMensaje(
-            "saveMessage",
-            "Cambios guardados correctamente.",
-            "success-message"
-        );
-
-
-        setTimeout(
-            function() {
-
-                document.getElementById(
-                    "editorCard"
-                ).classList.remove(
-                    "active"
-                );
-
-            },
-            1200
-        );
+        actualizarBotonLike();
 
 
     } catch (error) {
 
+        console.error(error);
+
         mostrarMensaje(
-            "saveMessage",
-            error.message,
-            "error"
+            "No se pudo conectar con el servidor."
         );
 
     }
 
-
-    button.disabled =
-        false;
+}
 
 
-    button.textContent =
-        "💾 Guardar cambios";
+
+/* =========================================================
+   TOGGLE FAVORITO
+========================================================= */
+
+async function toggleFavorite() {
+
+    if (!currentUser) {
+
+        mostrarMensaje(
+            "Debes iniciar sesión para guardar favoritos."
+        );
+
+        return;
+
+    }
+
+
+    if (!currentChapter) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chapters/" +
+                encodeURIComponent(
+                    currentChapter.id
+                ) +
+                "/favorite",
+                {
+                    method:
+                        isFavorited
+                            ? "DELETE"
+                            : "POST",
+
+                    credentials:
+                        "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            mostrarMensaje(
+                data.error ||
+                "No se pudo actualizar el favorito."
+            );
+
+            return;
+
+        }
+
+
+        isFavorited =
+            !!data.favorited;
+
+
+        actualizarBotonFavorito();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            "No se pudo conectar con el servidor."
+        );
+
+    }
 
 }
 
 
-// ========================================================
-// ERROR PRINCIPAL
-// ========================================================
 
-function mostrarError(
-    mensaje
+/* =========================================================
+   MOSTRAR MENSAJE
+========================================================= */
+
+function mostrarMensaje(
+    text
 ) {
 
-    document.getElementById(
-        "loading"
-    ).style.display =
-        "none";
-
-
-    const blocksContainer =
+    const card =
         document.getElementById(
-            "blocks"
+            "message-card"
         );
 
 
-    blocksContainer.innerHTML =
-        "";
+    document.getElementById(
+        "message"
+    ).textContent =
+        text;
 
 
-    mostrarMensaje(
-        "readerError",
-        mensaje,
-        "error"
+    card.classList.remove(
+        "hidden"
     );
 
 }
 
+</script>
 
-// ========================================================
-// INICIO
-// ========================================================
+</body>
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async function() {
-
-        obtenerParametros();
-
-
-        loggedUser =
-            await comprobarSesion();
-
-
-        await cargarHistorieta();
-
-    }
-);
-
-</script></body></html>
+</html>
