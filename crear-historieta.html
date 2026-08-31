@@ -1212,15 +1212,23 @@ button.textContent =
 
 try {    
 
-    const formData =    
-        new FormData();    
+    const compressedFile =
+    await comprimirImagen(
+        file,
+        1600,
+        1600,
+        0.82
+    );
 
 
-    formData.append(    
-        "cover",    
-        file    
-    );    
+const formData =
+    new FormData();
 
+
+formData.append(
+    "cover",
+    compressedFile
+);
 
     const response =    
         await fetch(    
