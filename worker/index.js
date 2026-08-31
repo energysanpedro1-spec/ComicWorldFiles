@@ -1,4 +1,3 @@
-javascript
 import { handleLikes } from "./routes/likes.js";
 import { handleFavorites } from "./routes/favorites.js";
 import { handleImages } from "./routes/images.js";
