@@ -427,7 +427,7 @@ export async function handleAdmin(
             // NO ESTÁ LOGUEADO
             // =========================================
 
-            if (
+           /* if (
                 auth.status === 401
             ) {
 
@@ -559,7 +559,7 @@ export async function handleAdmin(
 
         }
 
-    }
+    }*/
 
 
     // =================================================
