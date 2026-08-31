@@ -1,6 +1,7 @@
 import { handleLikes } from "./routes/likes.js";
 import { handleFavorites } from "./routes/favorites.js";
 import { handleImages } from "./routes/images.js";
+import { handleComments } from "./routes/comments.js";
 
 export default {
     async fetch(request, env) {
@@ -40,6 +41,16 @@ if (imageResponse) {
     return imageResponse;
 }
 
+        const commentsResponse =
+    await handleComments(
+        request,
+        env,
+        url
+    );
+
+if (commentsResponse) {
+    return commentsResponse;
+}
 
         // =========================================================
         // API: REGISTRO
