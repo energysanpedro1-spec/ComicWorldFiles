@@ -2016,13 +2016,13 @@ async function guardarCapitulo() {
                 continue;
             }
 
-            const compressedFile =
-                await comprimirImagen(
+            const compressedFile = block.file;
+               /* await comprimirImagen(
                     block.file,
                     1600,
                     1600,
                     0.82
-                );
+                );*/
 
             const formData =
                 new FormData();
