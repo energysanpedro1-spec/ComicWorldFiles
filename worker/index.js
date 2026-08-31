@@ -3,10 +3,20 @@ import { handleFavorites } from "./routes/favorites.js";
 import { handleImages } from "./routes/images.js";
 import { handleComments } from "./routes/comments.js";
 
+
 export default {
+
     async fetch(request, env) {
 
-        const url = new URL(request.url);
+        const url =
+            new URL(
+                request.url
+            );
+
+
+        // =====================================================
+        // RUTAS SEPARADAS
+        // =====================================================
 
         const likesResponse =
             await handleLikes(
@@ -15,47 +25,63 @@ export default {
                 url
             );
 
+
         if (likesResponse) {
+
             return likesResponse;
+
         }
 
-        const favoritesResponse =
-    await handleFavorites(
-        request,
-        env,
-        url
-    );
 
-if (favoritesResponse) {
-    return favoritesResponse;
-}
+        const favoritesResponse =
+            await handleFavorites(
+                request,
+                env,
+                url
+            );
+
+
+        if (favoritesResponse) {
+
+            return favoritesResponse;
+
+        }
+
 
         const imageResponse =
-    await handleImages(
-        request,
-        env,
-        url
-    );
-
-if (imageResponse) {
-    return imageResponse;
-}
-
-const commentsResponse =
-    await handleComments(
-        request,
-        env,
-        url
-    );
-
-if (commentsResponse) {
-    return commentsResponse;
-}
+            await handleImages(
+                request,
+                env,
+                url
+            );
 
 
-        // =========================================================
+        if (imageResponse) {
+
+            return imageResponse;
+
+        }
+
+
+        const commentsResponse =
+            await handleComments(
+                request,
+                env,
+                url
+            );
+
+
+        if (commentsResponse) {
+
+            return commentsResponse;
+
+        }
+
+
+        // =====================================================
         // API: REGISTRO
-        // =========================================================
+        // POST /api/register
+        // =====================================================
 
         if (
             url.pathname === "/api/register" &&
@@ -67,17 +93,26 @@ if (commentsResponse) {
                 const data =
                     await request.json();
 
+
                 const username =
-                    String(data.username || "")
-                        .trim();
+                    String(
+                        data.username || ""
+                    )
+                    .trim();
+
 
                 const email =
-                    String(data.email || "")
-                        .trim()
-                        .toLowerCase();
+                    String(
+                        data.email || ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
 
                 const password =
-                    String(data.password || "");
+                    String(
+                        data.password || ""
+                    );
 
 
                 if (
@@ -87,9 +122,12 @@ if (commentsResponse) {
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Todos los campos son obligatorios."
+
                     }, 400);
 
                 }
@@ -100,9 +138,12 @@ if (commentsResponse) {
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El nombre de usuario debe tener al menos 3 caracteres."
+
                     }, 400);
 
                 }
@@ -113,9 +154,12 @@ if (commentsResponse) {
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "La contraseña debe tener al menos 6 caracteres."
+
                     }, 400);
 
                 }
@@ -140,9 +184,12 @@ if (commentsResponse) {
                 if (existing) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El usuario o correo electrónico ya está registrado."
+
                     }, 409);
 
                 }
@@ -178,18 +225,24 @@ if (commentsResponse) {
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se pudo crear la cuenta."
+
                     }, 500);
 
                 }
 
 
                 return json({
+
                     success: true,
+
                     message:
                         "Cuenta creada correctamente."
+
                 });
 
 
@@ -202,18 +255,23 @@ if (commentsResponse) {
 
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
 
         }
 
-        // =========================================================
+
+        // =====================================================
         // API: LOGIN
-        // =========================================================
+        // POST /api/login
+        // =====================================================
 
         if (
             url.pathname === "/api/login" &&
@@ -227,13 +285,17 @@ if (commentsResponse) {
 
 
                 const login =
-                    String(data.login || "")
-                        .trim()
-                        .toLowerCase();
+                    String(
+                        data.login || ""
+                    )
+                    .trim()
+                    .toLowerCase();
 
 
                 const password =
-                    String(data.password || "");
+                    String(
+                        data.password || ""
+                    );
 
 
                 if (
@@ -242,9 +304,12 @@ if (commentsResponse) {
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Completa todos los campos."
+
                     }, 400);
 
                 }
@@ -273,9 +338,12 @@ if (commentsResponse) {
                 if (!user) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Usuario o contraseña incorrectos."
+
                     }, 401);
 
                 }
@@ -291,9 +359,12 @@ if (commentsResponse) {
                 if (!validPassword) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Usuario o contraseña incorrectos."
+
                     }, 401);
 
                 }
@@ -311,7 +382,8 @@ if (commentsResponse) {
                         60 *
                         60 *
                         1000
-                    ).toISOString();
+                    )
+                    .toISOString();
 
 
                 await env.DB
@@ -333,13 +405,16 @@ if (commentsResponse) {
 
 
                 return new Response(
+
                     JSON.stringify({
+
                         success: true,
 
                         message:
                             "Inicio de sesión correcto.",
 
                         user: {
+
                             id:
                                 user.id,
 
@@ -348,19 +423,27 @@ if (commentsResponse) {
 
                             email:
                                 user.email
+
                         }
+
                     }),
+
                     {
+
                         status: 200,
 
                         headers: {
+
                             "Content-Type":
                                 "application/json",
 
                             "Set-Cookie":
                                 `session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`
+
                         }
+
                     }
+
                 );
 
 
@@ -373,9 +456,12 @@ if (commentsResponse) {
 
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
@@ -383,11 +469,10 @@ if (commentsResponse) {
         }
 
 
-
-        // =========================================================
+        // =====================================================
         // API: USUARIO ACTUAL
         // GET /api/me
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/api/me" &&
@@ -406,19 +491,24 @@ if (commentsResponse) {
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         loggedIn: false
+
                     }, 401);
 
                 }
 
 
                 return json({
+
                     success: true,
 
                     loggedIn: true,
 
                     user: {
+
                         id:
                             session.id,
 
@@ -427,7 +517,9 @@ if (commentsResponse) {
 
                         email:
                             session.email
+
                     }
+
                 });
 
 
@@ -440,19 +532,23 @@ if (commentsResponse) {
 
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
 
         }
 
-        // =========================================================
+
+        // =====================================================
         // API: LOGOUT
         // POST /api/logout
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/api/logout" &&
@@ -484,22 +580,32 @@ if (commentsResponse) {
 
 
                 return new Response(
+
                     JSON.stringify({
+
                         success: true,
+
                         message:
                             "Sesión cerrada."
+
                     }),
+
                     {
+
                         status: 200,
 
                         headers: {
+
                             "Content-Type":
                                 "application/json",
 
                             "Set-Cookie":
                                 "session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
+
                         }
+
                     }
+
                 );
 
 
@@ -512,832 +618,802 @@ if (commentsResponse) {
 
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
 
         }
 
-        
-// =========================================================
-// API: COMPROBAR ADMINISTRADOR
-//
-// GET /api/admin/check
-//
-// Comprueba si el usuario actualmente conectado
-// es el administrador de ComicWorldFiles.
-// =========================================================
 
-if (
-    url.pathname === "/api/admin/check" &&
-    request.method === "GET"
-) {
+        // =====================================================
+        // API: COMPROBAR ADMINISTRADOR
+        // GET /api/admin/check
+        // =====================================================
 
-    try {
+        if (
+            url.pathname === "/api/admin/check" &&
+            request.method === "GET"
+        ) {
 
-        const session =
-            await getSession(
-                request,
-                env
-            );
+            try {
+
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
 
 
-        /*
-         * No hay sesión iniciada.
-         */
+                if (!session) {
 
-        if (!session) {
+                    return json({
 
-            return json({
+                        success: true,
 
-                success: true,
+                        loggedIn: false,
 
-                loggedIn: false,
+                        isAdmin: false,
 
-                isAdmin: false,
+                        error:
+                            "Debes iniciar sesión."
 
-                error:
-                    "Debes iniciar sesión."
+                    }, 200);
 
-            }, 200);
-        }
+                }
 
 
-        /*
-         * Comprobar ID y email.
-         *
-         * Ambos deben coincidir.
-         */
-
-        const isAdmin =
-            Number(session.id) === 1 &&
-            String(
-                session.email || ""
-            ).toLowerCase() ===
-            "josepunkrock.1@gmail.com";
+                const isAdmin =
+                    isAdministrator(
+                        session,
+                        env
+                    );
 
 
-        /*
-         * Usuario autenticado pero
-         * no administrador.
-         */
+                if (!isAdmin) {
 
-        if (!isAdmin) {
+                    return json({
 
-            return json({
+                        success: true,
 
-                success: true,
+                        loggedIn: true,
 
-                loggedIn: true,
+                        isAdmin: false,
 
-                isAdmin: false,
+                        user: {
 
-                user: {
+                            id:
+                                session.id,
 
-                    id:
-                        session.id,
+                            username:
+                                session.username,
 
-                    username:
-                        session.username,
+                            email:
+                                session.email
 
-                    email:
-                        session.email
+                        },
 
-                },
+                        error:
+                            "No tienes permisos de administrador."
 
-                error:
-                    "No tienes permisos de administrador."
+                    }, 200);
 
-            }, 200);
-        }
+                }
 
 
-        /*
-         * Administrador confirmado.
-         */
+                return json({
 
-        return json({
+                    success: true,
 
-            success: true,
+                    loggedIn: true,
 
-            loggedIn: true,
+                    isAdmin: true,
 
-            isAdmin: true,
+                    user: {
 
-            user: {
+                        id:
+                            session.id,
 
-                id:
-                    session.id,
+                        username:
+                            session.username,
 
-                username:
-                    session.username,
+                        email:
+                            session.email
 
-                email:
-                    session.email
+                    }
+
+                }, 200);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error comprobando administrador:",
+                    error
+                );
+
+
+                return json({
+
+                    success: false,
+
+                    error:
+                        error.message
+
+                }, 500);
 
             }
 
-        }, 200);
-
-
-    } catch (error) {
-
-        console.error(
-            "Error comprobando administrador:",
-            error
-        );
-
-
-        return json({
-
-            success: false,
-
-            error:
-                error.message
-
-        }, 500);
-
-    }
-
-}
-
-// =========================================================
-// API: ADMIN - LISTAR PUBLICACIONES
-//
-// GET /api/admin/stories
-//
-// Devuelve todas las historias e historietas
-// para el panel de administración.
-// =========================================================
-
-if (
-    url.pathname === "/api/admin/stories" &&
-    request.method === "GET"
-) {
-
-    try {
-
-        /*
-         * Comprobar administrador.
-         */
-
-        const session =
-            await getSession(
-                request,
-                env
-            );
-
-
-        /*
-         * No hay sesión.
-         */
-
-        if (!session) {
-
-            return json({
-
-                success: false,
-
-                error:
-                    "Debes iniciar sesión."
-
-            }, 401);
-        }
-
-
-        /*
-         * Comprobar ID y email.
-         */
-
-        const isAdmin =
-            Number(session.id) === 1 &&
-            String(
-                session.email || ""
-            ).toLowerCase() ===
-            "josepunkrock.1@gmail.com";
-
-
-        /*
-         * No es administrador.
-         */
-
-        if (!isAdmin) {
-
-            return json({
-
-                success: false,
-
-                error:
-                    "No tienes permisos de administrador."
-
-            }, 403);
-        }
-
-
-        /*
-         * Obtener todas las publicaciones.
-         */
-
-        const result =
-            await env.DB
-                .prepare(
-                    `SELECT
-                        stories.id,
-                        stories.user_id,
-                        stories.title,
-                        stories.description,
-                        stories.genre,
-                        stories.type,
-                        stories.cover_url,
-                        stories.views,
-                        stories.created_at,
-                        users.username AS author,
-
-                        (
-                            SELECT COUNT(*)
-                            FROM story_likes
-                            WHERE story_likes.story_id =
-                                  stories.id
-                        ) AS likes_count,
-
-                        (
-                            SELECT COUNT(*)
-                            FROM story_comments
-                            WHERE story_comments.story_id =
-                                  stories.id
-                        ) AS comments_count
-
-                     FROM stories
-
-                     INNER JOIN users
-                     ON users.id = stories.user_id
-
-                     ORDER BY stories.id DESC`
-                )
-                .all();
-
-
-        /*
-         * Responder.
-         */
-
-        return json({
-
-            success: true,
-
-            stories:
-                result.results || []
-
-        }, 200);
-
-
-    } catch (error) {
-
-        console.error(
-            "Error listando publicaciones para admin:",
-            error
-        );
-
-
-        return json({
-
-            success: false,
-
-            error:
-                error.message ||
-                "No se pudieron cargar las publicaciones."
-
-        }, 500);
-
-    }
-
-}
-
-     // =========================================================
-// API ADMIN: EDITAR PUBLICACIÓN
-//
-// PUT /api/admin/stories/:id
-//
-// Solo el administrador puede editar cualquier publicación.
-// =========================================================
-
-if (
-    url.pathname.startsWith("/api/admin/stories/") &&
-    request.method === "PUT"
-) {
-
-    try {
-
-        // =====================================================
-        // COMPROBAR SESIÓN
-        // =====================================================
-
-        const session =
-            await getSession(
-                request,
-                env
-            );
-
-
-        if (!session) {
-
-            return json({
-
-                success: false,
-
-                loggedIn: false,
-
-                isAdmin: false,
-
-                error:
-                    "Debes iniciar sesión."
-
-            }, 401);
-
         }
 
 
         // =====================================================
-        // COMPROBAR ADMINISTRADOR
+        // API: ADMIN - LISTAR PUBLICACIONES
+        // GET /api/admin/stories
         // =====================================================
-
-        const isAdmin =
-            Number(session.id) === 1 &&
-            String(
-                session.email || ""
-            ).toLowerCase() ===
-            "josepunkrock.1@gmail.com";
-
-
-        if (!isAdmin) {
-
-            return json({
-
-                success: false,
-
-                loggedIn: true,
-
-                isAdmin: false,
-
-                error:
-                    "No tienes permisos de administrador."
-
-            }, 403);
-
-        }
-
-
-        // =====================================================
-        // OBTENER ID
-        // =====================================================
-
-        const storyId =
-            url.pathname
-                .split("/")
-                .pop();
-
 
         if (
-            !storyId ||
-            !/^\d+$/.test(storyId)
+            url.pathname === "/api/admin/stories" &&
+            request.method === "GET"
         ) {
 
-            return json({
+            try {
 
-                success: false,
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
 
-                error:
-                    "ID de publicación inválido."
 
-            }, 400);
+                if (!session) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "Debes iniciar sesión."
+
+                    }, 401);
+
+                }
+
+
+                const isAdmin =
+                    isAdministrator(
+                        session,
+                        env
+                    );
+
+
+                if (!isAdmin) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "No tienes permisos de administrador."
+
+                    }, 403);
+
+                }
+
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                stories.id,
+                                stories.user_id,
+                                stories.title,
+                                stories.description,
+                                stories.genre,
+                                stories.type,
+                                stories.cover_url,
+                                stories.views,
+                                stories.created_at,
+
+                                users.username AS author,
+
+                                (
+                                    SELECT COUNT(*)
+                                    FROM story_likes
+                                    WHERE story_likes.story_id =
+                                        stories.id
+                                ) AS likes_count,
+
+                                (
+                                    SELECT COUNT(*)
+                                    FROM story_comments
+                                    WHERE story_comments.story_id =
+                                        stories.id
+                                ) AS comments_count
+
+                             FROM stories
+
+                             INNER JOIN users
+                             ON users.id = stories.user_id
+
+                             ORDER BY stories.id DESC`
+                        )
+                        .all();
+
+
+                return json({
+
+                    success: true,
+
+                    stories:
+                        result.results || []
+
+                }, 200);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error listando publicaciones para admin:",
+                    error
+                );
+
+
+                return json({
+
+                    success: false,
+
+                    error:
+                        error.message ||
+                        "No se pudieron cargar las publicaciones."
+
+                }, 500);
+
+            }
 
         }
 
 
         // =====================================================
-        // COMPROBAR QUE EXISTE
+        // API ADMIN: EDITAR PUBLICACIÓN
+        // PUT /api/admin/stories/:id
         // =====================================================
 
-        const story =
-            await env.DB
-                .prepare(
-                    `SELECT
-                        id,
-                        user_id,
+        if (
+            url.pathname.startsWith(
+                "/api/admin/stories/"
+            )
+            &&
+            request.method === "PUT"
+        ) {
+
+            try {
+
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
+
+
+                if (!session) {
+
+                    return json({
+
+                        success: false,
+
+                        loggedIn: false,
+
+                        isAdmin: false,
+
+                        error:
+                            "Debes iniciar sesión."
+
+                    }, 401);
+
+                }
+
+
+                const isAdmin =
+                    isAdministrator(
+                        session,
+                        env
+                    );
+
+
+                if (!isAdmin) {
+
+                    return json({
+
+                        success: false,
+
+                        loggedIn: true,
+
+                        isAdmin: false,
+
+                        error:
+                            "No tienes permisos de administrador."
+
+                    }, 403);
+
+                }
+
+
+                const storyId =
+                    url.pathname
+                        .split("/")
+                        .pop();
+
+
+                if (
+                    !storyId ||
+                    !/^\d+$/.test(
+                        storyId
+                    )
+                ) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "ID de publicación inválido."
+
+                    }, 400);
+
+                }
+
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                user_id,
+                                title,
+                                description,
+                                genre,
+                                type
+                             FROM stories
+                             WHERE id = ?`
+                        )
+                        .bind(
+                            Number(
+                                storyId
+                            )
+                        )
+                        .first();
+
+
+                if (!story) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "La publicación no existe."
+
+                    }, 404);
+
+                }
+
+
+                const body =
+                    await request.json();
+
+
+                const title =
+                    body.title !== undefined
+                        ? String(
+                            body.title
+                        ).trim()
+                        : story.title;
+
+
+                const description =
+                    body.description !== undefined
+                        ? String(
+                            body.description
+                        ).trim()
+                        : story.description;
+
+
+                const genre =
+                    body.genre !== undefined
+                        ? String(
+                            body.genre
+                        ).trim()
+                        : story.genre;
+
+
+                const type =
+                    body.type !== undefined
+                        ? String(
+                            body.type
+                        )
+                        .trim()
+                        .toLowerCase()
+                        : story.type;
+
+
+                if (!title) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "El título es obligatorio."
+
+                    }, 400);
+
+                }
+
+
+                if (
+                    type !== "historia" &&
+                    type !== "historieta"
+                ) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "El tipo de publicación no es válido."
+
+                    }, 400);
+
+                }
+
+
+                await env.DB
+                    .prepare(
+                        `UPDATE stories
+                         SET
+                            title = ?,
+                            description = ?,
+                            genre = ?,
+                            type = ?
+                         WHERE id = ?`
+                    )
+                    .bind(
                         title,
                         description,
                         genre,
-                        type
-                     FROM stories
-                     WHERE id = ?`
-                )
-                .bind(
-                    Number(storyId)
-                )
-                .first();
+                        type,
+                        Number(
+                            storyId
+                        )
+                    )
+                    .run();
 
 
-        if (!story) {
+                const updatedStory =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                stories.id,
+                                stories.user_id,
+                                stories.title,
+                                stories.description,
+                                stories.genre,
+                                stories.type,
+                                stories.cover_url,
+                                stories.views,
+                                stories.created_at,
 
-            return json({
+                                users.username AS author
 
-                success: false,
+                             FROM stories
 
-                error:
-                    "La publicación no existe."
+                             LEFT JOIN users
+                             ON users.id =
+                                stories.user_id
 
-            }, 404);
+                             WHERE stories.id = ?`
+                        )
+                        .bind(
+                            Number(
+                                storyId
+                            )
+                        )
+                        .first();
+
+
+                return json({
+
+                    success: true,
+
+                    loggedIn: true,
+
+                    isAdmin: true,
+
+                    message:
+                        "Publicación actualizada correctamente.",
+
+                    story:
+                        updatedStory
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error editando publicación como administrador:",
+                    error
+                );
+
+
+                return json({
+
+                    success: false,
+
+                    error:
+                        error.message ||
+                        "No se pudo actualizar la publicación."
+
+                }, 500);
+
+            }
 
         }
 
 
         // =====================================================
-        // LEER DATOS
+        // API ADMIN: ELIMINAR PUBLICACIÓN COMPLETA
+        // DELETE /api/admin/stories/:id
         // =====================================================
-
-        const body =
-            await request.json();
-
-
-        const title =
-            body.title !== undefined
-                ? String(body.title).trim()
-                : story.title;
-
-
-        const description =
-            body.description !== undefined
-                ? String(body.description).trim()
-                : story.description;
-
-
-        const genre =
-            body.genre !== undefined
-                ? String(body.genre).trim()
-                : story.genre;
-
-
-        const type =
-            body.type !== undefined
-                ? String(body.type).trim().toLowerCase()
-                : story.type;
-
-
-        // =====================================================
-        // VALIDACIONES
-        // =====================================================
-
-        if (!title) {
-
-            return json({
-
-                success: false,
-
-                error:
-                    "El título es obligatorio."
-
-            }, 400);
-
-        }
-
 
         if (
-            type !== "historia" &&
-            type !== "historieta"
-        ) {
-
-            return json({
-
-                success: false,
-
-                error:
-                    "El tipo de publicación no es válido."
-
-            }, 400);
-
-        }
-
-
-        // =====================================================
-        // ACTUALIZAR
-        // =====================================================
-
-        await env.DB
-            .prepare(
-                `UPDATE stories
-                 SET
-                    title = ?,
-                    description = ?,
-                    genre = ?,
-                    type = ?
-                 WHERE id = ?`
+            url.pathname.startsWith(
+                "/api/admin/stories/"
             )
-            .bind(
-                title,
-                description,
-                genre,
-                type,
-                Number(storyId)
-            )
-            .run();
-
-
-        // =====================================================
-        // OBTENER PUBLICACIÓN ACTUALIZADA
-        // =====================================================
-
-        const updatedStory =
-            await env.DB
-                .prepare(
-                    `SELECT
-                        stories.id,
-                        stories.user_id,
-                        stories.title,
-                        stories.description,
-                        stories.genre,
-                        stories.type,
-                        stories.cover_url,
-                        stories.views,
-                        stories.created_at,
-                        users.username AS author
-
-                     FROM stories
-
-                     LEFT JOIN users
-                     ON users.id =
-                        stories.user_id
-
-                     WHERE stories.id = ?`
-                )
-                .bind(
-                    Number(storyId)
-                )
-                .first();
-
-
-        // =====================================================
-        // RESPUESTA
-        // =====================================================
-
-        return json({
-
-            success: true,
-
-            loggedIn: true,
-
-            isAdmin: true,
-
-            message:
-                "Publicación actualizada correctamente.",
-
-            story:
-                updatedStory
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "Error editando publicación como administrador:",
-            error
-        );
-
-
-        return json({
-
-            success: false,
-
-            error:
-                error.message ||
-                "No se pudo actualizar la publicación."
-
-        }, 500);
-
-    }
-
-} 
-
-    // =========================================================
-// API ADMIN: ELIMINAR PUBLICACIÓN COMPLETA
-//
-// DELETE /api/admin/stories/:id
-//
-// Elimina:
-// - La publicación
-// - Sus capítulos
-// - Las imágenes de los capítulos en R2
-// - La portada en R2
-// - Los registros relacionados
-//
-// Solo disponible para el administrador.
-// =========================================================
-
-if (
-    url.pathname.startsWith("/api/admin/stories/") &&
-    request.method === "DELETE"
-) {
-
-    try {
-
-        // =====================================================
-        // COMPROBAR SESIÓN
-        // =====================================================
-
-        const session =
-            await getSession(
-                request,
-                env
-            );
-
-
-        if (!session) {
-
-            return json({
-
-                success: false,
-
-                loggedIn: false,
-
-                isAdmin: false,
-
-                error:
-                    "Debes iniciar sesión."
-
-            }, 401);
-
-        }
-
-
-        // =====================================================
-        // COMPROBAR ADMINISTRADOR
-        // =====================================================
-
-        const isAdmin =
-            Number(session.id) === 1 &&
-            String(
-                session.email || ""
-            ).toLowerCase() ===
-            "josepunkrock.1@gmail.com";
-
-
-        if (!isAdmin) {
-
-            return json({
-
-                success: false,
-
-                loggedIn: true,
-
-                isAdmin: false,
-
-                error:
-                    "No tienes permisos de administrador."
-
-            }, 403);
-
-        }
-
-
-        // =====================================================
-        // OBTENER ID
-        // =====================================================
-
-        const storyId =
-            url.pathname
-                .split("/")
-                .pop();
-
-
-        if (
-            !storyId ||
-            !/^\d+$/.test(storyId)
+            &&
+            request.method === "DELETE"
         ) {
 
-            return json({
+            try {
 
-                success: false,
-
-                error:
-                    "ID de publicación inválido."
-
-            }, 400);
-
-        }
+                const session =
+                    await getSession(
+                        request,
+                        env
+                    );
 
 
-        const id =
-            Number(storyId);
+                if (!session) {
+
+                    return json({
+
+                        success: false,
+
+                        loggedIn: false,
+
+                        isAdmin: false,
+
+                        error:
+                            "Debes iniciar sesión."
+
+                    }, 401);
+
+                }
 
 
-        // =====================================================
-        // COMPROBAR QUE EXISTE
-        // =====================================================
-
-        const story =
-            await env.DB
-                .prepare(
-                    `SELECT
-                        id,
-                        user_id,
-                        title,
-                        type
-                     FROM stories
-                     WHERE id = ?`
-                )
-                .bind(id)
-                .first();
+                const isAdmin =
+                    isAdministrator(
+                        session,
+                        env
+                    );
 
 
-        if (!story) {
+                if (!isAdmin) {
 
-            return json({
+                    return json({
 
-                success: false,
+                        success: false,
 
-                error:
-                    "La publicación no existe."
+                        loggedIn: true,
 
-            }, 404);
+                        isAdmin: false,
 
-        }
+                        error:
+                            "No tienes permisos de administrador."
 
+                    }, 403);
 
-        // =====================================================
-        // OBTENER CAPÍTULOS
-        // =====================================================
-
-        const chaptersResult =
-            await env.DB
-                .prepare(
-                    `SELECT
-                        id
-                     FROM chapters
-                     WHERE story_id = ?`
-                )
-                .bind(id)
-                .all();
+                }
 
 
-        const chapters =
-            chaptersResult.results || [];
+                const storyId =
+                    url.pathname
+                        .split("/")
+                        .pop();
 
-
-        // =====================================================
-        // ELIMINAR IMÁGENES DE LOS CAPÍTULOS
-        // =====================================================
-
-        let deletedImages = 0;
-
-
-        for (
-            const chapter of chapters
-        ) {
-
-            const imagesResult =
-                await env.DB
-                    .prepare(
-                        `SELECT
-                            id,
-                            object_key
-                         FROM chapter_images
-                         WHERE chapter_id = ?`
-                    )
-                    .bind(
-                        chapter.id
-                    )
-                    .all();
-
-
-            const images =
-                imagesResult.results || [];
-
-
-            for (
-                const image of images
-            ) {
 
                 if (
-                    image.object_key &&
-                    env.Images
+                    !storyId ||
+                    !/^\d+$/.test(
+                        storyId
+                    )
                 ) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "ID de publicación inválido."
+
+                    }, 400);
+
+                }
+
+
+                const id =
+                    Number(
+                        storyId
+                    );
+
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                id,
+                                user_id,
+                                title,
+                                type
+                             FROM stories
+                             WHERE id = ?`
+                        )
+                        .bind(
+                            id
+                        )
+                        .first();
+
+
+                if (!story) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "La publicación no existe."
+
+                    }, 404);
+
+                }
+
+
+                const chaptersResult =
+                    await env.DB
+                        .prepare(
+                            `SELECT id
+                             FROM chapters
+                             WHERE story_id = ?`
+                        )
+                        .bind(
+                            id
+                        )
+                        .all();
+
+
+                const chapters =
+                    chaptersResult.results || [];
+
+
+                let deletedImages = 0;
+
+
+                for (
+                    const chapter of chapters
+                ) {
+
+                    const imagesResult =
+                        await env.DB
+                            .prepare(
+                                `SELECT
+                                    id,
+                                    object_key
+                                 FROM chapter_images
+                                 WHERE chapter_id = ?`
+                            )
+                            .bind(
+                                chapter.id
+                            )
+                            .all();
+
+
+                    const images =
+                        imagesResult.results || [];
+
+
+                    for (
+                        const image of images
+                    ) {
+
+                        if (
+                            image.object_key &&
+                            env.Images
+                        ) {
+
+                            try {
+
+                                await env.Images.delete(
+                                    image.object_key
+                                );
+
+
+                                deletedImages++;
+
+                            } catch (error) {
+
+                                console.error(
+                                    "Error eliminando imagen de R2:",
+                                    image.object_key,
+                                    error
+                                );
+
+                            }
+
+                        }
+
+                    }
+
+
+                    await env.DB
+                        .prepare(
+                            `DELETE FROM chapter_images
+                             WHERE chapter_id = ?`
+                        )
+                        .bind(
+                            chapter.id
+                        )
+                        .run();
+
+                }
+
+
+                await env.DB
+                    .prepare(
+                        `DELETE FROM chapters
+                         WHERE story_id = ?`
+                    )
+                    .bind(
+                        id
+                    )
+                    .run();
+
+
+                if (env.Cover) {
+
+                    const coverKey =
+                        "covers/" +
+                        story.user_id +
+                        "/" +
+                        id;
+
 
                     try {
 
-                        await env.Images.delete(
-                            image.object_key
+                        await env.Cover.delete(
+                            coverKey
                         );
-
-                        deletedImages++;
 
                     } catch (error) {
 
                         console.error(
-                            "Error eliminando imagen de R2:",
-                            image.object_key,
+                            "Error eliminando portada:",
+                            coverKey,
                             error
                         );
 
@@ -1345,64 +1421,95 @@ if (
 
                 }
 
-            }
+
+                await env.DB
+                    .prepare(
+                        `DELETE FROM story_favorites
+                         WHERE story_id = ?`
+                    )
+                    .bind(
+                        id
+                    )
+                    .run();
 
 
-            // =================================================
-            // ELIMINAR REGISTROS DE IMÁGENES
-            // =================================================
-
-            await env.DB
-                .prepare(
-                    `DELETE FROM chapter_images
-                     WHERE chapter_id = ?`
-                )
-                .bind(
-                    chapter.id
-                )
-                .run();
-
-        }
+                await env.DB
+                    .prepare(
+                        `DELETE FROM story_likes
+                         WHERE story_id = ?`
+                    )
+                    .bind(
+                        id
+                    )
+                    .run();
 
 
-        // =====================================================
-        // ELIMINAR CAPÍTULOS
-        // =====================================================
-
-        await env.DB
-            .prepare(
-                `DELETE FROM chapters
-                 WHERE story_id = ?`
-            )
-            .bind(id)
-            .run();
+                await env.DB
+                    .prepare(
+                        `DELETE FROM story_comments
+                         WHERE story_id = ?`
+                    )
+                    .bind(
+                        id
+                    )
+                    .run();
 
 
-        // =====================================================
-        // ELIMINAR PORTADA
-        // =====================================================
+                await env.DB
+                    .prepare(
+                        `DELETE FROM stories
+                         WHERE id = ?`
+                    )
+                    .bind(
+                        id
+                    )
+                    .run();
 
-        if (
-            env.Cover
-        ) {
 
-            const coverKey =
-                `covers/${story.user_id}/${id}`;
+                return json({
 
+                    success: true,
 
-            try {
+                    loggedIn: true,
 
-                await env.Cover.delete(
-                    coverKey
-                );
+                    isAdmin: true,
+
+                    message:
+                        "Publicación eliminada correctamente.",
+
+                    deleted: {
+
+                        story_id:
+                            id,
+
+                        chapters:
+                            chapters.length,
+
+                        images:
+                            deletedImages
+
+                    }
+
+                });
+
 
             } catch (error) {
 
                 console.error(
-                    "Error eliminando portada:",
-                    coverKey,
+                    "Error eliminando publicación como administrador:",
                     error
                 );
+
+
+                return json({
+
+                    success: false,
+
+                    error:
+                        error.message ||
+                        "No se pudo eliminar la publicación."
+
+                }, 500);
 
             }
 
@@ -1410,178 +1517,81 @@ if (
 
 
         // =====================================================
-        // ELIMINAR FAVORITOS
+        // API: LISTAR AUTORES
+        // GET /api/authors
         // =====================================================
 
-        await env.DB
-    .prepare(
-        "DELETE FROM story_favorites WHERE story_id = ?"
-    )
-    .bind(id)
-    .run();
+        if (
+            url.pathname === "/api/authors" &&
+            request.method === "GET"
+        ) {
 
-        // =====================================================
-        // ELIMINAR LIKES
-        // =====================================================
+            try {
 
-        await env.DB
-            .prepare(
-                `DELETE FROM story_likes
-                 WHERE story_id = ?`
-            )
-            .bind(id)
-            .run();
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                users.id,
+                                users.username,
 
+                                COUNT(
+                                    stories.id
+                                ) AS publications
 
-        // =====================================================
-        // ELIMINAR COMENTARIOS
-        // =====================================================
+                             FROM users
 
-        await env.DB
-            .prepare(
-                `DELETE FROM story_comments
-                 WHERE story_id = ?`
-            )
-            .bind(id)
-            .run();
+                             INNER JOIN stories
+                             ON stories.user_id =
+                                users.id
 
+                             GROUP BY
+                                users.id,
+                                users.username
 
-        // =====================================================
-        // ELIMINAR PUBLICACIÓN
-        // =====================================================
-
-        await env.DB
-            .prepare(
-                `DELETE FROM stories
-                 WHERE id = ?`
-            )
-            .bind(id)
-            .run();
+                             ORDER BY
+                                publications DESC,
+                                users.username ASC`
+                        )
+                        .all();
 
 
-        // =====================================================
-        // RESPUESTA
-        // =====================================================
+                return json({
 
-        return json({
+                    success: true,
 
-            success: true,
+                    authors:
+                        result.results || []
 
-            loggedIn: true,
+                });
 
-            isAdmin: true,
 
-            message:
-                "Publicación eliminada correctamente.",
+            } catch (error) {
 
-            deleted: {
+                console.error(
+                    "Error listando autores:",
+                    error
+                );
 
-                story_id: id,
 
-                chapters:
-                    chapters.length,
+                return json({
 
-                images:
-                    deletedImages
+                    success: false,
+
+                    error:
+                        "No se pudieron cargar los autores."
+
+                }, 500);
 
             }
 
-        });
+        }
 
 
-    } catch (error) {
-
-        console.error(
-            "Error eliminando publicación como administrador:",
-            error
-        );
-
-
-        return json({
-
-            success: false,
-
-            error:
-                error.message ||
-                "No se pudo eliminar la publicación."
-
-        }, 500);
-
-    }
-
-}    
-
-// =========================================================
-// API: LISTAR AUTORES
-//
-// GET /api/authors
-//
-// Devuelve únicamente usuarios que tengan
-// al menos una publicación.
-// =========================================================
-
-if (
-    url.pathname === "/api/authors" &&
-    request.method === "GET"
-) {
-
-    try {
-
-        const result =
-            await env.DB
-                .prepare(
-                    `SELECT
-                        users.id,
-                        users.username,
-                        COUNT(stories.id) AS publications
-                     FROM users
-                     INNER JOIN stories
-                     ON stories.user_id = users.id
-                     GROUP BY
-                        users.id,
-                        users.username
-                     ORDER BY
-                        publications DESC,
-                        users.username ASC`
-                )
-                .all();
-
-
-        return json({
-
-            success: true,
-
-            authors:
-                result.results || []
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "Error listando autores:",
-            error
-        );
-
-
-        return json({
-
-            success: false,
-
-            error:
-                "No se pudieron cargar los autores."
-
-        }, 500);
-
-    }
-
-}
-
-        // =========================================================
+        // =====================================================
         // API TEST
         // GET /api/test
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/api/test"
@@ -1598,6 +1608,7 @@ if (
 
 
                 return json({
+
                     success: true,
 
                     message:
@@ -1605,15 +1616,19 @@ if (
 
                     database:
                         result
+
                 });
 
 
             } catch (error) {
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
@@ -1621,11 +1636,10 @@ if (
         }
 
 
-
-        // =========================================================
+        // =====================================================
         // API: CREAR HISTORIA / HISTORIETA
         // POST /api/stories
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/api/stories" &&
@@ -1644,9 +1658,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión para crear una publicación."
+
                     }, 401);
 
                 }
@@ -1659,24 +1676,28 @@ if (
                 const title =
                     String(
                         data.title || ""
-                    ).trim();
+                    )
+                    .trim();
 
 
                 const description =
                     String(
                         data.description || ""
-                    ).trim();
+                    )
+                    .trim();
 
 
                 const genre =
                     String(
                         data.genre || ""
-                    ).trim();
+                    )
+                    .trim();
 
 
                 let type =
                     String(
-                        data.type || "historia"
+                        data.type ||
+                        "historia"
                     )
                     .trim()
                     .toLowerCase();
@@ -1688,9 +1709,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El tipo de publicación no es válido."
+
                     }, 400);
 
                 }
@@ -1703,9 +1727,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Todos los campos son obligatorios."
+
                     }, 400);
 
                 }
@@ -1716,9 +1743,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El título es demasiado corto."
+
                     }, 400);
 
                 }
@@ -1748,14 +1778,15 @@ if (
                         .run();
 
 
-                if (
-                    !result.success
-                ) {
+                if (!result.success) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se pudo guardar la publicación."
+
                     }, 500);
 
                 }
@@ -1766,6 +1797,7 @@ if (
 
 
                 return json({
+
                     success: true,
 
                     message:
@@ -1774,6 +1806,7 @@ if (
                             : "Historia creada correctamente.",
 
                     story: {
+
                         id:
                             storyId,
 
@@ -1800,7 +1833,9 @@ if (
 
                         user_id:
                             session.id
+
                     }
+
                 });
 
 
@@ -1813,9 +1848,12 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
@@ -1823,11 +1861,10 @@ if (
         }
 
 
-
-        // =========================================================
+        // =====================================================
         // API: REGISTRAR VISITA
-        // POST /api/stories/5/view
-        // =========================================================
+        // POST /api/stories/:id/view
+        // =====================================================
 
         const storyViewMatch =
             url.pathname.match(
@@ -1846,19 +1883,6 @@ if (
                     Number(
                         storyViewMatch[1]
                     );
-
-
-                if (
-                    !storyId
-                ) {
-
-                    return json({
-                        success: false,
-                        error:
-                            "ID de publicación inválido."
-                    }, 400);
-
-                }
 
 
                 const story =
@@ -1880,9 +1904,12 @@ if (
                 if (!story) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "La publicación no existe."
+
                     }, 404);
 
                 }
@@ -1891,7 +1918,11 @@ if (
                 await env.DB
                     .prepare(
                         `UPDATE stories
-                         SET views = COALESCE(views, 0) + 1
+                         SET views =
+                            COALESCE(
+                                views,
+                                0
+                            ) + 1
                          WHERE id = ?`
                     )
                     .bind(
@@ -1903,8 +1934,7 @@ if (
                 const updated =
                     await env.DB
                         .prepare(
-                            `SELECT
-                                views
+                            `SELECT views
                              FROM stories
                              WHERE id = ?
                              LIMIT 1`
@@ -1916,12 +1946,14 @@ if (
 
 
                 return json({
+
                     success: true,
 
                     views:
                         Number(
                             updated.views || 0
                         )
+
                 });
 
 
@@ -1934,9 +1966,12 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
@@ -1944,11 +1979,10 @@ if (
         }
 
 
-
-        // =========================================================
-        // API: EDITAR INFORMACIÓN DE HISTORIA / HISTORIETA
-        // PUT /api/stories/5
-        // =========================================================
+        // =====================================================
+        // API: EDITAR INFORMACIÓN DE PUBLICACIÓN
+        // PUT /api/stories/:id
+        // =====================================================
 
         const editStoryMatch =
             url.pathname.match(
@@ -1979,9 +2013,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión."
+
                     }, 401);
 
                 }
@@ -2007,23 +2044,34 @@ if (
                 if (!story) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "La publicación no existe."
+
                     }, 404);
 
                 }
 
 
                 if (
-                    Number(story.user_id) !==
-                    Number(session.id)
+                    Number(
+                        story.user_id
+                    )
+                    !==
+                    Number(
+                        session.id
+                    )
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No tienes permiso para modificar esta publicación."
+
                     }, 403);
 
                 }
@@ -2036,22 +2084,25 @@ if (
                 const title =
                     String(
                         data.title || ""
-                    ).trim();
+                    )
+                    .trim();
 
 
                 const description =
                     String(
                         data.description || ""
-                    ).trim();
+                    )
+                    .trim();
 
 
                 const genre =
                     String(
                         data.genre || ""
-                    ).trim();
+                    )
+                    .trim();
 
 
-                let type =
+                const type =
                     String(
                         data.type ||
                         story.type ||
@@ -2067,9 +2118,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El tipo de publicación no es válido."
+
                     }, 400);
 
                 }
@@ -2082,9 +2136,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El título, la descripción y el género son obligatorios."
+
                     }, 400);
 
                 }
@@ -2095,9 +2152,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El título debe tener al menos 2 caracteres."
+
                     }, 400);
 
                 }
@@ -2107,10 +2167,11 @@ if (
                     await env.DB
                         .prepare(
                             `UPDATE stories
-                             SET title = ?,
-                                 description = ?,
-                                 genre = ?,
-                                 type = ?
+                             SET
+                                title = ?,
+                                description = ?,
+                                genre = ?,
+                                type = ?
                              WHERE id = ?`
                         )
                         .bind(
@@ -2123,24 +2184,27 @@ if (
                         .run();
 
 
-                if (
-                    !result.success
-                ) {
+                if (!result.success) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se pudo actualizar la publicación."
+
                     }, 500);
 
                 }
 
 
                 return json({
+
                     success: true,
 
                     message:
                         "Información actualizada correctamente."
+
                 });
 
 
@@ -2153,9 +2217,12 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
                         error.message
+
                 }, 500);
 
             }
@@ -2163,8 +2230,183 @@ if (
         }
 
 
+        // =====================================================
+        // API: LISTAR HISTORIAS / HISTORIETAS
+        // GET /api/stories
+        // =====================================================
 
-        // =========================================================
+        if (
+            url.pathname === "/api/stories" &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const result =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                stories.id,
+                                stories.user_id,
+                                stories.title,
+                                stories.description,
+                                stories.genre,
+                                stories.type,
+                                stories.cover_url,
+                                stories.views,
+                                stories.created_at,
+
+                                users.username AS author
+
+                             FROM stories
+
+                             INNER JOIN users
+                             ON users.id =
+                                stories.user_id
+
+                             ORDER BY stories.id DESC
+
+                             LIMIT 20`
+                        )
+                        .all();
+
+
+                return json({
+
+                    success: true,
+
+                    stories:
+                        result.results || []
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error listando publicaciones:",
+                    error
+                );
+
+
+                return json({
+
+                    success: false,
+
+                    error:
+                        error.message
+
+                }, 500);
+
+            }
+
+        }
+
+
+        // =====================================================
+        // API: PUBLICACIÓN INDIVIDUAL
+        // GET /api/stories/:id
+        // =====================================================
+
+        const storyMatch =
+            url.pathname.match(
+                /^\/api\/stories\/(\d+)$/
+            );
+
+
+        if (
+            storyMatch &&
+            request.method === "GET"
+        ) {
+
+            try {
+
+                const storyId =
+                    Number(
+                        storyMatch[1]
+                    );
+
+
+                const story =
+                    await env.DB
+                        .prepare(
+                            `SELECT
+                                stories.id,
+                                stories.user_id,
+                                stories.title,
+                                stories.description,
+                                stories.genre,
+                                stories.type,
+                                stories.cover_url,
+                                stories.views,
+                                stories.created_at,
+
+                                users.username AS author
+
+                             FROM stories
+
+                             INNER JOIN users
+                             ON users.id =
+                                stories.user_id
+
+                             WHERE stories.id = ?
+
+                             LIMIT 1`
+                        )
+                        .bind(
+                            storyId
+                        )
+                        .first();
+
+
+                if (!story) {
+
+                    return json({
+
+                        success: false,
+
+                        error:
+                            "La publicación no existe."
+
+                    }, 404);
+
+                }
+
+
+                return json({
+
+                    success: true,
+
+                    story:
+                        story
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error obteniendo publicación:",
+                    error
+                );
+
+
+                return json({
+
+                    success: false,
+
+                    error:
+                        error.message
+
+                }, 500);
+
+            }
+
+        }
+
+
+        // LA PARTE 2 CONTINÚA DESDE AQUÍ
+            // =========================================================
         // API: LISTAR HISTORIAS / HISTORIETAS
         // GET /api/stories
         // =========================================================
@@ -2200,10 +2442,12 @@ if (
 
 
                 return json({
+
                     success: true,
 
                     stories:
-                        result.results
+                        result.results || []
+
                 });
 
 
@@ -2216,9 +2460,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudieron cargar las publicaciones."
+
                 }, 500);
 
             }
@@ -2226,10 +2474,9 @@ if (
         }
 
 
-
         // =========================================================
         // API: PUBLICACIÓN INDIVIDUAL
-        // GET /api/stories/5
+        // GET /api/stories/:id
         // =========================================================
 
         const storyMatch =
@@ -2280,19 +2527,24 @@ if (
                 if (!story) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "La publicación no existe."
+
                     }, 404);
 
                 }
 
 
                 return json({
+
                     success: true,
 
                     story:
                         story
+
                 });
 
 
@@ -2305,9 +2557,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudo obtener la publicación."
+
                 }, 500);
 
             }
@@ -2315,10 +2571,9 @@ if (
         }
 
 
-
         // =========================================================
         // API: SUBIR / REEMPLAZAR PORTADA
-        // POST /api/stories/5/cover
+        // POST /api/stories/:id/cover
         // =========================================================
 
         const coverMatch =
@@ -2350,9 +2605,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión."
+
                     }, 401);
 
                 }
@@ -2378,23 +2636,48 @@ if (
                 if (!story) {
 
                     return json({
+
                         success: false,
+
                         error:
-                            "La historia no existe."
+                            "La publicación no existe."
+
                     }, 404);
 
                 }
 
 
+                /*
+                 * El propietario puede modificar
+                 * su propia portada.
+                 *
+                 * El administrador también puede hacerlo.
+                 */
+
+                const admin =
+                    await verificarAdministrador(
+                        request,
+                        env
+                    );
+
+
+                const isAdmin =
+                    admin.autorizado === true;
+
+
                 if (
                     Number(story.user_id) !==
-                    Number(session.id)
+                        Number(session.id) &&
+                    !isAdmin
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
-                            "No tienes permiso para modificar esta historia."
+                            "No tienes permiso para modificar esta publicación."
+
                     }, 403);
 
                 }
@@ -2416,9 +2699,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se recibió ninguna imagen."
+
                     }, 400);
 
                 }
@@ -2435,19 +2721,24 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "La imagen no puede superar los 5 MB."
+
                     }, 400);
 
                 }
 
 
                 const allowedTypes = [
+
                     "image/jpeg",
                     "image/png",
                     "image/webp",
                     "image/gif"
+
                 ];
 
 
@@ -2458,9 +2749,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Formato no permitido. Usa JPG, PNG, WEBP o GIF."
+
                     }, 400);
 
                 }
@@ -2468,31 +2762,41 @@ if (
 
                 const objectKey =
                     "covers/" +
-                    session.id +
+                    story.user_id +
                     "/" +
                     storyId;
 
 
                 await env.Cover.put(
+
                     objectKey,
+
                     file.stream(),
+
                     {
+
                         httpMetadata: {
+
                             contentType:
                                 file.type,
 
                             cacheControl:
                                 "public, max-age=3600"
+
                         },
 
                         customMetadata: {
+
                             storyId:
                                 String(storyId),
 
                             userId:
-                                String(session.id)
+                                String(story.user_id)
+
                         }
+
                     }
+
                 );
 
 
@@ -2516,6 +2820,7 @@ if (
 
 
                 return json({
+
                     success: true,
 
                     message:
@@ -2523,6 +2828,7 @@ if (
 
                     cover_url:
                         coverUrl
+
                 });
 
 
@@ -2535,9 +2841,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudo subir la portada."
+
                 }, 500);
 
             }
@@ -2545,10 +2855,9 @@ if (
         }
 
 
-
         // =========================================================
         // API: SERVIR PORTADA DESDE R2
-        // GET /api/stories/5/cover
+        // GET /api/stories/:id/cover
         // =========================================================
 
         if (
@@ -2583,10 +2892,13 @@ if (
                 if (!story) {
 
                     return new Response(
-                        "Historia no encontrada.",
+
+                        "Publicación no encontrada.",
+
                         {
                             status: 404
                         }
+
                     );
 
                 }
@@ -2608,10 +2920,13 @@ if (
                 if (!object) {
 
                     return new Response(
+
                         "Portada no encontrada.",
+
                         {
                             status: 404
                         }
+
                     );
 
                 }
@@ -2639,12 +2954,18 @@ if (
 
 
                 return new Response(
+
                     object.body,
+
                     {
+
                         status: 200,
+
                         headers:
                             headers
+
                     }
+
                 );
 
 
@@ -2657,10 +2978,13 @@ if (
 
 
                 return new Response(
+
                     "Error obteniendo portada.",
+
                     {
                         status: 500
                     }
+
                 );
 
             }
@@ -2668,11 +2992,11 @@ if (
         }
 
 
-
         // =========================================================
         // API: CAPÍTULOS DE UNA PUBLICACIÓN
-        // GET /api/stories/5/chapters
-        // POST /api/stories/5/chapters
+        //
+        // GET  /api/stories/:id/chapters
+        // POST /api/stories/:id/chapters
         // =========================================================
 
         const chaptersMatch =
@@ -2697,7 +3021,8 @@ if (
                 const story =
                     await env.DB
                         .prepare(
-                            `SELECT id
+                            `SELECT
+                                id
                              FROM stories
                              WHERE id = ?
                              LIMIT 1`
@@ -2711,9 +3036,12 @@ if (
                 if (!story) {
 
                     return json({
+
                         success: false,
+
                         error:
-                            "La historia no existe."
+                            "La publicación no existe."
+
                     }, 404);
 
                 }
@@ -2740,10 +3068,12 @@ if (
 
 
                 return json({
+
                     success: true,
 
                     chapters:
-                        result.results
+                        result.results || []
+
                 });
 
 
@@ -2756,9 +3086,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudieron cargar los capítulos."
+
                 }, 500);
 
             }
@@ -2766,9 +3100,9 @@ if (
         }
 
 
-
         // =========================================================
-        // CREAR CAPÍTULO
+        // API: CREAR CAPÍTULO
+        // POST /api/stories/:id/chapters
         // =========================================================
 
         if (
@@ -2794,9 +3128,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión."
+
                     }, 401);
 
                 }
@@ -2821,23 +3158,46 @@ if (
                 if (!story) {
 
                     return json({
+
                         success: false,
+
                         error:
-                            "La historia no existe."
+                            "La publicación no existe."
+
                     }, 404);
 
                 }
 
 
+                /*
+                 * Solo el propietario o administrador
+                 * puede crear capítulos.
+                 */
+
+                const admin =
+                    await verificarAdministrador(
+                        request,
+                        env
+                    );
+
+
+                const isAdmin =
+                    admin.autorizado === true;
+
+
                 if (
                     Number(story.user_id) !==
-                    Number(session.id)
+                        Number(session.id) &&
+                    !isAdmin
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
-                            "No tienes permiso para modificar esta historia."
+                            "No tienes permiso para modificar esta publicación."
+
                     }, 403);
 
                 }
@@ -2862,18 +3222,7 @@ if (
                     content === null
                 ) {
 
-                    content =
-                        [];
-
-                }
-
-
-                if (
-                    typeof content === "string"
-                ) {
-
-                    content =
-                        content.trim();
+                    content = [];
 
                 }
 
@@ -2890,21 +3239,36 @@ if (
                 }
 
 
+                else if (
+                    typeof content !== "string"
+                ) {
+
+                    content =
+                        String(
+                            content
+                        );
+
+                }
+
+
                 if (
                     !title
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El título del capítulo es obligatorio."
+
                     }, 400);
 
                 }
 
 
                 if (
-                    !content
+                    !content.trim()
                 ) {
 
                     content =
@@ -2963,21 +3327,26 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se pudo guardar el capítulo."
+
                     }, 500);
 
                 }
 
 
                 return json({
+
                     success: true,
 
                     message:
                         "Capítulo creado correctamente.",
 
                     chapter: {
+
                         id:
                             result.meta.last_row_id,
 
@@ -2992,7 +3361,9 @@ if (
 
                         content:
                             content
+
                     }
+
                 });
 
 
@@ -3005,9 +3376,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudo crear el capítulo."
+
                 }, 500);
 
             }
@@ -3015,12 +3390,12 @@ if (
         }
 
 
-
         // =========================================================
         // API: CAPÍTULO INDIVIDUAL
-        // GET    /api/chapters/10
-        // PUT    /api/chapters/10
-        // DELETE /api/chapters/10
+        //
+        // GET    /api/chapters/:id
+        // PUT    /api/chapters/:id
+        // DELETE /api/chapters/:id
         // =========================================================
 
         const chapterMatch =
@@ -3065,19 +3440,24 @@ if (
                 if (!chapter) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El capítulo no existe."
+
                     }, 404);
 
                 }
 
 
                 return json({
+
                     success: true,
 
                     chapter:
                         chapter
+
                 });
 
 
@@ -3090,9 +3470,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudo obtener el capítulo."
+
                 }, 500);
 
             }
@@ -3100,9 +3484,9 @@ if (
         }
 
 
-
         // =========================================================
-        // EDITAR CAPÍTULO
+        // API: EDITAR CAPÍTULO
+        // PUT /api/chapters/:id
         // =========================================================
 
         if (
@@ -3128,9 +3512,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión."
+
                     }, 401);
 
                 }
@@ -3159,23 +3546,41 @@ if (
                 if (!chapter) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El capítulo no existe."
+
                     }, 404);
 
                 }
 
 
+                const admin =
+                    await verificarAdministrador(
+                        request,
+                        env
+                    );
+
+
+                const isAdmin =
+                    admin.autorizado === true;
+
+
                 if (
                     Number(chapter.user_id) !==
-                    Number(session.id)
+                        Number(session.id) &&
+                    !isAdmin
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No tienes permiso para editar este capítulo."
+
                     }, 403);
 
                 }
@@ -3220,9 +3625,12 @@ if (
                 if (!title) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El título del capítulo es obligatorio."
+
                     }, 400);
 
                 }
@@ -3242,8 +3650,9 @@ if (
                     await env.DB
                         .prepare(
                             `UPDATE chapters
-                             SET title = ?,
-                                 content = ?
+                             SET
+                                title = ?,
+                                content = ?
                              WHERE id = ?`
                         )
                         .bind(
@@ -3259,19 +3668,24 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se pudo actualizar el capítulo."
+
                     }, 500);
 
                 }
 
 
                 return json({
+
                     success: true,
 
                     message:
                         "Capítulo actualizado correctamente."
+
                 });
 
 
@@ -3284,9 +3698,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudo actualizar el capítulo."
+
                 }, 500);
 
             }
@@ -3294,9 +3712,9 @@ if (
         }
 
 
-
         // =========================================================
-        // ELIMINAR CAPÍTULO
+        // API: ELIMINAR CAPÍTULO
+        // DELETE /api/chapters/:id
         // =========================================================
 
         if (
@@ -3322,9 +3740,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión."
+
                     }, 401);
 
                 }
@@ -3353,23 +3774,41 @@ if (
                 if (!chapter) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El capítulo no existe."
+
                     }, 404);
 
                 }
 
 
+                const admin =
+                    await verificarAdministrador(
+                        request,
+                        env
+                    );
+
+
+                const isAdmin =
+                    admin.autorizado === true;
+
+
                 if (
                     Number(chapter.user_id) !==
-                    Number(session.id)
+                        Number(session.id) &&
+                    !isAdmin
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No tienes permiso para eliminar este capítulo."
+
                     }, 403);
 
                 }
@@ -3390,19 +3829,36 @@ if (
 
 
                 for (
-                    const image of images.results
+                    const image of
+                    (images.results || [])
                 ) {
+
+                    if (
+                        !image.object_key
+                    ) {
+
+                        continue;
+
+                    }
+
 
                     try {
 
-                        await env.Images.delete(
-                            image.object_key
-                        );
+                        if (
+                            env.Images
+                        ) {
+
+                            await env.Images.delete(
+                                image.object_key
+                            );
+
+                        }
 
                     } catch (error) {
 
                         console.error(
                             "Error eliminando imagen de R2:",
+                            image.object_key,
                             error
                         );
 
@@ -3439,19 +3895,24 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se pudo eliminar el capítulo."
+
                     }, 500);
 
                 }
 
 
                 return json({
+
                     success: true,
 
                     message:
                         "Capítulo eliminado correctamente."
+
                 });
 
 
@@ -3464,20 +3925,23 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudo eliminar el capítulo."
+
                 }, 500);
 
             }
 
         }
 
-
-
-        // =========================================================
+            // =========================================================
         // API: GUARDAR CONTENIDO ORDENADO DEL CAPÍTULO
-        // PUT /api/chapters/10/content
+        //
+        // PUT /api/chapters/:id/content
         // =========================================================
 
         const chapterContentMatch =
@@ -3509,9 +3973,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión."
+
                     }, 401);
 
                 }
@@ -3526,8 +3993,7 @@ if (
                                 stories.user_id
                              FROM chapters
                              INNER JOIN stories
-                             ON stories.id =
-                                chapters.story_id
+                             ON stories.id = chapters.story_id
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
@@ -3540,23 +4006,46 @@ if (
                 if (!chapter) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El capítulo no existe."
+
                     }, 404);
 
                 }
 
 
+                /*
+                 * El propietario o administrador
+                 * puede modificar el contenido.
+                 */
+
+                const admin =
+                    await verificarAdministrador(
+                        request,
+                        env
+                    );
+
+
+                const isAdmin =
+                    admin.autorizado === true;
+
+
                 if (
                     Number(chapter.user_id) !==
-                    Number(session.id)
+                        Number(session.id) &&
+                    !isAdmin
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No tienes permiso para modificar este capítulo."
+
                     }, 403);
 
                 }
@@ -3575,9 +4064,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "El contenido debe ser una lista de elementos."
+
                     }, 400);
 
                 }
@@ -3599,6 +4091,10 @@ if (
 
                     }
 
+
+                    // =================================================
+                    // ELEMENTO DE TEXTO
+                    // =================================================
 
                     if (
                         item.type === "text"
@@ -3631,6 +4127,10 @@ if (
 
                     }
 
+
+                    // =================================================
+                    // ELEMENTO DE IMAGEN
+                    // =================================================
 
                     else if (
                         item.type === "image"
@@ -3670,6 +4170,11 @@ if (
                                 .first();
 
 
+                        /*
+                         * Solo aceptamos imágenes que
+                         * realmente pertenecen al capítulo.
+                         */
+
                         if (image) {
 
                             cleanContent.push({
@@ -3678,7 +4183,7 @@ if (
                                     "image",
 
                                 image_id:
-                                    imageId,
+                                    image.id,
 
                                 image_url:
                                     image.image_url,
@@ -3720,9 +4225,12 @@ if (
                 ) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "No se pudo guardar el contenido."
+
                     }, 500);
 
                 }
@@ -3752,11 +4260,11 @@ if (
 
                 return json({
 
-                    success:
-                        false,
+                    success: false,
 
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudo guardar el contenido."
 
                 }, 500);
 
@@ -3764,13 +4272,11 @@ if (
 
         }
 
+
         // =========================================================
         // API: LISTAR FAVORITOS DEL USUARIO
         //
         // GET /api/favorites
-        //
-        // Devuelve las publicaciones que el usuario
-        // autenticado tiene guardadas.
         // =========================================================
 
         if (
@@ -3790,9 +4296,12 @@ if (
                 if (!session) {
 
                     return json({
+
                         success: false,
+
                         error:
                             "Debes iniciar sesión para ver tus favoritos."
+
                     }, 401);
 
                 }
@@ -3858,7 +4367,7 @@ if (
                         true,
 
                     favorites:
-                        result.results
+                        result.results || []
 
                 });
 
@@ -3872,9 +4381,13 @@ if (
 
 
                 return json({
+
                     success: false,
+
                     error:
-                        error.message
+                        error.message ||
+                        "No se pudieron obtener los favoritos."
+
                 }, 500);
 
             }
@@ -3915,6 +4428,10 @@ if (
                     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
 
+                // =====================================================
+                // PÁGINA PRINCIPAL
+                // =====================================================
+
                 xml +=
                     `  <url>\n` +
                     `    <loc>${escapeXml(baseUrl + "/")}</loc>\n` +
@@ -3923,8 +4440,13 @@ if (
                     `  </url>\n`;
 
 
+                // =====================================================
+                // PUBLICACIONES
+                // =====================================================
+
                 for (
-                    const story of result.results
+                    const story of
+                    (result.results || [])
                 ) {
 
                     let storyUrl;
@@ -3975,9 +4497,7 @@ if (
                             xml +=
                                 `    <lastmod>${lastmod}</lastmod>\n`;
 
-                        } catch (
-                            dateError
-                        ) {
+                        } catch (dateError) {
 
                             console.error(
                                 "Error procesando fecha del sitemap:",
@@ -4026,7 +4546,9 @@ if (
 
 
                 return new Response(
+
                     "Error generando sitemap.",
+
                     {
                         status: 500,
 
@@ -4035,12 +4557,12 @@ if (
                                 "text/plain; charset=utf-8"
                         }
                     }
+
                 );
 
             }
 
         }
-
 
 
         // =========================================================
@@ -4084,7 +4606,8 @@ if (
 
 
                 for (
-                    const chapter of result.results
+                    const chapter of
+                    (result.results || [])
                 ) {
 
                     let chapterUrl;
@@ -4143,9 +4666,7 @@ if (
                             xml +=
                                 `    <lastmod>${lastmod}</lastmod>\n`;
 
-                        } catch (
-                            dateError
-                        ) {
+                        } catch (dateError) {
 
                             console.error(
                                 "Error procesando fecha del capítulo:",
@@ -4194,7 +4715,9 @@ if (
 
 
                 return new Response(
+
                     "Error generando sitemap de capítulos.",
+
                     {
                         status: 500,
 
@@ -4203,12 +4726,12 @@ if (
                                 "text/plain; charset=utf-8"
                         }
                     }
+
                 );
 
             }
 
         }
-
 
 
         // =========================================================
@@ -4253,7 +4776,6 @@ if (
         }
 
 
-
         // =========================================================
         // ARCHIVOS HTML / ESTÁTICOS
         // =========================================================
@@ -4264,7 +4786,6 @@ if (
 
     }
 };
-
 
 
 // =========================================================
@@ -4344,25 +4865,24 @@ async function getSession(
 
 }
 
+
 // =========================================================
 // COMPROBAR ADMINISTRADOR
+//
+// IMPORTANTE:
+//
+// Los datos del administrador NO se colocan aquí.
+// La función obtiene la sesión y consulta la configuración
+// de administrador mediante las variables de entorno.
+//
+// En wrangler.toml / Cloudflare se deben configurar:
+//
+// ADMIN_USER_ID
+// ADMIN_EMAIL
+//
+// De esta manera no quedan los datos personales escritos
+// directamente en index.js.
 // =========================================================
-//
-// Administrador principal de ComicWorldFiles:
-//
-// ID de usuario: 1
-// Email: josepunkrock.1@gmail.com
-//
-// La comprobación se realiza en el Worker.
-// Nunca se confía únicamente en admin.html.
-// =========================================================
-
-const ADMIN_USER_ID =
-    1;
-
-const ADMIN_EMAIL =
-    "josepunkrock.1@gmail.com";
-
 
 async function verificarAdministrador(
     request,
@@ -4376,62 +4896,96 @@ async function verificarAdministrador(
         );
 
 
-    /*
-     * No hay sesión.
-     */
-
     if (!session) {
 
         return {
+
             autorizado: false,
 
             status: 401,
 
             error:
                 "Debes iniciar sesión."
+
         };
+
     }
 
 
+    const adminUserId =
+        Number(
+            env.ADMIN_USER_ID || 0
+        );
+
+
+    const adminEmail =
+        String(
+            env.ADMIN_EMAIL || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
     /*
-     * Comprobar ID y email.
-     *
-     * Deben coincidir ambos.
+     * Si las variables no están configuradas,
+     * ningún usuario obtiene permisos administrativos.
      */
 
-    const esAdministrador =
-        Number(session.id) ===
-            ADMIN_USER_ID
-        &&
+    if (
+        !adminUserId ||
+        !adminEmail
+    ) {
+
+        console.error(
+            "ADMIN_USER_ID o ADMIN_EMAIL no están configurados."
+        );
+
+
+        return {
+
+            autorizado: false,
+
+            status: 500,
+
+            error:
+                "La configuración del administrador no está disponible."
+
+        };
+
+    }
+
+
+    const sessionEmail =
         String(
             session.email || ""
         )
-        .toLowerCase()
-        ===
-        ADMIN_EMAIL.toLowerCase();
+        .trim()
+        .toLowerCase();
 
 
-    /*
-     * Usuario autenticado pero
-     * no es administrador.
-     */
+    const esAdministrador =
+        Number(session.id) ===
+            adminUserId
+        &&
+        sessionEmail ===
+            adminEmail;
+
 
     if (!esAdministrador) {
 
         return {
+
             autorizado: false,
 
             status: 403,
 
             error:
                 "No tienes permisos de administrador."
+
         };
+
     }
 
-
-    /*
-     * Administrador confirmado.
-     */
 
     return {
 
@@ -4439,11 +4993,13 @@ async function verificarAdministrador(
 
         status: 200,
 
-        user: session
+        user:
+            session
 
     };
 
 }
+
 
 // =========================================================
 // RESPUESTA JSON
@@ -4455,22 +5011,28 @@ function json(
 ) {
 
     return new Response(
+
         JSON.stringify(
             data
         ),
+
         {
+
             status:
                 status,
 
             headers: {
+
                 "Content-Type":
-                    "application/json"
+                    "application/json; charset=utf-8"
+
             }
+
         }
+
     );
 
 }
-
 
 
 // =========================================================
@@ -4505,7 +5067,6 @@ async function hashPassword(
 }
 
 
-
 // =========================================================
 // VERIFICAR CONTRASEÑA
 // =========================================================
@@ -4524,7 +5085,6 @@ async function verifyPassword(
     return hash === storedHash;
 
 }
-
 
 
 // =========================================================
@@ -4556,7 +5116,6 @@ function arrayBufferToHex(
         .join("");
 
 }
-
 
 
 // =========================================================
@@ -4595,7 +5154,6 @@ function generateToken() {
         .join("");
 
 }
-
 
 
 // =========================================================
@@ -4656,7 +5214,6 @@ function getCookie(
     return null;
 
 }
-
 
 
 // =========================================================
