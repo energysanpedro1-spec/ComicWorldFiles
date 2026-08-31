@@ -239,8 +239,6 @@ async function verificarAdministrador(
         .trim()
         .toLowerCase();
 
-
-    if (
     if (
     !adminUserId ||
     !adminEmail
