@@ -1,7 +1,20 @@
+import { handleLikes } from "./routes/likes.js";
+
 export default {
     async fetch(request, env) {
 
         const url = new URL(request.url);
+
+        const likesResponse =
+            await handleLikes(
+                request,
+                env,
+                url
+            );
+
+        if (likesResponse) {
+            return likesResponse;
+        }
 
 
         // =========================================================
@@ -161,8 +174,6 @@ export default {
             }
 
         }
-
-
 
         // =========================================================
         // API: LOGIN
@@ -4505,7 +4516,7 @@ if (
         }
 
 
-
+/*
         // =========================================================
         // API: ME GUSTA
         //
@@ -4714,7 +4725,7 @@ if (
                                  FROM story_likes
                                  WHERE story_id = ?
                                    AND user_id = ?
-                                 LIMIT 1`
+                                 LIMIT 1
                             )
                             .bind(
                                 storyId,
@@ -4774,7 +4785,7 @@ if (
 
             }
 
-        }
+        }*/
 
 
 
