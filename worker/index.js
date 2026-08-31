@@ -1,3 +1,4 @@
+javascript
 import { handleLikes } from "./routes/likes.js";
 import { handleFavorites } from "./routes/favorites.js";
 import { handleImages } from "./routes/images.js";
@@ -6,14 +7,12 @@ import {
     handleAdmin,
     verificarAdministrador
 } from "./routes/admin.js";
+
 export default {
 
     async fetch(request, env) {
 
-        const url =
-            new URL(
-                request.url
-            );
+        const url = new URL(request.url);
 
 
         // =====================================================
@@ -27,11 +26,8 @@ export default {
                 url
             );
 
-
         if (likesResponse) {
-
             return likesResponse;
-
         }
 
 
@@ -42,11 +38,8 @@ export default {
                 url
             );
 
-
         if (favoritesResponse) {
-
             return favoritesResponse;
-
         }
 
 
@@ -57,11 +50,8 @@ export default {
                 url
             );
 
-
         if (imageResponse) {
-
             return imageResponse;
-
         }
 
 
@@ -72,23 +62,22 @@ export default {
                 url
             );
 
-
         if (commentsResponse) {
-
             return commentsResponse;
-
         }
-        
-const adminResponse =
-    await handleAdmin(
-        request,
-        env,
-        url
-    );
 
-if (adminResponse) {
-    return adminResponse;
-}
+
+        const adminResponse =
+            await handleAdmin(
+                request,
+                env,
+                url
+            );
+
+        if (adminResponse) {
+            return adminResponse;
+        }
+
 
         // =====================================================
         // API: REGISTRO
@@ -102,29 +91,19 @@ if (adminResponse) {
 
             try {
 
-                const data =
-                    await request.json();
-
+                const data = await request.json();
 
                 const username =
-                    String(
-                        data.username || ""
-                    )
-                    .trim();
-
+                    String(data.username || "")
+                        .trim();
 
                 const email =
-                    String(
-                        data.email || ""
-                    )
-                    .trim()
-                    .toLowerCase();
-
+                    String(data.email || "")
+                        .trim()
+                        .toLowerCase();
 
                 const password =
-                    String(
-                        data.password || ""
-                    );
+                    String(data.password || "");
 
 
                 if (
@@ -134,44 +113,31 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Todos los campos son obligatorios."
-
                     }, 400);
 
                 }
 
 
-                if (
-                    username.length < 3
-                ) {
+                if (username.length < 3) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El nombre de usuario debe tener al menos 3 caracteres."
-
                     }, 400);
 
                 }
 
 
-                if (
-                    password.length < 6
-                ) {
+                if (password.length < 6) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La contraseña debe tener al menos 6 caracteres."
-
                     }, 400);
 
                 }
@@ -196,21 +162,16 @@ if (adminResponse) {
                 if (existing) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El usuario o correo electrónico ya está registrado."
-
                     }, 409);
 
                 }
 
 
                 const passwordHash =
-                    await hashPassword(
-                        password
-                    );
+                    await hashPassword(password);
 
 
                 const result =
@@ -232,29 +193,21 @@ if (adminResponse) {
                         .run();
 
 
-                if (
-                    !result.success
-                ) {
+                if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo crear la cuenta."
-
                     }, 500);
 
                 }
 
 
                 return json({
-
                     success: true,
-
                     message:
                         "Cuenta creada correctamente."
-
                 });
 
 
@@ -265,14 +218,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -297,17 +245,13 @@ if (adminResponse) {
 
 
                 const login =
-                    String(
-                        data.login || ""
-                    )
-                    .trim()
-                    .toLowerCase();
+                    String(data.login || "")
+                        .trim()
+                        .toLowerCase();
 
 
                 const password =
-                    String(
-                        data.password || ""
-                    );
+                    String(data.password || "");
 
 
                 if (
@@ -316,12 +260,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Completa todos los campos."
-
                     }, 400);
 
                 }
@@ -350,12 +291,9 @@ if (adminResponse) {
                 if (!user) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Usuario o contraseña incorrectos."
-
                     }, 401);
 
                 }
@@ -371,12 +309,9 @@ if (adminResponse) {
                 if (!validPassword) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Usuario o contraseña incorrectos."
-
                     }, 401);
 
                 }
@@ -394,8 +329,7 @@ if (adminResponse) {
                         60 *
                         60 *
                         1000
-                    )
-                    .toISOString();
+                    ).toISOString();
 
 
                 await env.DB
@@ -419,41 +353,28 @@ if (adminResponse) {
                 return new Response(
 
                     JSON.stringify({
-
                         success: true,
 
                         message:
                             "Inicio de sesión correcto.",
 
                         user: {
-
-                            id:
-                                user.id,
-
-                            username:
-                                user.username,
-
-                            email:
-                                user.email
-
+                            id: user.id,
+                            username: user.username,
+                            email: user.email
                         }
-
                     }),
 
                     {
-
                         status: 200,
 
                         headers: {
-
                             "Content-Type":
                                 "application/json",
 
                             "Set-Cookie":
                                 `session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`
-
                         }
-
                     }
 
                 );
@@ -466,14 +387,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -503,35 +419,22 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         loggedIn: false
-
                     }, 401);
 
                 }
 
 
                 return json({
-
                     success: true,
-
                     loggedIn: true,
 
                     user: {
-
-                        id:
-                            session.id,
-
-                        username:
-                            session.username,
-
-                        email:
-                            session.email
-
+                        id: session.id,
+                        username: session.username,
+                        email: session.email
                     }
-
                 });
 
 
@@ -542,14 +445,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -583,9 +481,7 @@ if (adminResponse) {
                             `DELETE FROM sessions
                              WHERE token = ?`
                         )
-                        .bind(
-                            token
-                        )
+                        .bind(token)
                         .run();
 
                 }
@@ -594,28 +490,21 @@ if (adminResponse) {
                 return new Response(
 
                     JSON.stringify({
-
                         success: true,
-
                         message:
                             "Sesión cerrada."
-
                     }),
 
                     {
-
                         status: 200,
 
                         headers: {
-
                             "Content-Type":
                                 "application/json",
 
                             "Set-Cookie":
                                 "session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
-
                         }
-
                     }
 
                 );
@@ -628,19 +517,15 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
 
         }
+
 
         // =====================================================
         // API: LISTAR AUTORES
@@ -683,12 +568,9 @@ if (adminResponse) {
 
 
                 return json({
-
                     success: true,
-
                     authors:
                         result.results || []
-
                 });
 
 
@@ -699,14 +581,10 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         "No se pudieron cargar los autores."
-
                 }, 500);
 
             }
@@ -734,7 +612,6 @@ if (adminResponse) {
 
 
                 return json({
-
                     success: true,
 
                     message:
@@ -742,19 +619,14 @@ if (adminResponse) {
 
                     database:
                         result
-
                 });
 
 
             } catch (error) {
 
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -784,12 +656,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión para crear una publicación."
-
                     }, 401);
 
                 }
@@ -800,30 +669,23 @@ if (adminResponse) {
 
 
                 const title =
-                    String(
-                        data.title || ""
-                    )
-                    .trim();
+                    String(data.title || "")
+                        .trim();
 
 
                 const description =
-                    String(
-                        data.description || ""
-                    )
-                    .trim();
+                    String(data.description || "")
+                        .trim();
 
 
                 const genre =
-                    String(
-                        data.genre || ""
-                    )
-                    .trim();
+                    String(data.genre || "")
+                        .trim();
 
 
                 let type =
                     String(
-                        data.type ||
-                        "historia"
+                        data.type || "historia"
                     )
                     .trim()
                     .toLowerCase();
@@ -835,12 +697,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El tipo de publicación no es válido."
-
                     }, 400);
 
                 }
@@ -853,28 +712,20 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Todos los campos son obligatorios."
-
                     }, 400);
 
                 }
 
 
-                if (
-                    title.length < 2
-                ) {
+                if (title.length < 2) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El título es demasiado corto."
-
                     }, 400);
 
                 }
@@ -907,12 +758,9 @@ if (adminResponse) {
                 if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo guardar la publicación."
-
                     }, 500);
 
                 }
@@ -923,7 +771,6 @@ if (adminResponse) {
 
 
                 return json({
-
                     success: true,
 
                     message:
@@ -932,36 +779,16 @@ if (adminResponse) {
                             : "Historia creada correctamente.",
 
                     story: {
-
-                        id:
-                            storyId,
-
-                        title:
-                            title,
-
-                        description:
-                            description,
-
-                        genre:
-                            genre,
-
-                        type:
-                            type,
-
-                        views:
-                            0,
-
-                        cover_url:
-                            null,
-
-                        author:
-                            session.username,
-
-                        user_id:
-                            session.id
-
+                        id: storyId,
+                        title: title,
+                        description: description,
+                        genre: genre,
+                        type: type,
+                        views: 0,
+                        cover_url: null,
+                        author: session.username,
+                        user_id: session.id
                     }
-
                 });
 
 
@@ -972,14 +799,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -1006,9 +828,7 @@ if (adminResponse) {
             try {
 
                 const storyId =
-                    Number(
-                        storyViewMatch[1]
-                    );
+                    Number(storyViewMatch[1]);
 
 
                 const story =
@@ -1021,21 +841,16 @@ if (adminResponse) {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 if (!story) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La publicación no existe."
-
                     }, 404);
 
                 }
@@ -1045,15 +860,10 @@ if (adminResponse) {
                     .prepare(
                         `UPDATE stories
                          SET views =
-                            COALESCE(
-                                views,
-                                0
-                            ) + 1
+                            COALESCE(views, 0) + 1
                          WHERE id = ?`
                     )
-                    .bind(
-                        storyId
-                    )
+                    .bind(storyId)
                     .run();
 
 
@@ -1065,21 +875,14 @@ if (adminResponse) {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 return json({
-
                     success: true,
-
                     views:
-                        Number(
-                            updated.views || 0
-                        )
-
+                        Number(updated.views || 0)
                 });
 
 
@@ -1090,14 +893,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -1124,9 +922,7 @@ if (adminResponse) {
             try {
 
                 const storyId =
-                    Number(
-                        editStoryMatch[1]
-                    );
+                    Number(editStoryMatch[1]);
 
 
                 const session =
@@ -1139,12 +935,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión."
-
                     }, 401);
 
                 }
@@ -1161,43 +954,30 @@ if (adminResponse) {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 if (!story) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La publicación no existe."
-
                     }, 404);
 
                 }
 
 
                 if (
-                    Number(
-                        story.user_id
-                    )
-                    !==
-                    Number(
-                        session.id
-                    )
+                    Number(story.user_id) !==
+                    Number(session.id)
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No tienes permiso para modificar esta publicación."
-
                     }, 403);
 
                 }
@@ -1208,24 +988,18 @@ if (adminResponse) {
 
 
                 const title =
-                    String(
-                        data.title || ""
-                    )
-                    .trim();
+                    String(data.title || "")
+                        .trim();
 
 
                 const description =
-                    String(
-                        data.description || ""
-                    )
-                    .trim();
+                    String(data.description || "")
+                        .trim();
 
 
                 const genre =
-                    String(
-                        data.genre || ""
-                    )
-                    .trim();
+                    String(data.genre || "")
+                        .trim();
 
 
                 const type =
@@ -1244,12 +1018,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El tipo de publicación no es válido."
-
                     }, 400);
 
                 }
@@ -1262,28 +1033,20 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El título, la descripción y el género son obligatorios."
-
                     }, 400);
 
                 }
 
 
-                if (
-                    title.length < 2
-                ) {
+                if (title.length < 2) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El título debe tener al menos 2 caracteres."
-
                     }, 400);
 
                 }
@@ -1313,24 +1076,18 @@ if (adminResponse) {
                 if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo actualizar la publicación."
-
                     }, 500);
 
                 }
 
 
                 return json({
-
                     success: true,
-
                     message:
                         "Información actualizada correctamente."
-
                 });
 
 
@@ -1341,14 +1098,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -1398,12 +1150,9 @@ if (adminResponse) {
 
 
                 return json({
-
                     success: true,
-
                     stories:
                         result.results || []
-
                 });
 
 
@@ -1414,14 +1163,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -1448,9 +1192,7 @@ if (adminResponse) {
             try {
 
                 const storyId =
-                    Number(
-                        storyMatch[1]
-                    );
+                    Number(storyMatch[1]);
 
 
                 const story =
@@ -1479,33 +1221,24 @@ if (adminResponse) {
 
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 if (!story) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La publicación no existe."
-
                     }, 404);
 
                 }
 
 
                 return json({
-
                     success: true,
-
-                    story:
-                        story
-
+                    story: story
                 });
 
 
@@ -1516,14 +1249,9 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
-                    error:
-                        error.message
-
+                    error: error.message
                 }, 500);
 
             }
@@ -1531,171 +1259,10 @@ if (adminResponse) {
         }
 
 
-        // LA PARTE 2 CONTINÚA DESDE AQUÍ
-            // =========================================================
-        // API: LISTAR HISTORIAS / HISTORIETAS
-        // GET /api/stories
-        // =========================================================
-
-        if (
-            url.pathname === "/api/stories" &&
-            request.method === "GET"
-        ) {
-
-            try {
-
-                const result =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                stories.id,
-                                stories.user_id,
-                                stories.title,
-                                stories.description,
-                                stories.genre,
-                                stories.type,
-                                stories.cover_url,
-                                stories.views,
-                                stories.created_at,
-                                users.username AS author
-                             FROM stories
-                             INNER JOIN users
-                             ON users.id = stories.user_id
-                             ORDER BY stories.id DESC
-                             LIMIT 20`
-                        )
-                        .all();
-
-
-                return json({
-
-                    success: true,
-
-                    stories:
-                        result.results || []
-
-                });
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error listando publicaciones:",
-                    error
-                );
-
-
-                return json({
-
-                    success: false,
-
-                    error:
-                        error.message ||
-                        "No se pudieron cargar las publicaciones."
-
-                }, 500);
-
-            }
-
-        }
-
-
-        // =========================================================
-        // API: PUBLICACIÓN INDIVIDUAL
-        // GET /api/stories/:id
-        // =========================================================
-
-
-        if (
-            storyMatch &&
-            request.method === "GET"
-        ) {
-
-            try {
-
-                const storyId =
-                    Number(
-                        storyMatch[1]
-                    );
-
-
-                const story =
-                    await env.DB
-                        .prepare(
-                            `SELECT
-                                stories.id,
-                                stories.user_id,
-                                stories.title,
-                                stories.description,
-                                stories.genre,
-                                stories.type,
-                                stories.cover_url,
-                                stories.views,
-                                stories.created_at,
-                                users.username AS author
-                             FROM stories
-                             INNER JOIN users
-                             ON users.id = stories.user_id
-                             WHERE stories.id = ?
-                             LIMIT 1`
-                        )
-                        .bind(
-                            storyId
-                        )
-                        .first();
-
-
-                if (!story) {
-
-                    return json({
-
-                        success: false,
-
-                        error:
-                            "La publicación no existe."
-
-                    }, 404);
-
-                }
-
-
-                return json({
-
-                    success: true,
-
-                    story:
-                        story
-
-                });
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error obteniendo publicación:",
-                    error
-                );
-
-
-                return json({
-
-                    success: false,
-
-                    error:
-                        error.message ||
-                        "No se pudo obtener la publicación."
-
-                }, 500);
-
-            }
-
-        }
-
-
-        // =========================================================
+        // =====================================================
         // API: SUBIR / REEMPLAZAR PORTADA
         // POST /api/stories/:id/cover
-        // =========================================================
+        // =====================================================
 
         const coverMatch =
             url.pathname.match(
@@ -1711,9 +1278,7 @@ if (adminResponse) {
             try {
 
                 const storyId =
-                    Number(
-                        coverMatch[1]
-                    );
+                    Number(coverMatch[1]);
 
 
                 const session =
@@ -1726,12 +1291,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión."
-
                     }, 401);
 
                 }
@@ -1748,32 +1310,20 @@ if (adminResponse) {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 if (!story) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La publicación no existe."
-
                     }, 404);
 
                 }
 
-
-                /*
-                 * El propietario puede modificar
-                 * su propia portada.
-                 *
-                 * El administrador también puede hacerlo.
-                 */
 
                 const admin =
                     await verificarAdministrador(
@@ -1793,12 +1343,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No tienes permiso para modificar esta publicación."
-
                     }, 403);
 
                 }
@@ -1809,9 +1356,7 @@ if (adminResponse) {
 
 
                 const file =
-                    formData.get(
-                        "cover"
-                    );
+                    formData.get("cover");
 
 
                 if (
@@ -1820,46 +1365,34 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se recibió ninguna imagen."
-
                     }, 400);
 
                 }
 
 
                 const maxSize =
-                    5 *
-                    1024 *
-                    1024;
+                    5 * 1024 * 1024;
 
 
-                if (
-                    file.size > maxSize
-                ) {
+                if (file.size > maxSize) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La imagen no puede superar los 5 MB."
-
                     }, 400);
 
                 }
 
 
                 const allowedTypes = [
-
                     "image/jpeg",
                     "image/png",
                     "image/webp",
                     "image/gif"
-
                 ];
 
 
@@ -1870,12 +1403,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Formato no permitido. Usa JPG, PNG, WEBP o GIF."
-
                     }, 400);
 
                 }
@@ -1889,35 +1419,25 @@ if (adminResponse) {
 
 
                 await env.Cover.put(
-
                     objectKey,
-
                     file.stream(),
-
                     {
-
                         httpMetadata: {
-
                             contentType:
                                 file.type,
 
                             cacheControl:
                                 "public, max-age=3600"
-
                         },
 
                         customMetadata: {
-
                             storyId:
                                 String(storyId),
 
                             userId:
                                 String(story.user_id)
-
                         }
-
                     }
-
                 );
 
 
@@ -1941,7 +1461,6 @@ if (adminResponse) {
 
 
                 return json({
-
                     success: true,
 
                     message:
@@ -1949,7 +1468,6 @@ if (adminResponse) {
 
                     cover_url:
                         coverUrl
-
                 });
 
 
@@ -1960,15 +1478,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudo subir la portada."
-
                 }, 500);
 
             }
@@ -1976,10 +1490,10 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // API: SERVIR PORTADA DESDE R2
         // GET /api/stories/:id/cover
-        // =========================================================
+        // =====================================================
 
         if (
             coverMatch &&
@@ -1989,9 +1503,7 @@ if (adminResponse) {
             try {
 
                 const storyId =
-                    Number(
-                        coverMatch[1]
-                    );
+                    Number(coverMatch[1]);
 
 
                 const story =
@@ -2004,22 +1516,17 @@ if (adminResponse) {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 if (!story) {
 
                     return new Response(
-
                         "Publicación no encontrada.",
-
                         {
                             status: 404
                         }
-
                     );
 
                 }
@@ -2041,13 +1548,10 @@ if (adminResponse) {
                 if (!object) {
 
                     return new Response(
-
                         "Portada no encontrada.",
-
                         {
                             status: 404
                         }
-
                     );
 
                 }
@@ -2075,18 +1579,11 @@ if (adminResponse) {
 
 
                 return new Response(
-
                     object.body,
-
                     {
-
                         status: 200,
-
-                        headers:
-                            headers
-
+                        headers: headers
                     }
-
                 );
 
 
@@ -2097,15 +1594,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return new Response(
-
                     "Error obteniendo portada.",
-
                     {
                         status: 500
                     }
-
                 );
 
             }
@@ -2113,18 +1606,22 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // API: CAPÍTULOS DE UNA PUBLICACIÓN
         //
         // GET  /api/stories/:id/chapters
         // POST /api/stories/:id/chapters
-        // =========================================================
+        // =====================================================
 
         const chaptersMatch =
             url.pathname.match(
                 /^\/api\/stories\/(\d+)\/chapters$/
             );
 
+
+        // =====================================================
+        // LISTAR CAPÍTULOS
+        // =====================================================
 
         if (
             chaptersMatch &&
@@ -2134,35 +1631,27 @@ if (adminResponse) {
             try {
 
                 const storyId =
-                    Number(
-                        chaptersMatch[1]
-                    );
+                    Number(chaptersMatch[1]);
 
 
                 const story =
                     await env.DB
                         .prepare(
-                            `SELECT
-                                id
+                            `SELECT id
                              FROM stories
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 if (!story) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La publicación no existe."
-
                     }, 404);
 
                 }
@@ -2182,19 +1671,14 @@ if (adminResponse) {
                              WHERE story_id = ?
                              ORDER BY chapter_number ASC`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .all();
 
 
                 return json({
-
                     success: true,
-
                     chapters:
                         result.results || []
-
                 });
 
 
@@ -2205,15 +1689,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudieron cargar los capítulos."
-
                 }, 500);
 
             }
@@ -2221,10 +1701,9 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
-        // API: CREAR CAPÍTULO
-        // POST /api/stories/:id/chapters
-        // =========================================================
+        // =====================================================
+        // CREAR CAPÍTULO
+        // =====================================================
 
         if (
             chaptersMatch &&
@@ -2234,9 +1713,7 @@ if (adminResponse) {
             try {
 
                 const storyId =
-                    Number(
-                        chaptersMatch[1]
-                    );
+                    Number(chaptersMatch[1]);
 
 
                 const session =
@@ -2249,12 +1726,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión."
-
                     }, 401);
 
                 }
@@ -2270,30 +1744,20 @@ if (adminResponse) {
                              WHERE id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
                 if (!story) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "La publicación no existe."
-
                     }, 404);
 
                 }
 
-
-                /*
-                 * Solo el propietario o administrador
-                 * puede crear capítulos.
-                 */
 
                 const admin =
                     await verificarAdministrador(
@@ -2313,12 +1777,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No tienes permiso para modificar esta publicación."
-
                     }, 403);
 
                 }
@@ -2329,9 +1790,8 @@ if (adminResponse) {
 
 
                 const title =
-                    String(
-                        data.title || ""
-                    ).trim();
+                    String(data.title || "")
+                        .trim();
 
 
                 let content =
@@ -2348,52 +1808,35 @@ if (adminResponse) {
                 }
 
 
-                if (
-                    Array.isArray(content)
-                ) {
+                if (Array.isArray(content)) {
 
                     content =
-                        JSON.stringify(
-                            content
-                        );
+                        JSON.stringify(content);
 
-                }
-
-
-                else if (
+                } else if (
                     typeof content !== "string"
                 ) {
 
                     content =
-                        String(
-                            content
-                        );
+                        String(content);
 
                 }
 
 
-                if (
-                    !title
-                ) {
+                if (!title) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El título del capítulo es obligatorio."
-
                     }, 400);
 
                 }
 
 
-                if (
-                    !content.trim()
-                ) {
+                if (!content.trim()) {
 
-                    content =
-                        "[]";
+                    content = "[]";
 
                 }
 
@@ -2408,9 +1851,7 @@ if (adminResponse) {
                              ORDER BY chapter_number DESC
                              LIMIT 1`
                         )
-                        .bind(
-                            storyId
-                        )
+                        .bind(storyId)
                         .first();
 
 
@@ -2443,31 +1884,24 @@ if (adminResponse) {
                         .run();
 
 
-                if (
-                    !result.success
-                ) {
+                if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo guardar el capítulo."
-
                     }, 500);
 
                 }
 
 
                 return json({
-
                     success: true,
 
                     message:
                         "Capítulo creado correctamente.",
 
                     chapter: {
-
                         id:
                             result.meta.last_row_id,
 
@@ -2482,9 +1916,7 @@ if (adminResponse) {
 
                         content:
                             content
-
                     }
-
                 });
 
 
@@ -2495,15 +1927,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudo crear el capítulo."
-
                 }, 500);
 
             }
@@ -2511,19 +1939,23 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // API: CAPÍTULO INDIVIDUAL
         //
         // GET    /api/chapters/:id
         // PUT    /api/chapters/:id
         // DELETE /api/chapters/:id
-        // =========================================================
+        // =====================================================
 
         const chapterMatch =
             url.pathname.match(
                 /^\/api\/chapters\/(\d+)$/
             );
 
+
+        // =====================================================
+        // OBTENER CAPÍTULO
+        // =====================================================
 
         if (
             chapterMatch &&
@@ -2533,9 +1965,7 @@ if (adminResponse) {
             try {
 
                 const chapterId =
-                    Number(
-                        chapterMatch[1]
-                    );
+                    Number(chapterMatch[1]);
 
 
                 const chapter =
@@ -2552,33 +1982,24 @@ if (adminResponse) {
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            chapterId
-                        )
+                        .bind(chapterId)
                         .first();
 
 
                 if (!chapter) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El capítulo no existe."
-
                     }, 404);
 
                 }
 
 
                 return json({
-
                     success: true,
-
-                    chapter:
-                        chapter
-
+                    chapter: chapter
                 });
 
 
@@ -2589,15 +2010,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudo obtener el capítulo."
-
                 }, 500);
 
             }
@@ -2605,10 +2022,9 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
-        // API: EDITAR CAPÍTULO
-        // PUT /api/chapters/:id
-        // =========================================================
+        // =====================================================
+        // EDITAR CAPÍTULO
+        // =====================================================
 
         if (
             chapterMatch &&
@@ -2618,9 +2034,7 @@ if (adminResponse) {
             try {
 
                 const chapterId =
-                    Number(
-                        chapterMatch[1]
-                    );
+                    Number(chapterMatch[1]);
 
 
                 const session =
@@ -2633,12 +2047,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión."
-
                     }, 401);
 
                 }
@@ -2658,21 +2069,16 @@ if (adminResponse) {
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            chapterId
-                        )
+                        .bind(chapterId)
                         .first();
 
 
                 if (!chapter) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El capítulo no existe."
-
                     }, 404);
 
                 }
@@ -2696,12 +2102,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No tienes permiso para editar este capítulo."
-
                     }, 403);
 
                 }
@@ -2712,23 +2115,18 @@ if (adminResponse) {
 
 
                 const title =
-                    String(
-                        data.title || ""
-                    ).trim();
+                    String(data.title || "")
+                        .trim();
 
 
                 let content =
                     data.content;
 
 
-                if (
-                    Array.isArray(content)
-                ) {
+                if (Array.isArray(content)) {
 
                     content =
-                        JSON.stringify(
-                            content
-                        );
+                        JSON.stringify(content);
 
                 }
 
@@ -2737,8 +2135,7 @@ if (adminResponse) {
                     typeof content !== "string"
                 ) {
 
-                    content =
-                        "[]";
+                    content = "[]";
 
                 }
 
@@ -2746,23 +2143,17 @@ if (adminResponse) {
                 if (!title) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El título del capítulo es obligatorio."
-
                     }, 400);
 
                 }
 
 
-                if (
-                    !content.trim()
-                ) {
+                if (!content.trim()) {
 
-                    content =
-                        "[]";
+                    content = "[]";
 
                 }
 
@@ -2784,29 +2175,21 @@ if (adminResponse) {
                         .run();
 
 
-                if (
-                    !result.success
-                ) {
+                if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo actualizar el capítulo."
-
                     }, 500);
 
                 }
 
 
                 return json({
-
                     success: true,
-
                     message:
                         "Capítulo actualizado correctamente."
-
                 });
 
 
@@ -2817,15 +2200,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudo actualizar el capítulo."
-
                 }, 500);
 
             }
@@ -2833,10 +2212,9 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
-        // API: ELIMINAR CAPÍTULO
-        // DELETE /api/chapters/:id
-        // =========================================================
+        // =====================================================
+        // ELIMINAR CAPÍTULO
+        // =====================================================
 
         if (
             chapterMatch &&
@@ -2846,9 +2224,7 @@ if (adminResponse) {
             try {
 
                 const chapterId =
-                    Number(
-                        chapterMatch[1]
-                    );
+                    Number(chapterMatch[1]);
 
 
                 const session =
@@ -2861,12 +2237,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión."
-
                     }, 401);
 
                 }
@@ -2886,21 +2259,16 @@ if (adminResponse) {
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            chapterId
-                        )
+                        .bind(chapterId)
                         .first();
 
 
                 if (!chapter) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El capítulo no existe."
-
                     }, 404);
 
                 }
@@ -2924,12 +2292,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No tienes permiso para eliminar este capítulo."
-
                     }, 403);
 
                 }
@@ -2943,9 +2308,7 @@ if (adminResponse) {
                              FROM chapter_images
                              WHERE chapter_id = ?`
                         )
-                        .bind(
-                            chapterId
-                        )
+                        .bind(chapterId)
                         .all();
 
 
@@ -2954,20 +2317,14 @@ if (adminResponse) {
                     (images.results || [])
                 ) {
 
-                    if (
-                        !image.object_key
-                    ) {
-
+                    if (!image.object_key) {
                         continue;
-
                     }
 
 
                     try {
 
-                        if (
-                            env.Images
-                        ) {
+                        if (env.Images) {
 
                             await env.Images.delete(
                                 image.object_key
@@ -2993,9 +2350,7 @@ if (adminResponse) {
                         `DELETE FROM chapter_images
                          WHERE chapter_id = ?`
                     )
-                    .bind(
-                        chapterId
-                    )
+                    .bind(chapterId)
                     .run();
 
 
@@ -3005,35 +2360,25 @@ if (adminResponse) {
                             `DELETE FROM chapters
                              WHERE id = ?`
                         )
-                        .bind(
-                            chapterId
-                        )
+                        .bind(chapterId)
                         .run();
 
 
-                if (
-                    !result.success
-                ) {
+                if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo eliminar el capítulo."
-
                     }, 500);
 
                 }
 
 
                 return json({
-
                     success: true,
-
                     message:
                         "Capítulo eliminado correctamente."
-
                 });
 
 
@@ -3044,26 +2389,23 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudo eliminar el capítulo."
-
                 }, 500);
 
             }
 
         }
 
-            // =========================================================
+
+        // =====================================================
         // API: GUARDAR CONTENIDO ORDENADO DEL CAPÍTULO
         //
         // PUT /api/chapters/:id/content
-        // =========================================================
+        // =====================================================
 
         const chapterContentMatch =
             url.pathname.match(
@@ -3094,12 +2436,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión."
-
                     }, 401);
 
                 }
@@ -3114,34 +2453,25 @@ if (adminResponse) {
                                 stories.user_id
                              FROM chapters
                              INNER JOIN stories
-                             ON stories.id = chapters.story_id
+                             ON stories.id =
+                                chapters.story_id
                              WHERE chapters.id = ?
                              LIMIT 1`
                         )
-                        .bind(
-                            chapterId
-                        )
+                        .bind(chapterId)
                         .first();
 
 
                 if (!chapter) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El capítulo no existe."
-
                     }, 404);
 
                 }
 
-
-                /*
-                 * El propietario o administrador
-                 * puede modificar el contenido.
-                 */
 
                 const admin =
                     await verificarAdministrador(
@@ -3161,12 +2491,9 @@ if (adminResponse) {
                 ) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No tienes permiso para modificar este capítulo."
-
                     }, 403);
 
                 }
@@ -3180,17 +2507,12 @@ if (adminResponse) {
                     data.content;
 
 
-                if (
-                    !Array.isArray(content)
-                ) {
+                if (!Array.isArray(content)) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "El contenido debe ser una lista de elementos."
-
                     }, 400);
 
                 }
@@ -3199,9 +2521,7 @@ if (adminResponse) {
                 const cleanContent = [];
 
 
-                for (
-                    const item of content
-                ) {
+                for (const item of content) {
 
                     if (
                         !item ||
@@ -3232,16 +2552,9 @@ if (adminResponse) {
                         if (text) {
 
                             cleanContent.push({
-
-                                type:
-                                    "text",
-
-                                content:
-                                    text,
-
-                                text:
-                                    text
-
+                                type: "text",
+                                content: text,
+                                text: text
                             });
 
                         }
@@ -3258,17 +2571,11 @@ if (adminResponse) {
                     ) {
 
                         const imageId =
-                            Number(
-                                item.image_id
-                            );
+                            Number(item.image_id);
 
 
-                        if (
-                            !imageId
-                        ) {
-
+                        if (!imageId) {
                             continue;
-
                         }
 
 
@@ -3291,17 +2598,10 @@ if (adminResponse) {
                                 .first();
 
 
-                        /*
-                         * Solo aceptamos imágenes que
-                         * realmente pertenecen al capítulo.
-                         */
-
                         if (image) {
 
                             cleanContent.push({
-
-                                type:
-                                    "image",
+                                type: "image",
 
                                 image_id:
                                     image.id,
@@ -3311,7 +2611,6 @@ if (adminResponse) {
 
                                 filename:
                                     image.filename
-
                             });
 
                         }
@@ -3341,33 +2640,25 @@ if (adminResponse) {
                         .run();
 
 
-                if (
-                    !result.success
-                ) {
+                if (!result.success) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "No se pudo guardar el contenido."
-
                     }, 500);
 
                 }
 
 
                 return json({
-
-                    success:
-                        true,
+                    success: true,
 
                     message:
                         "Contenido guardado correctamente.",
 
                     content:
                         cleanContent
-
                 });
 
 
@@ -3378,15 +2669,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudo guardar el contenido."
-
                 }, 500);
 
             }
@@ -3394,11 +2681,11 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // API: LISTAR FAVORITOS DEL USUARIO
         //
         // GET /api/favorites
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/api/favorites" &&
@@ -3417,12 +2704,9 @@ if (adminResponse) {
                 if (!session) {
 
                     return json({
-
                         success: false,
-
                         error:
                             "Debes iniciar sesión para ver tus favoritos."
-
                     }, 401);
 
                 }
@@ -3476,20 +2760,15 @@ if (adminResponse) {
                              ORDER BY
                                 story_favorites.created_at DESC`
                         )
-                        .bind(
-                            session.id
-                        )
+                        .bind(session.id)
                         .all();
 
 
                 return json({
-
-                    success:
-                        true,
+                    success: true,
 
                     favorites:
                         result.results || []
-
                 });
 
 
@@ -3500,15 +2779,11 @@ if (adminResponse) {
                     error
                 );
 
-
                 return json({
-
                     success: false,
-
                     error:
                         error.message ||
                         "No se pudieron obtener los favoritos."
-
                 }, 500);
 
             }
@@ -3516,9 +2791,9 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // SITEMAP.XML
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/sitemap.xml" &&
@@ -3549,10 +2824,6 @@ if (adminResponse) {
                     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
 
-                // =====================================================
-                // PÁGINA PRINCIPAL
-                // =====================================================
-
                 xml +=
                     `  <url>\n` +
                     `    <loc>${escapeXml(baseUrl + "/")}</loc>\n` +
@@ -3560,10 +2831,6 @@ if (adminResponse) {
                     `    <priority>1.0</priority>\n` +
                     `  </url>\n`;
 
-
-                // =====================================================
-                // PUBLICACIONES
-                // =====================================================
 
                 for (
                     const story of
@@ -3601,9 +2868,7 @@ if (adminResponse) {
                         `    <loc>${escapeXml(storyUrl)}</loc>\n`;
 
 
-                    if (
-                        story.created_at
-                    ) {
+                    if (story.created_at) {
 
                         try {
 
@@ -3665,11 +2930,8 @@ if (adminResponse) {
                     error
                 );
 
-
                 return new Response(
-
                     "Error generando sitemap.",
-
                     {
                         status: 500,
 
@@ -3678,7 +2940,6 @@ if (adminResponse) {
                                 "text/plain; charset=utf-8"
                         }
                     }
-
                 );
 
             }
@@ -3686,9 +2947,9 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // SITEMAP-CAPITULOS.XML
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/sitemap-capitulos.xml" &&
@@ -3770,9 +3031,7 @@ if (adminResponse) {
                         `    <loc>${escapeXml(chapterUrl)}</loc>\n`;
 
 
-                    if (
-                        chapter.created_at
-                    ) {
+                    if (chapter.created_at) {
 
                         try {
 
@@ -3834,11 +3093,8 @@ if (adminResponse) {
                     error
                 );
 
-
                 return new Response(
-
                     "Error generando sitemap de capítulos.",
-
                     {
                         status: 500,
 
@@ -3847,7 +3103,6 @@ if (adminResponse) {
                                 "text/plain; charset=utf-8"
                         }
                     }
-
                 );
 
             }
@@ -3855,9 +3110,9 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // ROBOTS.TXT
-        // =========================================================
+        // =====================================================
 
         if (
             url.pathname === "/robots.txt" &&
@@ -3897,9 +3152,9 @@ if (adminResponse) {
         }
 
 
-        // =========================================================
+        // =====================================================
         // ARCHIVOS HTML / ESTÁTICOS
-        // =========================================================
+        // =====================================================
 
         return env.ASSETS.fetch(
             request
@@ -3926,9 +3181,7 @@ async function getSession(
 
 
     if (!token) {
-
         return null;
-
     }
 
 
@@ -3947,16 +3200,12 @@ async function getSession(
                  WHERE sessions.token = ?
                  LIMIT 1`
             )
-            .bind(
-                token
-            )
+            .bind(token)
             .first();
 
 
     if (!session) {
-
         return null;
-
     }
 
 
@@ -3971,9 +3220,7 @@ async function getSession(
                 `DELETE FROM sessions
                  WHERE token = ?`
             )
-            .bind(
-                token
-            )
+            .bind(token)
             .run();
 
 
@@ -3998,22 +3245,15 @@ function json(
 
     return new Response(
 
-        JSON.stringify(
-            data
-        ),
+        JSON.stringify(data),
 
         {
-
-            status:
-                status,
+            status: status,
 
             headers: {
-
                 "Content-Type":
                     "application/json; charset=utf-8"
-
             }
-
         }
 
     );
@@ -4083,9 +3323,7 @@ function arrayBufferToHex(
 
     return Array
         .from(
-            new Uint8Array(
-                buffer
-            )
+            new Uint8Array(buffer)
         )
         .map(
             function(byte) {
@@ -4111,9 +3349,7 @@ function arrayBufferToHex(
 function generateToken() {
 
     const bytes =
-        new Uint8Array(
-            32
-        );
+        new Uint8Array(32);
 
 
     crypto.getRandomValues(
@@ -4122,9 +3358,7 @@ function generateToken() {
 
 
     return Array
-        .from(
-            bytes
-        )
+        .from(bytes)
         .map(
             function(byte) {
 
@@ -4158,16 +3392,12 @@ function getCookie(
 
 
     if (!cookieHeader) {
-
         return null;
-
     }
 
 
     const cookies =
-        cookieHeader.split(
-            ";"
-        );
+        cookieHeader.split(";");
 
 
     for (
@@ -4177,9 +3407,7 @@ function getCookie(
         const parts =
             cookie
                 .trim()
-                .split(
-                    "="
-                );
+                .split("=");
 
 
         if (
@@ -4188,9 +3416,7 @@ function getCookie(
 
             return parts
                 .slice(1)
-                .join(
-                    "="
-                );
+                .join("=");
 
         }
 
@@ -4210,9 +3436,7 @@ function escapeXml(
     value
 ) {
 
-    return String(
-        value
-    )
+    return String(value)
         .replace(
             /&/g,
             "&amp;"
