@@ -15,9 +15,7 @@ function json(
 
     return new Response(
 
-        JSON.stringify(
-            data
-        ),
+        JSON.stringify(data),
 
         {
             status: status,
@@ -43,9 +41,7 @@ function getCookie(
 ) {
 
     const cookieHeader =
-        request.headers.get(
-            "Cookie"
-        );
+        request.headers.get("Cookie");
 
     if (!cookieHeader) {
         return null;
@@ -67,9 +63,7 @@ function getCookie(
         const value =
             parts.join("=");
 
-        if (
-            key === name
-        ) {
+        if (key === name) {
 
             return value || null;
 
@@ -105,36 +99,34 @@ async function getSession(
         await env.DB
             .prepare(
                 `SELECT
-                    sessions.id,
                     sessions.user_id,
                     sessions.token,
                     sessions.expires_at,
-
                     users.username,
                     users.email
 
                  FROM sessions
 
                  INNER JOIN users
-                 ON users.id =
-                    sessions.user_id
+                 ON users.id = sessions.user_id
 
                  WHERE sessions.token = ?
 
                  LIMIT 1`
             )
-            .bind(
-                token
-            )
+            .bind(token)
             .first();
 
     if (!session) {
         return null;
     }
 
-    if (
-        session.expires_at
-    ) {
+
+    // =============================================
+    // COMPROBAR EXPIRACIÓN
+    // =============================================
+
+    if (session.expires_at) {
 
         const expiration =
             new Date(
@@ -153,9 +145,7 @@ async function getSession(
                         `DELETE FROM sessions
                          WHERE token = ?`
                     )
-                    .bind(
-                        token
-                    )
+                    .bind(token)
                     .run();
 
             } catch (error) {
@@ -172,6 +162,7 @@ async function getSession(
         }
 
     }
+
 
     return {
 
@@ -210,6 +201,11 @@ async function verificarAdministrador(
             env
         );
 
+
+    // =============================================
+    // NO HAY SESIÓN
+    // =============================================
+
     if (!session) {
 
         return {
@@ -226,72 +222,73 @@ async function verificarAdministrador(
     }
 
 
+    // =============================================
+    // OBTENER CONFIGURACIÓN ADMIN
+    // =============================================
+
+    const rawAdminId =
+        env.ADMIN_USER_ID;
+
+    const rawAdminEmail =
+        env.ADMIN_EMAIL;
+
+
     const adminUserId =
-    Number(
-        env.ADMIN_USER_ID || 0
-    );
+        Number(
+            rawAdminId || 0
+        );
 
-const adminEmail =
-    String(
-        env.ADMIN_EMAIL || ""
-    )
-    .trim()
-    .toLowerCase();
 
-console.log("DEBUG ADMIN:", {
-    tieneADMIN_USER_ID:
-        env.ADMIN_USER_ID !== undefined,
+    const adminEmail =
+        String(
+            rawAdminEmail || ""
+        )
+        .trim()
+        .toLowerCase();
 
-    tieneADMIN_EMAIL:
-        env.ADMIN_EMAIL !== undefined,
 
-    adminUserId:
-        adminUserId,
+    // =============================================
+    // CONFIGURACIÓN NO DISPONIBLE
+    // =============================================
 
-    adminEmail:
-        adminEmail
-});
-    
-   /* if (
-    !adminUserId ||
-    !adminEmail
-) {
+    if (
+        !adminUserId ||
+        !adminEmail
+    ) {
 
-    console.error(
-        "CONFIG ADMIN:",
-        {
-            tieneAdminUserId:
-                !!env.ADMIN_USER_ID,
+        console.error(
+            "Configuración ADMIN incompleta.",
+            {
+                ADMIN_USER_ID:
+                    !!rawAdminId,
 
-            tieneAdminEmail:
-                !!env.ADMIN_EMAIL
-        }
-    );
+                ADMIN_EMAIL:
+                    !!rawAdminEmail
+            }
+        );
 
-    return json({
+        return {
 
-        success: false,
+            autorizado: false,
 
-        loggedIn: true,
+            status: 500,
 
-        isAdmin: false,
+            error:
+                "La configuración del administrador no está disponible."
 
-        debug: {
+        };
 
-            tieneAdminUserId:
-                !!env.ADMIN_USER_ID,
+    }
 
-            tieneAdminEmail:
-                !!env.ADMIN_EMAIL
 
-        },
+    // =============================================
+    // DATOS DE LA SESIÓN
+    // =============================================
 
-        error:
-            "La configuración del administrador no está disponible."
-
-    }, 500);
-
-}
+    const sessionId =
+        Number(
+            session.id
+        );
 
 
     const sessionEmail =
@@ -302,13 +299,47 @@ console.log("DEBUG ADMIN:", {
         .toLowerCase();
 
 
-    const esAdministrador =
-        Number(session.id) ===
-            adminUserId
-        &&
-        sessionEmail ===
-            adminEmail;
+    // =============================================
+    // COMPROBAR ID Y EMAIL
+    // =============================================
 
+    const idCorrecto =
+        sessionId === adminUserId;
+
+
+    const emailCorrecto =
+        sessionEmail === adminEmail;
+
+
+    const esAdministrador =
+        idCorrecto &&
+        emailCorrecto;
+
+
+    console.log(
+        "ADMIN CHECK:",
+        {
+            sessionId:
+                sessionId,
+
+            adminUserId:
+                adminUserId,
+
+            idCorrecto:
+                idCorrecto,
+
+            emailCorrecto:
+                emailCorrecto,
+
+            esAdministrador:
+                esAdministrador
+        }
+    );
+
+
+    // =============================================
+    // NO ES ADMIN
+    // =============================================
 
     if (!esAdministrador) {
 
@@ -318,6 +349,9 @@ console.log("DEBUG ADMIN:", {
 
             status: 403,
 
+            user:
+                session,
+
             error:
                 "No tienes permisos de administrador."
 
@@ -325,6 +359,10 @@ console.log("DEBUG ADMIN:", {
 
     }
 
+
+    // =============================================
+    // ES ADMIN
+    // =============================================
 
     return {
 
@@ -337,7 +375,7 @@ console.log("DEBUG ADMIN:", {
 
     };
 
-}*/
+}
 
 
 // =====================================================
@@ -350,165 +388,166 @@ export async function handleAdmin(
     url
 ) {
 
+
     // =================================================
     // COMPROBAR ADMINISTRADOR
     // GET /api/admin/check
     // =================================================
 
-    
-                if (
-    url.pathname === "/api/admin/check" &&
-    request.method === "GET"
-) {
+    if (
+        url.pathname ===
+            "/api/admin/check"
+        &&
+        request.method === "GET"
+    ) {
 
-    try {
+        try {
 
-        const session =
-            await getSession(
-                request,
-                env
-            );
+            const auth =
+                await verificarAdministrador(
+                    request,
+                    env
+                );
 
-        if (!session) {
+
+            // =========================================
+            // NO ESTÁ LOGUEADO
+            // =========================================
+
+            if (
+                auth.status === 401
+            ) {
+
+                return json({
+
+                    success: true,
+
+                    loggedIn: false,
+
+                    isAdmin: false,
+
+                    error:
+                        auth.error
+
+                }, 200);
+
+            }
+
+
+            // =========================================
+            // LOGUEADO PERO NO ADMIN
+            // =========================================
+
+            if (
+                auth.status === 403
+            ) {
+
+                return json({
+
+                    success: true,
+
+                    loggedIn: true,
+
+                    isAdmin: false,
+
+                    user: {
+
+                        id:
+                            auth.user.id,
+
+                        username:
+                            auth.user.username,
+
+                        email:
+                            auth.user.email
+
+                    },
+
+                    error:
+                        auth.error
+
+                }, 200);
+
+            }
+
+
+            // =========================================
+            // ERROR DE CONFIGURACIÓN
+            // =========================================
+
+            if (
+                !auth.autorizado
+            ) {
+
+                return json({
+
+                    success: false,
+
+                    loggedIn: true,
+
+                    isAdmin: false,
+
+                    error:
+                        auth.error
+
+                }, auth.status || 500);
+
+            }
+
+
+            // =========================================
+            // ADMINISTRADOR
+            // =========================================
 
             return json({
 
                 success: true,
-                loggedIn: false,
-                isAdmin: false,
-                error: "Debes iniciar sesión."
+
+                loggedIn: true,
+
+                isAdmin: true,
+
+                user: {
+
+                    id:
+                        auth.user.id,
+
+                    username:
+                        auth.user.username,
+
+                    email:
+                        auth.user.email
+
+                }
 
             }, 200);
 
+
+        } catch (error) {
+
+            console.error(
+                "Error comprobando administrador:",
+                error
+            );
+
+            return json({
+
+                success: false,
+
+                loggedIn: true,
+
+                isAdmin: false,
+
+                error:
+                    error.message ||
+                    "Error comprobando administrador."
+
+            }, 500);
+
         }
-
-
-        const rawAdminId =
-            env.ADMIN_USER_ID;
-
-        const rawAdminEmail =
-            env.ADMIN_EMAIL;
-
-
-        const adminUserId =
-            Number(
-                rawAdminId || 0
-            );
-
-        const adminEmail =
-            String(
-                rawAdminEmail || ""
-            )
-            .trim()
-            .toLowerCase();
-
-
-        const sessionId =
-            Number(
-                session.id
-            );
-
-        const sessionEmail =
-            String(
-                session.email || ""
-            )
-            .trim()
-            .toLowerCase();
-
-
-        const idCorrecto =
-            sessionId === adminUserId;
-
-        const emailCorrecto =
-            sessionEmail === adminEmail;
-
-
-        const isAdmin =
-            idCorrecto &&
-            emailCorrecto;
-
-
-        console.log(
-            "ADMIN CHECK:",
-            {
-                sessionId: sessionId,
-                adminUserIdConfigurado:
-                    !!rawAdminId,
-                adminEmailConfigurado:
-                    !!rawAdminEmail,
-                idCorrecto: idCorrecto,
-                emailCorrecto: emailCorrecto
-            }
-        );
-
-
-        return json({
-
-            success: true,
-
-            loggedIn: true,
-
-            isAdmin: isAdmin,
-
-            user: {
-
-                id:
-                    session.id,
-
-                username:
-                    session.username,
-
-                email:
-                    session.email
-
-            },
-
-            debug: {
-
-                sessionId:
-                    sessionId,
-
-                adminUserIdConfigurado:
-                    !!rawAdminId,
-
-                adminEmailConfigurado:
-                    !!rawAdminEmail,
-
-                idCorrecto:
-                    idCorrecto,
-
-                emailCorrecto:
-                    emailCorrecto
-
-            }
-
-        }, 200);
-
-
-    } catch (error) {
-
-        console.error(
-            "Error comprobando administrador:",
-            error
-        );
-
-        return json({
-
-            success: false,
-
-            loggedIn: true,
-
-            isAdmin: false,
-
-            error:
-                error.message ||
-                "Error comprobando administrador."
-
-        }, 500);
 
     }
 
-}    
 
     // =================================================
     // LISTAR PUBLICACIONES
@@ -719,9 +758,7 @@ export async function handleAdmin(
 
                          WHERE id = ?`
                     )
-                    .bind(
-                        id
-                    )
+                    .bind(id)
                     .first();
 
 
@@ -738,6 +775,10 @@ export async function handleAdmin(
 
             }
 
+
+            // =========================================
+            // LEER JSON
+            // =========================================
 
             let body;
 
@@ -798,6 +839,10 @@ export async function handleAdmin(
                     : story.type;
 
 
+            // =========================================
+            // VALIDAR
+            // =========================================
+
             if (!title) {
 
                 return json({
@@ -828,6 +873,10 @@ export async function handleAdmin(
 
             }
 
+
+            // =========================================
+            // ACTUALIZAR
+            // =========================================
 
             await env.DB
                 .prepare(
@@ -884,9 +933,7 @@ export async function handleAdmin(
 
                          WHERE stories.id = ?`
                     )
-                    .bind(
-                        id
-                    )
+                    .bind(id)
                     .first();
 
 
@@ -998,6 +1045,10 @@ export async function handleAdmin(
                 );
 
 
+            // =========================================
+            // OBTENER PUBLICACIÓN
+            // =========================================
+
             const story =
                 await env.DB
                     .prepare(
@@ -1015,9 +1066,7 @@ export async function handleAdmin(
 
                          WHERE id = ?`
                     )
-                    .bind(
-                        id
-                    )
+                    .bind(id)
                     .first();
 
 
@@ -1035,9 +1084,9 @@ export async function handleAdmin(
             }
 
 
-            // =============================================
+            // =========================================
             // OBTENER CAPÍTULOS
-            // =============================================
+            // =========================================
 
             const chaptersResult =
                 await env.DB
@@ -1046,9 +1095,7 @@ export async function handleAdmin(
                          FROM chapters
                          WHERE story_id = ?`
                     )
-                    .bind(
-                        id
-                    )
+                    .bind(id)
                     .all();
 
 
@@ -1059,9 +1106,9 @@ export async function handleAdmin(
             let deletedImages = 0;
 
 
-            // =============================================
-            // ELIMINAR IMÁGENES DE R2
-            // =============================================
+            // =========================================
+            // ELIMINAR IMÁGENES
+            // =========================================
 
             for (
                 const chapter of chapters
@@ -1071,18 +1118,12 @@ export async function handleAdmin(
                     await env.DB
                         .prepare(
                             `SELECT
-
                                 id,
-
                                 object_key
-
                              FROM chapter_images
-
                              WHERE chapter_id = ?`
                         )
-                        .bind(
-                            chapter.id
-                        )
+                        .bind(chapter.id)
                         .all();
 
 
@@ -1127,36 +1168,30 @@ export async function handleAdmin(
                         `DELETE FROM chapter_images
                          WHERE chapter_id = ?`
                     )
-                    .bind(
-                        chapter.id
-                    )
+                    .bind(chapter.id)
                     .run();
 
             }
 
 
-            // =============================================
+            // =========================================
             // ELIMINAR CAPÍTULOS
-            // =============================================
+            // =========================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM chapters
                      WHERE story_id = ?`
                 )
-                .bind(
-                    id
-                )
+                .bind(id)
                 .run();
 
 
-            // =============================================
+            // =========================================
             // ELIMINAR PORTADA
-            // =============================================
+            // =========================================
 
-            if (
-                env.Cover
-            ) {
+            if (env.Cover) {
 
                 const coverKey =
                     "covers/" +
@@ -1184,63 +1219,55 @@ export async function handleAdmin(
             }
 
 
-            // =============================================
+            // =========================================
             // ELIMINAR FAVORITOS
-            // =============================================
+            // =========================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM story_favorites
                      WHERE story_id = ?`
                 )
-                .bind(
-                    id
-                )
+                .bind(id)
                 .run();
 
 
-            // =============================================
+            // =========================================
             // ELIMINAR LIKES
-            // =============================================
+            // =========================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM story_likes
                      WHERE story_id = ?`
                 )
-                .bind(
-                    id
-                )
+                .bind(id)
                 .run();
 
 
-            // =============================================
+            // =========================================
             // ELIMINAR COMENTARIOS
-            // =============================================
+            // =========================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM story_comments
                      WHERE story_id = ?`
                 )
-                .bind(
-                    id
-                )
+                .bind(id)
                 .run();
 
 
-            // =============================================
+            // =========================================
             // ELIMINAR PUBLICACIÓN
-            // =============================================
+            // =========================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM stories
                      WHERE id = ?`
                 )
-                .bind(
-                    id
-                )
+                .bind(id)
                 .run();
 
 
@@ -1294,7 +1321,7 @@ export async function handleAdmin(
 
 
     // =================================================
-    // ESTA RUTA NO ES ADMIN
+    // NO ES UNA RUTA ADMIN
     // =================================================
 
     return null;
