@@ -395,19 +395,32 @@ export async function handleAdmin(
     // =================================================
 
     if (
-        url.pathname ===
-            "/api/admin/check"
-        &&
-        request.method === "GET"
-    ) {
+    url.pathname === "/api/admin/check" &&
+    request.method === "GET"
+) {
 
-        try {
+    return json({
 
-            const auth =
-                await verificarAdministrador(
-                    request,
-                    env
-                );
+        success: true,
+
+        debug: {
+
+            ADMIN_USER_ID:
+                env.ADMIN_USER_ID,
+
+            ADMIN_EMAIL:
+                env.ADMIN_EMAIL,
+
+            typeof_ADMIN_USER_ID:
+                typeof env.ADMIN_USER_ID,
+
+            typeof_ADMIN_EMAIL:
+                typeof env.ADMIN_EMAIL
+
+        }
+
+    }, 200);
+
 
 
             // =========================================
