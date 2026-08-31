@@ -5,6 +5,27 @@
 
 
 // =====================================================
+// CONFIGURACIÓN DEL ADMINISTRADOR
+// =====================================================
+//
+// El usuario administrador principal es:
+//
+// ID: 1
+// Email: josepunkrock.1@gmail.com
+//
+// No dependemos de variables env para evitar problemas
+// de configuración del Worker.
+// =====================================================
+
+const ADMIN_USER_ID = 1;
+
+const ADMIN_EMAIL =
+    "josepunkrock.1@gmail.com"
+    .trim()
+    .toLowerCase();
+
+
+// =====================================================
 // RESPUESTA JSON
 // =====================================================
 
@@ -15,15 +36,21 @@ function json(
 
     return new Response(
 
-        JSON.stringify(data),
+        JSON.stringify(
+            data
+        ),
 
         {
+
             status: status,
 
             headers: {
+
                 "Content-Type":
                     "application/json; charset=utf-8"
+
             }
+
         }
 
     );
@@ -41,35 +68,49 @@ function getCookie(
 ) {
 
     const cookieHeader =
-        request.headers.get("Cookie");
+        request.headers.get(
+            "Cookie"
+        );
 
     if (!cookieHeader) {
+
         return null;
+
     }
+
 
     const cookies =
         cookieHeader.split(";");
+
 
     for (
         const cookie of cookies
     ) {
 
         const parts =
-            cookie.trim().split("=");
+            cookie
+                .trim()
+                .split("=");
+
 
         const key =
             parts.shift();
 
+
         const value =
             parts.join("=");
 
-        if (key === name) {
+
+        if (
+            key === name
+        ) {
 
             return value || null;
 
         }
 
     }
+
 
     return null;
 
@@ -91,47 +132,59 @@ async function getSession(
             "session"
         );
 
+
     if (!token) {
+
         return null;
+
     }
+
 
     const session =
         await env.DB
             .prepare(
                 `SELECT
+
+                    sessions.id,
                     sessions.user_id,
                     sessions.token,
                     sessions.expires_at,
+
                     users.username,
                     users.email
 
                  FROM sessions
 
                  INNER JOIN users
-                 ON users.id = sessions.user_id
+                 ON users.id =
+                    sessions.user_id
 
                  WHERE sessions.token = ?
 
                  LIMIT 1`
             )
-            .bind(token)
+            .bind(
+                token
+            )
             .first();
 
+
     if (!session) {
+
         return null;
+
     }
 
 
-    // =============================================
-    // COMPROBAR EXPIRACIÓN
-    // =============================================
-
-    if (session.expires_at) {
+    if (
+        session.expires_at
+    ) {
 
         const expiration =
             new Date(
                 session.expires_at
             );
+
 
         if (
             expiration.getTime() <=
@@ -145,7 +198,9 @@ async function getSession(
                         `DELETE FROM sessions
                          WHERE token = ?`
                     )
-                    .bind(token)
+                    .bind(
+                        token
+                    )
                     .run();
 
             } catch (error) {
@@ -156,6 +211,7 @@ async function getSession(
                 );
 
             }
+
 
             return null;
 
@@ -202,10 +258,6 @@ async function verificarAdministrador(
         );
 
 
-    // =============================================
-    // NO HAY SESIÓN
-    // =============================================
-
     if (!session) {
 
         return {
@@ -222,69 +274,6 @@ async function verificarAdministrador(
     }
 
 
-    // =============================================
-    // OBTENER CONFIGURACIÓN ADMIN
-    // =============================================
-
-    const rawAdminId =
-        env.ADMIN_USER_ID;
-
-    const rawAdminEmail =
-        env.ADMIN_EMAIL;
-
-
-    const adminUserId =
-        Number(
-            rawAdminId || 0
-        );
-
-
-    const adminEmail =
-        String(
-            rawAdminEmail || ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-    // =============================================
-    // CONFIGURACIÓN NO DISPONIBLE
-    // =============================================
-
-    if (
-        !adminUserId ||
-        !adminEmail
-    ) {
-
-        console.error(
-            "Configuración ADMIN incompleta.",
-            {
-                ADMIN_USER_ID:
-                    !!rawAdminId,
-
-                ADMIN_EMAIL:
-                    !!rawAdminEmail
-            }
-        );
-
-        return {
-
-            autorizado: false,
-
-            status: 500,
-
-            error:
-                "La configuración del administrador no está disponible."
-
-        };
-
-    }
-
-
-    // =============================================
-    // DATOS DE LA SESIÓN
-    // =============================================
-
     const sessionId =
         Number(
             session.id
@@ -299,16 +288,14 @@ async function verificarAdministrador(
         .toLowerCase();
 
 
-    // =============================================
-    // COMPROBAR ID Y EMAIL
-    // =============================================
-
     const idCorrecto =
-        sessionId === adminUserId;
+        sessionId ===
+        ADMIN_USER_ID;
 
 
     const emailCorrecto =
-        sessionEmail === adminEmail;
+        sessionEmail ===
+        ADMIN_EMAIL;
 
 
     const esAdministrador =
@@ -319,11 +306,18 @@ async function verificarAdministrador(
     console.log(
         "ADMIN CHECK:",
         {
+
             sessionId:
                 sessionId,
 
+            sessionEmail:
+                sessionEmail,
+
             adminUserId:
-                adminUserId,
+                ADMIN_USER_ID,
+
+            adminEmail:
+                ADMIN_EMAIL,
 
             idCorrecto:
                 idCorrecto,
@@ -333,13 +327,10 @@ async function verificarAdministrador(
 
             esAdministrador:
                 esAdministrador
+
         }
     );
 
-
-    // =============================================
-    // NO ES ADMIN
-    // =============================================
 
     if (!esAdministrador) {
 
@@ -359,10 +350,6 @@ async function verificarAdministrador(
 
     }
 
-
-    // =============================================
-    // ES ADMIN
-    // =============================================
 
     return {
 
@@ -395,39 +382,22 @@ export async function handleAdmin(
     // =================================================
 
     if (
-    url.pathname === "/api/admin/check" &&
-    request.method === "GET"
-) {
+        url.pathname ===
+            "/api/admin/check"
+        &&
+        request.method === "GET"
+    ) {
 
-    return json({
+        try {
 
-        success: true,
+            const auth =
+                await verificarAdministrador(
+                    request,
+                    env
+                );
 
-        debug: {
 
-            ADMIN_USER_ID:
-                env.ADMIN_USER_ID,
-
-            ADMIN_EMAIL:
-                env.ADMIN_EMAIL,
-
-            typeof_ADMIN_USER_ID:
-                typeof env.ADMIN_USER_ID,
-
-            typeof_ADMIN_EMAIL:
-                typeof env.ADMIN_EMAIL
-
-        }
-
-    }, 200);
-
- }
-
-            // =========================================
-            // NO ESTÁ LOGUEADO
-            // =========================================
-
-           /* if (
+            if (
                 auth.status === 401
             ) {
 
@@ -446,10 +416,6 @@ export async function handleAdmin(
 
             }
 
-
-            // =========================================
-            // LOGUEADO PERO NO ADMIN
-            // =========================================
 
             if (
                 auth.status === 403
@@ -484,34 +450,6 @@ export async function handleAdmin(
             }
 
 
-            // =========================================
-            // ERROR DE CONFIGURACIÓN
-            // =========================================
-
-            if (
-                !auth.autorizado
-            ) {
-
-                return json({
-
-                    success: false,
-
-                    loggedIn: true,
-
-                    isAdmin: false,
-
-                    error:
-                        auth.error
-
-                }, auth.status || 500);
-
-            }
-
-
-            // =========================================
-            // ADMINISTRADOR
-            // =========================================
-
             return json({
 
                 success: true,
@@ -543,6 +481,7 @@ export async function handleAdmin(
                 error
             );
 
+
             return json({
 
                 success: false,
@@ -559,7 +498,7 @@ export async function handleAdmin(
 
         }
 
-    }*/
+    }
 
 
     // =================================================
@@ -591,6 +530,12 @@ export async function handleAdmin(
 
                     success: false,
 
+                    loggedIn:
+                        auth.status !== 401,
+
+                    isAdmin:
+                        false,
+
                     error:
                         auth.error
 
@@ -605,21 +550,13 @@ export async function handleAdmin(
                         `SELECT
 
                             stories.id,
-
                             stories.user_id,
-
                             stories.title,
-
                             stories.description,
-
                             stories.genre,
-
                             stories.type,
-
                             stories.cover_url,
-
                             stories.views,
-
                             stories.created_at,
 
                             users.username AS author,
@@ -644,7 +581,8 @@ export async function handleAdmin(
                          ON users.id =
                             stories.user_id
 
-                         ORDER BY stories.id DESC`
+                         ORDER BY
+                            stories.id DESC`
                     )
                     .all();
 
@@ -652,6 +590,10 @@ export async function handleAdmin(
             return json({
 
                 success: true,
+
+                loggedIn: true,
+
+                isAdmin: true,
 
                 stories:
                     result.results || []
@@ -662,9 +604,10 @@ export async function handleAdmin(
         } catch (error) {
 
             console.error(
-                "Error listando publicaciones para admin:",
+                "Error listando publicaciones:",
                 error
             );
+
 
             return json({
 
@@ -756,22 +699,19 @@ export async function handleAdmin(
                         `SELECT
 
                             id,
-
                             user_id,
-
                             title,
-
                             description,
-
                             genre,
-
                             type
 
                          FROM stories
 
                          WHERE id = ?`
                     )
-                    .bind(id)
+                    .bind(
+                        id
+                    )
                     .first();
 
 
@@ -789,11 +729,8 @@ export async function handleAdmin(
             }
 
 
-            // =========================================
-            // LEER JSON
-            // =========================================
-
             let body;
+
 
             try {
 
@@ -852,10 +789,6 @@ export async function handleAdmin(
                     : story.type;
 
 
-            // =========================================
-            // VALIDAR
-            // =========================================
-
             if (!title) {
 
                 return json({
@@ -887,10 +820,6 @@ export async function handleAdmin(
             }
 
 
-            // =========================================
-            // ACTUALIZAR
-            // =========================================
-
             await env.DB
                 .prepare(
                     `UPDATE stories
@@ -919,21 +848,13 @@ export async function handleAdmin(
                         `SELECT
 
                             stories.id,
-
                             stories.user_id,
-
                             stories.title,
-
                             stories.description,
-
                             stories.genre,
-
                             stories.type,
-
                             stories.cover_url,
-
                             stories.views,
-
                             stories.created_at,
 
                             users.username AS author
@@ -946,7 +867,9 @@ export async function handleAdmin(
 
                          WHERE stories.id = ?`
                     )
-                    .bind(id)
+                    .bind(
+                        id
+                    )
                     .first();
 
 
@@ -970,9 +893,10 @@ export async function handleAdmin(
         } catch (error) {
 
             console.error(
-                "Error editando publicación como administrador:",
+                "Error editando publicación:",
                 error
             );
+
 
             return json({
 
@@ -1058,28 +982,23 @@ export async function handleAdmin(
                 );
 
 
-            // =========================================
-            // OBTENER PUBLICACIÓN
-            // =========================================
-
             const story =
                 await env.DB
                     .prepare(
                         `SELECT
 
                             id,
-
                             user_id,
-
                             title,
-
                             type
 
                          FROM stories
 
                          WHERE id = ?`
                     )
-                    .bind(id)
+                    .bind(
+                        id
+                    )
                     .first();
 
 
@@ -1097,9 +1016,9 @@ export async function handleAdmin(
             }
 
 
-            // =========================================
-            // OBTENER CAPÍTULOS
-            // =========================================
+            // =============================================
+            // CAPÍTULOS
+            // =============================================
 
             const chaptersResult =
                 await env.DB
@@ -1108,7 +1027,9 @@ export async function handleAdmin(
                          FROM chapters
                          WHERE story_id = ?`
                     )
-                    .bind(id)
+                    .bind(
+                        id
+                    )
                     .all();
 
 
@@ -1119,9 +1040,9 @@ export async function handleAdmin(
             let deletedImages = 0;
 
 
-            // =========================================
-            // ELIMINAR IMÁGENES
-            // =========================================
+            // =============================================
+            // IMÁGENES
+            // =============================================
 
             for (
                 const chapter of chapters
@@ -1130,13 +1051,13 @@ export async function handleAdmin(
                 const imagesResult =
                     await env.DB
                         .prepare(
-                            `SELECT
-                                id,
-                                object_key
+                            `SELECT object_key
                              FROM chapter_images
                              WHERE chapter_id = ?`
                         )
-                        .bind(chapter.id)
+                        .bind(
+                            chapter.id
+                        )
                         .all();
 
 
@@ -1164,7 +1085,7 @@ export async function handleAdmin(
                         } catch (error) {
 
                             console.error(
-                                "Error eliminando imagen de R2:",
+                                "Error eliminando imagen:",
                                 image.object_key,
                                 error
                             );
@@ -1181,30 +1102,36 @@ export async function handleAdmin(
                         `DELETE FROM chapter_images
                          WHERE chapter_id = ?`
                     )
-                    .bind(chapter.id)
+                    .bind(
+                        chapter.id
+                    )
                     .run();
 
             }
 
 
-            // =========================================
-            // ELIMINAR CAPÍTULOS
-            // =========================================
+            // =============================================
+            // CAPÍTULOS
+            // =============================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM chapters
                      WHERE story_id = ?`
                 )
-                .bind(id)
+                .bind(
+                    id
+                )
                 .run();
 
 
-            // =========================================
-            // ELIMINAR PORTADA
-            // =========================================
+            // =============================================
+            // PORTADA
+            // =============================================
 
-            if (env.Cover) {
+            if (
+                env.Cover
+            ) {
 
                 const coverKey =
                     "covers/" +
@@ -1232,55 +1159,63 @@ export async function handleAdmin(
             }
 
 
-            // =========================================
-            // ELIMINAR FAVORITOS
-            // =========================================
+            // =============================================
+            // FAVORITOS
+            // =============================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM story_favorites
                      WHERE story_id = ?`
                 )
-                .bind(id)
+                .bind(
+                    id
+                )
                 .run();
 
 
-            // =========================================
-            // ELIMINAR LIKES
-            // =========================================
+            // =============================================
+            // LIKES
+            // =============================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM story_likes
                      WHERE story_id = ?`
                 )
-                .bind(id)
+                .bind(
+                    id
+                )
                 .run();
 
 
-            // =========================================
-            // ELIMINAR COMENTARIOS
-            // =========================================
+            // =============================================
+            // COMENTARIOS
+            // =============================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM story_comments
                      WHERE story_id = ?`
                 )
-                .bind(id)
+                .bind(
+                    id
+                )
                 .run();
 
 
-            // =========================================
-            // ELIMINAR PUBLICACIÓN
-            // =========================================
+            // =============================================
+            // PUBLICACIÓN
+            // =============================================
 
             await env.DB
                 .prepare(
                     `DELETE FROM stories
                      WHERE id = ?`
                 )
-                .bind(id)
+                .bind(
+                    id
+                )
                 .run();
 
 
@@ -1314,9 +1249,10 @@ export async function handleAdmin(
         } catch (error) {
 
             console.error(
-                "Error eliminando publicación como administrador:",
+                "Error eliminando publicación:",
                 error
             );
+
 
             return json({
 
@@ -1334,7 +1270,7 @@ export async function handleAdmin(
 
 
     // =================================================
-    // NO ES UNA RUTA ADMIN
+    // RUTA NO ADMIN
     // =================================================
 
     return null;
