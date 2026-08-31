@@ -66,11 +66,14 @@ if (
 
 // -----------------------------------------------------
 // IMÁGENES DE CAPÍTULOS
+//
 // /api/chapters/:id/images
+// /api/chapter-images/:id
 // -----------------------------------------------------
 
 if (
-    url.pathname.startsWith("/api/chapters/")
+    url.pathname.startsWith("/api/chapters/") ||
+    url.pathname.startsWith("/api/chapter-images/")
 ) {
 
     const response =
@@ -85,7 +88,6 @@ if (
     }
 
 }
-
 
 // -----------------------------------------------------
 // COMENTARIOS
