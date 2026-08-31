@@ -432,7 +432,6 @@ button:disabled {
     class="card hidden"
 >
 
-```
 <h2 id="chapterFormTitle">
     Nuevo capítulo
 </h2>
@@ -464,6 +463,23 @@ button:disabled {
 
 <div id="chapterSuccess" class="success"></div>
 ```
+
+</div>
+
+<!-- =====================================================
+     LISTA DE CAPÍTULOS
+===================================================== -->
+
+<div
+    id="chaptersCard"
+    class="card hidden"
+>
+
+    <h2>Capítulos</h2>
+
+    <div
+        id="chaptersContainer"
+    ></div>
 
 </div>
 
@@ -723,6 +739,162 @@ async function comprobarSesion() {
     }
 }
 
+// =========================================================
+// CARGAR CAPÍTULOS
+// =========================================================
+
+async function cargarCapitulos() {
+
+    if (!storyId) {
+        return;
+    }
+
+    const card =
+        document.getElementById(
+            "chaptersCard"
+        );
+
+    const container =
+        document.getElementById(
+            "chaptersContainer"
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/chapters",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            container.innerHTML =
+                "<p>No se pudieron cargar los capítulos.</p>";
+
+            card.classList.remove("hidden");
+
+            return;
+        }
+
+        const chapters =
+            data.chapters || [];
+
+        container.innerHTML = "";
+
+        if (chapters.length === 0) {
+
+            container.innerHTML =
+                "<p>Aún no hay capítulos.</p>";
+
+            card.classList.remove("hidden");
+
+            return;
+        }
+
+        chapters.forEach(
+            function(chapter) {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+                div.className =
+                    "chapter-created";
+
+                div.innerHTML =
+
+                    "<strong>" +
+                    "CAPÍTULO " +
+                    chapter.chapter_number +
+                    "</strong>" +
+
+                    "<div>" +
+                    escapeHtml(
+                        chapter.title || ""
+                    ) +
+                    "</div>" +
+
+                    "<button " +
+                    "onclick=\"leerCapitulo(" +
+                    chapter.chapter_number +
+                    ")\">" +
+                    "Leer historieta" +
+                    "</button>";
+
+                container.appendChild(
+                    div
+                );
+
+            }
+        );
+
+        card.classList.remove("hidden");
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando capítulos:",
+            error
+        );
+
+        container.innerHTML =
+            "<p>Error cargando capítulos.</p>";
+
+        card.classList.remove("hidden");
+    }
+}
+
+
+// =========================================================
+// LEER CAPÍTULO
+// =========================================================
+
+function leerCapitulo(
+    chapterNumber
+) {
+
+    if (!storyId) {
+        return;
+    }
+
+    window.location.href =
+        "leer-historieta.html?id=" +
+        encodeURIComponent(storyId) +
+        "&chapter=" +
+        encodeURIComponent(chapterNumber);
+}
+
+
+// =========================================================
+// SEGURIDAD HTML
+// =========================================================
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+}
+
 
 // =========================================================
 // CREAR HISTORIETA
@@ -847,6 +1019,8 @@ async function crearHistorieta() {
             Number(
                 data.story.id
             );
+
+        cargarCapitulos();
 
         mostrarSuccess(
             "createSuccess",
@@ -1210,6 +1384,8 @@ async function crearCapitulo() {
             Number(
                 data.chapter.id
             );
+
+        cargarCapitulos();
 
         blocks =
             [];
@@ -2073,6 +2249,8 @@ async function guardarCapitulo() {
             "editorSuccess",
             "Capítulo guardado correctamente."
         );
+
+        cargarCapitulos();
 
         renderBlocks();
 
