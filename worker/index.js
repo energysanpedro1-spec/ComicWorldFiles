@@ -2479,11 +2479,6 @@ export default {
         // GET /api/stories/:id
         // =========================================================
 
-        const storyMatch =
-            url.pathname.match(
-                /^\/api\/stories\/(\d+)$/
-            );
-
 
         if (
             storyMatch &&
