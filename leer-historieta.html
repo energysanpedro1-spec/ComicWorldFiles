@@ -2006,27 +2006,17 @@ async function toggleLike() {
     }
 
 
-    if (!currentChapter) {
-
-        return;
-
-    }
-
-
     try {
 
         const response =
             await fetch(
-                "/api/chapters/" +
+                "/api/stories/" +
                 encodeURIComponent(
-                    currentChapter.id
+                    storyId
                 ) +
-                "/likes",
+                "/like",
                 {
-                    method:
-                        isLiked
-                            ? "DELETE"
-                            : "POST",
+                    method: "POST",
 
                     credentials:
                         "include"
@@ -2070,7 +2060,10 @@ async function toggleLike() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error actualizando Me gusta:",
+            error
+        );
 
         mostrarMensaje(
             "No se pudo conectar con el servidor."
@@ -2099,27 +2092,17 @@ async function toggleFavorite() {
     }
 
 
-    if (!currentChapter) {
-
-        return;
-
-    }
-
-
     try {
 
         const response =
             await fetch(
-                "/api/chapters/" +
+                "/api/stories/" +
                 encodeURIComponent(
-                    currentChapter.id
+                    storyId
                 ) +
                 "/favorite",
                 {
-                    method:
-                        isFavorited
-                            ? "DELETE"
-                            : "POST",
+                    method: "POST",
 
                     credentials:
                         "include"
@@ -2155,7 +2138,10 @@ async function toggleFavorite() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error actualizando favorito:",
+            error
+        );
 
         mostrarMensaje(
             "No se pudo conectar con el servidor."
@@ -2164,8 +2150,6 @@ async function toggleFavorite() {
     }
 
 }
-
-
 
 /* =========================================================
    MENSAJE
