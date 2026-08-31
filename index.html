@@ -1,10 +1,19 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <meta name="google-site-verification"
-content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
+      content="D0RK2EZYiZ0LZEBxkRb_eRHdWJYMYwXPSvWFHF1U8pI">
 
-<title>ComicWorldFiles</title><style>
+<title>ComicWorldFiles</title>
+
+<style>
 
 /* ==================================================
    GENERAL
@@ -36,6 +45,7 @@ a {
 ================================================== */
 
 header {
+    width: 100%;
     background: #20242b;
     color: #ffffff;
     padding: 15px 20px;
@@ -45,8 +55,9 @@ header {
 }
 
 .header-content {
+    width: 100%;
     max-width: 1100px;
-    margin: auto;
+    margin: 0 auto;
 
     display: flex;
     align-items: center;
@@ -89,6 +100,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
 nav > a {
@@ -125,7 +137,7 @@ nav > a:hover {
 ================================================== */
 
 .donate-button {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
 
@@ -171,13 +183,16 @@ nav > a:hover {
 ================================================== */
 
 .search {
-    display: flex;
     width: 100%;
+
+    display: flex;
+
     margin-bottom: 30px;
 }
 
 .search input {
     flex: 1;
+
     min-width: 0;
 
     padding: 14px;
@@ -233,14 +248,13 @@ nav > a:hover {
 
     margin-bottom: 35px;
 
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
     display: flex;
     flex-direction: column;
 
     align-items: center;
-    justify-content: center;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,0.08);
 }
 
 
@@ -294,31 +308,28 @@ nav > a:hover {
 
 
 /* ==================================================
-   MENSAJE DEBAJO DE LA IMAGEN
+   MENSAJE NARANJA
 ================================================== */
 
 .hero-message {
-    display: block;
-
     width: 100%;
 
-    margin-top: 12px;
+    margin-top: 15px;
 
     padding: 16px 20px;
 
-    background: #ff6b35 !important;
-    color: #ffffff !important;
+    background: #ff6b35;
+
+    color: #ffffff;
 
     border-radius: 8px;
 
-    text-align: center !important;
+    text-align: center;
 
     font-size: 16px;
     font-weight: bold;
 
     line-height: 1.4;
-
-    align-self: center;
 }
 
 
@@ -378,6 +389,9 @@ nav > a:hover {
 
     box-shadow:
         0 2px 6px rgba(0,0,0,0.08);
+
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -406,6 +420,8 @@ nav > a:hover {
     color: #ffffff;
 
     font-size: 40px;
+
+    overflow: hidden;
 }
 
 .cover img {
@@ -419,7 +435,7 @@ nav > a:hover {
 
 
 /* ==================================================
-   TIPO DE PUBLICACIÓN
+   TIPO PUBLICACIÓN
 ================================================== */
 
 .publication-type {
@@ -428,7 +444,7 @@ nav > a:hover {
     top: 10px;
     left: 10px;
 
-    z-index: 2;
+    z-index: 5;
 
     background: rgba(32,36,43,0.9);
 
@@ -453,6 +469,11 @@ nav > a:hover {
     padding: 15px;
 
     background: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
 }
 
 .card h3 {
@@ -475,6 +496,8 @@ nav > a:hover {
     font-size: 13px;
 
     line-height: 1.4;
+
+    margin: 8px 0 0;
 }
 
 
@@ -492,11 +515,11 @@ nav > a:hover {
 
     min-height: 38px;
 
-    margin-top: 12px;
-
+    margin-top: auto;
     padding: 9px 10px;
 
     background: #20242b !important;
+
     color: #ffffff !important;
 
     border-radius: 6px;
@@ -508,10 +531,18 @@ nav > a:hover {
 
     opacity: 1 !important;
     visibility: visible !important;
+
+    line-height: normal;
+
+    cursor: pointer;
 }
 
 .card-button:hover {
     background: #343a40 !important;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
 }
 
 
@@ -539,6 +570,8 @@ nav > a:hover {
 .type-box {
     width: 100%;
 
+    min-width: 0;
+
     background: #ffffff;
 
     padding: 25px;
@@ -556,8 +589,6 @@ nav > a:hover {
 }
 
 .type-box h3 {
-    display: block;
-
     width: 100%;
 
     margin: 0 0 10px;
@@ -565,11 +596,11 @@ nav > a:hover {
     color: #222222;
 
     font-size: 18px;
+
+    line-height: 1.3;
 }
 
 .type-box p {
-    display: block;
-
     width: 100%;
 
     color: #666666;
@@ -591,6 +622,7 @@ nav > a:hover {
     justify-content: center;
 
     width: auto !important;
+
     min-width: 150px;
 
     min-height: 42px;
@@ -600,6 +632,7 @@ nav > a:hover {
     padding: 11px 20px;
 
     background: #ff6b35 !important;
+
     color: #ffffff !important;
 
     border-radius: 7px;
@@ -608,6 +641,8 @@ nav > a:hover {
     font-weight: bold;
 
     text-align: center;
+
+    line-height: normal;
 
     cursor: pointer;
 
@@ -619,6 +654,7 @@ nav > a:hover {
 
 .type-button:hover {
     background: #e85a2a !important;
+
     color: #ffffff !important;
 
     text-decoration: none !important;
@@ -670,6 +706,7 @@ nav > a:hover {
     gap: 8px;
 
     background: #20242b !important;
+
     color: #ffffff !important;
 
     padding: 12px 20px;
@@ -677,6 +714,7 @@ nav > a:hover {
     border-radius: 7px;
 
     font-size: 14px;
+
     font-weight: bold;
 
     text-decoration: none;
@@ -716,6 +754,7 @@ footer {
 
     .header-content {
         flex-direction: column;
+
         align-items: flex-start;
     }
 
@@ -723,8 +762,6 @@ footer {
         width: 100%;
 
         justify-content: flex-start;
-
-        flex-wrap: wrap;
     }
 
     .hero {
@@ -789,12 +826,11 @@ footer {
 
         font-size: 13px;
 
-        text-align: center !important;
+        text-align: center;
     }
 
     .stories {
-        grid-template-columns:
-            1fr 1fr;
+        grid-template-columns: 1fr 1fr;
 
         gap: 12px;
     }
@@ -816,8 +852,7 @@ footer {
     }
 
     .types {
-        grid-template-columns:
-            1fr 1fr;
+        grid-template-columns: 1fr 1fr;
 
         gap: 12px;
     }
@@ -847,7 +882,6 @@ footer {
     .search button {
         padding: 0 15px;
     }
-
 }
 
 
@@ -864,142 +898,296 @@ footer {
     .stories {
         grid-template-columns: 1fr 1fr;
     }
-
 }
 
-</style></head><body><!-- ==================================================
+</style>
+
+</head>
+
+<body>
+
+
+<!-- ==================================================
      CABECERA
-================================================== --><header><div class="header-content"><div class="logo-area"><div class="logo">
-ComicWorldFiles
-</div><div class="subtitle">
-Crea tus historias o cómics y sube tus archivos
-</div></div><nav><a href="index.html">
-Inicio
-</a><a href="#recent-section">
-Historias
-</a><a href="autores.html">
-Autores
-</a><a
-href="https://www.paypal.com/paypalme/josesanpedropl"
-target="_blank"
-rel="noopener noreferrer"
-class="donate-button"
-title="Donar con PayPal"
+================================================== -->
 
-«»
+<header>
 
-<span class="paypal-icon">
-💙
-</span>Donate
+    <div class="header-content">
 
-</a><span id="user-area"><a href="login.html">
-Iniciar sesión
-</a></span></nav></div></header><!-- ==================================================
+        <div class="logo-area">
+
+            <div class="logo">
+                ComicWorldFiles
+            </div>
+
+            <div class="subtitle">
+                Crea tus historias o cómics y sube tus archivos
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="index.html">
+                Inicio
+            </a>
+
+            <a href="#recent-section">
+                Historias
+            </a>
+
+            <a href="autores.html">
+                Autores
+            </a>
+
+            <a
+                href="https://www.paypal.com/paypalme/josesanpedropl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="donate-button"
+                title="Donar con PayPal"
+            >
+                <span class="paypal-icon">💙</span>
+                Donate
+            </a>
+
+            <span id="user-area">
+
+                <a href="login.html">
+                    Iniciar sesión
+                </a>
+
+            </span>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- ==================================================
      CONTENIDO
-================================================== --><main class="container"><!-- ==================================================
+================================================== -->
+
+<main class="container">
+
+
+<!-- ==================================================
      BUSCADOR
-================================================== --><div class="search"><input
-type="text"
-id="search-input"
-placeholder="Buscar historias, historietas o autores..."
+================================================== -->
 
-«»
+<div class="search">
 
-<button
-type="button"
-onclick="buscarHistorias()"
+    <input
+        type="text"
+        id="search-input"
+        placeholder="Buscar historias, historietas o autores..."
+    >
 
-«»
+    <button
+        type="button"
+        onclick="buscarHistorias()"
+    >
+        Buscar
+    </button>
 
-Buscar
-</button>
+</div>
 
-</div><!-- ==================================================
+
+<!-- ==================================================
      LOGO DESTACADO
-================================================== --><section class="hero"><div class="hero-logo-box"><div class="hero-image"><img
-src="logocomic.png"
-alt="ComicWorldFiles"
+================================================== -->
 
-«»
+<section class="hero">
 
-</div><div class="hero-message">
-Explora, sube y edita historias o comics
-</div></div></section><!-- ==================================================
+    <div class="hero-logo-box">
+
+        <div class="hero-image">
+
+            <img
+                src="logocomic.png"
+                alt="ComicWorldFiles"
+            >
+
+        </div>
+
+        <div class="hero-message">
+            Explora, sube y edita historias o comics
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
      PUBLICACIONES RECIENTES
-================================================== --><div
+================================================== -->
+
+<div
     class="section-title"
     id="recent-section"
-><h2>
-Publicaciones recientes
-</h2><a href="#recent-section">
-Ver todas →
-</a></div><section
+>
+
+    <h2>
+        Publicaciones recientes
+    </h2>
+
+    <a href="#recent-section">
+        Ver todas →
+    </a>
+
+</div>
+
+
+<section
     class="stories"
     id="recent-stories"
-><div class="empty-message">
-Cargando publicaciones...
-</div></section><!-- ==================================================
+>
+
+    <div class="empty-message">
+        Cargando publicaciones...
+    </div>
+
+</section>
+
+
+<!-- ==================================================
      TIPOS DE PUBLICACIÓN
-================================================== --><div
+================================================== -->
+
+<div
     class="section-title"
     style="margin-top:40px;"
-><h2>
-¿Qué quieres publicar?
-</h2></div><section class="types"><!-- HISTORIAS --><div class="type-box"><h3>
-📖 Historias
-</h3><p>
-Publica novelas, cuentos, relatos y cualquier
-historia escrita por capítulos.
-</p><a
-class="type-button"
-href="crear-historia.html"
-onclick="requiereLogin(event, 'crear-historia.html')"
+>
 
-«»
+    <h2>
+        ¿Qué quieres publicar?
+    </h2>
 
-Crear historia
-</a>
+</div>
 
-</div><!-- HISTORIETAS --><div class="type-box"><h3>
-🖼️ Historietas
-</h3><p>
-Publica tus cómics página por página y permite
-que otros usuarios los lean desde el celular.
-</p><a
-class="type-button"
-href="crear-historieta.html"
-onclick="requiereLogin(event, 'crear-historieta.html')"
 
-«»
+<section class="types">
 
-Crear historieta
-</a>
 
-</div></section><!-- ==================================================
+    <!-- HISTORIAS -->
+
+    <div class="type-box">
+
+        <h3>
+            📖 Historias
+        </h3>
+
+        <p>
+            Publica novelas, cuentos, relatos y cualquier
+            historia escrita por capítulos.
+        </p>
+
+        <a
+            class="type-button"
+            href="crear-historia.html"
+            onclick="requiereLogin(event, 'crear-historia.html')"
+        >
+            Crear historia
+        </a>
+
+    </div>
+
+
+    <!-- HISTORIETAS -->
+
+    <div class="type-box">
+
+        <h3>
+            🖼️ Historietas
+        </h3>
+
+        <p>
+            Publica tus cómics página por página y permite
+            que otros usuarios los lean desde el celular.
+        </p>
+
+        <a
+            class="type-button"
+            href="crear-historieta.html"
+            onclick="requiereLogin(event, 'crear-historieta.html')"
+        >
+            Crear historieta
+        </a>
+
+    </div>
+
+
+</section>
+
+
+<!-- ==================================================
      MÁS POPULARES
-================================================== --><div class="section-title"><h2>
-Más populares
-</h2><a href="#popular-section">
-Ver todas →
-</a></div><section
+================================================== -->
+
+<div class="section-title">
+
+    <h2>
+        Más populares
+    </h2>
+
+    <a href="#popular-section">
+        Ver todas →
+    </a>
+
+</div>
+
+
+<section
     class="stories"
     id="popular-section"
-><div class="empty-message">
-Cargando publicaciones...
-</div></section></main><!-- ==================================================
+>
+
+    <div class="empty-message">
+        Cargando publicaciones...
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- ==================================================
      ADMINISTRACIÓN
-================================================== --><div id="admin-section"><a href="admin.html">
-⚙️ Panel de administración
-</a></div><!-- ==================================================
+================================================== -->
+
+<div id="admin-section">
+
+    <a href="admin.html">
+        ⚙️ Panel de administración
+    </a>
+
+</div>
+
+
+<!-- ==================================================
      FOOTER
-================================================== --><footer>ComicWorldFiles © 2026
+================================================== -->
 
-<br><br>
+<footer>
 
-Una plataforma para publicar y descubrir
-historias independientes.
+    ComicWorldFiles © 2026
 
-</footer><script>
+    <br>
+    <br>
+
+    Una plataforma para publicar y descubrir
+    historias independientes.
+
+</footer>
+
+
+<script>
 
 
 /* ==================================================
@@ -1048,8 +1236,7 @@ async function checkSession() {
         ) {
 
             const username =
-                data.user.username ||
-                "Usuario";
+                data.user.username || "Usuario";
 
 
             userArea.innerHTML = "";
@@ -1331,7 +1518,8 @@ async function loadStories() {
                 "/api/stories",
                 {
                     method: "GET",
-                    credentials: "include"
+                    credentials: "include",
+                    cache: "no-store"
                 }
             );
 
@@ -1446,7 +1634,7 @@ function mostrarMensaje(
 
 
 /* ==================================================
-   MOSTRAR HISTORIAS
+   MOSTRAR PUBLICACIONES
 ================================================== */
 
 function mostrarHistorias(
@@ -1490,7 +1678,9 @@ function mostrarHistorias(
 
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         card.className =
@@ -1528,41 +1718,37 @@ function mostrarHistorias(
         let coverHTML;
 
 
-        if (
-            story.cover_url
-        ) {
+        if (story.cover_url) {
 
             coverHTML =
-
                 '<div class="cover">' +
 
-                '<span class="publication-type">' +
-                tipoTexto +
-                '</span>' +
+                    '<span class="publication-type">' +
+                        tipoTexto +
+                    '</span>' +
 
-                '<img src="' +
-                escapeHtml(
-                    story.cover_url
-                ) +
-                '" alt="Portada">' +
+                    '<img src="' +
+                        escapeHtml(
+                            story.cover_url
+                        ) +
+                    '" alt="Portada">' +
 
                 '</div>';
 
         } else {
 
             coverHTML =
-
                 '<div class="cover">' +
 
-                '<span class="publication-type">' +
-                tipoTexto +
-                '</span>' +
+                    '<span class="publication-type">' +
+                        tipoTexto +
+                    '</span>' +
 
-                (
-                    esHistorieta
-                        ? "🖼️"
-                        : "📖"
-                ) +
+                    (
+                        esHistorieta
+                            ? "🖼️"
+                            : "📖"
+                    ) +
 
                 '</div>';
 
@@ -1575,39 +1761,37 @@ function mostrarHistorias(
 
             '<div class="card-content">' +
 
-            '<h3>' +
-            escapeHtml(
-                story.title ||
-                "Sin título"
-            ) +
-            '</h3>' +
+                '<h3>' +
+                    escapeHtml(
+                        story.title ||
+                        "Sin título"
+                    ) +
+                '</h3>' +
 
-            '<div class="author">' +
-            'Por ' +
-            escapeHtml(
-                story.author ||
-                "Autor"
-            ) +
-            '</div>' +
+                '<div class="author">' +
+                    'Por ' +
+                    escapeHtml(
+                        story.author ||
+                        "Autor"
+                    ) +
+                '</div>' +
 
-            '<p class="description">' +
-            escapeHtml(
-                story.description ||
-                ""
-            ) +
-            '</p>' +
+                '<p class="description">' +
+                    escapeHtml(
+                        story.description ||
+                        ""
+                    ) +
+                '</p>' +
 
-            '<a class="card-button" href="' +
-            paginaLectura +
-            '?id=' +
-            encodeURIComponent(
-                story.id
-            ) +
-            '">' +
-
-            textoBoton +
-
-            '</a>' +
+                '<a class="card-button" href="' +
+                    paginaLectura +
+                    '?id=' +
+                    encodeURIComponent(
+                        story.id
+                    ) +
+                '">' +
+                    textoBoton +
+                '</a>' +
 
             '</div>';
 
@@ -1663,7 +1847,6 @@ function buscarHistorias() {
             todasLasHistorias,
             popularContainer
         );
-
 
         return;
 
@@ -1724,7 +1907,7 @@ function buscarHistorias() {
 
     popularContainer.innerHTML =
         '<div class="empty-message">' +
-        'Resultados de búsqueda mostrados arriba.' +
+            'Resultados de búsqueda mostrados arriba.' +
         '</div>';
 
 
@@ -1765,7 +1948,9 @@ document
 function escapeHtml(text) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     div.textContent =
@@ -1789,4 +1974,9 @@ loadStories();
 
 checkAdmin();
 
-</script></body></html>
+
+</script>
+
+</body>
+
+</html>
