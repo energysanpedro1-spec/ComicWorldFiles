@@ -9,11 +9,14 @@ import {
 //
 // POST /api/stories/:id/favorite
 // GET  /api/stories/:id/favorite
+// GET  /api/favorites
 //
 // POST alterna:
-// favorito -> quitar
-// no favorito -> agregar
+//
+// favorito     -> quitar
+// no favorito  -> agregar
 // =========================================================
+
 
 export async function handleFavorites(
     request,
@@ -21,43 +24,17 @@ export async function handleFavorites(
     url
 ) {
 
-    // =====================================================
-    // COMPROBAR RUTA
-    // =====================================================
 
-    const match =
-        url.pathname.match(
-            /^\/api\/stories\/(\d+)\/favorite$/
-        );
+    // =========================================================
+    // GET /api/favorites
+    //
+    // Lista todos los favoritos del usuario autenticado.
+    // =========================================================
 
-
-    if (!match) {
-
-        return null;
-
-    }
-
-
-    const storyId =
-        Number(match[1]);
-
-
-    if (!storyId) {
-
-        return json({
-            success: false,
-            error:
-                "ID de publicación inválido."
-        }, 400);
-
-    }
-
-
-    // =====================================================
-    // POST /api/stories/:id/favorite
-    // =====================================================
-
-    if (request.method === "POST") {
+    if (
+        url.pathname === "/api/favorites" &&
+        request.method === "GET"
+    ) {
 
         try {
 
@@ -75,9 +52,188 @@ export async function handleFavorites(
             if (!session) {
 
                 return json({
-                    success: false,
+
+                    success:
+                        false,
+
+                    error:
+                        "Debes iniciar sesión para ver tus favoritos."
+
+                }, 401);
+
+            }
+
+
+            // -------------------------------------------------
+            // OBTENER FAVORITOS
+            // -------------------------------------------------
+
+            const result =
+                await env.DB
+                    .prepare(
+                        `SELECT
+                            stories.id,
+                            stories.user_id,
+                            stories.title,
+                            stories.description,
+                            stories.genre,
+                            stories.type,
+                            stories.cover_url,
+                            stories.views,
+                            stories.created_at,
+
+                            users.username AS author,
+
+                            story_favorites.created_at
+                                AS favorited_at,
+
+                            (
+                                SELECT COUNT(*)
+                                FROM story_likes
+                                WHERE story_likes.story_id =
+                                      stories.id
+                            ) AS likes_count,
+
+                            (
+                                SELECT COUNT(*)
+                                FROM story_comments
+                                WHERE story_comments.story_id =
+                                      stories.id
+                            ) AS comments_count
+
+                         FROM story_favorites
+
+                         INNER JOIN stories
+                         ON stories.id =
+                            story_favorites.story_id
+
+                         INNER JOIN users
+                         ON users.id =
+                            stories.user_id
+
+                         WHERE story_favorites.user_id = ?
+
+                         ORDER BY
+                            story_favorites.created_at DESC`
+                    )
+                    .bind(
+                        session.id
+                    )
+                    .all();
+
+
+            // -------------------------------------------------
+            // RESPUESTA
+            // -------------------------------------------------
+
+            return json({
+
+                success:
+                    true,
+
+                favorites:
+                    result.results || []
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Error obteniendo favoritos:",
+                error
+            );
+
+
+            return json({
+
+                success:
+                    false,
+
+                error:
+                    error &&
+                    error.message
+                        ? error.message
+                        : "No se pudieron obtener los favoritos."
+
+            }, 500);
+
+        }
+
+    }
+
+
+    // =========================================================
+    // COMPROBAR RUTA
+    //
+    // /api/stories/:id/favorite
+    // =========================================================
+
+    const match =
+        url.pathname.match(
+            /^\/api\/stories\/(\d+)\/favorite$/
+        );
+
+
+    if (!match) {
+
+        return null;
+
+    }
+
+
+    const storyId =
+        Number(
+            match[1]
+        );
+
+
+    if (!storyId) {
+
+        return json({
+
+            success:
+                false,
+
+            error:
+                "ID de publicación inválido."
+
+        }, 400);
+
+    }
+
+
+    // =========================================================
+    // POST /api/stories/:id/favorite
+    // =========================================================
+
+    if (
+        request.method === "POST"
+    ) {
+
+        try {
+
+            // -------------------------------------------------
+            // COMPROBAR SESIÓN
+            // -------------------------------------------------
+
+            const session =
+                await getSession(
+                    request,
+                    env
+                );
+
+
+            if (!session) {
+
+                return json({
+
+                    success:
+                        false,
+
                     error:
                         "Debes iniciar sesión para agregar favoritos."
+
                 }, 401);
 
             }
@@ -105,9 +261,13 @@ export async function handleFavorites(
             if (!story) {
 
                 return json({
-                    success: false,
+
+                    success:
+                        false,
+
                     error:
                         "La publicación no existe."
+
                 }, 404);
 
             }
@@ -253,11 +413,16 @@ export async function handleFavorites(
     }
 
 
-    // =====================================================
+    // =========================================================
     // GET /api/stories/:id/favorite
-    // =====================================================
+    //
+    // Comprueba si el usuario actual tiene
+    // la publicación en favoritos.
+    // =========================================================
 
-    if (request.method === "GET") {
+    if (
+        request.method === "GET"
+    ) {
 
         try {
 
@@ -368,9 +533,9 @@ export async function handleFavorites(
     }
 
 
-    // =====================================================
+    // =========================================================
     // MÉTODO NO PERMITIDO
-    // =====================================================
+    // =========================================================
 
     return json({
 
