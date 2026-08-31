@@ -18,8 +18,17 @@ export default {
 // RUTAS SEPARADAS
 // =====================================================
 
+// =====================================================
+// LIKES
+// Acepta:
+// /api/likes
+// /api/likes/...
+// /api/stories/:id/like
+// =====================================================
+
 if (
-    url.pathname.startsWith("/api/likes")
+    url.pathname.startsWith("/api/likes") ||
+    /^\/api\/stories\/\d+\/like$/.test(url.pathname)
 ) {
 
     const response =
@@ -36,8 +45,17 @@ if (
 }
 
 
+// =====================================================
+// FAVORITOS
+// Acepta:
+// /api/favorites
+// /api/favorites/...
+// /api/stories/:id/favorite
+// =====================================================
+
 if (
-    url.pathname.startsWith("/api/favorites")
+    url.pathname.startsWith("/api/favorites") ||
+    /^\/api\/stories\/\d+\/favorite$/.test(url.pathname)
 ) {
 
     const response =
@@ -54,8 +72,17 @@ if (
 }
 
 
+// =====================================================
+// IMÁGENES DE CAPÍTULOS
+// Acepta:
+// /api/images
+// /api/images/...
+// /api/chapters/:id/images
+// =====================================================
+
 if (
-    url.pathname.startsWith("/api/images")
+    url.pathname.startsWith("/api/images") ||
+    /^\/api\/chapters\/\d+\/images/.test(url.pathname)
 ) {
 
     const response =
@@ -71,6 +98,10 @@ if (
 
 }
 
+
+// =====================================================
+// COMENTARIOS
+// =====================================================
 
 if (
     url.pathname.startsWith("/api/comments")
