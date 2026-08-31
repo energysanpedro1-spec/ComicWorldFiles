@@ -777,57 +777,28 @@ document
 
 
             /* ==========================================
-               ÉXITO
-            ========================================== */
+   ÉXITO
+========================================== */
 
-            message.className =
-                "success";
+message.className =
+    "success";
 
-            message.textContent =
-                "Historia creada correctamente.";
+message.textContent =
+    "Historia creada correctamente. Ahora agrega tu primer capítulo.";
 
-            message.style.display =
-                "block";
-
-
-            setTimeout(
-                function() {
-
-                    window.location.href =
-                        "index.html";
-
-                },
-                1200
-            );
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Error creando historia:",
-                error
-            );
+message.style.display =
+    "block";
 
 
-            message.className =
-                "error";
+setTimeout(
+    function() {
 
-            message.textContent =
-                "Error de conexión con el servidor.";
+        window.location.href =
+            "editar-historia.html?id=" +
+            data.story.id;
 
-            message.style.display =
-                "block";
-
-
-            button.disabled =
-                false;
-
-            button.textContent =
-                "Crear historia";
-        }
-
-    }
+    },
+    800
 );
 
 
