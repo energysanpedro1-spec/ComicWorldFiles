@@ -1888,22 +1888,18 @@ async function guardarCapitulo() {
     ocultarSuccess("editorSuccess");
 
     if (!currentChapterId) {
-
         mostrarError(
             "editorError",
             "No hay ningún capítulo seleccionado."
         );
-
         return;
     }
 
     if (!blocks.length) {
-
         mostrarError(
             "editorError",
             "Agrega al menos una imagen o un texto."
         );
-
         return;
     }
 
@@ -1911,21 +1907,13 @@ async function guardarCapitulo() {
     // VALIDAR BLOQUES
     // ---------------------------------------------------------
 
-    for (
-        let i = 0;
-        i < blocks.length;
-        i++
-    ) {
+    for (let i = 0; i < blocks.length; i++) {
 
         const block = blocks[i];
 
         if (block.type === "text") {
 
-            if (
-                !String(
-                    block.content || ""
-                ).trim()
-            ) {
+            if (!String(block.content || "").trim()) {
 
                 mostrarError(
                     "editorError",
@@ -1940,10 +1928,7 @@ async function guardarCapitulo() {
 
         if (block.type === "image") {
 
-            if (
-                !block.file &&
-                !block.image_id
-            ) {
+            if (!block.file && !block.image_id) {
 
                 mostrarError(
                     "editorError",
@@ -1958,48 +1943,35 @@ async function guardarCapitulo() {
     }
 
     const button =
-        document.getElementById(
-            "saveChapterButton"
-        );
+        document.getElementById("saveChapterButton");
 
     button.disabled = true;
-
-    button.textContent =
-        "Guardando...";
+    button.textContent = "Guardando...";
 
     const progress =
-        document.getElementById(
-            "uploadProgress"
-        );
+        document.getElementById("uploadProgress");
 
     const progressBar =
-        document.getElementById(
-            "uploadProgressBar"
-        );
+        document.getElementById("uploadProgressBar");
 
-    progress.style.display =
-        "block";
-
-    progressBar.style.width =
-        "0%";
+    progress.style.display = "block";
+    progressBar.style.width = "0%";
 
     try {
 
         // -----------------------------------------------------
-        // CONTAR IMÁGENES NUEVAS
+        // IMÁGENES NUEVAS
         // -----------------------------------------------------
 
         const imageBlocks =
-            blocks.filter(
-                function(block) {
+            blocks.filter(function(block) {
 
-                    return (
-                        block.type === "image" &&
-                        block.file
-                    );
+                return (
+                    block.type === "image" &&
+                    block.file
+                );
 
-                }
-            );
+            });
 
         let uploaded = 0;
 
@@ -2016,17 +1988,23 @@ async function guardarCapitulo() {
                 continue;
             }
 
-            const compressedFile = block.file;
-               /* await comprimirImagen(
+            // Comprimir pero convertir a JPG
+            const compressedFile =
+                await comprimirImagen(
                     block.file,
                     1600,
                     1600,
                     0.82
-                );*/
+                );
 
             const formData =
                 new FormData();
 
+            /*
+             * IMPORTANTE:
+             * El campo sigue llamándose "image".
+             * Solo cambia el archivo enviado a JPG.
+             */
             formData.append(
                 "image",
                 compressedFile
@@ -2039,16 +2017,10 @@ async function guardarCapitulo() {
                     "/images",
                     {
                         method: "POST",
-
                         credentials: "include",
-
                         body: formData
                     }
                 );
-
-            // -------------------------------------------------
-            // LEER RESPUESTA SIN ASUMIR QUE SIEMPRE ES JSON
-            // -------------------------------------------------
 
             const responseText =
                 await response.text();
@@ -2098,9 +2070,7 @@ async function guardarCapitulo() {
             }
 
             block.image_id =
-                Number(
-                    data.image.id
-                );
+                Number(data.image.id);
 
             block.image_url =
                 data.image.image_url;
@@ -2108,11 +2078,8 @@ async function guardarCapitulo() {
             block.filename =
                 data.image.filename;
 
-            block.file =
-                null;
-
-            block.preview =
-                null;
+            block.file = null;
+            block.preview = null;
 
             uploaded++;
 
@@ -2132,52 +2099,31 @@ async function guardarCapitulo() {
         // -----------------------------------------------------
 
         const cleanBlocks =
-            blocks.map(
-                function(block) {
+            blocks.map(function(block) {
 
-                    if (
-                        block.type === "image"
-                    ) {
-
-                        return {
-
-                            type:
-                                "image",
-
-                            image_id:
-                                block.image_id,
-
-                            image_url:
-                                block.image_url,
-
-                            filename:
-                                block.filename
-                        };
-                    }
+                if (block.type === "image") {
 
                     return {
-
-                        type:
-                            "text",
-
-                        content:
-                            block.content || ""
+                        type: "image",
+                        image_id: block.image_id,
+                        image_url: block.image_url,
+                        filename: block.filename
                     };
                 }
-            );
+
+                return {
+                    type: "text",
+                    content: block.content || ""
+                };
+            });
 
         const content =
             JSON.stringify({
-
-                version:
-                    1,
-
-                blocks:
-                    cleanBlocks
+                version: 1,
+                blocks: cleanBlocks
             });
 
-        progressBar.style.width =
-            "85%";
+        progressBar.style.width = "85%";
 
         // -----------------------------------------------------
         // OBTENER TÍTULO ACTUAL
@@ -2189,7 +2135,6 @@ async function guardarCapitulo() {
                 currentChapterId,
                 {
                     method: "GET",
-
                     credentials: "include"
                 }
             );
@@ -2204,9 +2149,7 @@ async function guardarCapitulo() {
             try {
 
                 chapterData =
-                    JSON.parse(
-                        chapterText
-                    );
+                    JSON.parse(chapterText);
 
             } catch (jsonError) {
 
@@ -2246,29 +2189,17 @@ async function guardarCapitulo() {
                 currentChapterId,
                 {
                     method: "PUT",
-
                     credentials: "include",
-
                     headers: {
                         "Content-Type":
                             "application/json"
                     },
-
-                    body:
-                        JSON.stringify({
-
-                            title:
-                                chapterTitle,
-
-                            content:
-                                content
-                        })
+                    body: JSON.stringify({
+                        title: chapterTitle,
+                        content: content
+                    })
                 }
             );
-
-        // -----------------------------------------------------
-        // LEER RESPUESTA DEL PUT
-        // -----------------------------------------------------
 
         const responseText =
             await response.text();
@@ -2280,9 +2211,7 @@ async function guardarCapitulo() {
             try {
 
                 data =
-                    JSON.parse(
-                        responseText
-                    );
+                    JSON.parse(responseText);
 
             } catch (jsonError) {
 
@@ -2296,10 +2225,6 @@ async function guardarCapitulo() {
             }
         }
 
-        // -----------------------------------------------------
-        // COMPROBAR RESPUESTA
-        // -----------------------------------------------------
-
         if (!response.ok) {
 
             throw new Error(
@@ -2308,14 +2233,6 @@ async function guardarCapitulo() {
                 response.status
             );
         }
-
-        /*
-         * Algunos servidores devuelven 204 No Content
-         * después de guardar correctamente.
-         *
-         * En ese caso responseText está vacío y eso
-         * NO significa que haya ocurrido un error.
-         */
 
         if (
             data &&
@@ -2328,8 +2245,7 @@ async function guardarCapitulo() {
             );
         }
 
-        progressBar.style.width =
-            "100%";
+        progressBar.style.width = "100%";
 
         mostrarSuccess(
             "editorSuccess",
@@ -2353,15 +2269,13 @@ async function guardarCapitulo() {
 
     }
 
-    button.disabled =
-        false;
-
-    button.textContent =
-        "Guardar capítulo";
+    button.disabled = false;
+    button.textContent = "Guardar capítulo";
 }
 
+
 // =========================================================
-// COMPRESIÓN DE IMÁGENES A WEBP
+// COMPRESIÓN DE IMÁGENES A JPG
 // =========================================================
 
 function comprimirImagen(
@@ -2384,24 +2298,27 @@ function comprimirImagen(
                 let width = img.width;
                 let height = img.height;
 
-                // Solo reducir si supera los límites
+                // Reducir solamente si supera los límites
                 if (
                     width > maxWidth ||
                     height > maxHeight
                 ) {
 
-                    const scale = Math.min(
-                        maxWidth / width,
-                        maxHeight / height
-                    );
+                    const scale =
+                        Math.min(
+                            maxWidth / width,
+                            maxHeight / height
+                        );
 
-                    width = Math.round(
-                        width * scale
-                    );
+                    width =
+                        Math.round(
+                            width * scale
+                        );
 
-                    height = Math.round(
-                        height * scale
-                    );
+                    height =
+                        Math.round(
+                            height * scale
+                        );
                 }
 
                 const canvas =
@@ -2414,6 +2331,21 @@ function comprimirImagen(
 
                 const ctx =
                     canvas.getContext("2d");
+
+                /*
+                 * Fondo blanco.
+                 *
+                 * Esto es importante porque JPG no soporta
+                 * transparencia.
+                 */
+                ctx.fillStyle = "#ffffff";
+
+                ctx.fillRect(
+                    0,
+                    0,
+                    width,
+                    height
+                );
 
                 ctx.drawImage(
                     img,
@@ -2430,18 +2362,21 @@ function comprimirImagen(
 
                             reject(
                                 new Error(
-                                    "No se pudo convertir la imagen a WebP."
+                                    "No se pudo convertir la imagen a JPG."
                                 )
                             );
 
                             return;
                         }
 
+                        /*
+                         * Siempre enviar como JPG.
+                         */
                         const nombre =
                             file.name.replace(
                                 /\.[^/.]+$/,
                                 ""
-                            ) + ".webp";
+                            ) + ".jpg";
 
                         const compressedFile =
                             new File(
@@ -2449,7 +2384,7 @@ function comprimirImagen(
                                 nombre,
                                 {
                                     type:
-                                        "image/webp",
+                                        "image/jpeg",
 
                                     lastModified:
                                         Date.now()
@@ -2461,7 +2396,7 @@ function comprimirImagen(
                         );
 
                     },
-                    "image/webp",
+                    "image/jpeg",
                     quality
                 );
 
@@ -2479,7 +2414,6 @@ function comprimirImagen(
 
             img.src =
                 event.target.result;
-
         };
 
         reader.onerror = function() {
@@ -2495,8 +2429,8 @@ function comprimirImagen(
         reader.readAsDataURL(file);
 
     });
-
 }
+
 
 // =========================================================
 // VISTA PREVIA
