@@ -776,30 +776,31 @@ document
             }
 
 
-            /* ==========================================
-   ÉXITO
+           /* ==========================================
+ÉXITO
 ========================================== */
 
 message.className =
-    "success";
+"success";
 
 message.textContent =
-    "Historia creada correctamente. Ahora agrega tu primer capítulo.";
+"Historia creada correctamente. Cargando editor de capítulos...";
 
 message.style.display =
-    "block";
-
+"block";
 
 setTimeout(
-    function() {
+function() {
 
-        window.location.href =
-            "editar-historia.html?id=" +
-            data.story.id;
+    window.location.href =
+        "editar-historia.html?id=" +
+        data.story.id;
 
-    },
-    800
+},
+800
+
 );
+
 
 
 /* ==========================================
