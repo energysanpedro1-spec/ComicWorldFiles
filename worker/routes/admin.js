@@ -241,26 +241,46 @@ async function verificarAdministrador(
 
 
     if (
-        !adminUserId ||
-        !adminEmail
-    ) {
+    if (
+    !adminUserId ||
+    !adminEmail
+) {
 
-        console.error(
-            "ADMIN_USER_ID o ADMIN_EMAIL no están configurados."
-        );
+    console.error(
+        "CONFIG ADMIN:",
+        {
+            tieneAdminUserId:
+                !!env.ADMIN_USER_ID,
 
-        return {
+            tieneAdminEmail:
+                !!env.ADMIN_EMAIL
+        }
+    );
 
-            autorizado: false,
+    return json({
 
-            status: 500,
+        success: false,
 
-            error:
-                "La configuración del administrador no está disponible."
+        loggedIn: true,
 
-        };
+        isAdmin: false,
 
-    }
+        debug: {
+
+            tieneAdminUserId:
+                !!env.ADMIN_USER_ID,
+
+            tieneAdminEmail:
+                !!env.ADMIN_EMAIL
+
+        },
+
+        error:
+            "La configuración del administrador no está disponible."
+
+    }, 500);
+
+}
 
 
     const sessionEmail =
