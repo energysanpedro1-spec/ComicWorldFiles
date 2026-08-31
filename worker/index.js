@@ -1,4 +1,5 @@
 import { handleLikes } from "./routes/likes.js";
+import { handleFavorites } from "./routes/favorites.js";
 
 export default {
     async fetch(request, env) {
@@ -15,6 +16,17 @@ export default {
         if (likesResponse) {
             return likesResponse;
         }
+
+        const favoritesResponse =
+    await handleFavorites(
+        request,
+        env,
+        url
+    );
+
+if (favoritesResponse) {
+    return favoritesResponse;
+}
 
 
         // =========================================================
