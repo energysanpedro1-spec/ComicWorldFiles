@@ -1604,10 +1604,20 @@ function escapeHtml(text) {
    INICIAR
 ================================================== */
 
-checkSession();
+/* ==================================================
+   INICIAR
+================================================== */
 
-loadStories();
+async function iniciarPagina() {
 
-checkAdmin();
+    await checkSession();
+
+    await checkAdmin();
+
+    loadStories();
+
+}
+
+iniciarPagina();
 
 </script></body></html>
