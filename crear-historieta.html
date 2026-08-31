@@ -2543,32 +2543,87 @@ blocks.forEach(
 
 function mostrarNuevoCapitulo() {
 
-currentChapterId =    
-    null;    
+    // Reiniciar capítulo actual
+    currentChapterId =
+        null;
 
-blocks = [];    
-
-
-document.getElementById(    
-    "editorCard"    
-).classList.add(    
-    "hidden"    
-);    
+    blocks =
+        [];
 
 
-document.getElementById(    
-    "preview"    
-).classList.add(    
-    "hidden"    
-);    
+    // Limpiar el título
+    document.getElementById(
+        "chapterTitle"
+    ).value =
+        "";
 
 
-document.getElementById(    
-    "chapterTitle"    
-).focus();
+    // Ocultar editor
+    document.getElementById(
+        "editorCard"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    // Ocultar vista previa
+    document.getElementById(
+        "preview"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    // Mostrar nuevamente la creación de capítulo
+    document.getElementById(
+        "chapterCard"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    // Ocultar el botón de continuar mientras se crea el nuevo
+    document.getElementById(
+        "newChapterCard"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    // Limpiar mensajes anteriores
+    ocultarError(
+        "chapterError"
+    );
+
+    ocultarSuccess(
+        "chapterSuccess"
+    );
+
+    ocultarError(
+        "editorError"
+    );
+
+    ocultarSuccess(
+        "editorSuccess"
+    );
+
+
+    // Volver arriba y enfocar título
+    document.getElementById(
+        "chapterTitle"
+    ).focus();
+
+
+    document.getElementById(
+        "chapterCard"
+    ).scrollIntoView({
+        behavior:
+            "smooth",
+        block:
+            "start"
+    });
 
 }
-
 // =========================================================
 // ESCAPAR HTML
 // =========================================================
