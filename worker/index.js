@@ -2,8 +2,10 @@ import { handleLikes } from "./routes/likes.js";
 import { handleFavorites } from "./routes/favorites.js";
 import { handleImages } from "./routes/images.js";
 import { handleComments } from "./routes/comments.js";
-import { handleAdmin } from "./routes/admin.js";
-
+import {
+    handleAdmin,
+    verificarAdministrador
+} from "./routes/admin.js";
 export default {
 
     async fetch(request, env) {
