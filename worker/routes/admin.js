@@ -246,7 +246,7 @@ async function getSession(
 // VERIFICAR ADMINISTRADOR
 // =====================================================
 
-async function verificarAdministrador(
+export async function verificarAdministrador(
     request,
     env
 ) {
