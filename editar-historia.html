@@ -249,6 +249,29 @@ button {
 }
 
 /* ==============================
+   PORTADA
+============================== */
+
+.cover-editor {
+    display: flex;
+    flex-direction: column;
+}
+
+.cover-preview {
+    width: 220px;
+    max-width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.no-cover {
+    color: #777;
+    margin-bottom: 15px;
+}
+
+/* ==============================
    MENSAJES
 ============================== */
 
@@ -327,33 +350,55 @@ href="index.html">
 
 <main class="container">
 
+</section>
+
 <!-- ==============================
-     INFORMACIÓN DE LA HISTORIA
+     PORTADA
 ============================== -->
 
-<section class="story-info">
+<section class="editor">
 
-<h1 id="story-title">
-Cargando...
-</h1>
+<h2>
+Portada de la historia
+</h2>
 
-<div class="author">
-Autor:
-<strong id="story-author">
--
-</strong>
+<div class="cover-editor">
+
+<img
+id="cover-preview"
+class="cover-preview"
+style="display:none;"
+alt="Vista previa de la portada"
+>
+
+<div
+id="no-cover"
+class="no-cover">
+No hay portada disponible.
 </div>
 
-<p class="detail"
-id="story-description">
-Cargando descripción...
-</p>
+<label for="cover-input">
+Seleccionar nueva portada
+</label>
 
-<span class="genre"
-id="story-genre">
------------------
+<input
+type="file"
+id="cover-input"
+accept="image/*"
+onchange="previewCover()"
+>
 
-</span>
+<div class="buttons">
+
+<button
+class="save-button"
+onclick="uploadCover()">
+Guardar portada
+</button>
+
+</div>
+
+</div>
 
 </section>
 
@@ -680,6 +725,8 @@ async function loadStory() {
             story.genre || "";
 
 
+loadCover();
+        
         /*
          * ADMINISTRADOR
          *
@@ -756,6 +803,82 @@ async function loadStory() {
 
 }
 
+/* ==========================================
+   CARGAR PORTADA
+========================================== */
+
+async function loadCover() {
+
+    const preview =
+        document.getElementById(
+            "cover-preview"
+        );
+
+    const noCover =
+        document.getElementById(
+            "no-cover"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/cover",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            preview.style.display =
+                "none";
+
+            noCover.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        /*
+         * Usamos la URL directamente.
+         *
+         * Agregamos un parámetro para evitar
+         * que el navegador muestre una portada
+         * antigua guardada en caché.
+         */
+
+        preview.src =
+            "/api/stories/" +
+            storyId +
+            "/cover?t=" +
+            Date.now();
+
+
+        preview.style.display =
+            "block";
+
+        noCover.style.display =
+            "none";
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando portada:",
+            error
+        );
+
+    }
+
+}
 
 /* ==========================================
    CARGAR CAPÍTULOS
@@ -897,6 +1020,241 @@ async function loadChapters() {
 
 }
 
+/* ==========================================
+   VISTA PREVIA DE PORTADA
+========================================== */
+
+function previewCover() {
+
+    const input =
+        document.getElementById(
+            "cover-input"
+        );
+
+    const preview =
+        document.getElementById(
+            "cover-preview"
+        );
+
+    const noCover =
+        document.getElementById(
+            "no-cover"
+        );
+
+
+    const file =
+        input.files[0];
+
+
+    if (!file) {
+
+        return;
+
+    }
+
+
+    /*
+     * Comprobar que sea una imagen
+     */
+
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        showError(
+            "Selecciona un archivo de imagen válido."
+        );
+
+        input.value =
+            "";
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(event) {
+
+            preview.src =
+                event.target.result;
+
+
+            preview.style.display =
+                "block";
+
+
+            noCover.style.display =
+                "none";
+
+        };
+
+
+    reader.readAsDataURL(
+        file
+    );
+
+}
+
+/* ==========================================
+   SUBIR PORTADA
+========================================== */
+
+async function uploadCover() {
+
+    if (!hasPermission) {
+
+        showError(
+            "No tienes permiso para modificar esta historia."
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "cover-input"
+        );
+
+
+    const file =
+        input.files[0];
+
+
+    if (!file) {
+
+        showError(
+            "Selecciona una imagen primero."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        showError(
+            "El archivo seleccionado no es una imagen."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "cover",
+            file
+        );
+
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId +
+                "/cover",
+                {
+                    method: "POST",
+                    credentials: "include",
+                    body:
+                        formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            showError(
+                data.error ||
+                "No se pudo guardar la portada."
+            );
+
+            return;
+
+        }
+
+
+        showSuccess(
+            "Portada guardada correctamente."
+        );
+
+
+        /*
+         * Limpiar selector
+         */
+
+        input.value =
+            "";
+
+
+        /*
+         * Recargar portada desde el servidor
+         */
+
+        const preview =
+            document.getElementById(
+                "cover-preview"
+            );
+
+
+        preview.src =
+            "/api/stories/" +
+            storyId +
+            "/cover?t=" +
+            Date.now();
+
+
+        preview.style.display =
+            "block";
+
+
+        document.getElementById(
+            "no-cover"
+        ).style.display =
+            "none";
+
+
+    } catch (error) {
+
+        console.error(
+            "Error subiendo portada:",
+            error
+        );
+
+
+        showError(
+            "No se pudo conectar con el servidor."
+        );
+
+    }
+
+}
 
 /* ==========================================
    GUARDAR CAPÍTULO
