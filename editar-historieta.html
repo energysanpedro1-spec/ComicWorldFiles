@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -343,6 +344,7 @@ button:disabled {
     }
 }
 </style>
+
 </head>
 
 <body>
@@ -353,386 +355,264 @@ button:disabled {
 
 <div class="container">
 
-    <!-- =====================================================
-         INFORMACIÓN DE LA HISTORIETA
-    ====================================================== -->
-
-    <div id="loadingCard" class="card">
-        <h2>Cargando historieta...</h2>
-        <p class="small">
-            Estamos obteniendo la información de la publicación.
-        </p>
-    </div>
-
-    <div id="storyCard" class="card hidden">
-
-        <h2>Información de la historieta</h2>
-
-        <label for="title">Título</label>
-
-        <input
-            type="text"
-            id="title"
-            maxlength="150"
-        >
-
-        <label for="description">Descripción</label>
-
-        <textarea
-            id="description"
-        ></textarea>
-
-        <label for="genre">Género</label>
-
-        <select id="genre">
-            <option value="">Seleccionar género</option>
-            <option value="Acción">Acción</option>
-            <option value="Aventura">Aventura</option>
-            <option value="Ciencia ficción">Ciencia ficción</option>
-            <option value="Comedia">Comedia</option>
-            <option value="Drama">Drama</option>
-            <option value="Fantasía">Fantasía</option>
-            <option value="Romance">Romance</option>
-            <option value="Terror">Terror</option>
-            <option value="Misterio">Misterio</option>
-            <option value="Otro">Otro</option>
-        </select>
-
-        <button
-            id="saveStoryButton"
-            onclick="guardarHistoria()"
-        >
-            Guardar información
-        </button>
-
-        <div id="storyError" class="error"></div>
-        <div id="storySuccess" class="success"></div>
-
-    </div>
-
-
-    <!-- =====================================================
-         PORTADA
-    ====================================================== -->
-
-    <div id="coverCard" class="card hidden">
-
-        <h2>Portada</h2>
-
-        <p class="small">
-            Puedes conservar la portada actual o reemplazarla por otra imagen.
-        </p>
-
-        <div
-            id="coverPreview"
-            class="cover-preview"
-        ></div>
-
-        <label for="coverInput">
-            Nueva portada
-        </label>
-
-        <input
-            type="file"
-            id="coverInput"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-        >
-
-        <button
-            id="coverButton"
-            onclick="subirPortada()"
-        >
-            Reemplazar portada
-        </button>
-
-        <div id="coverError" class="error"></div>
-        <div id="coverSuccess" class="success"></div>
-
-    </div>
-
-
-    <!-- =====================================================
-         CAPÍTULOS
-    ====================================================== -->
-
-    <div id="chaptersCard" class="card hidden">
-
-        <h2>Capítulos</h2>
-
-        <p class="small">
-            Selecciona un capítulo para editarlo. También puedes crear capítulos nuevos.
-        </p>
-
-        <div
-            id="chaptersContainer"
-            class="chapter-list"
-        ></div>
-
-        <button
-            onclick="mostrarNuevoCapitulo()"
-        >
-            Crear nuevo capítulo
-        </button>
-
-        <div id="chaptersError" class="error"></div>
-        <div id="chaptersSuccess" class="success"></div>
-
-    </div>
-
-
-    <!-- =====================================================
-         CREAR CAPÍTULO
-    ====================================================== -->
-
-    <div id="newChapterCard" class="card hidden">
-
-        <h2>Nuevo capítulo</h2>
-
-        <p class="small">
-            Escribe el nombre del nuevo capítulo. Después podrás agregar
-            imágenes y textos en el orden que quieras.
-        </p>
-
-        <label for="chapterTitle">
-            Nombre del capítulo
-        </label>
-
-        <input
-            type="text"
-            id="chapterTitle"
-            placeholder="Ejemplo: Capítulo 3 - El regreso"
-            maxlength="150"
-        >
-
-        <button
-            id="chapterButton"
-            onclick="crearCapitulo()"
-        >
-            Crear capítulo
-        </button>
-
-        <button
-            class="secondary"
-            onclick="cancelarNuevoCapitulo()"
-        >
-            Cancelar
-        </button>
-
-        <div id="chapterError" class="error"></div>
-        <div id="chapterSuccess" class="success"></div>
-
-    </div>
-
-
-    <!-- =====================================================
-         EDITOR DE CAPÍTULO
-    ====================================================== -->
-
-    <div id="editorCard" class="card hidden">
-
-        <h2 id="editorChapterTitle">
-            Editar capítulo
-        </h2>
-
-        <p
-            id="editorChapterMeta"
-            class="small"
-        ></p>
-
-        <label for="editorChapterName">
-            Nombre del capítulo
-        </label>
-
-        <input
-            type="text"
-            id="editorChapterName"
-            maxlength="150"
-        >
-
-        <div class="block-buttons">
-
-            <button
-                onclick="agregarBloqueImagen()"
-            >
-                Añadir imagen
-            </button>
-
-            <button
-                class="secondary"
-                onclick="agregarBloqueTexto()"
-            >
-                Añadir texto
-            </button>
-
-        </div>
-
-        <div
-            id="blocksContainer"
-            class="blocks-container"
-        ></div>
-
-        <button
-            id="saveChapterButton"
-            onclick="guardarCapitulo()"
-        >
-            Guardar capítulo
-        </button>
-
-        <button
-            class="secondary"
-            onclick="cerrarEditor()"
-        >
-            Cerrar editor
-        </button>
-
-        <div id="editorError" class="error"></div>
-        <div id="editorSuccess" class="success"></div>
-
-        <div
-            id="uploadProgress"
-            class="progress"
-        >
-            <div
-                id="uploadProgressBar"
-                class="progress-bar"
-            ></div>
-        </div>
-
-        <div
-            id="preview"
-            class="preview hidden"
-        >
-
-            <h3 class="preview-title">
-                Vista previa
-            </h3>
-
-            <div id="previewContent"></div>
-
-        </div>
-
-    </div>
-
-
-    <a
-        href="index.html"
-        class="back"
+```
+<div id="loadingCard" class="card">
+    <h2>Cargando historieta...</h2>
+    <p class="small">
+        Estamos obteniendo la información de la publicación.
+    </p>
+</div>
+
+<div id="storyCard" class="card hidden">
+
+    <h2>Información de la historieta</h2>
+
+    <label for="title">Título</label>
+
+    <input
+        type="text"
+        id="title"
+        maxlength="150"
     >
-        ← Volver al inicio
-    </a>
+
+    <label for="description">Descripción</label>
+
+    <textarea id="description"></textarea>
+
+    <label for="genre">Género</label>
+
+    <select id="genre">
+        <option value="">Seleccionar género</option>
+        <option value="Acción">Acción</option>
+        <option value="Aventura">Aventura</option>
+        <option value="Ciencia ficción">Ciencia ficción</option>
+        <option value="Comedia">Comedia</option>
+        <option value="Drama">Drama</option>
+        <option value="Fantasía">Fantasía</option>
+        <option value="Romance">Romance</option>
+        <option value="Terror">Terror</option>
+        <option value="Misterio">Misterio</option>
+        <option value="Otro">Otro</option>
+    </select>
+
+    <button id="saveStoryButton" onclick="guardarHistoria()">
+        Guardar información
+    </button>
+
+    <div id="storyError" class="error"></div>
+    <div id="storySuccess" class="success"></div>
 
 </div>
 
+<div id="coverCard" class="card hidden">
+
+    <h2>Portada</h2>
+
+    <p class="small">
+        Puedes conservar la portada actual o reemplazarla por otra imagen.
+    </p>
+
+    <div id="coverPreview" class="cover-preview"></div>
+
+    <label for="coverInput">
+        Nueva portada
+    </label>
+
+    <input
+        type="file"
+        id="coverInput"
+        accept="image/jpeg,image/png,image/webp,image/gif"
+    >
+
+    <button id="coverButton" onclick="subirPortada()">
+        Reemplazar portada
+    </button>
+
+    <div id="coverError" class="error"></div>
+    <div id="coverSuccess" class="success"></div>
+
+</div>
+
+<div id="chaptersCard" class="card hidden">
+
+    <h2>Capítulos</h2>
+
+    <p class="small">
+        Selecciona un capítulo para editarlo. También puedes crear capítulos nuevos.
+    </p>
+
+    <div id="chaptersContainer" class="chapter-list"></div>
+
+    <button onclick="mostrarNuevoCapitulo()">
+        Crear nuevo capítulo
+    </button>
+
+    <div id="chaptersError" class="error"></div>
+    <div id="chaptersSuccess" class="success"></div>
+
+</div>
+
+<div id="newChapterCard" class="card hidden">
+
+    <h2>Nuevo capítulo</h2>
+
+    <p class="small">
+        Escribe el nombre del nuevo capítulo. Después podrás agregar
+        imágenes y textos en el orden que quieras.
+    </p>
+
+    <label for="chapterTitle">
+        Nombre del capítulo
+    </label>
+
+    <input
+        type="text"
+        id="chapterTitle"
+        placeholder="Ejemplo: Capítulo 3 - El regreso"
+        maxlength="150"
+    >
+
+    <button id="chapterButton" onclick="crearCapitulo()">
+        Crear capítulo
+    </button>
+
+    <button class="secondary" onclick="cancelarNuevoCapitulo()">
+        Cancelar
+    </button>
+
+    <div id="chapterError" class="error"></div>
+    <div id="chapterSuccess" class="success"></div>
+
+</div>
+
+<div id="editorCard" class="card hidden">
+
+    <h2 id="editorChapterTitle">
+        Editar capítulo
+    </h2>
+
+    <p id="editorChapterMeta" class="small"></p>
+
+    <label for="editorChapterName">
+        Nombre del capítulo
+    </label>
+
+    <input
+        type="text"
+        id="editorChapterName"
+        maxlength="150"
+    >
+
+    <div class="block-buttons">
+
+        <button onclick="agregarBloqueImagen()">
+            Añadir imagen
+        </button>
+
+        <button class="secondary" onclick="agregarBloqueTexto()">
+            Añadir texto
+        </button>
+
+    </div>
+
+    <div id="blocksContainer" class="blocks-container"></div>
+
+    <button id="saveChapterButton" onclick="guardarCapitulo()">
+        Guardar capítulo
+    </button>
+
+    <button class="secondary" onclick="cerrarEditor()">
+        Cerrar editor
+    </button>
+
+    <div id="editorError" class="error"></div>
+    <div id="editorSuccess" class="success"></div>
+
+    <div id="uploadProgress" class="progress">
+        <div id="uploadProgressBar" class="progress-bar"></div>
+    </div>
+
+    <div id="preview" class="preview hidden">
+
+        <h3 class="preview-title">
+            Vista previa
+        </h3>
+
+        <div id="previewContent"></div>
+
+    </div>
+
+</div>
+
+<a href="index.html" class="back">
+    ← Volver al inicio
+</a>
+```
+
+</div>
 
 <script>
 
-// =========================================================
-// VARIABLES
-// =========================================================
-
 let storyId = null;
-
 let currentChapterId = null;
-
 let blocks = [];
-
 let originalImageIds = [];
-
 let currentChapters = [];
-
-
-// =========================================================
-// UTILIDADES
-// =========================================================
 
 function mostrarError(id, mensaje) {
 
-    const element =
-        document.getElementById(id);
+    const element = document.getElementById(id);
 
-    if (!element) {
-        return;
-    }
+    if (!element) return;
 
-    element.textContent =
-        mensaje || "";
-
-    element.style.display =
-        "block";
+    element.textContent = mensaje || "";
+    element.style.display = "block";
 }
-
 
 function ocultarError(id) {
 
-    const element =
-        document.getElementById(id);
+    const element = document.getElementById(id);
 
-    if (!element) {
-        return;
-    }
+    if (!element) return;
 
-    element.textContent =
-        "";
-
-    element.style.display =
-        "none";
+    element.textContent = "";
+    element.style.display = "none";
 }
-
 
 function mostrarSuccess(id, mensaje) {
 
-    const element =
-        document.getElementById(id);
+    const element = document.getElementById(id);
 
-    if (!element) {
-        return;
-    }
+    if (!element) return;
 
-    element.textContent =
-        mensaje || "";
-
-    element.style.display =
-        "block";
+    element.textContent = mensaje || "";
+    element.style.display = "block";
 }
-
 
 function ocultarSuccess(id) {
 
-    const element =
-        document.getElementById(id);
+    const element = document.getElementById(id);
 
-    if (!element) {
-        return;
-    }
+    if (!element) return;
 
-    element.textContent =
-        "";
-
-    element.style.display =
-        "none";
+    element.textContent = "";
+    element.style.display = "none";
 }
-
 
 function escaparHTML(text) {
 
-    const div =
-        document.createElement("div");
+    const div = document.createElement("div");
 
     div.textContent =
-        text == null
-            ? ""
-            : String(text);
+        text == null ? "" : String(text);
 
     return div.innerHTML;
 }
 
-
 function obtenerStoryId() {
 
     const params =
-        new URLSearchParams(
-            window.location.search
-        );
+        new URLSearchParams(window.location.search);
 
     const id =
         params.get("id") ||
@@ -742,12 +622,9 @@ function obtenerStoryId() {
     return Number(id);
 }
 
-
 function parsearContenido(content) {
 
-    if (!content) {
-        return [];
-    }
+    if (!content) return [];
 
     if (Array.isArray(content)) {
         return content;
@@ -768,8 +645,7 @@ function parsearContenido(content) {
 
     try {
 
-        const parsed =
-            JSON.parse(content);
+        const parsed = JSON.parse(content);
 
         if (Array.isArray(parsed)) {
             return parsed;
@@ -788,16 +664,10 @@ function parsearContenido(content) {
             "No se pudo interpretar el contenido:",
             error
         );
-
     }
 
     return [];
 }
-
-
-// =========================================================
-// SESIÓN
-// =========================================================
 
 async function comprobarSesion() {
 
@@ -813,29 +683,20 @@ async function comprobarSesion() {
             );
 
         if (!response.ok) {
-
-            throw new Error(
-                "Debes iniciar sesión."
-            );
+            throw new Error("Debes iniciar sesión.");
         }
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (!data.loggedIn) {
-
-            throw new Error(
-                "Debes iniciar sesión."
-            );
+            throw new Error("Debes iniciar sesión.");
         }
 
         return true;
 
     } catch (error) {
 
-        document.getElementById(
-            "loadingCard"
-        ).innerHTML =
+        document.getElementById("loadingCard").innerHTML =
             "<h2>No autorizado</h2>" +
             "<div class='error' style='display:block'>" +
             escaparHTML(error.message) +
@@ -845,18 +706,11 @@ async function comprobarSesion() {
     }
 }
 
-
-// =========================================================
-// CARGAR HISTORIETA
-// =========================================================
-
 async function cargarHistorieta() {
 
     if (!storyId) {
 
-        document.getElementById(
-            "loadingCard"
-        ).innerHTML =
+        document.getElementById("loadingCard").innerHTML =
             "<h2>ID de historieta inválido</h2>" +
             "<div class='error' style='display:block'>" +
             "Abre esta página indicando el ID de la historieta." +
@@ -869,16 +723,14 @@ async function cargarHistorieta() {
 
         const response =
             await fetch(
-                "/api/stories/" +
-                storyId,
+                "/api/stories/" + storyId,
                 {
                     method: "GET",
                     credentials: "include"
                 }
             );
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (
             !response.ok ||
@@ -892,51 +744,36 @@ async function cargarHistorieta() {
             );
         }
 
-        const story =
-            data.story;
+        const story = data.story;
 
-        document.getElementById(
-            "title"
-        ).value =
+        document.getElementById("title").value =
             story.title || "";
 
-        document.getElementById(
-            "description"
-        ).value =
+        document.getElementById("description").value =
             story.description || "";
 
-        document.getElementById(
-            "genre"
-        ).value =
+        document.getElementById("genre").value =
             story.genre || "";
 
-        mostrarPortada(
-            story.cover_url
-        );
+        mostrarPortada(story.cover_url);
 
-        document.getElementById(
-            "loadingCard"
-        ).classList.add("hidden");
+        document.getElementById("loadingCard")
+            .classList.add("hidden");
 
-        document.getElementById(
-            "storyCard"
-        ).classList.remove("hidden");
+        document.getElementById("storyCard")
+            .classList.remove("hidden");
 
-        document.getElementById(
-            "coverCard"
-        ).classList.remove("hidden");
+        document.getElementById("coverCard")
+            .classList.remove("hidden");
 
-        document.getElementById(
-            "chaptersCard"
-        ).classList.remove("hidden");
+        document.getElementById("chaptersCard")
+            .classList.remove("hidden");
 
         await cargarCapitulos();
 
     } catch (error) {
 
-        document.getElementById(
-            "loadingCard"
-        ).innerHTML =
+        document.getElementById("loadingCard").innerHTML =
             "<h2>Error</h2>" +
             "<div class='error' style='display:block'>" +
             escaparHTML(error.message) +
@@ -944,24 +781,19 @@ async function cargarHistorieta() {
     }
 }
 
-
-// =========================================================
-// PORTADA
-// =========================================================
-
 function mostrarPortada(url) {
 
     const preview =
-        document.getElementById(
-            "coverPreview"
-        );
+        document.getElementById("coverPreview");
 
     preview.innerHTML = "";
 
     if (!url) {
 
         preview.innerHTML =
-            "<p class='small'>Esta historieta todavía no tiene portada.</p>";
+            "<p class='small'>" +
+            "Esta historieta todavía no tiene portada." +
+            "</p>";
 
         return;
     }
@@ -971,20 +803,14 @@ function mostrarPortada(url) {
 
     img.src =
         url +
-        (
-            url.includes("?")
-                ? "&"
-                : "?"
-        ) +
+        (url.includes("?") ? "&" : "?") +
         "t=" +
         Date.now();
 
-    img.alt =
-        "Portada de la historieta";
+    img.alt = "Portada de la historieta";
 
     preview.appendChild(img);
 }
-
 
 async function subirPortada() {
 
@@ -992,12 +818,9 @@ async function subirPortada() {
     ocultarSuccess("coverSuccess");
 
     const input =
-        document.getElementById(
-            "coverInput"
-        );
+        document.getElementById("coverInput");
 
-    const file =
-        input.files[0];
+    const file = input.files[0];
 
     if (!file) {
 
@@ -1009,8 +832,7 @@ async function subirPortada() {
         return;
     }
 
-    const maxSize =
-        5 * 1024 * 1024;
+    const maxSize = 5 * 1024 * 1024;
 
     if (file.size > maxSize) {
 
@@ -1029,11 +851,7 @@ async function subirPortada() {
         "image/gif"
     ];
 
-    if (
-        !allowedTypes.includes(
-            file.type
-        )
-    ) {
+    if (!allowedTypes.includes(file.type)) {
 
         mostrarError(
             "coverError",
@@ -1044,13 +862,10 @@ async function subirPortada() {
     }
 
     const button =
-        document.getElementById(
-            "coverButton"
-        );
+        document.getElementById("coverButton");
 
     button.disabled = true;
-    button.textContent =
-        "Subiendo portada...";
+    button.textContent = "Subiendo portada...";
 
     try {
 
@@ -1062,13 +877,9 @@ async function subirPortada() {
                 0.82
             );
 
-        const formData =
-            new FormData();
+        const formData = new FormData();
 
-        formData.append(
-            "cover",
-            compressedFile
-        );
+        formData.append("cover", compressedFile);
 
         const response =
             await fetch(
@@ -1090,12 +901,7 @@ async function subirPortada() {
         if (responseText.trim()) {
 
             try {
-
-                data =
-                    JSON.parse(
-                        responseText
-                    );
-
+                data = JSON.parse(responseText);
             } catch (error) {
 
                 throw new Error(
@@ -1123,11 +929,9 @@ async function subirPortada() {
 
         mostrarPortada(
             data.cover_url ||
-            (
-                "/api/stories/" +
-                storyId +
-                "/cover"
-            )
+            "/api/stories/" +
+            storyId +
+            "/cover"
         );
 
         mostrarSuccess(
@@ -1152,15 +956,9 @@ async function subirPortada() {
     } finally {
 
         button.disabled = false;
-        button.textContent =
-            "Reemplazar portada";
+        button.textContent = "Reemplazar portada";
     }
 }
-
-
-// =========================================================
-// GUARDAR INFORMACIÓN
-// =========================================================
 
 async function guardarHistoria() {
 
@@ -1168,22 +966,16 @@ async function guardarHistoria() {
     ocultarSuccess("storySuccess");
 
     const title =
-        document
-            .getElementById("title")
-            .value
-            .trim();
+        document.getElementById("title")
+            .value.trim();
 
     const description =
-        document
-            .getElementById("description")
-            .value
-            .trim();
+        document.getElementById("description")
+            .value.trim();
 
     const genre =
-        document
-            .getElementById("genre")
-            .value
-            .trim();
+        document.getElementById("genre")
+            .value.trim();
 
     if (!title) {
 
@@ -1216,13 +1008,10 @@ async function guardarHistoria() {
     }
 
     const button =
-        document.getElementById(
-            "saveStoryButton"
-        );
+        document.getElementById("saveStoryButton");
 
     button.disabled = true;
-    button.textContent =
-        "Guardando...";
+    button.textContent = "Guardando...";
 
     try {
 
@@ -1239,14 +1028,10 @@ async function guardarHistoria() {
                     },
                     body:
                         JSON.stringify({
-                            title:
-                                title,
-                            description:
-                                description,
-                            genre:
-                                genre,
-                            type:
-                                "historieta"
+                            title: title,
+                            description: description,
+                            genre: genre,
+                            type: "historieta"
                         })
                 }
             );
@@ -1259,12 +1044,7 @@ async function guardarHistoria() {
         if (responseText.trim()) {
 
             try {
-
-                data =
-                    JSON.parse(
-                        responseText
-                    );
-
+                data = JSON.parse(responseText);
             } catch (error) {
 
                 throw new Error(
@@ -1282,10 +1062,7 @@ async function guardarHistoria() {
             );
         }
 
-        if (
-            !data ||
-            data.success === false
-        ) {
+        if (!data || data.success === false) {
 
             throw new Error(
                 data?.error ||
@@ -1313,22 +1090,14 @@ async function guardarHistoria() {
     } finally {
 
         button.disabled = false;
-        button.textContent =
-            "Guardar información";
+        button.textContent = "Guardar información";
     }
 }
-
-
-// =========================================================
-// CAPÍTULOS
-// =========================================================
 
 async function cargarCapitulos() {
 
     const container =
-        document.getElementById(
-            "chaptersContainer"
-        );
+        document.getElementById("chaptersContainer");
 
     container.innerHTML =
         "<p class='small'>Cargando capítulos...</p>";
@@ -1346,13 +1115,9 @@ async function cargarCapitulos() {
                 }
             );
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
-        if (
-            !response.ok ||
-            !data.success
-        ) {
+        if (!response.ok || !data.success) {
 
             throw new Error(
                 data.error ||
@@ -1381,26 +1146,21 @@ async function cargarCapitulos() {
     }
 }
 
-
 function renderChapters() {
 
     const container =
-        document.getElementById(
-            "chaptersContainer"
-        );
+        document.getElementById("chaptersContainer");
 
     container.innerHTML = "";
 
-    ocultarError(
-        "chaptersError"
-    );
+    ocultarError("chaptersError");
 
-    if (
-        !currentChapters.length
-    ) {
+    if (!currentChapters.length) {
 
         container.innerHTML =
-            "<p class='small'>Todavía no hay capítulos.</p>";
+            "<p class='small'>" +
+            "Todavía no hay capítulos." +
+            "</p>";
 
         return;
     }
@@ -1411,30 +1171,25 @@ function renderChapters() {
             const item =
                 document.createElement("div");
 
-            item.className =
-                "chapter-item";
+            item.className = "chapter-item";
 
             if (
                 Number(currentChapterId) ===
                 Number(chapter.id)
             ) {
 
-                item.classList.add(
-                    "active"
-                );
+                item.classList.add("active");
             }
 
             const row =
                 document.createElement("div");
 
-            row.className =
-                "chapter-row";
+            row.className = "chapter-row";
 
             const name =
                 document.createElement("div");
 
-            name.className =
-                "chapter-name";
+            name.className = "chapter-name";
 
             name.textContent =
                 "Capítulo " +
@@ -1448,8 +1203,7 @@ function renderChapters() {
             const meta =
                 document.createElement("div");
 
-            meta.className =
-                "meta";
+            meta.className = "meta";
 
             meta.textContent =
                 "ID: " +
@@ -1458,8 +1212,7 @@ function renderChapters() {
             const text =
                 document.createElement("div");
 
-            text.style.flex =
-                "1";
+            text.style.flex = "1";
 
             text.appendChild(name);
             text.appendChild(meta);
@@ -1473,8 +1226,7 @@ function renderChapters() {
             const editButton =
                 document.createElement("button");
 
-            editButton.textContent =
-                "Editar";
+            editButton.textContent = "Editar";
 
             editButton.onclick =
                 function() {
@@ -1487,11 +1239,8 @@ function renderChapters() {
             const deleteButton =
                 document.createElement("button");
 
-            deleteButton.className =
-                "danger";
-
-            deleteButton.textContent =
-                "Eliminar";
+            deleteButton.className = "danger";
+            deleteButton.textContent = "Eliminar";
 
             deleteButton.onclick =
                 function() {
@@ -1501,13 +1250,8 @@ function renderChapters() {
                     );
                 };
 
-            actions.appendChild(
-                editButton
-            );
-
-            actions.appendChild(
-                deleteButton
-            );
+            actions.appendChild(editButton);
+            actions.appendChild(deleteButton);
 
             row.appendChild(text);
             row.appendChild(actions);
@@ -1519,75 +1263,43 @@ function renderChapters() {
     );
 }
 
-
 function mostrarNuevoCapitulo() {
 
-    ocultarError(
-        "chapterError"
-    );
+    ocultarError("chapterError");
+    ocultarSuccess("chapterSuccess");
 
-    ocultarSuccess(
-        "chapterSuccess"
-    );
+    document.getElementById("chapterTitle").value = "";
 
-    document.getElementById(
-        "chapterTitle"
-    ).value = "";
+    document.getElementById("newChapterCard")
+        .classList.remove("hidden");
 
-    document.getElementById(
-        "newChapterCard"
-    ).classList.remove(
-        "hidden"
-    );
+    document.getElementById("chapterTitle")
+        .focus();
 
-    document.getElementById(
-        "chapterTitle"
-    ).focus();
-
-    document.getElementById(
-        "newChapterCard"
-    ).scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+    document.getElementById("newChapterCard")
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 }
-
 
 function cancelarNuevoCapitulo() {
 
-    document.getElementById(
-        "newChapterCard"
-    ).classList.add(
-        "hidden"
-    );
+    document.getElementById("newChapterCard")
+        .classList.add("hidden");
 
-    ocultarError(
-        "chapterError"
-    );
-
-    ocultarSuccess(
-        "chapterSuccess"
-    );
+    ocultarError("chapterError");
+    ocultarSuccess("chapterSuccess");
 }
-
 
 async function crearCapitulo() {
 
-    ocultarError(
-        "chapterError"
-    );
-
-    ocultarSuccess(
-        "chapterSuccess"
-    );
+    ocultarError("chapterError");
+    ocultarSuccess("chapterSuccess");
 
     const title =
-        document
-            .getElementById(
-                "chapterTitle"
-            )
-            .value
-            .trim();
+        document.getElementById("chapterTitle")
+            .value.trim();
 
     if (!title) {
 
@@ -1600,13 +1312,10 @@ async function crearCapitulo() {
     }
 
     const button =
-        document.getElementById(
-            "chapterButton"
-        );
+        document.getElementById("chapterButton");
 
     button.disabled = true;
-    button.textContent =
-        "Creando capítulo...";
+    button.textContent = "Creando capítulo...";
 
     try {
 
@@ -1630,10 +1339,8 @@ async function crearCapitulo() {
                     },
                     body:
                         JSON.stringify({
-                            title:
-                                title,
-                            content:
-                                initialContent
+                            title: title,
+                            content: initialContent
                         })
                 }
             );
@@ -1646,12 +1353,7 @@ async function crearCapitulo() {
         if (responseText.trim()) {
 
             try {
-
-                data =
-                    JSON.parse(
-                        responseText
-                    );
-
+                data = JSON.parse(responseText);
             } catch (error) {
 
                 throw new Error(
@@ -1688,9 +1390,7 @@ async function crearCapitulo() {
             " creado correctamente."
         );
 
-        document.getElementById(
-            "chapterTitle"
-        ).value = "";
+        document.getElementById("chapterTitle").value = "";
 
         await cargarCapitulos();
 
@@ -1713,25 +1413,14 @@ async function crearCapitulo() {
     } finally {
 
         button.disabled = false;
-        button.textContent =
-            "Crear capítulo";
+        button.textContent = "Crear capítulo";
     }
 }
 
-
-// =========================================================
-// CARGAR CAPÍTULO
-// =========================================================
-
 async function cargarCapitulo(chapterId) {
 
-    ocultarError(
-        "editorError"
-    );
-
-    ocultarSuccess(
-        "editorSuccess"
-    );
+    ocultarError("editorError");
+    ocultarSuccess("editorSuccess");
 
     try {
 
@@ -1745,8 +1434,7 @@ async function cargarCapitulo(chapterId) {
                 }
             );
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (
             !response.ok ||
@@ -1760,8 +1448,7 @@ async function cargarCapitulo(chapterId) {
             );
         }
 
-        const chapter =
-            data.chapter;
+        const chapter = data.chapter;
 
         currentChapterId =
             Number(chapter.id);
@@ -1832,6 +1519,7 @@ async function cargarCapitulo(chapterId) {
             blocks
                 .filter(
                     function(block) {
+
                         return (
                             block.type === "image" &&
                             block.image_id
@@ -1840,6 +1528,7 @@ async function cargarCapitulo(chapterId) {
                 )
                 .map(
                     function(block) {
+
                         return Number(
                             block.image_id
                         );
@@ -1848,18 +1537,14 @@ async function cargarCapitulo(chapterId) {
 
         renderBlocks();
 
-        document.getElementById(
-            "editorCard"
-        ).classList.remove(
-            "hidden"
-        );
+        document.getElementById("editorCard")
+            .classList.remove("hidden");
 
-        document.getElementById(
-            "editorCard"
-        ).scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+        document.getElementById("editorCard")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
         renderChapters();
 
@@ -1877,11 +1562,6 @@ async function cargarCapitulo(chapterId) {
     }
 }
 
-
-// =========================================================
-// AGREGAR BLOQUES
-// =========================================================
-
 function agregarBloqueTexto() {
 
     blocks.push({
@@ -1891,7 +1571,6 @@ function agregarBloqueTexto() {
 
     renderBlocks();
 }
-
 
 function agregarBloqueImagen() {
 
@@ -1907,17 +1586,10 @@ function agregarBloqueImagen() {
     renderBlocks();
 }
 
-
-// =========================================================
-// RENDER BLOQUES
-// =========================================================
-
 function renderBlocks() {
 
     const container =
-        document.getElementById(
-            "blocksContainer"
-        );
+        document.getElementById("blocksContainer");
 
     container.innerHTML = "";
 
@@ -1927,20 +1599,17 @@ function renderBlocks() {
             const element =
                 document.createElement("div");
 
-            element.className =
-                "block";
+            element.className = "block";
 
             const header =
                 document.createElement("div");
 
-            header.className =
-                "block-header";
+            header.className = "block-header";
 
             const title =
                 document.createElement("div");
 
-            title.className =
-                "block-title";
+            title.className = "block-title";
 
             title.textContent =
                 block.type === "image"
@@ -1950,8 +1619,7 @@ function renderBlocks() {
             const number =
                 document.createElement("div");
 
-            number.className =
-                "block-number";
+            number.className = "block-number";
 
             number.textContent =
                 "Bloque " +
@@ -1960,11 +1628,8 @@ function renderBlocks() {
             const remove =
                 document.createElement("button");
 
-            remove.className =
-                "remove-block";
-
-            remove.textContent =
-                "Eliminar";
+            remove.className = "remove-block";
+            remove.textContent = "Eliminar";
 
             remove.onclick =
                 function() {
@@ -1977,38 +1642,18 @@ function renderBlocks() {
                     renderBlocks();
                 };
 
-            header.appendChild(
-                title
-            );
+            header.appendChild(title);
+            header.appendChild(number);
+            header.appendChild(remove);
 
-            header.appendChild(
-                number
-            );
+            element.appendChild(header);
 
-            header.appendChild(
-                remove
-            );
-
-            element.appendChild(
-                header
-            );
-
-
-            // -------------------------------------------------
-            // IMAGEN
-            // -------------------------------------------------
-
-            if (
-                block.type === "image"
-            ) {
+            if (block.type === "image") {
 
                 const input =
-                    document.createElement(
-                        "input"
-                    );
+                    document.createElement("input");
 
-                input.type =
-                    "file";
+                input.type = "file";
 
                 input.accept =
                     "image/jpeg,image/png,image/webp,image/gif";
@@ -2019,21 +1664,12 @@ function renderBlocks() {
                         const file =
                             event.target.files[0];
 
-                        if (!file) {
-                            return;
-                        }
+                        if (!file) return;
 
-                        block.file =
-                            file;
-
-                        block.image_id =
-                            null;
-
-                        block.image_url =
-                            "";
-
-                        block.filename =
-                            file.name;
+                        block.file = file;
+                        block.image_id = null;
+                        block.image_url = "";
+                        block.filename = file.name;
 
                         const reader =
                             new FileReader();
@@ -2047,15 +1683,10 @@ function renderBlocks() {
                                 renderBlocks();
                             };
 
-                        reader.readAsDataURL(
-                            file
-                        );
+                        reader.readAsDataURL(file);
                     };
 
-                element.appendChild(
-                    input
-                );
-
+                element.appendChild(input);
 
                 const src =
                     block.preview ||
@@ -2064,43 +1695,27 @@ function renderBlocks() {
                 if (src) {
 
                     const img =
-                        document.createElement(
-                            "img"
-                        );
+                        document.createElement("img");
 
                     img.className =
                         "block-image-preview";
 
-                    img.src =
-                        src;
+                    img.src = src;
 
                     img.alt =
                         block.filename ||
                         "Imagen";
 
-                    element.appendChild(
-                        img
-                    );
+                    element.appendChild(img);
                 }
-
             }
 
-
-            // -------------------------------------------------
-            // TEXTO
-            // -------------------------------------------------
-
-            if (
-                block.type === "text"
-            ) {
+            if (block.type === "text") {
 
                 const textarea =
-                    document.createElement(
-                        "textarea"
-                    );
+                    document.createElement("textarea");
 
-                textarea.className =
-                    "block-text";
+                textarea.className = "block-text";
 
                 textarea.placeholder =
                     "Escribe el texto que aparecerá entre las imágenes...";
@@ -2117,34 +1732,20 @@ function renderBlocks() {
                         actualizarPreview();
                     };
 
-                element.appendChild(
-                    textarea
-                );
+                element.appendChild(textarea);
             }
 
-            container.appendChild(
-                element
-            );
+            container.appendChild(element);
         }
     );
 
     actualizarPreview();
 }
 
-
-// =========================================================
-// GUARDAR CAPÍTULO
-// =========================================================
-
 async function guardarCapitulo() {
 
-    ocultarError(
-        "editorError"
-    );
-
-    ocultarSuccess(
-        "editorSuccess"
-    );
+    ocultarError("editorError");
+    ocultarSuccess("editorSuccess");
 
     if (!currentChapterId) {
 
@@ -2157,12 +1758,8 @@ async function guardarCapitulo() {
     }
 
     const title =
-        document
-            .getElementById(
-                "editorChapterName"
-            )
-            .value
-            .trim();
+        document.getElementById("editorChapterName")
+            .value.trim();
 
     if (!title) {
 
@@ -2184,23 +1781,15 @@ async function guardarCapitulo() {
         return;
     }
 
-
-    // ---------------------------------------------------------
-    // VALIDAR BLOQUES
-    // ---------------------------------------------------------
-
     for (
         let i = 0;
         i < blocks.length;
         i++
     ) {
 
-        const block =
-            blocks[i];
+        const block = blocks[i];
 
-        if (
-            block.type === "text"
-        ) {
+        if (block.type === "text") {
 
             if (
                 !String(
@@ -2219,9 +1808,7 @@ async function guardarCapitulo() {
             }
         }
 
-        if (
-            block.type === "image"
-        ) {
+        if (block.type === "image") {
 
             if (
                 !block.file &&
@@ -2240,38 +1827,22 @@ async function guardarCapitulo() {
         }
     }
 
-
     const button =
-        document.getElementById(
-            "saveChapterButton"
-        );
+        document.getElementById("saveChapterButton");
 
     button.disabled = true;
-    button.textContent =
-        "Guardando...";
+    button.textContent = "Guardando...";
 
     const progress =
-        document.getElementById(
-            "uploadProgress"
-        );
+        document.getElementById("uploadProgress");
 
     const progressBar =
-        document.getElementById(
-            "uploadProgressBar"
-        );
+        document.getElementById("uploadProgressBar");
 
-    progress.style.display =
-        "block";
-
-    progressBar.style.width =
-        "0%";
-
+    progress.style.display = "block";
+    progressBar.style.width = "0%";
 
     try {
-
-        // -----------------------------------------------------
-        // SUBIR IMÁGENES NUEVAS
-        // -----------------------------------------------------
 
         const imageBlocks =
             blocks.filter(
@@ -2284,12 +1855,9 @@ async function guardarCapitulo() {
                 }
             );
 
-        let uploaded =
-            0;
+        let uploaded = 0;
 
-        for (
-            const block of blocks
-        ) {
+        for (const block of blocks) {
 
             if (
                 block.type !== "image" ||
@@ -2334,12 +1902,7 @@ async function guardarCapitulo() {
             if (responseText.trim()) {
 
                 try {
-
-                    data =
-                        JSON.parse(
-                            responseText
-                        );
-
+                    data = JSON.parse(responseText);
                 } catch (error) {
 
                     throw new Error(
@@ -2371,9 +1934,7 @@ async function guardarCapitulo() {
             }
 
             block.image_id =
-                Number(
-                    data.image.id
-                );
+                Number(data.image.id);
 
             block.image_url =
                 data.image.image_url;
@@ -2381,17 +1942,12 @@ async function guardarCapitulo() {
             block.filename =
                 data.image.filename;
 
-            block.file =
-                null;
-
-            block.preview =
-                null;
+            block.file = null;
+            block.preview = null;
 
             uploaded++;
 
-            if (
-                imageBlocks.length
-            ) {
+            if (imageBlocks.length) {
 
                 progressBar.style.width =
                     (
@@ -2402,42 +1958,25 @@ async function guardarCapitulo() {
             }
         }
 
-
-        // -----------------------------------------------------
-        // CREAR CONTENIDO LIMPIO
-        // -----------------------------------------------------
-
         const cleanBlocks =
             blocks.map(
                 function(block) {
 
-                    if (
-                        block.type === "image"
-                    ) {
+                    if (block.type === "image") {
 
                         return {
-                            type:
-                                "image",
-
+                            type: "image",
                             image_id:
-                                Number(
-                                    block.image_id
-                                ),
-
+                                Number(block.image_id),
                             image_url:
-                                block.image_url ||
-                                "",
-
+                                block.image_url || "",
                             filename:
-                                block.filename ||
-                                ""
+                                block.filename || ""
                         };
                     }
 
                     return {
-                        type:
-                            "text",
-
+                        type: "text",
                         content:
                             String(
                                 block.content || ""
@@ -2449,17 +1988,10 @@ async function guardarCapitulo() {
         const content =
             JSON.stringify({
                 version: 1,
-                blocks:
-                    cleanBlocks
+                blocks: cleanBlocks
             });
 
-        progressBar.style.width =
-            "82%";
-
-
-        // -----------------------------------------------------
-        // GUARDAR CAPÍTULO
-        // -----------------------------------------------------
+        progressBar.style.width = "82%";
 
         const response =
             await fetch(
@@ -2474,10 +2006,8 @@ async function guardarCapitulo() {
                     },
                     body:
                         JSON.stringify({
-                            title:
-                                title,
-                            content:
-                                content
+                            title: title,
+                            content: content
                         })
                 }
             );
@@ -2490,12 +2020,7 @@ async function guardarCapitulo() {
         if (responseText.trim()) {
 
             try {
-
-                data =
-                    JSON.parse(
-                        responseText
-                    );
-
+                data = JSON.parse(responseText);
             } catch (error) {
 
                 throw new Error(
@@ -2525,15 +2050,11 @@ async function guardarCapitulo() {
             );
         }
 
-
-        // -----------------------------------------------------
-        // ELIMINAR IMÁGENES QUE YA NO ESTÁN EN EL CAPÍTULO
-        // -----------------------------------------------------
-
         const currentImageIds =
             blocks
                 .filter(
                     function(block) {
+
                         return (
                             block.type === "image" &&
                             block.image_id
@@ -2542,6 +2063,7 @@ async function guardarCapitulo() {
                 )
                 .map(
                     function(block) {
+
                         return Number(
                             block.image_id
                         );
@@ -2552,10 +2074,8 @@ async function guardarCapitulo() {
             originalImageIds.filter(
                 function(id) {
 
-                    return (
-                        !currentImageIds.includes(
-                            Number(id)
-                        )
+                    return !currentImageIds.includes(
+                        Number(id)
                     );
                 }
             );
@@ -2587,8 +2107,7 @@ async function guardarCapitulo() {
         originalImageIds =
             currentImageIds.slice();
 
-        progressBar.style.width =
-            "100%";
+        progressBar.style.width = "100%";
 
         mostrarSuccess(
             "editorSuccess",
@@ -2615,19 +2134,11 @@ async function guardarCapitulo() {
     } finally {
 
         button.disabled = false;
-        button.textContent =
-            "Guardar capítulo";
+        button.textContent = "Guardar capítulo";
     }
 }
 
-
-// =========================================================
-// ELIMINAR CAPÍTULO
-// =========================================================
-
-async function eliminarCapitulo(
-    chapter
-) {
+async function eliminarCapitulo(chapter) {
 
     const chapterName =
         "Capítulo " +
@@ -2646,9 +2157,7 @@ async function eliminarCapitulo(
             "Se eliminarán también sus imágenes."
         );
 
-    if (!confirmed) {
-        return;
-    }
+    if (!confirmed) return;
 
     try {
 
@@ -2670,12 +2179,7 @@ async function eliminarCapitulo(
         if (responseText.trim()) {
 
             try {
-
-                data =
-                    JSON.parse(
-                        responseText
-                    );
-
+                data = JSON.parse(responseText);
             } catch (error) {
 
                 throw new Error(
@@ -2733,144 +2237,86 @@ async function eliminarCapitulo(
     }
 }
 
-
-// =========================================================
-// CERRAR EDITOR
-// =========================================================
-
 function cerrarEditor() {
 
-    currentChapterId =
-        null;
+    currentChapterId = null;
+    blocks = [];
+    originalImageIds = [];
 
-    blocks =
-        [];
+    document.getElementById("editorCard")
+        .classList.add("hidden");
 
-    originalImageIds =
-        [];
+    document.getElementById("preview")
+        .classList.add("hidden");
 
-    document.getElementById(
-        "editorCard"
-    ).classList.add(
-        "hidden"
-    );
+    document.getElementById("blocksContainer")
+        .innerHTML = "";
 
-    document.getElementById(
-        "preview"
-    ).classList.add(
-        "hidden"
-    );
-
-    document.getElementById(
-        "blocksContainer"
-    ).innerHTML = "";
-
-    ocultarError(
-        "editorError"
-    );
-
-    ocultarSuccess(
-        "editorSuccess"
-    );
+    ocultarError("editorError");
+    ocultarSuccess("editorSuccess");
 
     renderChapters();
 }
 
-
-// =========================================================
-// VISTA PREVIA
-// =========================================================
-
 function actualizarPreview() {
 
     const preview =
-        document.getElementById(
-            "preview"
-        );
+        document.getElementById("preview");
 
     const container =
-        document.getElementById(
-            "previewContent"
-        );
+        document.getElementById("previewContent");
 
     if (!blocks.length) {
 
-        preview.classList.add(
-            "hidden"
-        );
+        preview.classList.add("hidden");
 
         return;
     }
 
-    preview.classList.remove(
-        "hidden"
-    );
+    preview.classList.remove("hidden");
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
     blocks.forEach(
         function(block) {
 
-            if (
-                block.type === "text"
-            ) {
+            if (block.type === "text") {
 
                 const text =
-                    document.createElement(
-                        "div"
-                    );
+                    document.createElement("div");
 
-                text.className =
-                    "preview-text";
+                text.className = "preview-text";
 
                 text.textContent =
                     block.content || "";
 
-                container.appendChild(
-                    text
-                );
+                container.appendChild(text);
             }
 
-            if (
-                block.type === "image"
-            ) {
+            if (block.type === "image") {
 
                 const src =
                     block.preview ||
                     block.image_url;
 
-                if (!src) {
-                    return;
-                }
+                if (!src) return;
 
                 const img =
-                    document.createElement(
-                        "img"
-                    );
+                    document.createElement("img");
 
-                img.className =
-                    "preview-image";
+                img.className = "preview-image";
 
-                img.src =
-                    src;
+                img.src = src;
 
                 img.alt =
                     block.filename ||
                     "Imagen";
 
-                container.appendChild(
-                    img
-                );
+                container.appendChild(img);
             }
         }
     );
 }
-
-
-// =========================================================
-// COMPRESIÓN DE IMÁGENES
-// =========================================================
 
 function comprimirImagen(
     file,
@@ -2894,11 +2340,8 @@ function comprimirImagen(
                     img.onload =
                         function() {
 
-                            let width =
-                                img.width;
-
-                            let height =
-                                img.height;
+                            let width = img.width;
+                            let height = img.height;
 
                             if (
                                 width > maxWidth ||
@@ -2907,23 +2350,18 @@ function comprimirImagen(
 
                                 const scale =
                                     Math.min(
-                                        maxWidth /
-                                        width,
-
-                                        maxHeight /
-                                        height
+                                        maxWidth / width,
+                                        maxHeight / height
                                     );
 
                                 width =
                                     Math.round(
-                                        width *
-                                        scale
+                                        width * scale
                                     );
 
                                 height =
                                     Math.round(
-                                        height *
-                                        scale
+                                        height * scale
                                     );
                             }
 
@@ -2932,19 +2370,13 @@ function comprimirImagen(
                                     "canvas"
                                 );
 
-                            canvas.width =
-                                width;
-
-                            canvas.height =
-                                height;
+                            canvas.width = width;
+                            canvas.height = height;
 
                             const ctx =
-                                canvas.getContext(
-                                    "2d"
-                                );
+                                canvas.getContext("2d");
 
-                            ctx.fillStyle =
-                                "#ffffff";
+                            ctx.fillStyle = "#ffffff";
 
                             ctx.fillRect(
                                 0,
@@ -2989,7 +2421,6 @@ function comprimirImagen(
                                             {
                                                 type:
                                                     "image/jpeg",
-
                                                 lastModified:
                                                     Date.now()
                                             }
@@ -3029,24 +2460,16 @@ function comprimirImagen(
                     );
                 };
 
-            reader.readAsDataURL(
-                file
-            );
+            reader.readAsDataURL(file);
         }
     );
 }
-
-
-// =========================================================
-// INICIO
-// =========================================================
 
 document.addEventListener(
     "DOMContentLoaded",
     async function() {
 
-        storyId =
-            obtenerStoryId();
+        storyId = obtenerStoryId();
 
         if (!storyId) {
 
@@ -3064,9 +2487,7 @@ document.addEventListener(
         const loggedIn =
             await comprobarSesion();
 
-        if (!loggedIn) {
-            return;
-        }
+        if (!loggedIn) return;
 
         await cargarHistorieta();
     }
