@@ -721,9 +721,6 @@ async function loadStory() {
             "story-genre"
         ).textContent =
             story.genre || "";
-
-
-loadCover();
         
         /*
          * ADMINISTRADOR
@@ -736,6 +733,7 @@ loadCover();
 
             hasPermission = true;
 
+            loadCover();
             loadChapters();
 
             return;
@@ -752,17 +750,18 @@ loadCover();
          */
 
         if (
-            Number(currentUser.id) ===
-            Number(story.user_id)
-        ) {
+    Number(currentUser.id) ===
+    Number(story.user_id)
+) {
 
-            hasPermission = true;
+    hasPermission = true;
 
-            loadChapters();
+    loadCover();
+    loadChapters();
 
-            return;
+    return;
 
-        }
+}
 
 
         /*
