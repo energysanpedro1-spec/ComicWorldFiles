@@ -351,10 +351,43 @@ href="index.html">
 <main class="container">
 
 <!-- ==============================
+     INFORMACIÓN DE LA HISTORIA
+============================== -->
+
+<section class="story-info">
+
+<h1 id="story-title">
+Cargando...
+</h1>
+
+<div class="author">
+Autor:
+<strong id="story-author">
+-
+</strong>
+</div>
+
+<p
+class="detail"
+id="story-description">
+Cargando descripción...
+</p>
+
+<span
+class="genre"
+id="story-genre">
+-----------------
+</span>
+
+</section>
+
+<!-- ==============================
      PORTADA
 ============================== -->
 
-<section class="editor">
+<section
+class="editor"
+id="cover-editor">
 
 <h2>
 Portada de la historia
@@ -416,7 +449,9 @@ class="message success">
      EDITOR
 ============================== -->
 
-<section class="editor">
+<section
+class="editor"
+id="chapter-editor">
 
 <h2 id="editor-title">
 Agregar capítulo
@@ -776,10 +811,15 @@ async function loadStory() {
         );
 
 
-        document.querySelector(
-            ".editor"
-        ).style.display =
-            "none";
+        document.getElementById(
+    "cover-editor"
+).style.display =
+    "none";
+
+document.getElementById(
+    "chapter-editor"
+).style.display =
+    "none";
 
 
         document.getElementById(
