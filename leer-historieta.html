@@ -775,6 +775,10 @@ let blocks = [];
 
 let currentUser = null;
 
+let isAdmin = false;
+
+let hasEditPermission = false;
+
 let isLiked = false;
 
 let isFavorited = false;
@@ -910,6 +914,78 @@ async function cargarHistorieta() {
             data.story.title ||
             "Sin título";
 
+       /*
+ * COMPROBAR PERMISO DE EDICIÓN
+ */
+
+const story =
+    data.story;
+
+
+/*
+ * Comprobar si es administrador.
+ */
+
+try {
+
+    const adminResponse =
+        await fetch(
+            "/api/admin/check",
+            {
+                credentials: "include"
+            }
+        );
+
+
+    const adminData =
+        await adminResponse.json();
+
+
+    if (
+        adminResponse.ok &&
+        adminData.success &&
+        adminData.loggedIn &&
+        adminData.isAdmin
+    ) {
+
+        isAdmin = true;
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Error comprobando administrador:",
+        error
+    );
+
+}
+
+
+/*
+ * El autor puede editar su propia historia.
+ */
+
+if (
+    currentUser &&
+    Number(currentUser.id) ===
+    Number(story.user_id)
+) {
+
+    hasEditPermission = true;
+
+}
+
+
+/*
+ * El administrador puede editar cualquier historia.
+ */
+
+if (isAdmin) {
+
+    hasEditPermission = true;
+
+}
 
         /*
          * Mostrar título.
@@ -1887,6 +1963,51 @@ function actualizarNavegacion() {
         listButton
     );
 
+/*
+ * EDITAR CAPÍTULO
+ */
+
+if (
+    hasEditPermission &&
+    currentChapter
+) {
+
+    const editButton =
+        document.createElement(
+            "button"
+        );
+
+
+    editButton.className =
+        "secondary";
+
+
+    editButton.textContent =
+        "✏ Editar capítulo";
+
+
+    editButton.onclick =
+        function() {
+
+            window.location.href =
+                "editar-historia.html?id=" +
+                encodeURIComponent(
+                    storyId
+                ) +
+                "&chapter=" +
+                encodeURIComponent(
+                    currentChapter.chapter_number
+                );
+
+        };
+
+
+    nav.appendChild(
+        editButton
+    );
+
+}
+   
 
     /*
      * ANTERIOR
