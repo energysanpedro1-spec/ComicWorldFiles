@@ -740,9 +740,19 @@ Editar historia
 </a><div class="separator">
 </div><!-- ==========================================
      CAPÍTULOS
-========================================== --><h2 class="chapters-title">Capítulos
+========================================== -->
+<h2 class="chapters-title">Capítulos
 
-</h2><section id="chapters-container"><div class="loading">Cargando capítulos...
+</h2>
+   <button
+    id="resume-button"
+    class="chapter-button"
+    type="button"
+    style="display:none; margin-bottom:20px;"
+>
+    ▶ Retomar
+</button>
+   <section id="chapters-container"><div class="loading">Cargando capítulos...
 
 </div></section><a class="back-button"
 href="index.html">
@@ -2118,6 +2128,184 @@ async function comprobarAutor(
 
 }
 
+/* ==========================================
+   PROGRESO DE LECTURA
+========================================== */
+
+const resumeButton =
+    document.getElementById(
+        "resume-button"
+    );
+
+
+function obtenerClaveLectura() {
+
+    return "comicworldfiles_reading_" +
+        String(storyId);
+
+}
+
+
+function guardarProgreso(
+    chapterId
+) {
+
+    if (!storyId || !chapterId) {
+        return;
+    }
+
+    const progreso = {
+
+        chapterId:
+            String(chapterId),
+
+        scrollY:
+            window.scrollY,
+
+        timestamp:
+            Date.now()
+
+    };
+
+
+    localStorage.setItem(
+        obtenerClaveLectura(),
+        JSON.stringify(progreso)
+    );
+
+}
+
+
+/*
+ * Guardar la posición periódicamente.
+ */
+
+let ultimoChapterId = null;
+
+
+window.addEventListener(
+    "scroll",
+    function() {
+
+        if (
+            !ultimoChapterId
+        ) {
+
+            return;
+
+        }
+
+        guardarProgreso(
+            ultimoChapterId
+        );
+
+    }
+);
+
+
+/*
+ * Obtener progreso guardado.
+ */
+
+function obtenerProgreso() {
+
+    try {
+
+        const guardado =
+            localStorage.getItem(
+                obtenerClaveLectura()
+            );
+
+
+        if (!guardado) {
+
+            return null;
+
+        }
+
+
+        return JSON.parse(
+            guardado
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error leyendo progreso:",
+            error
+        );
+
+
+        return null;
+
+    }
+
+}
+
+
+/*
+ * Mostrar botón Retomar.
+ */
+
+function actualizarBotonRetomar() {
+
+    const progreso =
+        obtenerProgreso();
+
+
+    if (
+        !progreso ||
+        !progreso.chapterId
+    ) {
+
+        resumeButton.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    resumeButton.style.display =
+        "inline-block";
+
+}
+
+
+/*
+ * Retomar lectura.
+ */
+
+async function retomarLectura() {
+
+    const progreso =
+        obtenerProgreso();
+
+
+    if (
+        !progreso ||
+        !progreso.chapterId
+    ) {
+
+        return;
+
+    }
+
+
+    await openChapter(
+        progreso.chapterId,
+        true
+    );
+
+}
+
+
+resumeButton.addEventListener(
+    "click",
+    retomarLectura
+);
+
 
 /* ==========================================
    CARGAR CAPÍTULOS
@@ -2325,6 +2513,8 @@ async function cargarCapitulos(id) {
             }
         );
 
+       actualizarBotonRetomar();
+
 
     } catch (error) {
 
@@ -2347,7 +2537,8 @@ async function cargarCapitulos(id) {
 ========================================== */
 
 async function openChapter(
-    chapterId
+    chapterId,
+   retomar = false;
 ) {
 
     try {
@@ -2447,7 +2638,57 @@ async function openChapter(
         ).style.display =
             "block";
 
+/*
+ * Recordar qué capítulo se está leyendo.
+ */
 
+ultimoChapterId =
+    chapterId;
+
+
+/*
+ * Si estamos retomando,
+ * volver a la posición guardada.
+ */
+
+if (retomar) {
+
+    const progreso =
+        obtenerProgreso();
+
+
+    if (
+        progreso &&
+        progreso.chapterId ===
+        String(chapterId)
+    ) {
+
+        /*
+         * Esperar a que el navegador
+         * termine de renderizar el contenido.
+         */
+
+        requestAnimationFrame(
+            function() {
+
+                window.scrollTo(
+                    {
+                        top:
+                            Number(
+                                progreso.scrollY
+                            ) || 0,
+
+                        behavior:
+                            "auto"
+                    }
+                );
+
+            }
+        );
+
+    }
+
+}
         window.scrollTo(
             {
                 top: 0,
