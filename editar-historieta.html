@@ -1828,8 +1828,9 @@ function renderBlocks() {
 
 
                 const src =
-                    block.preview ||
-                    block.image_url;
+    block.preview ||
+    block.image_url ||
+    "";
 
 
                 if (src) {
@@ -1896,12 +1897,9 @@ async function editChapter(
 
     try {
 
-        /*
-         * Obtenemos los capítulos de la historia.
-         *
-         * Esto mantiene el mismo sistema de
-         * editar-historia.html.
-         */
+        /* ======================================
+           1. CARGAR CAPÍTULO
+        ====================================== */
 
         const response =
             await fetch(
@@ -1958,6 +1956,10 @@ async function editChapter(
         }
 
 
+        /* ======================================
+           2. ESTABLECER CAPÍTULO EN EDICIÓN
+        ====================================== */
+
         editingChapterId =
             Number(chapter.id);
 
@@ -1975,11 +1977,138 @@ async function editChapter(
             chapter.title || "";
 
 
+        /* ======================================
+           3. CARGAR BLOQUES
+        ====================================== */
+
         contentBlocks =
             parseContent(
                 chapter.content
             );
 
+
+        /* ======================================
+           4. CARGAR IMÁGENES DEL CAPÍTULO
+        ====================================== */
+
+        let images = [];
+
+
+        try {
+
+            const imagesResponse =
+                await fetch(
+                    "/api/chapters/" +
+                    chapter.id +
+                    "/images",
+                    {
+                        method: "GET",
+                        credentials: "include"
+                    }
+                );
+
+
+            const imagesData =
+                await imagesResponse.json();
+
+
+            if (
+                imagesResponse.ok &&
+                imagesData.success
+            ) {
+
+                images =
+                    imagesData.images || [];
+
+            }
+
+        } catch (imageError) {
+
+            console.warn(
+                "No se pudieron cargar las imágenes del capítulo:",
+                imageError
+            );
+
+        }
+
+
+        /* ======================================
+           5. ASOCIAR URL REAL A CADA BLOQUE
+        ====================================== */
+
+        contentBlocks =
+            contentBlocks.map(
+                function(block) {
+
+                    if (
+                        block.type !== "image"
+                    ) {
+
+                        return block;
+
+                    }
+
+
+                    const imageId =
+                        Number(
+                            block.image_id
+                        );
+
+
+                    if (!imageId) {
+
+                        return block;
+
+                    }
+
+
+                    const image =
+                        images.find(
+                            function(item) {
+
+                                return (
+                                    Number(item.id) ===
+                                    imageId
+                                );
+
+                            }
+                        );
+
+
+                    if (image) {
+
+                        /*
+                         * El endpoint puede devolver
+                         * image_url o url dependiendo
+                         * de cómo esté implementada
+                         * la ruta.
+                         */
+
+                        block.image_url =
+                            image.image_url ||
+                            image.url ||
+                            image.src ||
+                            "";
+
+
+                        block.filename =
+                            image.filename ||
+                            image.name ||
+                            block.filename ||
+                            "";
+
+                    }
+
+
+                    return block;
+
+                }
+            );
+
+
+        /* ======================================
+           6. GUARDAR IDS ORIGINALES
+        ====================================== */
 
         originalImageIds =
             contentBlocks
@@ -2004,14 +2133,26 @@ async function editChapter(
                 );
 
 
+        /* ======================================
+           7. MOSTRAR BLOQUES
+        ====================================== */
+
         renderBlocks();
 
+
+        /* ======================================
+           8. MOSTRAR CANCELAR
+        ====================================== */
 
         document.getElementById(
             "cancel-button"
         ).style.display =
             "inline-block";
 
+
+        /* ======================================
+           9. SUBIR AL EDITOR
+        ====================================== */
 
         document.getElementById(
             "editor-title"
@@ -2024,18 +2165,19 @@ async function editChapter(
     } catch (error) {
 
         console.error(
+            "Error editando capítulo:",
             error
         );
 
 
         showError(
+            error.message ||
             "No se pudo cargar el capítulo."
         );
 
     }
 
 }
-
 
 /* ==========================================
    GUARDAR CAPÍTULO
