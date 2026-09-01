@@ -354,30 +354,50 @@ href="index.html">
      INFORMACIÓN DE LA HISTORIA
 ============================== -->
 
-<section class="story-info">
+<section class="editor">
 
-<h1 id="story-title">
-Cargando...
-</h1>
+<h2>
+Datos de la historia
+</h2>
 
-<div class="author">
-Autor:
-<strong id="story-author">
--
-</strong>
+<label for="story-title-input">
+Título
+</label>
+
+<input
+type="text"
+id="story-title-input"
+placeholder="Título de la historia"
+>
+
+<label for="story-description-input">
+Descripción
+</label>
+
+<textarea
+id="story-description-input"
+placeholder="Descripción de la historia..."
+></textarea>
+
+<label for="story-genre-input">
+Género
+</label>
+
+<input
+type="text"
+id="story-genre-input"
+placeholder="Género"
+>
+
+<div class="buttons">
+
+<button
+class="save-button"
+onclick="saveStory()">
+Guardar cambios
+</button>
+
 </div>
-
-<p
-class="detail"
-id="story-description">
-Cargando descripción...
-</p>
-
-<span
-class="genre"
-id="story-genre">
------------------
-</span>
 
 </section>
 
@@ -756,6 +776,21 @@ async function loadStory() {
             "story-genre"
         ).textContent =
             story.genre || "";
+
+        document.getElementById(
+    "story-title-input"
+).value =
+    story.title || "";
+
+document.getElementById(
+    "story-description-input"
+).value =
+    story.description || "";
+
+document.getElementById(
+    "story-genre-input"
+).value =
+    story.genre || "";
         
         /*
          * ADMINISTRADOR
@@ -1281,6 +1316,151 @@ async function uploadCover() {
 
         console.error(
             "Error subiendo portada:",
+            error
+        );
+
+
+        showError(
+            "No se pudo conectar con el servidor."
+        );
+
+    }
+
+}
+
+    async function saveStory() {
+
+    if (!hasPermission) {
+
+        showError(
+            "No tienes permiso para modificar esta historia."
+        );
+
+        return;
+
+    }
+
+    const title =
+        document.getElementById(
+            "story-title-input"
+        ).value.trim();
+
+    const description =
+        document.getElementById(
+            "story-description-input"
+        ).value.trim();
+
+    const genre =
+        document.getElementById(
+            "story-genre-input"
+        ).value.trim();
+
+
+    if (!title) {
+
+        showError(
+            "El título es obligatorio."
+        );
+
+        return;
+
+    }
+
+
+    if (!description) {
+
+        showError(
+            "La descripción es obligatoria."
+        );
+
+        return;
+
+    }
+
+
+    if (!genre) {
+
+        showError(
+            "El género es obligatorio."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/stories/" +
+                storyId,
+                {
+                    method: "PUT",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+                            title:
+                                title,
+                            description:
+                                description,
+                            genre:
+                                genre
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            showError(
+                data.error ||
+                "No se pudieron guardar los cambios."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "story-title"
+        ).textContent =
+            title;
+
+
+        document.getElementById(
+            "story-description"
+        ).textContent =
+            description;
+
+
+        document.getElementById(
+            "story-genre"
+        ).textContent =
+            genre;
+
+
+        showSuccess(
+            "Historia actualizada correctamente."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error actualizando historia:",
             error
         );
 
