@@ -202,6 +202,47 @@ button {
     color: white;
 }
 
+#blocks-container {
+    margin-top: 20px;
+}
+
+.content-block {
+    background: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.content-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.content-block-title {
+    font-weight: bold;
+}
+
+.content-block textarea {
+    min-height: 150px;
+}
+
+.content-block img {
+    display: block;
+    max-width: 100%;
+    max-height: 500px;
+    margin-top: 10px;
+    border-radius: 6px;
+}
+
+.delete-block {
+    background: #a00000;
+    color: white;
+    padding: 7px 12px;
+}
+
 /* ==============================
    LISTA DE CAPÍTULOS
 ============================== */
@@ -390,15 +431,30 @@ placeholder="Ejemplo: El despertar"
 
 >
 
-<label for="chapter-content">
-Contenido
+<label>
+Contenido del capítulo
 </label>
 
-<textarea
-id="chapter-content"
-placeholder="Escribe aquí el contenido de tu capítulo..."
-></textarea>
+<div class="buttons">
 
+    <button
+        type="button"
+        class="edit-button"
+        onclick="addTextBlock()">
+        Añadir texto
+    </button>
+
+    <button
+        type="button"
+        class="save-button"
+        onclick="addImageBlock()">
+        Añadir imagen
+    </button>
+
+</div>
+
+<div id="blocks-container"></div>
+    
 <div class="buttons">
 
 <button
@@ -454,6 +510,9 @@ const storyId =
     params.get("id");
 
 let editingChapterId = null;
+
+let contentBlocks = [];
+let originalImageIds = [];
 
 let currentUser = null;
 
@@ -897,6 +956,250 @@ async function loadChapters() {
 
 }
 
+/* ==========================================
+   BLOQUES DE CONTENIDO
+========================================== */
+
+function addTextBlock() {
+
+    contentBlocks.push({
+        type: "text",
+        content: ""
+    });
+
+    renderBlocks();
+}
+
+
+function addImageBlock() {
+
+    contentBlocks.push({
+        type: "image",
+        image_id: null,
+        image_url: "",
+        filename: "",
+        file: null,
+        preview: null
+    });
+
+    renderBlocks();
+}
+
+
+function removeBlock(index) {
+
+    contentBlocks.splice(index, 1);
+
+    renderBlocks();
+}
+
+
+function renderBlocks() {
+
+    const container =
+        document.getElementById(
+            "blocks-container"
+        );
+
+    container.innerHTML = "";
+
+    contentBlocks.forEach(
+        function(block, index) {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "content-block";
+
+
+            const header =
+                document.createElement("div");
+
+            header.className =
+                "content-block-header";
+
+
+            const title =
+                document.createElement("div");
+
+            title.className =
+                "content-block-title";
+
+            title.textContent =
+                block.type === "image"
+                    ? "🖼️ Imagen"
+                    : "📝 Texto";
+
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.type =
+                "button";
+
+            deleteButton.className =
+                "delete-block";
+
+            deleteButton.textContent =
+                "Eliminar";
+
+            deleteButton.onclick =
+                function() {
+
+                    removeBlock(index);
+
+                };
+
+
+            header.appendChild(title);
+
+            header.appendChild(
+                deleteButton
+            );
+
+            element.appendChild(header);
+
+
+            /* ==============================
+               TEXTO
+            ============================== */
+
+            if (
+                block.type === "text"
+            ) {
+
+                const textarea =
+                    document.createElement(
+                        "textarea"
+                    );
+
+                textarea.placeholder =
+                    "Escribe el texto...";
+
+                textarea.value =
+                    block.content || "";
+
+                textarea.oninput =
+                    function() {
+
+                        block.content =
+                            textarea.value;
+
+                    };
+
+                element.appendChild(
+                    textarea
+                );
+
+            }
+
+
+            /* ==============================
+               IMAGEN
+            ============================== */
+
+            if (
+                block.type === "image"
+            ) {
+
+                const input =
+                    document.createElement(
+                        "input"
+                    );
+
+                input.type =
+                    "file";
+
+                input.accept =
+                    "image/jpeg,image/png,image/webp,image/gif";
+
+
+                input.onchange =
+                    function(event) {
+
+                        const file =
+                            event.target.files[0];
+
+                        if (!file) {
+                            return;
+                        }
+
+                        block.file =
+                            file;
+
+                        block.image_id =
+                            null;
+
+                        block.image_url =
+                            "";
+
+                        block.filename =
+                            file.name;
+
+
+                        const reader =
+                            new FileReader();
+
+
+                        reader.onload =
+                            function(e) {
+
+                                block.preview =
+                                    e.target.result;
+
+                                renderBlocks();
+
+                            };
+
+
+                        reader.readAsDataURL(
+                            file
+                        );
+
+                    };
+
+
+                element.appendChild(
+                    input
+                );
+
+
+                const src =
+                    block.preview ||
+                    block.image_url;
+
+
+                if (src) {
+
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
+
+                    img.src =
+                        src;
+
+                    img.alt =
+                        block.filename ||
+                        "Imagen";
+
+                    element.appendChild(
+                        img
+                    );
+
+                }
+
+            }
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+    );
+}
 
 /* ==========================================
    GUARDAR CAPÍTULO
@@ -921,10 +1224,25 @@ async function saveChapter() {
         ).value.trim();
 
 
-    const content =
-        document.getElementById(
-            "chapter-content"
-        ).value;
+    {
+    "version": 1,
+    "blocks": [
+        {
+            "type": "text",
+            "content": "Primer texto..."
+        },
+        {
+            "type": "image",
+            "image_id": 25,
+            "image_url": "...",
+            "filename": "imagen.jpg"
+        },
+        {
+            "type": "text",
+            "content": "Segundo texto..."
+        }
+    ]
+}
 
 
     if (!title) {
@@ -1136,11 +1454,25 @@ async function editChapter(
             chapter.id;
 
 
-        document.getElementById(
-            "editor-title"
-        ).textContent =
-            "Editar capítulo " +
-            chapter.chapter_number;
+        contentBlocks = parseContent(
+    chapter.content
+);
+
+originalImageIds =
+    contentBlocks
+        .filter(function(block) {
+            return (
+                block.type === "image" &&
+                block.image_id
+            );
+        })
+        .map(function(block) {
+            return Number(
+                block.image_id
+            );
+        });
+
+renderBlocks();
 
 
         document.getElementById(
@@ -1177,6 +1509,70 @@ async function editChapter(
 
     }
 
+}
+
+function parseContent(content) {
+
+    if (!content) {
+        return [];
+    }
+
+    if (Array.isArray(content)) {
+        return content;
+    }
+
+    if (typeof content === "object") {
+
+        if (Array.isArray(content.blocks)) {
+            return content.blocks;
+        }
+
+        return [];
+    }
+
+    if (typeof content !== "string") {
+        return [];
+    }
+
+
+    try {
+
+        const parsed =
+            JSON.parse(content);
+
+
+        if (Array.isArray(parsed)) {
+            return parsed;
+        }
+
+
+        if (
+            parsed &&
+            Array.isArray(parsed.blocks)
+        ) {
+
+            return parsed.blocks;
+
+        }
+
+    } catch (error) {
+
+        /*
+         * Compatibilidad con capítulos
+         * antiguos que todavía tienen
+         * contenido como texto plano.
+         */
+
+        return [
+            {
+                type: "text",
+                content: content
+            }
+        ];
+
+    }
+
+    return [];
 }
 
 
