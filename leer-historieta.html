@@ -617,6 +617,19 @@ Cargando...
 >
 </span>
 
+<div
+    id="story-edit-container"
+    class="hidden"
+    style="margin-top: 15px;"
+>
+    <button
+        id="story-edit-button"
+        class="secondary"
+        onclick="editarHistorieta()"
+    >
+        ✏ Editar historieta
+    </button>
+</div>
 
 </div>
 
@@ -984,6 +997,30 @@ if (
 if (isAdmin) {
 
     hasEditPermission = true;
+
+}
+       /*
+ * Mostrar botón de edición
+ * si el usuario tiene permiso.
+ */
+
+const editContainer =
+    document.getElementById(
+        "story-edit-container"
+    );
+
+
+if (hasEditPermission) {
+
+    editContainer.classList.remove(
+        "hidden"
+    );
+
+} else {
+
+    editContainer.classList.add(
+        "hidden"
+    );
 
 }
 
@@ -1511,7 +1548,19 @@ function abrirCapitulo(
 
 }
 
+/* =========================================================
+   EDITAR HISTORIETA
+========================================================= */
 
+function editarHistorieta() {
+
+    window.location.href =
+        "editar-historieta.html?id=" +
+        encodeURIComponent(
+            storyId
+        );
+
+}
 
 /* =========================================================
    CARGAR CAPÍTULO
