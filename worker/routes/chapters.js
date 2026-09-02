@@ -6,7 +6,10 @@
 export async function handleChapters(
     request,
     env,
-    url
+    url,
+    getSession,
+    verificarAdministrador,
+    json
 ) {
 
     // =====================================================
