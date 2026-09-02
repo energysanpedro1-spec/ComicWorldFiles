@@ -5,6 +5,7 @@ import { handleComments } from "./routes/comments.js";
 import { handleChapters } from "./routes/chapters.js";
 import { handleLogin } from "./routes/login.js";
 import { handleStories } from "./routes/stories.js";
+import { handleNotifications } from "./routes/notifications.js";
 import {
     handleAdmin,
     verificarAdministrador
@@ -175,6 +176,37 @@ if (
             url,
             getSession,
             verificarAdministrador,
+            json
+        );
+
+    if (response) {
+        return response;
+    }
+
+}
+
+// -----------------------------------------------------
+// NOTIFICACIONES
+//
+// GET  /api/notifications
+// GET  /api/notifications/unread-count
+// POST /api/notifications/:id/read
+// POST /api/notifications/read-all
+// -----------------------------------------------------
+
+if (
+    url.pathname === "/api/notifications" ||
+    url.pathname === "/api/notifications/unread-count" ||
+    /^\/api\/notifications\/\d+\/read$/.test(url.pathname) ||
+    url.pathname === "/api/notifications/read-all"
+) {
+
+    const response =
+        await handleNotifications(
+            request,
+            env,
+            url,
+            getSession,
             json
         );
 
