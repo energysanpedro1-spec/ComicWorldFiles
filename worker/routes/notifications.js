@@ -46,6 +46,25 @@ export async function handleNotifications(
             }
 
 
+            // =================================================
+            // ELIMINAR NOTIFICACIONES CON MÁS DE 24 HORAS
+            // =================================================
+
+            await env.DB
+                .prepare(
+                    `DELETE FROM notifications
+
+                     WHERE user_id = ?
+
+                     AND created_at <
+                         datetime('now', '-24 hours')`
+                )
+                .bind(
+                    session.id
+                )
+                .run();
+
+
             const result =
                 await env.DB
                     .prepare(
@@ -141,6 +160,25 @@ export async function handleNotifications(
                 }, 401);
 
             }
+
+
+            // =================================================
+            // ELIMINAR NOTIFICACIONES CON MÁS DE 24 HORAS
+            // =================================================
+
+            await env.DB
+                .prepare(
+                    `DELETE FROM notifications
+
+                     WHERE user_id = ?
+
+                     AND created_at <
+                         datetime('now', '-24 hours')`
+                )
+                .bind(
+                    session.id
+                )
+                .run();
 
 
             const result =
