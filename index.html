@@ -900,6 +900,191 @@ footer {
     }
 }
 
+/* ==========================================
+   NOTIFICACIONES
+========================================== */
+
+.notification-area {
+    position: relative;
+    display: none;
+    align-items: center;
+}
+
+.notification-button {
+    position: relative;
+
+    border: none;
+    background: transparent;
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    padding: 6px 8px;
+
+    line-height: 1;
+}
+
+.notification-button:hover {
+    opacity: 0.8;
+}
+
+.notification-count {
+    position: absolute;
+
+    top: -2px;
+    right: -2px;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ff3b30;
+    color: white;
+
+    border-radius: 50%;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    line-height: 18px;
+}
+
+.notification-count:empty {
+    display: none;
+}
+
+
+/* ==========================================
+   PANEL DE NOTIFICACIONES
+========================================== */
+
+.notification-panel {
+    position: absolute;
+
+    top: 45px;
+    right: 0;
+
+    width: 330px;
+    max-width: calc(100vw - 20px);
+
+    background: white;
+    color: #222;
+
+    border-radius: 8px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+
+    z-index: 9999;
+
+    display: none;
+
+    overflow: hidden;
+}
+
+.notification-panel.show {
+    display: block;
+}
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 15px;
+
+    background: #20242b;
+    color: white;
+
+    font-weight: bold;
+}
+
+.notification-header button {
+    border: none;
+    background: transparent;
+
+    color: #ff6b35;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+.notification-list {
+    max-height: 400px;
+
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 12px 15px;
+
+    border-bottom: 1px solid #eee;
+
+    cursor: pointer;
+}
+
+.notification-item:hover {
+    background: #f5f5f5;
+}
+
+.notification-item.unread {
+    background: #fff4ef;
+}
+
+.notification-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.notification-message {
+    font-size: 14px;
+    color: #555;
+}
+
+.notification-date {
+    margin-top: 5px;
+
+    font-size: 11px;
+
+    color: #888;
+}
+
+.notification-empty {
+    padding: 25px 15px;
+
+    text-align: center;
+
+    color: #777;
+}
+
+
+/* ==========================================
+   MÓVIL
+========================================== */
+
+@media (max-width: 600px) {
+
+    .notification-panel {
+        position: fixed;
+
+        top: 65px;
+        right: 10px;
+        left: 10px;
+
+        width: auto;
+        max-width: none;
+    }
+
+}
+
 </style>
 
 </head>
@@ -953,13 +1138,67 @@ footer {
                 Donate
             </a>
 
-            <span id="user-area">
+            <!-- ==========================================
+     NOTIFICACIONES
+========================================== -->
 
-                <a href="login.html">
-                    Iniciar sesión
-                </a>
+<span id="notification-area" class="notification-area">
 
-            </span>
+    <button
+        id="notification-button"
+        class="notification-button"
+        type="button"
+        title="Notificaciones"
+    >
+
+        🔔
+
+        <span
+            id="notification-count"
+            class="notification-count"
+        >
+            0
+        </span>
+
+    </button>
+
+</span>
+
+<div
+    id="notification-panel"
+    class="notification-panel"
+>
+
+    <div class="notification-header">
+
+        <span>Notificaciones</span>
+
+        <button
+            type="button"
+            onclick="marcarTodasNotificaciones()"
+        >
+            Marcar todas como leídas
+        </button>
+
+    </div>
+
+    <div
+        id="notification-list"
+        class="notification-list"
+    >
+
+        <div class="notification-empty">
+            No tienes notificaciones.
+        </div>
+
+    </div>
+
+</div>
+
+
+<span id="user-area">
+    <a href="login.html">Iniciar sesión</a>
+</span>
 
         </nav>
 
@@ -1206,6 +1445,7 @@ async function checkSession() {
     const userArea =
         document.getElementById("user-area");
 
+
     try {
 
         const response =
@@ -1219,14 +1459,26 @@ async function checkSession() {
             );
 
 
+        /* ==========================================
+           SI NO SE PUDO COMPROBAR LA SESIÓN
+        ========================================== */
+
         if (!response.ok) {
+
+            ocultarCampanita();
+
             return;
+
         }
 
 
         const data =
             await response.json();
 
+
+        /* ==========================================
+           USUARIO CON SESIÓN INICIADA
+        ========================================== */
 
         if (
             data &&
@@ -1274,6 +1526,13 @@ async function checkSession() {
             );
 
 
+            /* ======================================
+               MOSTRAR CAMPANITA
+            ====================================== */
+
+            mostrarCampanita();
+
+
             userArea.appendChild(
                 profileLink
             );
@@ -1284,12 +1543,31 @@ async function checkSession() {
 
         }
 
+
+        /* ==========================================
+           USUARIO NO LOGUEADO
+        ========================================== */
+
+        else {
+
+            ocultarCampanita();
+
+        }
+
+
     } catch (error) {
 
         console.error(
             "Error comprobando sesión:",
             error
         );
+
+
+        /* ==========================================
+           OCULTAR CAMPANITA SI HAY ERROR
+        ========================================== */
+
+        ocultarCampanita();
 
     }
 
@@ -1963,6 +2241,361 @@ function escapeHtml(text) {
 
 }
 
+/* =========================================================
+   NOTIFICACIONES
+========================================================= */
+
+const notificationArea =
+    document.getElementById("notification-area");
+
+const notificationButton =
+    document.getElementById("notification-button");
+
+const notificationPanel =
+    document.getElementById("notification-panel");
+
+const notificationCount =
+    document.getElementById("notification-count");
+
+const notificationList =
+    document.getElementById("notification-list");
+
+
+/* =========================================================
+   MOSTRAR / OCULTAR CAMPANITA
+========================================================= */
+
+function mostrarCampanita() {
+
+    if (!notificationArea) return;
+
+    notificationArea.style.display = "flex";
+
+    cargarContadorNotificaciones();
+
+}
+
+
+function ocultarCampanita() {
+
+    if (!notificationArea) return;
+
+    notificationArea.style.display = "none";
+
+    if (notificationPanel) {
+
+        notificationPanel.classList.remove("show");
+
+    }
+
+}
+
+
+/* =========================================================
+   CONTADOR
+========================================================= */
+
+async function cargarContadorNotificaciones() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/notifications/unread-count"
+            );
+
+
+        if (!response.ok) {
+
+            ocultarCampanita();
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            ocultarCampanita();
+
+            return;
+
+        }
+
+
+        const count =
+            Number(data.count || 0);
+
+
+        if (count > 0) {
+
+            notificationCount.textContent =
+                count > 99 ? "99+" : count;
+
+            notificationCount.style.display =
+                "flex";
+
+        } else {
+
+            notificationCount.textContent =
+                "";
+
+            notificationCount.style.display =
+                "none";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo contador:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ABRIR / CERRAR PANEL
+========================================================= */
+
+if (notificationButton) {
+
+    notificationButton.addEventListener(
+        "click",
+        async function () {
+
+            notificationPanel.classList.toggle(
+                "show"
+            );
+
+
+            if (
+                notificationPanel.classList.contains(
+                    "show"
+                )
+            ) {
+
+                await cargarNotificaciones();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   OBTENER NOTIFICACIONES
+========================================================= */
+
+async function cargarNotificaciones() {
+
+    try {
+
+        notificationList.innerHTML = `
+            <div class="notification-empty">
+                Cargando...
+            </div>
+        `;
+
+
+        const response =
+            await fetch(
+                "/api/notifications"
+            );
+
+
+        if (!response.ok) {
+
+            notificationList.innerHTML = `
+                <div class="notification-empty">
+                    No se pudieron cargar las notificaciones.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data.success ||
+            !data.notifications ||
+            data.notifications.length === 0
+        ) {
+
+            notificationList.innerHTML = `
+                <div class="notification-empty">
+                    No tienes notificaciones.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        notificationList.innerHTML = "";
+
+
+        data.notifications.forEach(
+            function (notification) {
+
+                const item =
+                    document.createElement("div");
+
+
+                item.className =
+                    "notification-item";
+
+
+                if (
+                    Number(notification.is_read) === 0
+                ) {
+
+                    item.classList.add("unread");
+
+                }
+
+
+                item.innerHTML = `
+
+                    <div class="notification-title">
+                        ${escapeHtml(
+                            notification.title || ""
+                        )}
+                    </div>
+
+                    <div class="notification-message">
+                        ${escapeHtml(
+                            notification.message || ""
+                        )}
+                    </div>
+
+                    <div class="notification-date">
+                        ${escapeHtml(
+                            notification.created_at || ""
+                        )}
+                    </div>
+
+                `;
+
+
+                item.addEventListener(
+                    "click",
+                    function () {
+
+                        marcarNotificacionLeida(
+                            notification.id
+                        );
+
+                    }
+                );
+
+
+                notificationList.appendChild(item);
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo notificaciones:",
+            error
+        );
+
+        notificationList.innerHTML = `
+            <div class="notification-empty">
+                Error al cargar las notificaciones.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   MARCAR UNA COMO LEÍDA
+========================================================= */
+
+async function marcarNotificacionLeida(
+    notificationId
+) {
+
+    try {
+
+        await fetch(
+            `/api/notifications/${notificationId}/read`,
+            {
+                method: "POST"
+            }
+        );
+
+
+        await cargarNotificaciones();
+
+        await cargarContadorNotificaciones();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error marcando notificación:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MARCAR TODAS COMO LEÍDAS
+========================================================= */
+
+async function marcarTodasNotificaciones() {
+
+    try {
+
+        await fetch(
+            "/api/notifications/read-all",
+            {
+                method: "POST"
+            }
+        );
+
+
+        await cargarNotificaciones();
+
+        await cargarContadorNotificaciones();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error marcando notificaciones:",
+            error
+        );
+
+    }
+
+}
 
 /* ==================================================
    INICIAR
