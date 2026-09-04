@@ -17,6 +17,152 @@ export default {
 
         const url = new URL(request.url);
 
+        // =====================================================
+// GITHUB OAUTH
+// POST /api/github/token
+// =====================================================
+
+if (
+    url.pathname === "/api/github/token" &&
+    request.method === "POST"
+) {
+
+    try {
+
+        const body =
+            await request.json();
+
+        const code =
+            body.code;
+
+        const codeVerifier =
+            body.code_verifier;
+
+        if (
+            !code ||
+            !codeVerifier
+        ) {
+
+            return json({
+                success: false,
+                error:
+                    "Faltan datos de autorización."
+            }, 400);
+
+        }
+
+        const clientId =
+            "Ov23lioMfLgLyRg4cKNJ";
+
+        const clientSecret =
+            env.GITHUB_CLIENT_SECRET;
+
+        if (!clientSecret) {
+
+            console.error(
+                "GITHUB_CLIENT_SECRET no configurado."
+            );
+
+            return json({
+                success: false,
+                error:
+                    "GitHub OAuth no está configurado en el servidor."
+            }, 500);
+
+        }
+
+        const githubResponse =
+            await fetch(
+                "https://github.com/login/oauth/access_token",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Accept":
+                            "application/json",
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        client_id:
+                            clientId,
+
+                        client_secret:
+                            clientSecret,
+
+                        code:
+                            code,
+
+                        redirect_uri:
+                            "jospad://oauth/callback",
+
+                        code_verifier:
+                            codeVerifier
+
+                    })
+                }
+            );
+
+        const githubData =
+            await githubResponse.json();
+
+        if (
+            !githubResponse.ok ||
+            githubData.error ||
+            !githubData.access_token
+        ) {
+
+            console.error(
+                "Error OAuth GitHub:",
+                githubData
+            );
+
+            return json({
+                success: false,
+                error:
+                    githubData.error_description ||
+                    githubData.error ||
+                    "GitHub no pudo generar el token."
+            }, 400);
+
+        }
+
+        return json({
+
+            success: true,
+
+            access_token:
+                githubData.access_token,
+
+            token_type:
+                githubData.token_type || "bearer",
+
+            scope:
+                githubData.scope || ""
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error procesando GitHub OAuth:",
+            error
+        );
+
+        return json({
+            success: false,
+            error:
+                error.message ||
+                "Error interno."
+        }, 500);
+
+    }
+
+}
+
 
 // =====================================================
 // RUTAS SEPARADAS
